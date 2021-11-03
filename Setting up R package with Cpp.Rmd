@@ -1,0 +1,40 @@
+---
+title: "Setting up R package with Cpp"
+author: "Benjamin Michael Marshall"
+date: "03/11/2021"
+output: html_document
+---
+
+Setting up a new project in a R package format (with Cpp additions)
+
+Need 
+install.packages("devtools")
+install.packages("roxygen2")
+
+Make git repo
+
+Clone git repo to computer
+
+Run usethis::create_package(getwd()) to genereate the r package files
+
+Run roxygen2::roxygenise() to produce man folder for docuemtnation
+
+Add
+LinkingTo: Rcpp
+Imports: Rcpp
+To the DESRCIPTION file
+
+Make sure your NAMESPACE includes:
+useDynLib(mypackage)
+importFrom(Rcpp, sourceCpp)
+[NOT SURE HOW TO ACHIEVE THIS]
+
+Run 
+dir.create("./src/")
+to make location for Cpp files
+
+use devtools::document() to generate exported function documentation
+
+
+Rcpp::compileAttributes()
+may be needed for making Cpp function available in R
