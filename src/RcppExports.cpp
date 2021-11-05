@@ -10,9 +10,20 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// sample_test
+int sample_test(Rcpp::NumericVector vect);
+RcppExport SEXP _abmAnimalMovement_sample_test(SEXP vectSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type vect(vectSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_test(vect));
+    return rcpp_result_gen;
+END_RCPP
+}
 // walk_options_xy
-NumericMatrix walk_options_xy(double startx, double starty, int steps, int options, double normmean, double normsd, double meanang, double sdang);
-RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP normmeanSEXP, SEXP normsdSEXP, SEXP meanangSEXP, SEXP sdangSEXP) {
+Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, double normmean, double normsd, double meanang, double sdang, Rcpp::NumericMatrix envMat1);
+RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP normmeanSEXP, SEXP normsdSEXP, SEXP meanangSEXP, SEXP sdangSEXP, SEXP envMat1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,13 +35,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type normsd(normsdSEXP);
     Rcpp::traits::input_parameter< double >::type meanang(meanangSEXP);
     Rcpp::traits::input_parameter< double >::type sdang(sdangSEXP);
-    rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, normmean, normsd, meanang, sdang));
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type envMat1(envMat1SEXP);
+    rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, normmean, normsd, meanang, sdang, envMat1));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 8},
+    {"_abmAnimalMovement_sample_test", (DL_FUNC) &_abmAnimalMovement_sample_test, 1},
+    {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 9},
     {NULL, NULL, 0}
 };
 

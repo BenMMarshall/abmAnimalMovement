@@ -19,6 +19,8 @@
 \item{meanang}{Parameter describing angle}
 
 \item{sdang}{Parameter describing angle variation}
+
+\item{envMat1}{Environmental matrix 1}
 }
 \value{
 Matrix of locations chosen

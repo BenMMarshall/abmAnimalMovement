@@ -2,15 +2,21 @@ library(abmAnimalMovement)
 # library(Rcpp)
 
 # Basic Rcpp Compiling and Testing ----------------------------------------
-?basic_walk()
 
-basic_walk(start = c(20,25),
-           steps = 200,
-           options = 12,
+sample_test(1:5)
+
+# ?basic_walk()
+# row <- 1000; col <- 1000
+# envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
+
+basic_walk(start = c(50,50),
+           steps = 10,
+           options = 5,
            normmean = 5,
-           normsd = 5,
+           normsd = 2,
            meanang = 0,
-           sdang = 180)
+           sdang = 180,
+           envMat1 = envMatTest)
 
 # Using Rcpp to call and compile Cpp function directly --------------------
 
