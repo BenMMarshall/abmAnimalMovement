@@ -47,24 +47,32 @@ Rcpp::List walk_options_xy(
   int yOptIndex;
 
   Rcpp::NumericMatrix optionsMatrix(nopt, 5);
+  Rcpp::NumericMatrix optionsMatrixALL(nopt*steps +1, 3); // one added to include the start loc
   Rcpp::NumericMatrix locMatrix(steps, 2);
 
   /* initial location is set using the start locations */
   locMatrix(0,0) = startx;
   locMatrix(0,1) = starty;
-  for(int i = 1; i < n; i++){
+  optionsMatrixALL(0,0) = startx;
+  optionsMatrixALL(0,1) = starty;
+  optionsMatrixALL(0,2) = 0;
+  for(int i = 1, a = 1; i <= n; i++){
 
     /* for each step set the location as the previously chosen location */
     optionsMatrix(0,0) = locMatrix(i-1,0);
     optionsMatrix(0,1) = locMatrix(i-1,1);
     optionsMatrix(0,3) = i;
-    for(int j = 0; j < nopt; j++){
+    for(int j = 0; j < nopt; j++, a++){
       angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
       step = Rcpp::rgamma(1, normmean, normsd)[0];
       optionsMatrix(j,0) = optionsMatrix(0,0) + cos(angle) * step;
       optionsMatrix(j,1) = optionsMatrix(0,1) + sin(angle) * step;
       // add in which step the options are for
       optionsMatrix(j,3) = i+1;
+
+      optionsMatrixALL(a,0) = optionsMatrix(j,0);
+      optionsMatrixALL(a,1) = optionsMatrix(j,1);
+      optionsMatrixALL(a,2) = i;
 
       choicesVec[j] = j;
     }
@@ -104,7 +112,8 @@ Rcpp::List walk_options_xy(
 
   }
   Rcpp::List OUTPUT = Rcpp::List::create(Rcpp::Named("Locations") = locMatrix,
-                                         Rcpp::Named("Options") = optionsMatrix,
+                                         Rcpp::Named("OptionsLast") = optionsMatrix,
+                                         Rcpp::Named("OptionsAll") = optionsMatrixALL,
                                          Rcpp::Named("ChoiceVec") = choicesVec, // included to check is choice vector is the source of issues
                                          Rcpp::Named("envValues") = envVal1 // included to check probs used
                                          );
