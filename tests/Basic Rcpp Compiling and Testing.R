@@ -6,8 +6,8 @@ library(abmAnimalMovement)
 sample_test(1:5)
 
 # ?basic_walk()
-# row <- 1000; col <- 1000
-# envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
+row <- 1000; col <- 1000
+envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
 
 basic_walk(start = c(50,50),
            steps = 10,

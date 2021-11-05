@@ -35,7 +35,7 @@ Rcpp::List walk_options_xy(
   int chosen;
   double xChosen;
   double yChosen;
-  // NumericVector envVal1;
+  Rcpp::NumericVector envVal1(nopt);
 
   Rcpp::NumericVector choicesVec(nopt);
   // std::vector<int> choicesVec(nopt);
@@ -46,7 +46,7 @@ Rcpp::List walk_options_xy(
   int xOptIndex;
   int yOptIndex;
 
-  Rcpp::NumericMatrix optionsMatrix(nopt, 4);
+  Rcpp::NumericMatrix optionsMatrix(nopt, 5);
   Rcpp::NumericMatrix locMatrix(steps, 2);
 
   /* initial location is set using the start locations */
@@ -75,6 +75,8 @@ Rcpp::List walk_options_xy(
       xOptIndex = floor(xOpt);
       yOptIndex = floor(yOpt);
       envVal1[k] = envMat1(xOptIndex, yOptIndex);
+      // store it with the options also
+      optionsMatrix(k,4) = envVal1[k];
     }
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
@@ -87,7 +89,7 @@ Rcpp::List walk_options_xy(
     // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
     // optionsMatrix(chosen,2) = 1;
 
-    chosen = Rcpp::as<int>(Rcpp::sample(choicesVec, 1, false, R_NilValue));
+    chosen = Rcpp::as<int>(Rcpp::sample(choicesVec, 1, false, envVal1));
     /* this is cjust recording the choice in the first possible location of the optionsMatrix,
     not great would rather store 0 and 1 with the location */
     optionsMatrix(0,2) = chosen;
@@ -103,7 +105,8 @@ Rcpp::List walk_options_xy(
   }
   Rcpp::List OUTPUT = Rcpp::List::create(Rcpp::Named("Locations") = locMatrix,
                                          Rcpp::Named("Options") = optionsMatrix,
-                                         Rcpp::Named("ChoiceVec") = choicesVec // included to check is choice vector is the source of issues
+                                         Rcpp::Named("ChoiceVec") = choicesVec, // included to check is choice vector is the source of issues
+                                         Rcpp::Named("envValues") = envVal1 // included to check probs used
                                          );
   return OUTPUT;
 
