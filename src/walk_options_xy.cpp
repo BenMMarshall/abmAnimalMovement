@@ -41,10 +41,10 @@ Rcpp::List walk_options_xy(
   // std::vector<int> choicesVec(nopt);
   // std::iota (std::begin(choicesVec), std::end(choicesVec), 0); // Fill with 0, 1, ..., end.
 
-  // int xOpt;
-  // int yOpt;
-  // int xOptIndex;
-  // int yOptIndex;
+  int xOpt;
+  int yOpt;
+  int xOptIndex;
+  int yOptIndex;
 
   Rcpp::NumericMatrix optionsMatrix(nopt, 4);
   Rcpp::NumericMatrix locMatrix(steps, 2);
@@ -69,13 +69,13 @@ Rcpp::List walk_options_xy(
       choicesVec[j] = j;
     }
     /* for each of the options, check values in environment and use equation to pick next move */
-    // for(int k = 0; k < nopt; k++){
-    //   xOpt = optionsMatrix(k,0);
-    //   yOpt = optionsMatrix(k,1);
-    //   xOptIndex = floor(xOpt);
-    //   yOptIndex = floor(yOpt);
-    //   envVal1[k] = envMat1(xOptIndex, yOptIndex);
-    // }
+    for(int k = 0; k < nopt; k++){
+      xOpt = optionsMatrix(k,0);
+      yOpt = optionsMatrix(k,1);
+      xOptIndex = floor(xOpt);
+      yOptIndex = floor(yOpt);
+      envVal1[k] = envMat1(xOptIndex, yOptIndex);
+    }
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, envVal1) */
