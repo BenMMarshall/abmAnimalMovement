@@ -11,6 +11,20 @@ sample_test <- function(vect) {
     .Call('_abmAnimalMovement_sample_test', PACKAGE = 'abmAnimalMovement', vect)
 }
 
+#' vonmises
+#' https://statisticaloddsandends.wordpress.com/2020/02/25/what-is-the-von-mises-distribution/
+#' https://gist.github.com/SiyuanQi/10ed29aa850e26e2e1251af04f5427ec
+#' http://dirk.eddelbuettel.com/code/bh.html
+#' https://garylarson.weebly.com/blog/category/rcpp
+#' @name vonmises
+#' @param N number to draw
+#' @param kappa
+#' @param mu
+#' @return Vector pulled from vonmises
+vonmises <- function(N, kappa, mu) {
+    .Call('_abmAnimalMovement_vonmises', PACKAGE = 'abmAnimalMovement', N, kappa, mu)
+}
+
 #' Basic random walk
 #' @name walk_options_xy
 #' @param startx The x coord start location

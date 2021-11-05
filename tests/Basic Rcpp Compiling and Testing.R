@@ -1,5 +1,10 @@
-library(abmAnimalMovement)
+# both required for header files
+# install.packages("Rcpp")
+# install.packages("BH")
 # library(Rcpp)
+# library(BH)
+
+library(abmAnimalMovement)
 library(ggplot2)
 library(reshape2)
 library(scico)
@@ -14,7 +19,7 @@ envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
 colnames(envMatTest) <- 1:col
 rownames(envMatTest) <- 1:row
 
-longMatData <- melt(envMatTest, c("row", "col"))
+longMatData <- melt(envMatTest, c("col", "row"))
 head(longMatData)
 
 plotBgEnv <- ggplot() +
@@ -39,10 +44,28 @@ plotBgEnv +
   geom_point(data = as.data.frame(basicRes$Locations),
             aes(x = V1, y = V2)) +
   scale_colour_scico(palette = "buda") +
-  coord_cartesian(xlim = range(basicRes$Locations[,1]), ylim = range(basicRes$Locations[,2]))
+  coord_cartesian(xlim = range(basicRes$Locations[,1]), ylim = range(basicRes$Locations[,2])) +
+  theme_bw() +
+  theme(aspect.ratio = 1)
 
 
-# Plotting output ---------------------------------------------------------
+# Vonmises testing --------------------------------------------------------
+library(abmAnimalMovement)
+library(ggplot2)
+
+# mu should vary between 0 and 2*pi for circular stuff
+# https://www.zeileis.org/news/circtree/
+# vmRes <- vonmises(1000, 10, 360, 2)
+
+# might be worth adapting to C++
+CircStats::rvm()
+
+ggplot() +
+  geom_density(data = as.data.frame(vmRes), aes(vmRes))
+
+
+# Rfast::rvonmises()
+# not sure if that one helps
 
 # Using Rcpp to call and compile Cpp function directly --------------------
 

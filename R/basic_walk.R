@@ -32,6 +32,13 @@ basic_walk <- function(start, steps, options, normmean, normsd, meanang,
     sdang = sdang,
     envMat1 = envMat1
   )
+
+  ## TO DO ##
+
+  # add in a translating function to tidy up all objects parse via the
+  # list into dataframes with properly labelled columns
+
+
   return(res)
 }
 

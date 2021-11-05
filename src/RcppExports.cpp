@@ -21,6 +21,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// vonmises
+Rcpp::NumericVector vonmises(int N, double kappa, double mu);
+RcppExport SEXP _abmAnimalMovement_vonmises(SEXP NSEXP, SEXP kappaSEXP, SEXP muSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
+    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+    rcpp_result_gen = Rcpp::wrap(vonmises(N, kappa, mu));
+    return rcpp_result_gen;
+END_RCPP
+}
 // walk_options_xy
 Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, double normmean, double normsd, double meanang, double sdang, Rcpp::NumericMatrix envMat1);
 RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP normmeanSEXP, SEXP normsdSEXP, SEXP meanangSEXP, SEXP sdangSEXP, SEXP envMat1SEXP) {
@@ -43,6 +56,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_abmAnimalMovement_sample_test", (DL_FUNC) &_abmAnimalMovement_sample_test, 1},
+    {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},
     {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 9},
     {NULL, NULL, 0}
 };
