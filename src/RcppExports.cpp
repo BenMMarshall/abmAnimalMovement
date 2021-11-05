@@ -10,21 +10,27 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// mult
-double mult(double v1, double v2);
-RcppExport SEXP _abmAnimalMovement_mult(SEXP v1SEXP, SEXP v2SEXP) {
+// walk_options_xy
+NumericMatrix walk_options_xy(double startx, double starty, int steps, int options, double normmean, double normsd, double meanang, double sdang);
+RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP normmeanSEXP, SEXP normsdSEXP, SEXP meanangSEXP, SEXP sdangSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type v1(v1SEXP);
-    Rcpp::traits::input_parameter< double >::type v2(v2SEXP);
-    rcpp_result_gen = Rcpp::wrap(mult(v1, v2));
+    Rcpp::traits::input_parameter< double >::type startx(startxSEXP);
+    Rcpp::traits::input_parameter< double >::type starty(startySEXP);
+    Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
+    Rcpp::traits::input_parameter< int >::type options(optionsSEXP);
+    Rcpp::traits::input_parameter< double >::type normmean(normmeanSEXP);
+    Rcpp::traits::input_parameter< double >::type normsd(normsdSEXP);
+    Rcpp::traits::input_parameter< double >::type meanang(meanangSEXP);
+    Rcpp::traits::input_parameter< double >::type sdang(sdangSEXP);
+    rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, normmean, normsd, meanang, sdang));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_abmAnimalMovement_mult", (DL_FUNC) &_abmAnimalMovement_mult, 2},
+    {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 8},
     {NULL, NULL, 0}
 };
 
