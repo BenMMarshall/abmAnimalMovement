@@ -70,7 +70,6 @@ Rcpp::List walk_options_xy(
     }
     /* for each of the options, check values in environment and use equation to pick next move */
     // for(int k = 0; k < nopt; k++){
-    //   choicesVec[k] = k;
     //   xOpt = optionsMatrix(k,0);
     //   yOpt = optionsMatrix(k,1);
     //   xOptIndex = floor(xOpt);
@@ -89,7 +88,12 @@ Rcpp::List walk_options_xy(
     // optionsMatrix(chosen,2) = 1;
 
     chosen = Rcpp::as<int>(Rcpp::sample(choicesVec, 1, false, R_NilValue));
+    /* this is cjust recording the choice in the first possible location of the optionsMatrix,
+    not great would rather store 0 and 1 with the location */
     optionsMatrix(0,2) = chosen;
+    /* this doesn't seem to work, instead filling an apparent random number of rows with 1 */
+    /* maybe we need to reset the 3 column each time in the loop */
+    // optionsMatrix(chosen,2) = 1;
 
     xChosen = optionsMatrix(chosen,0);
     yChosen = optionsMatrix(chosen,1);
@@ -99,7 +103,7 @@ Rcpp::List walk_options_xy(
   }
   Rcpp::List OUTPUT = Rcpp::List::create(Rcpp::Named("Locations") = locMatrix,
                                          Rcpp::Named("Options") = optionsMatrix,
-                                         Rcpp::Named("ChoiceVec") = choicesVec
+                                         Rcpp::Named("ChoiceVec") = choicesVec // included to check is choice vector is the source of issues
                                          );
   return OUTPUT;
 
