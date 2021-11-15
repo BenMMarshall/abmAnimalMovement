@@ -4,11 +4,12 @@
 #' sample_test
 #' @name sample_test
 #' @param vect vector length
+#' @param probs probs
 #' @return Matrix of locations chosen
 NULL
 
-sample_test <- function(vect) {
-    .Call('_abmAnimalMovement_sample_test', PACKAGE = 'abmAnimalMovement', vect)
+sample_test <- function(vect, probs) {
+    .Call('_abmAnimalMovement_sample_test', PACKAGE = 'abmAnimalMovement', vect, probs)
 }
 
 #' vonmises

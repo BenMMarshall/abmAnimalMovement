@@ -35,6 +35,10 @@ Rcpp::List walk_options_xy(
   int chosen;
   double xChosen;
   double yChosen;
+
+  int mcols = envMat1.ncol();
+  int mrows = envMat1.nrow();
+
   Rcpp::NumericVector envVal1(nopt);
 
   Rcpp::NumericVector choicesVec(nopt);
@@ -57,12 +61,14 @@ Rcpp::List walk_options_xy(
   optionsMatrixALL(0,1) = starty;
   optionsMatrixALL(0,2) = 0;
   for(int i = 1, a = 1; i <= n; i++){
+    Rcpp::Rcout << "Step : " << i << "\n";
 
     /* for each step set the location as the previously chosen location */
     optionsMatrix(0,0) = locMatrix(i-1,0);
     optionsMatrix(0,1) = locMatrix(i-1,1);
     optionsMatrix(0,3) = i;
     for(int j = 0; j < nopt; j++, a++){
+
       angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
       step = Rcpp::rgamma(1, normmean, normsd)[0];
       optionsMatrix(j,0) = optionsMatrix(0,0) + cos(angle) * step;
@@ -82,7 +88,19 @@ Rcpp::List walk_options_xy(
       yOpt = optionsMatrix(k,1);
       xOptIndex = floor(xOpt);
       yOptIndex = floor(yOpt);
+
+      // end function if animal leaves environmental data area
+      if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
+        Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+      }
+
       envVal1[k] = envMat1(xOptIndex, yOptIndex);
+
+      if(Rcpp::NumericVector::is_na(envVal1[k])){
+        // printing error message
+        Rcpp::Rcerr << "NA in enviornmental data\n";
+        }
+
       // store it with the options also
       optionsMatrix(k,4) = envVal1[k];
     }
