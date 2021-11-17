@@ -4,7 +4,7 @@
 \alias{basic_walk}
 \title{R wrap for basic walk}
 \usage{
-basic_walk(start, steps, options, normmean, normsd, meanang, sdang, envMat1)
+basic_walk(start, steps, options, normmean, normsd, mu_angle, k_angle, envMat1)
 }
 \arguments{
 \item{start}{The x and y coords of the starting location}
@@ -17,11 +17,11 @@ basic_walk(start, steps, options, normmean, normsd, meanang, sdang, envMat1)
 
 \item{normsd}{Parameter describing step angle}
 
+\item{envMat1}{Environmental matrix 1}
+
 \item{meanang}{Parameter describing angle}
 
 \item{sdang}{Parameter describing angle variation}
-
-\item{envMat1}{Environmental matrix 1}
 }
 \value{
 Matrix of locations chosen

@@ -15,11 +15,11 @@ set.seed(2021)
 
 # Sampling sub-function testing -------------------------------------------
 
-sample_test(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
+sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
 
 sampleOut <- NULL
 for(i in 1:1000){
-  sampleOut[i] <- sample_test(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
+  sampleOut[i] <- sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
 }
 hist(sampleOut)
 

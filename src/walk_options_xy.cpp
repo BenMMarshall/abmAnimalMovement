@@ -2,6 +2,7 @@
 #include <Rcpp.h>
 #include <cmath>
 #include "vonmises.h"
+#include "sample_options.h"
 
 //' Basic random walk
 //' @name walk_options_xy
@@ -138,13 +139,15 @@ Rcpp::List walk_options_xy(
     // optionsMatrix(chosen,2) = 1;
 
     // old uniform choice doesn't use any environmental input and can pick multiple new locations
-    // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
+    chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
     // optionsMatrix(chosen,2) = 1;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
-    std::srand(std::time(0)); // use current time as seed for random generator
-    int random_pos = std::rand() % choicesVec.size();
-    chosen = choicesVec[random_pos];
+    // std::srand(std::time(0)); // use current time as seed for random generator
+    // int random_pos = std::rand() % choicesVec.size();
+    // chosen = choicesVec[random_pos];
+
+    // chosen = sample_options(Rcpp::wrap(envVal1));
 
     // chosen = Rcpp::sample(choicesVec, 1, false, envVal1);
     // add choice to vector of choices, each location == step

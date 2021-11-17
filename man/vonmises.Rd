@@ -3,14 +3,11 @@
 \name{vonmises}
 \alias{vonmises}
 \title{vonmises
-https://statisticaloddsandends.wordpress.com/2020/02/25/what-is-the-von-mises-distribution/
-https://gist.github.com/SiyuanQi/10ed29aa850e26e2e1251af04f5427ec
-http://dirk.eddelbuettel.com/code/bh.html
-https://garylarson.weebly.com/blog/category/rcpp}
+Based on function fvm from teh CricStats package.}
 \usage{
-vonmises(N, kappa, mu, x)
+vonmises(N, MU, KAPPA)
 
-vonmises(N, kappa, mu, x)
+vonmises(N, MU, KAPPA)
 }
 \arguments{
 \item{N}{number to draw}
@@ -22,10 +19,7 @@ Vector pulled from vonmises
 }
 \description{
 vonmises
-https://statisticaloddsandends.wordpress.com/2020/02/25/what-is-the-von-mises-distribution/
-https://gist.github.com/SiyuanQi/10ed29aa850e26e2e1251af04f5427ec
-http://dirk.eddelbuettel.com/code/bh.html
-https://garylarson.weebly.com/blog/category/rcpp
+Based on function fvm from teh CricStats package.
 
 Vonmises
 }
