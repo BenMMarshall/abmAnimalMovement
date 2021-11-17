@@ -18,11 +18,11 @@ sample_test <- function(weights) {
 #' https://garylarson.weebly.com/blog/category/rcpp
 #' @name vonmises
 #' @param N number to draw
-#' @param kappa
-#' @param mu
+#' @param KAPPA
+#' @param MU
 #' @return Vector pulled from vonmises
-vonmises <- function(N, kappa, mu) {
-    .Call('_abmAnimalMovement_vonmises', PACKAGE = 'abmAnimalMovement', N, kappa, mu)
+vonmises <- function(N, MU, KAPPA) {
+    .Call('_abmAnimalMovement_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
 }
 
 #' Basic random walk

@@ -22,15 +22,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // vonmises
-Rcpp::NumericVector vonmises(int N, double kappa, double mu);
-RcppExport SEXP _abmAnimalMovement_vonmises(SEXP NSEXP, SEXP kappaSEXP, SEXP muSEXP) {
+Rcpp::NumericVector vonmises(int N, double MU, double KAPPA);
+RcppExport SEXP _abmAnimalMovement_vonmises(SEXP NSEXP, SEXP MUSEXP, SEXP KAPPASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
-    Rcpp::traits::input_parameter< double >::type kappa(kappaSEXP);
-    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
-    rcpp_result_gen = Rcpp::wrap(vonmises(N, kappa, mu));
+    Rcpp::traits::input_parameter< double >::type MU(MUSEXP);
+    Rcpp::traits::input_parameter< double >::type KAPPA(KAPPASEXP);
+    rcpp_result_gen = Rcpp::wrap(vonmises(N, MU, KAPPA));
     return rcpp_result_gen;
 END_RCPP
 }

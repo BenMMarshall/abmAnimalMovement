@@ -11,7 +11,7 @@ int sample_test(Rcpp::NumericVector weights){
   int N = weights.size();
   // redefine the inut numericvector as a c++ vector for testing purposes
   std::vector<double> w(N);
-  for(int i = 0; i < N; i++){
+  for(int i = 0; i <= N; i++){
     w[i] = weights[i];
   }
 

@@ -76,6 +76,10 @@ plotBgEnv +
   theme(aspect.ratio = 1)
 
 # Vonmises testing --------------------------------------------------------
+
+vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
+hist(vonOut)
+
 library(abmAnimalMovement)
 library(ggplot2)
 
