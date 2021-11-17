@@ -9,23 +9,22 @@
 int sample_test(Rcpp::NumericVector weights){
 
   int N = weights.size();
-  // std::vector<double> w(N);
+  // redefine the inut numericvector as a c++ vector for testing purposes
+  std::vector<double> w(N);
+  for(int i = 0; i < N; i++){
+    w[i] = weights[i];
+  }
 
   std::vector<int> num_choices(N) ; // vector with N ints.
   std::iota(std::begin(num_choices), std::end(num_choices), 0); // Fill with 0, 1, ..., 99.
 
   int chosen;
-  int size = 1;
-  bool replace = false;
-
-  // converting the vector to a numericVector
-  Rcpp::NumericVector w(N);
-  for(int i = 0; i < N; i++){
-    w[i] = weights[i];
-  }
+  // int size = 1;
+  // bool replace = false;
 
   // ok we need to make sure whatever weighting input is a NumericVector
-  chosen = Rcpp::as<int>(Rcpp::sample(N, size, replace, w));
+  // we can use wrap to convert the vector to a numericVector
+  chosen = Rcpp::as<int>(Rcpp::sample(N, 1, false, Rcpp::wrap(w)));
 
   return chosen;
 }
