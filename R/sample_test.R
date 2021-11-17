@@ -1,13 +1,12 @@
 #' Sample test
 #'
-#' @param vect vector
-#' @param probs probs
+#' @param vect weights
 #' @return chosen
 #'
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-sample_test <- function(vect, probs){
+sample_test <- function(weights){
   .Call("_abmAnimalMovement_sample_test",
-        vect, probs)
+        weights)
 }

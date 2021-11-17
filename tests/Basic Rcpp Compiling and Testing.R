@@ -17,7 +17,7 @@ set.seed(2021)
 
 sampleOut <- NULL
 for(i in 1:1000){
-  sampleOut[i] <- sample_test(1:5, c(0.4, 0.1, 0.1, 0.1, 0.2))
+  sampleOut[i] <- sample_test(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
 }
 hist(sampleOut)
 
@@ -58,14 +58,18 @@ basicRes <- basic_walk(start = c(500,500),
 basicRes
 
 plotBgEnv +
-  geom_point(data = as.data.frame(basicRes$OptionsAll),
-            aes(x = V1, y = V2, colour = V3)) +
-  geom_path(data = as.data.frame(basicRes$Locations),
-            aes(x = V1, y = V2)) +
-  geom_point(data = as.data.frame(basicRes$Locations),
-            aes(x = V1, y = V2)) +
+  geom_point(data = data.frame(x = basicRes$oall_x,
+                               y = basicRes$oall_y,
+                               step = basicRes$oall_step),
+            aes(x = x, y = y, colour = step)) +
+  geom_path(data = data.frame(x = basicRes$loc_x,
+                               y = basicRes$loc_y),
+             aes(x = x, y = y)) +
+  geom_point(data = data.frame(x = basicRes$loc_x,
+                               y = basicRes$loc_y),
+             aes(x = x, y = y)) +
   scale_colour_scico(palette = "buda") +
-  coord_cartesian(xlim = range(basicRes$Locations[,1]), ylim = range(basicRes$Locations[,2])) +
+  coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 

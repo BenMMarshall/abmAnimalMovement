@@ -33,16 +33,15 @@ Rcpp::List walk_options_xy(
   double angle;
   double step;
   int chosen;
-  double xChosen;
-  double yChosen;
 
   int mcols = envMat1.ncol();
   int mrows = envMat1.nrow();
 
-  Rcpp::NumericVector envVal1(nopt);
+  // Rcpp::NumericVector envVal1(nopt);
+  std::vector<double> envVal1(nopt);
 
-  Rcpp::NumericVector choicesVec(nopt);
-  // std::vector<int> choicesVec(nopt);
+  // Rcpp::NumericVector choicesVec(nopt);
+  std::vector<int> choicesVec(nopt);
   // std::iota (std::begin(choicesVec), std::end(choicesVec), 0); // Fill with 0, 1, ..., end.
 
   int xOpt;
@@ -50,42 +49,66 @@ Rcpp::List walk_options_xy(
   int xOptIndex;
   int yOptIndex;
 
-  Rcpp::NumericMatrix optionsMatrix(nopt, 5);
-  Rcpp::NumericMatrix optionsMatrixALL(nopt*steps +1, 3); // one added to include the start loc
-  Rcpp::NumericMatrix locMatrix(steps, 2);
+  // the options stores for the loop
+  // Rcpp::NumericMatrix optionsMatrix(nopt, 5);
+  std::vector<double> x_Options(nopt);
+  std::vector<double> y_Options(nopt);
+  std::vector<int> step_Options(nopt);
+  std::vector<double> enVal1_Options(nopt);
+
+  // store the chose at each step
+  std::vector<int> chosen_Options(steps);
+
+  // the options stores for the output including all options
+  // Rcpp::NumericMatrix optionsMatrixALL(nopt*steps +1, 3); // one added to include the start loc
+  std::vector<double> x_OptionsAll(nopt*steps +1);
+  std::vector<double> y_OptionsAll(nopt*steps +1);
+  std::vector<int> step_OptionsAll(nopt*steps +1);
+
+  //
+  // Rcpp::NumericMatrix locMatrix(steps, 2);
+  std::vector<double> x_Locations(steps);
+  std::vector<double> y_Locations(steps);
+  std::vector<int> step_Locations(steps);
 
   /* initial location is set using the start locations */
-  locMatrix(0,0) = startx;
-  locMatrix(0,1) = starty;
-  optionsMatrixALL(0,0) = startx;
-  optionsMatrixALL(0,1) = starty;
-  optionsMatrixALL(0,2) = 0;
+  x_Locations[0] = startx;
+  y_Locations[0] = starty;
+  x_OptionsAll[0] = startx;
+  y_OptionsAll[0] = starty;
+  step_OptionsAll[0] = 0;
   for(int i = 1, a = 1; i <= n; i++){
     Rcpp::Rcout << "Step : " << i << "\n";
 
     /* for each step set the location as the previously chosen location */
-    optionsMatrix(0,0) = locMatrix(i-1,0);
-    optionsMatrix(0,1) = locMatrix(i-1,1);
-    optionsMatrix(0,3) = i;
+    x_Options[0] = x_Locations[i-1];
+    y_Options[0] = y_Locations[i-1];
+    step_Options[0] = i;
     for(int j = 0; j < nopt; j++, a++){
 
       angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
       step = Rcpp::rgamma(1, normmean, normsd)[0];
-      optionsMatrix(j,0) = optionsMatrix(0,0) + cos(angle) * step;
-      optionsMatrix(j,1) = optionsMatrix(0,1) + sin(angle) * step;
+
+      x_Options[j] = x_Options[0] + cos(angle) * step;
+      y_Options[j] = y_Options[0] + sin(angle) * step;
+
       // add in which step the options are for
-      optionsMatrix(j,3) = i+1;
+      step_Options[j] = i+1;
 
-      optionsMatrixALL(a,0) = optionsMatrix(j,0);
-      optionsMatrixALL(a,1) = optionsMatrix(j,1);
-      optionsMatrixALL(a,2) = i;
+      // a is keeping tracking of the position in a ong vector steps*nopts
+      x_OptionsAll[a] = x_Options[j];
+      y_OptionsAll[a] = y_Options[j];
+      step_OptionsAll[a] = i;
 
+      // choice vector is needed for the sample function later on
       choicesVec[j] = j;
     }
     /* for each of the options, check values in environment and use equation to pick next move */
     for(int k = 0; k < nopt; k++){
-      xOpt = optionsMatrix(k,0);
-      yOpt = optionsMatrix(k,1);
+
+      xOpt = x_Options[k];
+      yOpt = y_Options[k];
+      // rounding the locations to correspond to matrix location
       xOptIndex = floor(xOpt);
       yOptIndex = floor(yOpt);
 
@@ -94,15 +117,16 @@ Rcpp::List walk_options_xy(
         Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
       }
 
+      // still using the numericMatrix Rcpp form here
       envVal1[k] = envMat1(xOptIndex, yOptIndex);
 
       if(Rcpp::NumericVector::is_na(envVal1[k])){
         // printing error message
         Rcpp::Rcerr << "NA in enviornmental data\n";
-        }
+      }
 
       // store it with the options also
-      optionsMatrix(k,4) = envVal1[k];
+      enVal1_Options[k] = envVal1[k];
     }
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
@@ -115,26 +139,37 @@ Rcpp::List walk_options_xy(
     // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
     // optionsMatrix(chosen,2) = 1;
 
-    chosen = Rcpp::as<int>(Rcpp::sample(choicesVec, 1, false, envVal1));
-    /* this is cjust recording the choice in the first possible location of the optionsMatrix,
-    not great would rather store 0 and 1 with the location */
-    optionsMatrix(0,2) = chosen;
-    /* this doesn't seem to work, instead filling an apparent random number of rows with 1 */
-    /* maybe we need to reset the 3 column each time in the loop */
-    // optionsMatrix(chosen,2) = 1;
+    // non Rcpp attempt to randomly sample, there is no weighting of choice however
+    std::srand(std::time(0)); // use current time as seed for random generator
+    int random_pos = std::rand() % choicesVec.size();
+    chosen = choicesVec[random_pos];
 
-    xChosen = optionsMatrix(chosen,0);
-    yChosen = optionsMatrix(chosen,1);
-    locMatrix(i,0) = xChosen;
-    locMatrix(i,1) = yChosen;
+    // chosen = Rcpp::sample(choicesVec, 1, false, envVal1);
+    // add choice to vector of choices, each location == step
+    chosen_Options[i-1] = chosen;
+
+    x_Locations[i] = x_Options[chosen];
+    y_Locations[i] = y_Options[chosen];
+    step_Locations[i] = i;
 
   }
-  Rcpp::List OUTPUT = Rcpp::List::create(Rcpp::Named("Locations") = locMatrix,
-                                         Rcpp::Named("OptionsLast") = optionsMatrix,
-                                         Rcpp::Named("OptionsAll") = optionsMatrixALL,
-                                         Rcpp::Named("ChoiceVec") = choicesVec, // included to check is choice vector is the source of issues
-                                         Rcpp::Named("envValues") = envVal1 // included to check probs used
-                                         );
+  Rcpp::List OUTPUT = Rcpp::List::create(
+    // output the location data
+    Rcpp::Named("loc_x") = x_Locations,
+    Rcpp::Named("loc_y") = y_Locations,
+    Rcpp::Named("loc_step") = step_Locations,
+    // output for all the optionsALL
+    Rcpp::Named("oall_x") = x_OptionsAll,
+    Rcpp::Named("oall_y") = y_OptionsAll,
+    Rcpp::Named("oall_step") = step_OptionsAll,
+    // output for the chosen options at each step
+    Rcpp::Named("chosen") = chosen_Options,
+    // output for the last options just to check
+    Rcpp::Named("ol_x") = x_Options,
+    Rcpp::Named("ol_y") = y_Options,
+    Rcpp::Named("ol_step") = step_Options, // included to check is choice vector is the source of issues
+    Rcpp::Named("ol_enVal1") = enVal1_Options // included to check probs used
+  );
   return OUTPUT;
 
 }

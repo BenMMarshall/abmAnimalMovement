@@ -11,14 +11,13 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // sample_test
-int sample_test(Rcpp::NumericVector vect, Rcpp::NumericVector probs);
-RcppExport SEXP _abmAnimalMovement_sample_test(SEXP vectSEXP, SEXP probsSEXP) {
+int sample_test(Rcpp::NumericVector weights);
+RcppExport SEXP _abmAnimalMovement_sample_test(SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type vect(vectSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type probs(probsSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_test(vect, probs));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weights(weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_test(weights));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -56,7 +55,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_abmAnimalMovement_sample_test", (DL_FUNC) &_abmAnimalMovement_sample_test, 2},
+    {"_abmAnimalMovement_sample_test", (DL_FUNC) &_abmAnimalMovement_sample_test, 1},
     {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},
     {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 9},
     {NULL, NULL, 0}
