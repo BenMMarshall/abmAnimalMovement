@@ -53,8 +53,8 @@ basicRes <- basic_walk(start = c(500,500),
                        options = 10,
                        normmean = 2,
                        normsd = 1,
-                       meanang = 0,
-                       sdang = 180,
+                       mu_angle = 0,
+                       k_angle = 0.05,
                        envMat1 = envMatTest)
 
 basicRes
@@ -77,11 +77,11 @@ plotBgEnv +
 
 # Vonmises testing --------------------------------------------------------
 
-vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
-hist(vonOut)
-
 library(abmAnimalMovement)
 library(ggplot2)
+
+vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
+hist(vonOut)
 
 # mu should vary between 0 and 2*pi for circular stuff
 # https://www.zeileis.org/news/circtree/
@@ -91,8 +91,9 @@ library(ggplot2)
 CircStats::rvm()
 
 ggplot() +
-  geom_density(data = as.data.frame(vmRes), aes(vmRes))
-
+  geom_histogram(data = as.data.frame(vonOut), aes(vonOut),
+                 binwidth = 0.25) +
+  coord_polar()
 
 # Rfast::rvonmises()
 # not sure if that one helps

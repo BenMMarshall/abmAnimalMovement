@@ -1,6 +1,7 @@
 
 #include <Rcpp.h>
 #include <cmath>
+#include "vonmises.h"
 
 //' Basic random walk
 //' @name walk_options_xy
@@ -23,8 +24,8 @@ Rcpp::List walk_options_xy(
     int options,
     double normmean,
     double normsd,
-    double meanang,
-    double sdang,
+    double mu_angle,
+    double k_angle,
     Rcpp::NumericMatrix envMat1
 ){
 
@@ -86,7 +87,8 @@ Rcpp::List walk_options_xy(
     step_Options[0] = i;
     for(int j = 0; j < nopt; j++, a++){
 
-      angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
+      // angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
+      angle = vonmises(1, mu_angle, k_angle)[0] * 180/M_PI;
       step = Rcpp::rgamma(1, normmean, normsd)[0];
 
       x_Options[j] = x_Options[0] + cos(angle) * step;

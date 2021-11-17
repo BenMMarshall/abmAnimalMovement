@@ -39,7 +39,7 @@ vonmises <- function(N, MU, KAPPA) {
 #' @return Matrix of locations chosen
 NULL
 
-walk_options_xy <- function(startx, starty, steps, options, normmean, normsd, meanang, sdang, envMat1) {
-    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, normmean, normsd, meanang, sdang, envMat1)
+walk_options_xy <- function(startx, starty, steps, options, normmean, normsd, mu_angle, k_angle, envMat1) {
+    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, normmean, normsd, mu_angle, k_angle, envMat1)
 }
 
