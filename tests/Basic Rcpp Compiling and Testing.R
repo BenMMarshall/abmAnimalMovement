@@ -80,18 +80,25 @@ plotBgEnv +
 library(abmAnimalMovement)
 library(ggplot2)
 
+set.seed(2021)
+
 vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
 hist(vonOut)
 
+vonResVarying <- do.call(rbind, lapply(seq(0.1, 1, 0.1), function(k){
+  print(k)
+  return(data.frame(kappa = k,
+             draws = vonmises(N = 1000, MU = 0, KAPPA = k)))
+}))
+
 # mu should vary between 0 and 2*pi for circular stuff
 # https://www.zeileis.org/news/circtree/
-# vmRes <- vonmises(1000, 10, 360, 2)
 
-# might be worth adapting to C++
+# soltuion now adapted to C++
 CircStats::rvm()
 
 ggplot() +
-  geom_histogram(data = as.data.frame(vonOut), aes(vonOut),
+  geom_histogram(data = vonResVarying, aes(x = draws, fill = kappa),
                  binwidth = 0.25) +
   coord_polar()
 
