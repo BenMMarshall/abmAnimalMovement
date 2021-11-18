@@ -36,20 +36,23 @@ Rcpp::List walk_options_xy(
   double step;
   int chosen;
 
-  int mcols = envMat1.ncol();
-  int mrows = envMat1.nrow();
-
-  // Rcpp::NumericVector envVal1(nopt);
-  std::vector<double> envVal1(nopt);
+  ////// ENVIRONMENTAL OBJECTS //////
+  // int mcols = envMat1.ncol();
+  // int mrows = envMat1.nrow();
+  //
+  // // Rcpp::NumericVector envVal1(nopt);
+  // std::vector<double> envVal1(nopt);
+  //
+  // int xOpt;
+  // int yOpt;
+  // int yOptIndex;
+  // int xOptIndex;
+  ////////////
 
   // Rcpp::NumericVector choicesVec(nopt);
   std::vector<int> choicesVec(nopt);
   // std::iota (std::begin(choicesVec), std::end(choicesVec), 0); // Fill with 0, 1, ..., end.
 
-  int xOpt;
-  int yOpt;
-  int xOptIndex;
-  int yOptIndex;
 
   // the options stores for the loop
   // Rcpp::NumericMatrix optionsMatrix(nopt, 5);
@@ -96,7 +99,7 @@ Rcpp::List walk_options_xy(
       y_Options[j] = y_Options[0] + sin(angle) * step;
 
       // add in which step the options are for
-      step_Options[j] = i+1;
+      step_Options[j] = i;
 
       // a is keeping tracking of the position in a ong vector steps*nopts
       x_OptionsAll[a] = x_Options[j];
@@ -106,31 +109,34 @@ Rcpp::List walk_options_xy(
       // choice vector is needed for the sample function later on
       choicesVec[j] = j;
     }
+
+    ////// ENVIRONMENTAL CHECK LOOP //////
     /* for each of the options, check values in environment and use equation to pick next move */
-    for(int k = 0; k < nopt; k++){
-
-      xOpt = x_Options[k];
-      yOpt = y_Options[k];
-      // rounding the locations to correspond to matrix location
-      xOptIndex = floor(xOpt);
-      yOptIndex = floor(yOpt);
-
-      // end function if animal leaves environmental data area
-      if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
-        Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-      }
-
-      // still using the numericMatrix Rcpp form here
-      envVal1[k] = envMat1(xOptIndex, yOptIndex);
-
-      if(Rcpp::NumericVector::is_na(envVal1[k])){
-        // printing error message
-        Rcpp::Rcerr << "NA in enviornmental data\n";
-      }
-
-      // store it with the options also
-      enVal1_Options[k] = envVal1[k];
-    }
+    // for(int k = 0; k < nopt; k++){
+    //
+    //   xOpt = x_Options[k];
+    //   yOpt = y_Options[k];
+    //   // rounding the locations to correspond to matrix location
+    //   xOptIndex = floor(xOpt);
+    //   yOptIndex = floor(yOpt);
+    //
+    //   // end function if animal leaves environmental data area
+    //   if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
+    //     Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+    //   }
+    //
+    //   // still using the numericMatrix Rcpp form here
+    //   envVal1[k] = envMat1(xOptIndex, yOptIndex);
+    //
+    //   if(Rcpp::NumericVector::is_na(envVal1[k])){
+    //     // printing error message
+    //     Rcpp::Rcerr << "NA in enviornmental data\n";
+    //   }
+    //
+    //   // store it with the options also
+    //   enVal1_Options[k] = envVal1[k];
+    // }
+    //////
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, envVal1) */
@@ -147,6 +153,9 @@ Rcpp::List walk_options_xy(
     // int random_pos = std::rand() % choicesVec.size();
     // chosen = choicesVec[random_pos];
 
+
+    /* this is the ideal solution with a wrapping function to modify the
+    input/output of the Rcpp::sample function... I think */
     // chosen = sample_options(Rcpp::wrap(envVal1));
 
     // chosen = Rcpp::sample(choicesVec, 1, false, envVal1);
@@ -172,8 +181,8 @@ Rcpp::List walk_options_xy(
     // output for the last options just to check
     Rcpp::Named("ol_x") = x_Options,
     Rcpp::Named("ol_y") = y_Options,
-    Rcpp::Named("ol_step") = step_Options, // included to check is choice vector is the source of issues
-    Rcpp::Named("ol_enVal1") = enVal1_Options // included to check probs used
+    // Rcpp::Named("ol_enVal1") = enVal1_Options, // included to check probs used
+    Rcpp::Named("ol_step") = step_Options // included to check is choice vector is the source of issues
   );
   return OUTPUT;
 
