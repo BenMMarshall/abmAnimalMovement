@@ -85,9 +85,9 @@ set.seed(2021)
 vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
 hist(vonOut)
 
-vonResVarying <- do.call(rbind, lapply(seq(0.1, 1, 0.1), function(k){
+vonResVarying <- do.call(rbind, lapply(seq(0.01, 0.8, 0.05), function(k){
   print(k)
-  return(data.frame(kappa = k,
+  return(data.frame(kappa = paste("KAPPA =", k),
              draws = vonmises(N = 1000, MU = 0, KAPPA = k)))
 }))
 
@@ -95,15 +95,26 @@ vonResVarying <- do.call(rbind, lapply(seq(0.1, 1, 0.1), function(k){
 # https://www.zeileis.org/news/circtree/
 
 # soltuion now adapted to C++
-CircStats::rvm()
+# CircStats::rvm()
 
+# \u03c0 is unicode for pi
+## display the varying levels of angle concentration.
 ggplot() +
-  geom_histogram(data = vonResVarying, aes(x = draws, fill = kappa),
+  geom_histogram(data = vonResVarying, aes(x = draws, fill = as.factor(kappa)),
                  binwidth = 0.25) +
-  coord_polar()
-
-# Rfast::rvonmises()
-# not sure if that one helps
+  scale_x_continuous(breaks = c(-pi, -pi/2, 0, pi/2, pi),
+                     labels = c("-\u03c0", "-\u03c0/2", "0", "\u03c0/2", "\u03c0"),
+                     # limits = c(-pi, pi), # implementing pi limits cuts of a few points, might be an approximation issue.
+                     # might be a source of issues in the random walk, might need a redraw if those limits are exceeded. Not sure
+                     # if it'd break something in the walk. Could implement check for safety.
+                     expand = c(0,0)
+                     ) +
+  coord_polar() +
+  theme_void() +
+  theme(axis.text.x = element_text(),
+        strip.text = element_text(face = 4, hjust = 0),
+        panel.grid.major.x = element_line(colour = "grey15")) +
+  facet_wrap(.~kappa)
 
 # Using Rcpp to call and compile Cpp function directly --------------------
 
