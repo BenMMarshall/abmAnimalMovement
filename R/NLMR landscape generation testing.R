@@ -1,8 +1,9 @@
 
 # install.packages("NLMR")
+# install.packages("landscapetools")
 
-library(NLMR)
-library(raster)
+# library(NLMR)
+# library(raster)
 
 ## examples pulled from https://ropensci.github.io/NLMR/articles/getstarted.html
 
@@ -15,7 +16,7 @@ sL2 <- NLMR::nlm_random(ncol = 100,
 
 mL1 <- sL1 + sL2
 
-plot(mL1)
+raster::plot(mL1)
 
 # classified landscape example
 
@@ -23,4 +24,49 @@ nr <- NLMR::nlm_fbm(50, 100, fract_dim = 1.2)
 
 nr_classified <- landscapetools::util_classify(nr, weighting = c(0.3, 0.3, 0.3))
 
-plot(nr_classified)
+raster::plot(nr_classified)
+
+# Generating suitable testing landscapes ----------------------------------
+
+## GRADIENT with noise ##
+
+envGrad <- NLMR::nlm_distancegradient(ncol = 1000,
+                                      nrow = 1000,
+                                      origin = c(1, 1000, 1, 1)) # origin deals with where the gradient moves from
+
+envNoise <- NLMR::nlm_random(ncol = 1000,
+                             nrow = 1000)
+
+# scaling factor will weight the impact of the second layer
+envGradTest <- landscapetools::util_merge(envGrad, envNoise, scalingfactor = 0.5)
+
+raster::plot(envGradTest)
+
+## adequate way of converting the raster to a matrix for the walk function?
+envGradMat <- matrix(data = raster::getValues(envGradTest),
+       nrow = 1000,
+       ncol = 1000)
+
+longEnvMat <- reshape2::melt(envGradMat, c("col", "row"))
+
+library(ggplot2)
+
+ggplot() +
+  geom_raster(data = longEnvMat, aes(x = col, y = row, fill = value))
+
+## CLASSIFIED ##
+
+clusterHabs <- NLMR::nlm_gaussianfield(ncol = 1000,
+                                       nrow = 1000,
+                                       autocorr_range = 50,
+                                       mag_var = 5,
+                                       nug = 0.2,
+                                       mean = 0.5,
+                                       user_seed = 2021)
+
+raster::plot(clusterHabs)
+
+### DONT RUN REQUIRES TOO MUCH RAM?????
+# classHab <- landscapetools::util_classify(clusterHabs, n = 3)
+
+# raster::plot(classHabs)
