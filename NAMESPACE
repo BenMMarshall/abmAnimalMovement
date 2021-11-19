@@ -2,6 +2,7 @@
 
 export(basic_walk)
 export(make_shades)
-export(sample_test)
+export(sample_options)
+export(vonmises)
 importFrom(Rcpp,sourceCpp)
 useDynLib(abmAnimalMovement)
