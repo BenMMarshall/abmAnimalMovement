@@ -13,6 +13,9 @@ library(scico)
 
 set.seed(2021)
 
+find_max(vect = c(4,6,5,4,5,4,32,2,4,4,6,1,7,73,3,2,23,54))
+# so this works, remember that the index should be one lower cos Cpp starts at zero
+
 # Sampling sub-function testing -------------------------------------------
 
 sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
