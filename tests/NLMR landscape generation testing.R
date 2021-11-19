@@ -83,16 +83,3 @@ longClassHabsMat <- reshape2::melt(classHabsMat, c("col", "row"))
 
 ggplot() +
   geom_raster(data = longClassHabsMat, aes(x = col, y = row, fill = value))
-
-## We do need a solution for people who may only be able to supply low res
-## landscapes, we either need to rescale them (but that may be too memory
-## intensive for large lanscapes) or fix the rounding in the step lengths and
-## how they connect to cell calls. See below (latter options is likely more
-## work, but more flexible, preferable).
-
-# To address a mismatch between raster res and step length we'd need to divide
-# the step lengths by the size of raster cell (e.g., 100 to convert a 100 by 100
-# cell to 1 m by 1 m: ie the same res as the steps) and then floor round to geet
-# the matrix/cell value. This should work, but will need an inout for the res of
-# cells in environmental layers. Would be easier to enforce the layers to all be
-# the same res.
