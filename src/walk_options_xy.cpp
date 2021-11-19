@@ -39,18 +39,18 @@ Rcpp::List walk_options_xy(
   // a means of converting NumVec to std::vec
   double vmdraw;
 
-  ////// ENVIRONMENTAL OBJECTS //////
-  // int mcols = envMat1.ncol();
-  // int mrows = envMat1.nrow();
-  //
-  // // Rcpp::NumericVector envVal1(nopt);
+  //// ENVIRONMENTAL OBJECTS //////
+  int mcols = envMat1.ncol();
+  int mrows = envMat1.nrow();
+
+  // Rcpp::NumericVector envVal1(nopt);
   // std::vector<double> envVal1(nopt);
-  //
-  // int xOpt;
-  // int yOpt;
-  // int yOptIndex;
-  // int xOptIndex;
-  ////////////
+
+  int xOpt;
+  int yOpt;
+  int yOptIndex;
+  int xOptIndex;
+  //////////
 
   // Rcpp::NumericVector choicesVec(nopt);
   std::vector<int> choicesVec(nopt);
@@ -92,7 +92,7 @@ Rcpp::List walk_options_xy(
     x_Options[0] = x_Locations[i-1];
     y_Options[0] = y_Locations[i-1];
     step_Options[0] = i;
-    for(int j = 0; j < nopt; j++, a++){
+    for(int j = 1; j <= nopt; j++, a++){
 
       // angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
 
@@ -119,43 +119,43 @@ Rcpp::List walk_options_xy(
 
     ////// ENVIRONMENTAL CHECK LOOP //////
     /* for each of the options, check values in environment and use equation to pick next move */
-    // for(int k = 0; k < nopt; k++){
-    //
-    //   xOpt = x_Options[k];
-    //   yOpt = y_Options[k];
-    //   // rounding the locations to correspond to matrix location
-    //   xOptIndex = floor(xOpt);
-    //   yOptIndex = floor(yOpt);
-    //
-    //   // end function if animal leaves environmental data area
-    //   if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
-    //     Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-    //   }
-    //
-    //   // still using the numericMatrix Rcpp form here
-    //   envVal1[k] = envMat1(xOptIndex, yOptIndex);
-    //
-    //   if(Rcpp::NumericVector::is_na(envVal1[k])){
-    //     // printing error message
-    //     Rcpp::Rcerr << "NA in enviornmental data\n";
-    //   }
-    //
-    //   // store it with the options also
-    //   enVal1_Options[k] = envVal1[k];
-    // }
+    for(int k = 0; k < nopt; k++){
+
+      xOpt = x_Options[k];
+      yOpt = y_Options[k];
+      // rounding the locations to correspond to matrix location
+      xOptIndex = floor(xOpt);
+      yOptIndex = floor(yOpt);
+
+      // end function if animal leaves environmental data area
+      if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
+        Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+      }
+
+      // still using the numericMatrix Rcpp form here
+      enVal1_Options[k] = envMat1(xOptIndex, yOptIndex);
+
+      if(std::isnan(enVal1_Options[k])){
+        // printing error message
+        Rcpp::Rcerr << "NA in enviornmental data\n";
+      }
+
+    }
     //////
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
-     Rcpp::sample(choicesVec, 1, false, envVal1) */
+     Rcpp::sample(choicesVec, 1, false, enVal1_Options) */
     // for now we will just use the maximum value is chosen for testing purposes
-    // chosen = Rcpp::which_max(envVal1);
+    // chosen = Rcpp::which_max(enVal1_Options);
     // optionsMatrix(chosen,2) = 1;
 
     // old uniform choice doesn't use any environmental input and can pick multiple new locations
-    chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
+    // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
 
-    // for testing, pick the first options always
-    // chosen = 0;
+    // for testing, pick the first options always, should mean the animal never moves
+    chosen = 0;
+    // moves every time
+    chosen = 1;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator
@@ -165,9 +165,9 @@ Rcpp::List walk_options_xy(
 
     /* this is the ideal solution with a wrapping function to modify the
     input/output of the Rcpp::sample function... I think */
-    // chosen = sample_options(Rcpp::wrap(envVal1));
+    // chosen = sample_options(Rcpp::wrap(enVal1_Options));
 
-    // chosen = Rcpp::sample(choicesVec, 1, false, envVal1);
+    // chosen = Rcpp::sample(choicesVec, 1, false, enVal1_Options);
     // add choice to vector of choices, each location == step
     chosen_Options[i-1] = chosen;
 
@@ -190,7 +190,7 @@ Rcpp::List walk_options_xy(
     // output for the last options just to check
     Rcpp::Named("ol_x") = x_Options,
     Rcpp::Named("ol_y") = y_Options,
-    // Rcpp::Named("ol_enVal1") = enVal1_Options, // included to check probs used
+    Rcpp::Named("ol_enVal1") = enVal1_Options, // included to check probs used
     Rcpp::Named("ol_step") = step_Options // included to check is choice vector is the source of issues
   );
   return OUTPUT;

@@ -122,6 +122,23 @@ ggplot() +
         panel.grid.major.x = element_line(colour = "grey15")) +
   facet_wrap(.~kappa)
 
+
+# Testing matrix conversion and back --------------------------------------
+
+row <- 1000; col <- 1000
+# random matrix
+envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
+# split matrix, animal should remain more often in one side
+# chaning something so we can spot if mistakes are made
+envMatTest[1:250, 1:250] <- 1
+
+
+colnames(envMatTest) <- 1:col
+rownames(envMatTest) <- 1:row
+
+matrix_combine(envMatTest)
+
+
 # Using Rcpp to call and compile Cpp function directly --------------------
 
 ####
