@@ -23,8 +23,8 @@ Rcpp::List walk_options_xy(
     double starty,
     int steps,
     int options,
-    double normmean,
-    double normsd,
+    double k_step,
+    double s_step,
     double mu_angle,
     double k_angle,
     Rcpp::NumericMatrix envMat1
@@ -35,6 +35,9 @@ Rcpp::List walk_options_xy(
   double angle;
   double step;
   int chosen;
+
+  // a means of converting NumVec to std::vec
+  double vmdraw;
 
   ////// ENVIRONMENTAL OBJECTS //////
   // int mcols = envMat1.ncol();
@@ -83,7 +86,7 @@ Rcpp::List walk_options_xy(
   y_OptionsAll[0] = starty;
   step_OptionsAll[0] = 0;
   for(int i = 1, a = 1; i <= n; i++){
-    Rcpp::Rcout << "Step : " << i << "\n";
+    Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
     /* for each step set the location as the previously chosen location */
     x_Options[0] = x_Locations[i-1];
@@ -92,8 +95,12 @@ Rcpp::List walk_options_xy(
     for(int j = 0; j < nopt; j++, a++){
 
       // angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
-      angle = vonmises(1, mu_angle, k_angle)[0] * 180/M_PI;
-      step = Rcpp::rgamma(1, normmean, normsd)[0];
+
+      vmdraw = vonmises(1, mu_angle, k_angle)[0];
+      angle = vmdraw * 180/M_PI;
+      step = Rcpp::rgamma(1, k_step, s_step)[0];
+
+      Rcpp::Rcout << "StepLength: " << step << "; " << "Angle: " << angle << "\n";
 
       x_Options[j] = x_Options[0] + cos(angle) * step;
       y_Options[j] = y_Options[0] + sin(angle) * step;
@@ -145,8 +152,10 @@ Rcpp::List walk_options_xy(
     // optionsMatrix(chosen,2) = 1;
 
     // old uniform choice doesn't use any environmental input and can pick multiple new locations
-    chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
-    // optionsMatrix(chosen,2) = 1;
+    // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
+
+    // for testing, pick the first options always
+    chosen = 0;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator

@@ -4,8 +4,8 @@
 #' @param start The x and y coords of the starting location
 #' @param steps The number of steps to be simulated
 #' @param options The number of options to be considered at each step
-#' @param normmean Parameter describing step length
-#' @param normsd Parameter describing step angle
+#' @param k_step Parameter describing step length
+#' @param s_step Parameter describing step length
 #' @param meanang Parameter describing angle
 #' @param sdang Parameter describing angle variation
 #' @param envMat1 Environmental matrix 1
@@ -14,7 +14,7 @@
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-basic_walk <- function(start, steps, options, normmean, normsd, mu_angle,
+basic_walk <- function(start, steps, options, k_step, s_step, mu_angle,
                        k_angle, envMat1){
   # split the vector of start location x and y
   startxIN <- start[1]
@@ -26,8 +26,8 @@ basic_walk <- function(start, steps, options, normmean, normsd, mu_angle,
     starty = startyIN,
     steps = steps,
     options = options,
-    normmean = normmean,
-    normsd = normsd,
+    k_step = k_step,
+    s_step = s_step,
     mu_angle = mu_angle,
     k_angle = k_angle,
     envMat1 = envMat1
@@ -42,10 +42,10 @@ basic_walk <- function(start, steps, options, normmean, normsd, mu_angle,
   return(res)
 }
 
-cpp_run_basic_walk <- function(startx, starty, steps, options, normmean, normsd, mu_angle, k_angle,
+cpp_run_basic_walk <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
                                envMat1){
   .Call("_abmAnimalMovement_walk_options_xy",
-        startx, starty, steps, options, normmean, normsd, mu_angle, k_angle,
+        startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
         envMat1)
 }
 

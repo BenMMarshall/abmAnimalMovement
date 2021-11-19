@@ -37,6 +37,7 @@ Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
     c = k * (r - f);
     U2 = Rcpp::runif(1, 0, 1)[0];
     if (c * (2 - c) - U2 > 0) {
+
       U3 = Rcpp::runif(1, 0, 1)[0];
 
       // sign function wasn't working, alt long form fix
@@ -52,6 +53,7 @@ Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
       OUTPUT[obs] = std::fmod(val, (2 * M_PI));
 
     } else if ( std::log(c/U2) + 1 - c >= 0) {
+
       U3 = Rcpp::runif(1, 0, 1)[0];
 
       if ((U3 - 0.5) > 0) {

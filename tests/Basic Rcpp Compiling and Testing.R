@@ -25,7 +25,6 @@ hist(sampleOut)
 
 # Matrix BG creation ------------------------------------------------------
 
-
 # ?basic_walk()
 row <- 1000; col <- 1000
 # random matrix
@@ -51,8 +50,8 @@ head(longMatData)
 basicRes <- basic_walk(start = c(500,500),
                        steps = 100,
                        options = 10,
-                       normmean = 2,
-                       normsd = 1,
+                       k_step = 4,
+                       s_step = 1,
                        mu_angle = 0,
                        k_angle = 0.05,
                        envMat1 = envMatTest)
@@ -94,6 +93,9 @@ vonResVarying <- do.call(rbind, lapply(
                       draws = vonmises(N = 1000, MU = 0, KAPPA = k)))
   }))
 
+sum(vonResVarying$draws > pi)
+sum(vonResVarying$draws < -pi)
+
 # mu should vary between 0 and 2*pi for circular stuff
 # https://www.zeileis.org/news/circtree/
 
@@ -107,9 +109,10 @@ ggplot() +
                  binwidth = 0.25) +
   scale_x_continuous(breaks = c(-pi, -pi/2, 0, pi/2, pi),
                      labels = c("-\u03c0", "-\u03c0/2", "0", "\u03c0/2", "\u03c0"),
-                     # limits = c(-pi, pi), # implementing pi limits cuts of a few points, might be an approximation issue.
+                     limits = c(-pi, pi), # implementing pi limits cuts of a few points, might be an approximation issue.
                      # might be a source of issues in the random walk, might need a redraw if those limits are exceeded. Not sure
                      # if it'd break something in the walk. Could implement check for safety.
+                     # Seems to be an approximation issue with ggplot, as checking for values >pi | <-pi return zero results
                      expand = c(0,0)
                      ) +
   coord_polar() +
