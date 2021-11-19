@@ -152,10 +152,10 @@ Rcpp::List walk_options_xy(
     // optionsMatrix(chosen,2) = 1;
 
     // old uniform choice doesn't use any environmental input and can pick multiple new locations
-    // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
+    chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
 
     // for testing, pick the first options always
-    chosen = 0;
+    // chosen = 0;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator
