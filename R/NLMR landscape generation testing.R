@@ -56,9 +56,9 @@ ggplot() +
 
 ## CLASSIFIED ##
 
-clusterHabs <- NLMR::nlm_gaussianfield(ncol = 1000,
-                                       nrow = 1000,
-                                       autocorr_range = 50,
+clusterHabs <- NLMR::nlm_gaussianfield(ncol = 100,
+                                       nrow = 100,
+                                       autocorr_range = 20,
                                        mag_var = 5,
                                        nug = 0.2,
                                        mean = 0.5,
@@ -67,6 +67,19 @@ clusterHabs <- NLMR::nlm_gaussianfield(ncol = 1000,
 raster::plot(clusterHabs)
 
 ### DONT RUN REQUIRES TOO MUCH RAM?????
-# classHab <- landscapetools::util_classify(clusterHabs, n = 3)
+classHabs <- landscapetools::util_classify(clusterHabs, n = 3)
 
-# raster::plot(classHabs)
+raster::plot(classHabs)
+
+classHabs1000 <- raster::disaggregate(classHabs, fact = 10)
+
+raster::plot(classHabs1000)
+
+classHabsMat <- matrix(data = raster::getValues(classHabs1000),
+                        nrow = 1000,
+                        ncol = 1000)
+
+longClassHabsMat <- reshape2::melt(classHabsMat, c("col", "row"))
+
+ggplot() +
+  geom_raster(data = longClassHabsMat, aes(x = col, y = row, fill = value))
