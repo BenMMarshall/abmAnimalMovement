@@ -46,21 +46,21 @@ Rcpp::List walk_options_xy(
   // std::iota (std::begin(choicesVec), std::end(choicesVec), 0); // Fill with 0, 1, ..., end.
 
   //// ENVIRONMENTAL OBJECTS //////
-  // int mcols = envMat1.ncol();
-  // int mrows = envMat1.nrow();
+  int mcols = envMat1.ncol();
+  int mrows = envMat1.nrow();
   //////////
-  // int xOpt;
-  // int yOpt;
-  // int yOptIndex;
-  // int xOptIndex;
+  int xOpt;
+  int yOpt;
+  int yOptIndex;
+  int xOptIndex;
   // the options stores for the loop
   // Rcpp::NumericMatrix optionsMatrix(nopt, 5);
   std::vector<double> x_Options(nopt);
   std::vector<double> y_Options(nopt);
   std::vector<int> step_Options(nopt);
-  // std::vector<double> enVal1_Options(nopt);
+  std::vector<double> enVal1_Options(nopt);
   // needed for the chosing of option
-  // double min = 0, curr;
+  double min, curr;
   int chosen;
 
   // store the chose at each step
@@ -118,38 +118,39 @@ Rcpp::List walk_options_xy(
 
     ////// ENVIRONMENTAL CHECK LOOP //////
     /* for each of the options, check values in environment and use equation to pick next move */
-    // for(int k = 0; k < nopt; k++){
-    //
-    //   xOpt = x_Options[k];
-    //   yOpt = y_Options[k];
-    //   // rounding the locations to correspond to matrix location
-    //   xOptIndex = floor(xOpt);
-    //   yOptIndex = floor(yOpt);
-    //
-    //   // end function if animal leaves environmental data area
-    //   if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
-    //     Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-    //   }
-    //
-    //   // still using the numericMatrix Rcpp form here
-    //   enVal1_Options[k] = envMat1(xOptIndex, yOptIndex);
-    //
-    //   if(std::isnan(enVal1_Options[k])){
-    //     // printing error message
-    //     Rcpp::Rcerr << "NA in enviornmental data\n";
-    //   }
-    //
-    // }
-    //////
+    for(int k = 0; k < nopt; k++){
 
+      xOpt = x_Options[k];
+      yOpt = y_Options[k];
+      // rounding the locations to correspond to matrix location
+      xOptIndex = std::floor(xOpt);
+      yOptIndex = std::floor(yOpt);
+
+      // end function if animal leaves environmental data area
+      if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
+        Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+      }
+
+      // still using the numericMatrix Rcpp form here
+      enVal1_Options[k] = envMat1(xOptIndex, yOptIndex);
+
+      if(std::isnan(enVal1_Options[k])){
+        // printing error message
+        Rcpp::Rcerr << "NA in enviornmental data\n";
+      }
+
+    }
+    //////
+    min = 0;
     // finding the highest value and getting the index
-    // for(int l = 0; l < nopt; l++){
-    //   curr = enVal1_Options[l];
-    //   if(curr > min){
-    //     min = curr;
-    //     chosen = l;
-    //   }
-    // }
+    // does mean that the animal will locate best spot and remain there
+    for(int l = 0; l < nopt; l++){
+      curr = enVal1_Options[l];
+      if(curr > min){
+        min = curr;
+        chosen = l;
+      }
+    }
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, enVal1_Options) */
@@ -164,7 +165,7 @@ Rcpp::List walk_options_xy(
     // chosen = 0;
     // moves every time
     // chosen = 1;
-    chosen = 2;
+    // chosen = 2;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator
@@ -200,7 +201,7 @@ Rcpp::List walk_options_xy(
     // output for the last options just to check
     Rcpp::Named("ol_x") = x_Options,
     Rcpp::Named("ol_y") = y_Options,
-    // Rcpp::Named("ol_enVal1") = enVal1_Options, // included to check probs used
+    Rcpp::Named("ol_enVal1") = enVal1_Options, // included to check probs used
     Rcpp::Named("ol_step") = step_Options // included to check is choice vector is the source of issues
   );
   return OUTPUT;

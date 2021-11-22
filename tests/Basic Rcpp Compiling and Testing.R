@@ -13,8 +13,11 @@ library(scico)
 
 set.seed(2021)
 
-find_max(vect = c(4,6,5,4,5,4,32,2,4,4,6,1,7,73,3,2,23,54))
 # so this works, remember that the index should be one lower cos Cpp starts at zero
+find_max(vect = c(4,6,5))
+find_max(vect = c(4,6,5,10))
+find_max(vect = 0:5)
+find_max(vect = c(4,6,5,4,5,4,32,2,4,4,6,1,7,73,3,2,23,54))
 
 # Sampling sub-function testing -------------------------------------------
 
@@ -93,7 +96,7 @@ vonResVarying <- do.call(rbind, lapply(
     print(k)
     return(data.frame(kappa = paste("KAPPA =",
                                     format(k, nsmall = 2)), # format forces the zeroes to remain
-                      draws = vonmises(N = 1000, MU = 0, KAPPA = k)))
+                      draws = vonmises(N = 2000, MU = 0, KAPPA = k)))
   }))
 
 sum(vonResVarying$draws > pi)
