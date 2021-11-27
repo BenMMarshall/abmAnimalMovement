@@ -10,6 +10,17 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// find_max
+int find_max(Rcpp::NumericVector vect);
+RcppExport SEXP _abmAnimalMovement_find_max(SEXP vectSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type vect(vectSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_max(vect));
+    return rcpp_result_gen;
+END_RCPP
+}
 // sample_options
 int sample_options(Rcpp::NumericVector weights);
 RcppExport SEXP _abmAnimalMovement_sample_options(SEXP weightsSEXP) {
@@ -55,6 +66,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_abmAnimalMovement_find_max", (DL_FUNC) &_abmAnimalMovement_find_max, 1},
     {"_abmAnimalMovement_sample_options", (DL_FUNC) &_abmAnimalMovement_sample_options, 1},
     {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},
     {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 9},

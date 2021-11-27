@@ -13,6 +13,12 @@ library(scico)
 
 set.seed(2021)
 
+# so this works, remember that the index should be one lower cos Cpp starts at zero
+find_max(vect = c(4,6,5))
+find_max(vect = c(4,6,5,10))
+find_max(vect = 0:5)
+find_max(vect = c(4,6,5,4,5,4,32,2,4,4,6,1,7,73,3,2,23,54))
+
 # Sampling sub-function testing -------------------------------------------
 
 sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
@@ -90,7 +96,7 @@ vonResVarying <- do.call(rbind, lapply(
     print(k)
     return(data.frame(kappa = paste("KAPPA =",
                                     format(k, nsmall = 2)), # format forces the zeroes to remain
-                      draws = vonmises(N = 1000, MU = 0, KAPPA = k)))
+                      draws = vonmises(N = 2000, MU = 0, KAPPA = k)))
   }))
 
 sum(vonResVarying$draws > pi)
@@ -121,6 +127,23 @@ ggplot() +
         strip.text = element_text(face = 4, hjust = 0),
         panel.grid.major.x = element_line(colour = "grey15")) +
   facet_wrap(.~kappa)
+
+
+# Testing matrix conversion and back --------------------------------------
+
+row <- 1000; col <- 1000
+# random matrix
+envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
+# split matrix, animal should remain more often in one side
+# chaning something so we can spot if mistakes are made
+envMatTest[1:250, 1:250] <- 1
+
+
+colnames(envMatTest) <- 1:col
+rownames(envMatTest) <- 1:row
+
+matrix_combine(envMatTest)
+
 
 # Using Rcpp to call and compile Cpp function directly --------------------
 
