@@ -60,17 +60,18 @@ Rcpp::List walk_options_xy(
   std::vector<int> step_Options(nopt);
   std::vector<double> enVal1_Options(nopt);
   // needed for the chosing of option
-  double min, curr;
+  // double min, curr;
+
   int chosen;
 
   // store the chose at each step
   std::vector<int> chosen_Options(steps);
 
   // the options stores for the output including all options
-  // Rcpp::NumericMatrix optionsMatrixALL(nopt*steps +1, 3); // one added to include the start loc
-  std::vector<double> x_OptionsAll(nopt*steps +1);
-  std::vector<double> y_OptionsAll(nopt*steps +1);
-  std::vector<int> step_OptionsAll(nopt*steps +1);
+  // Rcpp::NumericMatrix optionsMatrixALL(nopt*steps +1, 3);
+  std::vector<double> x_OptionsAll(nopt*steps);
+  std::vector<double> y_OptionsAll(nopt*steps);
+  std::vector<int> step_OptionsAll(nopt*steps);
 
   //
   // Rcpp::NumericMatrix locMatrix(steps, 2);
@@ -84,36 +85,35 @@ Rcpp::List walk_options_xy(
   x_OptionsAll[0] = startx;
   y_OptionsAll[0] = starty;
   step_OptionsAll[0] = 0;
-  for(int i = 1, a = 1; i <= n; i++){
+  for(int i = 1, a = 1; i < n; i++){
     Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
     /* for each step set the location as the previously chosen location */
     x_Options[0] = x_Locations[i-1];
     y_Options[0] = y_Locations[i-1];
     step_Options[0] = i;
-    for(int j = 1; j <= nopt; j++, a++){
+    for(int j = 1; j < nopt; j++, a++){
 
-      // angle = Rcpp::rnorm(1, meanang, sdang)[0] * PI / 180.0;
+        vmdraw = vonmises(1, mu_angle, k_angle)[0];
+        angle = vmdraw * 180/M_PI;
+        step = Rcpp::rgamma(1, k_step, s_step)[0];
 
-      vmdraw = vonmises(1, mu_angle, k_angle)[0];
-      angle = vmdraw * 180/M_PI;
-      step = Rcpp::rgamma(1, k_step, s_step)[0];
+        Rcpp::Rcout << "StepLength: " << step << "; " << "Angle: " << angle << "\n";
 
-      Rcpp::Rcout << "StepLength: " << step << "; " << "Angle: " << angle << "\n";
+        x_Options[j] = x_Options[0] + cos(angle) * step;
+        y_Options[j] = y_Options[0] + sin(angle) * step;
 
-      x_Options[j] = x_Options[0] + cos(angle) * step;
-      y_Options[j] = y_Options[0] + sin(angle) * step;
+        // add in which step the options are for
+        step_Options[j] = i;
 
-      // add in which step the options are for
-      step_Options[j] = i;
+        // a is keeping tracking of the position in a ong vector steps*nopts
+        x_OptionsAll[a] = x_Options[j];
+        y_OptionsAll[a] = y_Options[j];
+        step_OptionsAll[a] = i;
 
-      // a is keeping tracking of the position in a ong vector steps*nopts
-      x_OptionsAll[a] = x_Options[j];
-      y_OptionsAll[a] = y_Options[j];
-      step_OptionsAll[a] = i;
+        // choice vector is needed for the sample function later on
+        // choicesVec[j] = j;
 
-      // choice vector is needed for the sample function later on
-      // choicesVec[j] = j;
     }
 
     ////// ENVIRONMENTAL CHECK LOOP //////
@@ -141,22 +141,22 @@ Rcpp::List walk_options_xy(
 
     }
     //////
-    min = 0;
+    // min = 0;
     // finding the highest value and getting the index
     // does mean that the animal will locate best spot and remain there
-    for(int l = 0; l < nopt; l++){
-      curr = enVal1_Options[l];
-      if(curr > min){
-        min = curr;
-        chosen = l;
-      }
-    }
+    // for(int l = 0; l < nopt; l++){
+    //   curr = enVal1_Options[l];
+    //   if(curr > min){
+    //     min = curr;
+    //     chosen = l;
+    //   }
+    // }
+    /* this is the ideal solution with a wrapping function to modify the
+     input/output of the Rcpp::sample function... I think */
+    // chosen = sample_options(Rcpp::wrap(enVal1_Options));
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, enVal1_Options) */
-    // for now we will just use the maximum value is chosen for testing purposes
-    // chosen = Rcpp::which_max(enVal1_Options);
-    // optionsMatrix(chosen,2) = 1;
 
     // old uniform choice doesn't use any environmental input and can pick multiple new locations
     // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
@@ -165,7 +165,7 @@ Rcpp::List walk_options_xy(
     // chosen = 0;
     // moves every time
     // chosen = 1;
-    // chosen = 2;
+    chosen = 2;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator
@@ -173,14 +173,11 @@ Rcpp::List walk_options_xy(
     // chosen = choicesVec[random_pos];
 
 
-    /* this is the ideal solution with a wrapping function to modify the
-     input/output of the Rcpp::sample function... I think */
-    // chosen = sample_options(Rcpp::wrap(enVal1_Options));
 
     // chosen = Rcpp::sample(choicesVec, 1, false, enVal1_Options);
     // add choice to vector of choices, each location == step
     // -1 is there because initial cycle starts at 1
-    chosen_Options[i-1] = chosen;
+    chosen_Options[i] = chosen;
 
     x_Locations[i] = x_Options[chosen];
     y_Locations[i] = y_Options[chosen];

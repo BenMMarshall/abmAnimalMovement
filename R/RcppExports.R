@@ -12,6 +12,9 @@ find_max <- function(vect) {
 }
 
 #' sample_options
+#' possible alternatives
+#' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
+#' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
 #' @name sample_options
 #' @param weights probs
 #' @return Matrix of locations chosen
