@@ -1,2 +1,2 @@
 
-int sample_options(Rcpp::NumericVector weights);
+int sample_options(Rcpp::NumericVector W);

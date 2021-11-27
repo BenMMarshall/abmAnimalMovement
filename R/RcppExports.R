@@ -12,16 +12,16 @@ find_max <- function(vect) {
 }
 
 #' sample_options
+#' pow2 link https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
 #' possible alternatives
 #' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
-#' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
 #' @name sample_options
-#' @param weights probs
-#' @return Matrix of locations chosen
+#' @param W probs
+#' @return int selected
 NULL
 
-sample_options <- function(weights) {
-    .Call('_abmAnimalMovement_sample_options', PACKAGE = 'abmAnimalMovement', weights)
+sample_options <- function(W) {
+    .Call('_abmAnimalMovement_sample_options', PACKAGE = 'abmAnimalMovement', W)
 }
 
 #' vonmises
@@ -31,6 +31,8 @@ sample_options <- function(weights) {
 #' @param KAPPA
 #' @param MU
 #' @return Vector pulled from vonmises
+NULL
+
 vonmises <- function(N, MU, KAPPA) {
     .Call('_abmAnimalMovement_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
 }

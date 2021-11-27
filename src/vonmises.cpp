@@ -10,6 +10,7 @@
 //' @param KAPPA
 //' @param MU
 //' @return Vector pulled from vonmises
+
 // [[Rcpp::export]]
 Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
 

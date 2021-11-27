@@ -1,12 +1,12 @@
 #' Sample options
 #'
-#' @param vect weights
+#' @param W W
 #' @return chosen
 #'
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-sample_options <- function(weights){
+sample_options <- function(W){
   .Call("_abmAnimalMovement_sample_options",
-        weights)
+        W)
 }

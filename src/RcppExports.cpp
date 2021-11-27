@@ -22,13 +22,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // sample_options
-int sample_options(Rcpp::NumericVector weights);
-RcppExport SEXP _abmAnimalMovement_sample_options(SEXP weightsSEXP) {
+int sample_options(Rcpp::NumericVector W);
+RcppExport SEXP _abmAnimalMovement_sample_options(SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weights(weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_options(weights));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_options(W));
     return rcpp_result_gen;
 END_RCPP
 }
