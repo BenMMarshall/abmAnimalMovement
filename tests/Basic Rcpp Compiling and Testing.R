@@ -21,13 +21,21 @@ find_max(vect = c(4,6,5,4,5,4,32,2,4,4,6,1,7,73,3,2,23,54))
 
 # Sampling sub-function testing -------------------------------------------
 
-sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
+# https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/
+get_seed <- function() {
+  sample.int(.Machine$integer.max, 1)
+}
+
+get_seed()
+
+sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
-for(i in 1:1000){
-  sampleOut[i] <- sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2))
+for(i in 1:10000){
+  sampleOut[i] <- sample_options(c(0.25, 0.15, 0.5, 0.05, 0.05), get_seed())
 }
 hist(sampleOut)
+table(sampleOut) / 10000
 
 # Matrix BG creation ------------------------------------------------------
 

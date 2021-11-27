@@ -17,11 +17,12 @@ find_max <- function(vect) {
 #' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
 #' @name sample_options
 #' @param W probs
+#' @param SEED
 #' @return int selected
 NULL
 
-sample_options <- function(W) {
-    .Call('_abmAnimalMovement_sample_options', PACKAGE = 'abmAnimalMovement', W)
+sample_options <- function(W, SEED) {
+    .Call('_abmAnimalMovement_sample_options', PACKAGE = 'abmAnimalMovement', W, SEED)
 }
 
 #' vonmises
