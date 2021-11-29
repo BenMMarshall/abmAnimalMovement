@@ -27,7 +27,8 @@ Rcpp::List walk_options_xy(
     double s_step,
     double mu_angle,
     double k_angle,
-    Rcpp::NumericMatrix envMat1
+    Rcpp::NumericMatrix envMat1,
+    std::vector<int> seeds
 ){
 
   int n = steps;
@@ -151,9 +152,11 @@ Rcpp::List walk_options_xy(
     //     chosen = l;
     //   }
     // }
-    /* this is the ideal solution with a wrapping function to modify the
-     input/output of the Rcpp::sample function... I think */
-    // chosen = sample_options(Rcpp::wrap(enVal1_Options));
+
+    /* using the custom sample_options, we need to feed it a different seed each time,
+    but overall those seeds are derived from the set.seed() in R prior to running
+    (see the R companion/set-up function .Call) */
+    chosen = sample_options(enVal1_Options, seeds[i-1]);
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, enVal1_Options) */
@@ -165,7 +168,7 @@ Rcpp::List walk_options_xy(
     // chosen = 0;
     // moves every time
     // chosen = 1;
-    chosen = 2;
+    // chosen = 2;
 
     // non Rcpp attempt to randomly sample, there is no weighting of choice however
     // std::srand(std::time(0)); // use current time as seed for random generator
