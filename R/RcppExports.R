@@ -13,8 +13,10 @@ find_max <- function(vect) {
 
 #' sample_options
 #' pow2 link https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
-#' possible alternatives
+#' using code from
 #' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
+#' addressed seed issue using
+#' https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/
 #' @name sample_options
 #' @param W probs
 #' @param SEED

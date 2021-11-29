@@ -1,2 +1,2 @@
 
-Rcpp::NumericVector vonmises(int N, double MU, double KAPPA);
+std::vector<double> vonmises(int N, double MU, double KAPPA);

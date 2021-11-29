@@ -12,7 +12,7 @@
 //' @return Vector pulled from vonmises
 
 // [[Rcpp::export]]
-Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
+std::vector<double> vonmises(int N, double MU, double KAPPA) {
 
   int n = N;
   double mu = MU;
@@ -31,7 +31,7 @@ Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
   // added in varaibles to dodge sign() and attempt to make ambiguity in fmod()
   double sign, val;
 
-  for(int obs = 0; obs <= n; obs++){
+  for(int obs = 0; obs < n; obs++){
     U1 = Rcpp::runif(1, 0, 1)[0];
     z = std::cos(M_PI * U1);
     f = (1.0 + r * z)/(r + z);
@@ -70,6 +70,6 @@ Rcpp::NumericVector vonmises(int N, double MU, double KAPPA) {
     }
 
   }
-  // wrap required to convert Cpp vector to Rcpp NumericVector
-  return(Rcpp::wrap(OUTPUT));
+
+  return(OUTPUT);
 }

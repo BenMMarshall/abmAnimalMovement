@@ -34,7 +34,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // vonmises
-Rcpp::NumericVector vonmises(int N, double MU, double KAPPA);
+std::vector<double> vonmises(int N, double MU, double KAPPA);
 RcppExport SEXP _abmAnimalMovement_vonmises(SEXP NSEXP, SEXP MUSEXP, SEXP KAPPASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

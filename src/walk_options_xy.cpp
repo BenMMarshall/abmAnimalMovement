@@ -92,13 +92,18 @@ Rcpp::List walk_options_xy(
     x_Options[0] = x_Locations[i-1];
     y_Options[0] = y_Locations[i-1];
     step_Options[0] = i;
+
+    Rcpp::Rcout << "--- Step start set" << " ---\n";
+
     for(int j = 1; j < nopt; j++, a++){
 
-        vmdraw = vonmises(1, mu_angle, k_angle)[0];
-        angle = vmdraw * 180/M_PI;
         step = Rcpp::rgamma(1, k_step, s_step)[0];
+        Rcpp::Rcout << "StepLength: " << step << "; ";
 
-        Rcpp::Rcout << "StepLength: " << step << "; " << "Angle: " << angle << "\n";
+        vmdraw = vonmises(1, mu_angle, k_angle)[0];
+        Rcpp::Rcout << "VM Ran: ";
+        angle = vmdraw * 180/M_PI;
+        Rcpp::Rcout << "Angle: " << angle << "\n";
 
         x_Options[j] = x_Options[0] + cos(angle) * step;
         y_Options[j] = y_Options[0] + sin(angle) * step;
@@ -126,6 +131,8 @@ Rcpp::List walk_options_xy(
       xOptIndex = std::floor(xOpt);
       yOptIndex = std::floor(yOpt);
 
+      Rcpp::Rcout << "Option: " << k << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
+
       // end function if animal leaves environmental data area
       if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
         Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
@@ -133,6 +140,8 @@ Rcpp::List walk_options_xy(
 
       // still using the numericMatrix Rcpp form here
       enVal1_Options[k] = envMat1(xOptIndex, yOptIndex);
+
+      Rcpp::Rcout << "EnvVal: " << enVal1_Options[k] << "\n";
 
       if(std::isnan(enVal1_Options[k])){
         // printing error message
