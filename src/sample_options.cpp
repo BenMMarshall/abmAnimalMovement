@@ -16,7 +16,11 @@
 //' @return int selected
 
 // [[Rcpp::export]]
-int sample_options(Rcpp::NumericVector W, int SEED){
+int sample_options(std::vector<double> W, int SEED){
+
+  /* initialize random sampler */
+  unsigned int seed = SEED;
+  std::mt19937 rng(seed);
 
   int rnd_max = W.size();
   std::vector<double> weights(rnd_max);
@@ -26,10 +30,6 @@ int sample_options(Rcpp::NumericVector W, int SEED){
   for(int i = 0; i < rnd_max; i++){
     weights[i] = W[i];
   }
-
-  /* initialize random sampler */
-  unsigned int seed = SEED;
-  std::mt19937 rng(seed);
 
   /* determine smallest power of two that is larger than N */
   int tree_levels = ceil(log2((double) rnd_max));

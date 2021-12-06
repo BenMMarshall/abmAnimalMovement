@@ -20,6 +20,12 @@ basic_walk <- function(start, steps, options, k_step, s_step, mu_angle,
   startxIN <- start[1]
   startyIN <- start[2]
 
+  # https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/
+  # a function that gets a seed so the sampling function is fed something fresh each turn
+  get_seed <- function() {
+    sample.int(.Machine$integer.max, 1)
+  }
+
   # input all into the Cpp function
   res <- cpp_run_basic_walk(
     startx = startxIN,
@@ -30,7 +36,8 @@ basic_walk <- function(start, steps, options, k_step, s_step, mu_angle,
     s_step = s_step,
     mu_angle = mu_angle,
     k_angle = k_angle,
-    envMat1 = envMat1
+    envMat1 = envMat1,
+    seeds = rep(get_seed(), steps) # make sure we have enough seeds for each time sample_options is used
   )
 
   ## TO DO ##
@@ -43,9 +50,9 @@ basic_walk <- function(start, steps, options, k_step, s_step, mu_angle,
 }
 
 cpp_run_basic_walk <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
-                               envMat1){
+                               envMat1, seeds){
   .Call("_abmAnimalMovement_walk_options_xy",
         startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
-        envMat1)
+        envMat1, seeds)
 }
 

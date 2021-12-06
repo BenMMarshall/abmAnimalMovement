@@ -1,2 +1,2 @@
 
-int sample_options(Rcpp::NumericVector W, int SEED);
+int sample_options(std::vector<double> W, int SEED);
