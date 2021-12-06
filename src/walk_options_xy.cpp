@@ -14,6 +14,9 @@
 //' @param normsd Parameter describing step angle
 //' @param meanang Parameter describing angle
 //' @param sdang Parameter describing angle variation
+//' @param b0_Options Behave transitional probs for behave 0
+//' @param b1_Options Behave transitional probs for behave 1
+//' @param b2_Options Behave transitional probs for behave 2
 //' @param envMat1 Environmental matrix 1
 //' @return Matrix of locations chosen
 
@@ -27,6 +30,9 @@ Rcpp::List walk_options_xy(
     std::vector<double> s_step,
     std::vector<double> mu_angle,
     std::vector<double> k_angle,
+    std::vector<double> b0_Options,
+    std::vector<double> b1_Options,
+    std::vector<double> b2_Options,
     Rcpp::NumericMatrix envMat1,
     std::vector<int> seeds
 ){
@@ -89,7 +95,7 @@ Rcpp::List walk_options_xy(
   /* initial behaviour set to 0 */
   behave_Locations[0] = 0;
   // and set a basic behave switch balance for testing
-  std::vector<double> behave_Options = {0.2, 0.2, 0.1};
+  // std::vector<double> behave_Options = {0.2, 0.2, 0.1};
 
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
@@ -102,8 +108,25 @@ Rcpp::List walk_options_xy(
 
     Rcpp::Rcout << "--- Step start set" << " ---\n";
 
-    behave_Locations[i] = sample_options(behave_Options, seeds[i-1]);
-    // behaviour switch
+    /* switch to use a given set of transition probabilities that change
+    depending on the previous behavioural state*/
+    switch(behave_Locations[i-1]){
+      case 0:
+        behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
+        break;
+      case 1:
+        behave_Locations[i] = sample_options(b1_Options, seeds[i-1]);
+        break;
+      case 2:
+        behave_Locations[i] = sample_options(b2_Options, seeds[i-1]);
+        break;
+      // default:
+      //   behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
+      //   break;
+    }
+
+    /* assigning the step and angle parameters
+    depending on the behaviour */
     switch(behave_Locations[i]){
       case 0:
         behave_k_step = k_step[0];
@@ -122,12 +145,13 @@ Rcpp::List walk_options_xy(
         behave_s_step = s_step[2];
         behave_mu_angle = mu_angle[2];
         behave_k_angle = k_angle[2];
-      default:
-        behave_k_step = k_step[0];
-        behave_s_step = s_step[0];
-        behave_mu_angle = mu_angle[0];
-        behave_k_angle = k_angle[0];
         break;
+      // default:
+      //   behave_k_step = k_step[0];
+      //   behave_s_step = s_step[0];
+      //   behave_mu_angle = mu_angle[0];
+      //   behave_k_angle = k_angle[0];
+      //   break;
     }
     Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
 

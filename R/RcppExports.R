@@ -50,11 +50,14 @@ vonmises <- function(N, MU, KAPPA) {
 #' @param normsd Parameter describing step angle
 #' @param meanang Parameter describing angle
 #' @param sdang Parameter describing angle variation
+#' @param b0_Options Behave transitional probs for behave 0
+#' @param b1_Options Behave transitional probs for behave 1
+#' @param b2_Options Behave transitional probs for behave 2
 #' @param envMat1 Environmental matrix 1
 #' @return Matrix of locations chosen
 NULL
 
-walk_options_xy <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds) {
-    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds)
+walk_options_xy <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, envMat1, seeds) {
+    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, envMat1, seeds)
 }
 

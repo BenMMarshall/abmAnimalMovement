@@ -86,15 +86,27 @@ library(ggplot2)
     geom_raster(data = longEnvMat,
                 aes(x = col, y = row, fill = value)))
 
+
+# Generate transitional matrix  --------------------------------------------
+
+b0 <- c(0.9, 0.15, 0.4)
+b1 <- c(0.3, 0.75, 0.12)
+b2 <- c(0.1, 0.5, 0.8)
+
+behaveMatTest <- rbind(b0, b1, b2)
+
+behaveMatTest[1,]
+
 # Random walk testing -----------------------------------------------------
 
 basicRes <- basic_walk(start = c(500,500),
-                       steps = 200,
+                       steps = 400,
                        options = 10,
                        k_step = c(1, 2, 8),
                        s_step = c(0.5, 2, 2),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.01, 0.05, 0.2),
+                       behave_Tmat = behaveMatTest,
                        envMat1 = envMatTest)
 
 basicRes
@@ -115,6 +127,40 @@ plotBgEnv +
   coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
+
+basicRes$loc_behave
+behaveTrans <- list("vector", length(basicRes$loc_behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(basicRes$loc_behave)),
+                            "behaveE" = rep(NA, length(basicRes$loc_behave)))
+for(i in 1:length(basicRes$loc_behave)){
+
+  behaveTransDF[i,"behaveS"] <- basicRes$loc_behave[i]
+  behaveTransDF[i,"behaveE"] <- basicRes$loc_behave[i+1]
+
+  behaveTrans[i] <- paste0(basicRes$loc_behave[i], "->", basicRes$loc_behave[i+1])
+}
+table(unlist(behaveTrans))
+
+library(dplyr)
+
+observedBehaveChanges <- behaveTransDF %>%
+  filter(!is.na(behaveE)) %>%
+  group_by(behaveS, behaveE) %>%
+  count() %>%
+  group_by(behaveS) %>%
+  mutate(totStepInState = sum(n),
+         obsProb = n/totStepInState)
+observedBehaveChanges
+
+ggplot(observedBehaveChanges) +
+  geom_raster(aes(x = behaveS, y = behaveE, fill = obsProb)) +
+  scale_fill_scico(palette = "lajolla")
+
+longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
+
+ggplot(longBehaveMat) +
+  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
+  scale_fill_scico(palette = "lajolla")
 
 # Vonmises testing --------------------------------------------------------
 

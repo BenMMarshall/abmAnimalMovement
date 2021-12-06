@@ -47,8 +47,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // walk_options_xy
-Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, std::vector<double> k_step, std::vector<double> s_step, std::vector<double> mu_angle, std::vector<double> k_angle, Rcpp::NumericMatrix envMat1, std::vector<int> seeds);
-RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP k_stepSEXP, SEXP s_stepSEXP, SEXP mu_angleSEXP, SEXP k_angleSEXP, SEXP envMat1SEXP, SEXP seedsSEXP) {
+Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, std::vector<double> k_step, std::vector<double> s_step, std::vector<double> mu_angle, std::vector<double> k_angle, std::vector<double> b0_Options, std::vector<double> b1_Options, std::vector<double> b2_Options, Rcpp::NumericMatrix envMat1, std::vector<int> seeds);
+RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP k_stepSEXP, SEXP s_stepSEXP, SEXP mu_angleSEXP, SEXP k_angleSEXP, SEXP b0_OptionsSEXP, SEXP b1_OptionsSEXP, SEXP b2_OptionsSEXP, SEXP envMat1SEXP, SEXP seedsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -60,9 +60,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<double> >::type s_step(s_stepSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type mu_angle(mu_angleSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type k_angle(k_angleSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type b0_Options(b0_OptionsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type b1_Options(b1_OptionsSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type b2_Options(b2_OptionsSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type envMat1(envMat1SEXP);
     Rcpp::traits::input_parameter< std::vector<int> >::type seeds(seedsSEXP);
-    rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds));
+    rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, envMat1, seeds));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -71,7 +74,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_abmAnimalMovement_find_max", (DL_FUNC) &_abmAnimalMovement_find_max, 1},
     {"_abmAnimalMovement_sample_options", (DL_FUNC) &_abmAnimalMovement_sample_options, 2},
     {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},
-    {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 10},
+    {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 13},
     {NULL, NULL, 0}
 };
 
