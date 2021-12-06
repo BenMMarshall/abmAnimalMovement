@@ -37,7 +37,9 @@ basic_walk <- function(start, steps, options, k_step, s_step, mu_angle,
     mu_angle = mu_angle,
     k_angle = k_angle,
     envMat1 = envMat1,
-    seeds = rep(get_seed(), steps) # make sure we have enough seeds for each time sample_options is used
+    seeds = sapply(1:steps, function(x){
+      get_seed()
+    }) # make sure we have enough seeds for each time sample_options is used
   )
 
   ## TO DO ##

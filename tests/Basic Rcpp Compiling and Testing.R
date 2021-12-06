@@ -78,7 +78,7 @@ envMatTest <- matrix(data = raster::getValues(mL1),
                      nrow = 1000,
                      ncol = 1000)
 
-longEnvMat <- reshape2::melt(envGradMat, c("col", "row"))
+longEnvMat <- reshape2::melt(envMatTest, c("col", "row"))
 
 library(ggplot2)
 
@@ -91,10 +91,10 @@ library(ggplot2)
 basicRes <- basic_walk(start = c(500,500),
                        steps = 200,
                        options = 10,
-                       k_step = 8,
-                       s_step = 1,
-                       mu_angle = 0,
-                       k_angle = 0.05,
+                       k_step = c(1, 2, 8),
+                       s_step = c(0.5, 2, 2),
+                       mu_angle = c(0, 0, 0),
+                       k_angle = c(0.01, 0.05, 0.2),
                        envMat1 = envMatTest)
 
 basicRes
@@ -108,8 +108,9 @@ plotBgEnv +
                                y = basicRes$loc_y),
              aes(x = x, y = y)) +
   geom_point(data = data.frame(x = basicRes$loc_x,
-                               y = basicRes$loc_y),
-             aes(x = x, y = y)) +
+                               y = basicRes$loc_y,
+                               size = as.factor(basicRes$loc_behave)),
+             aes(x = x, y = y, size = size, shape = size), alpha = 0.5) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
   theme_bw() +

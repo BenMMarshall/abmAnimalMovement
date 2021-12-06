@@ -47,7 +47,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // walk_options_xy
-Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, double k_step, double s_step, double mu_angle, double k_angle, Rcpp::NumericMatrix envMat1, std::vector<int> seeds);
+Rcpp::List walk_options_xy(double startx, double starty, int steps, int options, std::vector<double> k_step, std::vector<double> s_step, std::vector<double> mu_angle, std::vector<double> k_angle, Rcpp::NumericMatrix envMat1, std::vector<int> seeds);
 RcppExport SEXP _abmAnimalMovement_walk_options_xy(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP optionsSEXP, SEXP k_stepSEXP, SEXP s_stepSEXP, SEXP mu_angleSEXP, SEXP k_angleSEXP, SEXP envMat1SEXP, SEXP seedsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -56,10 +56,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type starty(startySEXP);
     Rcpp::traits::input_parameter< int >::type steps(stepsSEXP);
     Rcpp::traits::input_parameter< int >::type options(optionsSEXP);
-    Rcpp::traits::input_parameter< double >::type k_step(k_stepSEXP);
-    Rcpp::traits::input_parameter< double >::type s_step(s_stepSEXP);
-    Rcpp::traits::input_parameter< double >::type mu_angle(mu_angleSEXP);
-    Rcpp::traits::input_parameter< double >::type k_angle(k_angleSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type k_step(k_stepSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type s_step(s_stepSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type mu_angle(mu_angleSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type k_angle(k_angleSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type envMat1(envMat1SEXP);
     Rcpp::traits::input_parameter< std::vector<int> >::type seeds(seedsSEXP);
     rcpp_result_gen = Rcpp::wrap(walk_options_xy(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds));

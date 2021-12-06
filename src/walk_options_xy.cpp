@@ -23,10 +23,10 @@ Rcpp::List walk_options_xy(
     double starty,
     int steps,
     int options,
-    double k_step,
-    double s_step,
-    double mu_angle,
-    double k_angle,
+    std::vector<double> k_step,
+    std::vector<double> s_step,
+    std::vector<double> mu_angle,
+    std::vector<double> k_angle,
     Rcpp::NumericMatrix envMat1,
     std::vector<int> seeds
 ){
@@ -79,6 +79,17 @@ Rcpp::List walk_options_xy(
   std::vector<double> x_Locations(steps);
   std::vector<double> y_Locations(steps);
   std::vector<int> step_Locations(steps);
+  // somewhere to store the behaviours at each step
+  std::vector<int> behave_Locations(steps);
+  double behave_k_step;
+  double behave_s_step;
+  double behave_mu_angle;
+  double behave_k_angle;
+
+  /* initial behaviour set to 0 */
+  behave_Locations[0] = 0;
+  // and set a basic behave switch balance for testing
+  std::vector<double> behave_Options = {0.2, 0.2, 0.1};
 
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
@@ -91,6 +102,35 @@ Rcpp::List walk_options_xy(
 
     Rcpp::Rcout << "--- Step start set" << " ---\n";
 
+    behave_Locations[i] = sample_options(behave_Options, seeds[i-1]);
+    // behaviour switch
+    switch(behave_Locations[i]){
+      case 0:
+        behave_k_step = k_step[0];
+        behave_s_step = s_step[0];
+        behave_mu_angle = mu_angle[0];
+        behave_k_angle = k_angle[0];
+        break;
+      case 1:
+        behave_k_step = k_step[1];
+        behave_s_step = s_step[1];
+        behave_mu_angle = mu_angle[1];
+        behave_k_angle = k_angle[1];
+        break;
+      case 2:
+        behave_k_step = k_step[2];
+        behave_s_step = s_step[2];
+        behave_mu_angle = mu_angle[2];
+        behave_k_angle = k_angle[2];
+      default:
+        behave_k_step = k_step[0];
+        behave_s_step = s_step[0];
+        behave_mu_angle = mu_angle[0];
+        behave_k_angle = k_angle[0];
+        break;
+    }
+    Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
+
     for(int j = 0; j < nopt; j++, a++){
 
       if(j == 0){
@@ -102,11 +142,11 @@ Rcpp::List walk_options_xy(
         continue;
         }
 
-        step = Rcpp::rgamma(1, k_step, s_step)[0];
+        step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
         Rcpp::Rcout << "StepLength: " << step << "; ";
 
-        vmdraw = vonmises(1, mu_angle, k_angle)[0];
-        Rcpp::Rcout << "VM Ran: ";
+        vmdraw = vonmises(1, behave_mu_angle, behave_k_angle)[0];
+        Rcpp::Rcout << "VM ";
         angle = vmdraw * 180/M_PI;
         Rcpp::Rcout << "Angle: " << angle << "\n";
 
@@ -205,6 +245,7 @@ Rcpp::List walk_options_xy(
     Rcpp::Named("loc_x") = x_Locations,
     Rcpp::Named("loc_y") = y_Locations,
     Rcpp::Named("loc_step") = step_Locations,
+    Rcpp::Named("loc_behave") = behave_Locations,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,
