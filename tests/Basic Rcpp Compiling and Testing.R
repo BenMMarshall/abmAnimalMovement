@@ -52,19 +52,46 @@ colnames(envMatTest) <- 1:col
 rownames(envMatTest) <- 1:row
 
 # make it work nicely with ggplot2
-longMatData <- melt(envMatTest, c("col", "row"))
-head(longMatData)
+# longMatData <- melt(envMatTest, c("col", "row"))
+# head(longMatData)
+#
+# (plotBgEnv <- ggplot() +
+#     geom_raster(data = longMatData,
+#                 aes(x = col, y = row, fill = value)))
+
+
+# Grad generation ---------------------------------------------------------
+
+sL1 <- NLMR::nlm_distancegradient(ncol = 100,
+                                  nrow = 100,
+                                  origin = c(10, 10, 10, 10))
+# sL2 <- NLMR::nlm_random(ncol = 100,
+#                         nrow = 100)
+#
+# mL1 <- sL1 + sL2/10
+
+mL1 <- raster::disaggregate(sL1, fact = 10)
+
+raster::plot(mL1)
+
+envMatTest <- matrix(data = raster::getValues(mL1),
+                     nrow = 1000,
+                     ncol = 1000)
+
+longEnvMat <- reshape2::melt(envGradMat, c("col", "row"))
+
+library(ggplot2)
 
 (plotBgEnv <- ggplot() +
-    geom_raster(data = longMatData,
+    geom_raster(data = longEnvMat,
                 aes(x = col, y = row, fill = value)))
 
 # Random walk testing -----------------------------------------------------
 
 basicRes <- basic_walk(start = c(500,500),
-                       steps = 100,
+                       steps = 200,
                        options = 10,
-                       k_step = 4,
+                       k_step = 8,
                        s_step = 1,
                        mu_angle = 0,
                        k_angle = 0.05,

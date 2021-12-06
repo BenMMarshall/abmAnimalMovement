@@ -14,9 +14,22 @@ sL1 <- NLMR::nlm_distancegradient(ncol = 100,
 sL2 <- NLMR::nlm_random(ncol = 100,
                         nrow = 100)
 
-mL1 <- sL1 + sL2
+mL1 <- sL1 + sL2/10
+
+mL1 <- raster::disaggregate(mL1, fact = 10)
 
 raster::plot(mL1)
+
+envGradMat <- matrix(data = raster::getValues(mL1),
+                     nrow = 1000,
+                     ncol = 1000)
+
+longEnvMat <- reshape2::melt(envGradMat, c("col", "row"))
+
+library(ggplot2)
+
+ggplot() +
+  geom_raster(data = longEnvMat, aes(x = col, y = row, fill = value))
 
 # classified landscape example
 

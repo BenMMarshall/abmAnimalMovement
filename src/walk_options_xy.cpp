@@ -89,14 +89,18 @@ Rcpp::List walk_options_xy(
   for(int i = 1, a = 1; i < n; i++){
     Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
-    /* for each step set the location as the previously chosen location */
-    x_Options[0] = x_Locations[i-1];
-    y_Options[0] = y_Locations[i-1];
-    step_Options[0] = i;
-
     Rcpp::Rcout << "--- Step start set" << " ---\n";
 
-    for(int j = 1; j < nopt; j++, a++){
+    for(int j = 0; j < nopt; j++, a++){
+
+      if(j == 0){
+        /* for each step set the location as the previously chosen location */
+        x_Options[0] = x_Locations[i-1];
+        y_Options[0] = y_Locations[i-1];
+        step_Options[0] = i;
+        step_OptionsAll[a] = i; // this one needs assignment regardless
+        continue;
+        }
 
         step = Rcpp::rgamma(1, k_step, s_step)[0];
         Rcpp::Rcout << "StepLength: " << step << "; ";
