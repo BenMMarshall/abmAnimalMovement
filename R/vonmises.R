@@ -2,16 +2,16 @@
 #'
 #' @name vonmises
 #' @description This is the R function counterpart to the C++ function
-#'   cpp_vonmises. The C++ function is based on the rvm function from the
-#'   CircStats package.
+#'   *cpp_vonmises*. The C++ function is based on the *rvm* function from the
+#'   [CircStats package](https://cran.r-project.org/web/packages/CircStats/index.html).
 #' @param N The number of values to draw.
-#' @param MU The mean direction of the distribution to be draw from.
-#' @param KAPPA The concentration or shape parameter. High value will provide a
+#' @param MU The mean (\eqn{\mu}) direction of the distribution to be draw from.
+#' @param KAPPA The concentration or shape parameter (\eqn{\kappa}). High value will provide a
 #'   tighter distribution around MU, whereas a lower value will widen the
 #'   distribution.
 #' @return Will return a vector the size of N draw from a Von Mises distribution
-#'   defined by MU and KAPPA. When MU is zero the limits of the overall
-#'   distribution will be between -pi and pi. When considering KAPPA, a higher
+#'   defined by \eqn{\mu} and \eqn{\kappa}. When \eqn{\mu} is zero the limits of the overall
+#'   distribution will be between -\eqn{\pi} and \eqn{\pi}. When considering \eqn{\kappa}, a higher
 #'   value will approximate a greater likely to draw values linked to straight
 #'   line movement.
 #'

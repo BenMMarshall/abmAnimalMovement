@@ -7,13 +7,17 @@
 cpp_vonmises(N, MU, KAPPA)
 }
 \arguments{
-\item{N}{number to draw}
+\item{N}{of values to draw.}
+
+\item{MU}{The mean of the distribution (\eqn{\mu}).}
+
+\item{KAPPA}{The concentration of the distribution (\eqn{\kappa}).}
 }
 \value{
-Vector pulled from vonmises
+A vector drawn from a von Mises distribution equal in length to N.
 }
 \description{
-A C++ conversion of the rvm function provided by the CircStats package (https://cran.r-project.org/web/packages/CircStats/index.html)
+A C++ conversion of the \emph{rvm} function provided by the \href{https://cran.r-project.org/web/packages/CircStats/index.html}{CircStats package}.
 }
 \references{
 S-plus original by Ulric Lund and R port by Claudio Agostinelli (2018). CircStats: Circular Statistics, from Topics in Circular Statistics (2001). R package version 0.2-6. https://CRAN.R-project.org/package=CircStats

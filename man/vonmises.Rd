@@ -9,23 +9,23 @@ vonmises(N, MU, KAPPA)
 \arguments{
 \item{N}{The number of values to draw.}
 
-\item{MU}{The mean direction of the distribution to be draw from.}
+\item{MU}{The mean (\eqn{\mu}) direction of the distribution to be draw from.}
 
-\item{KAPPA}{The concentration or shape parameter. High value will provide a
+\item{KAPPA}{The concentration or shape parameter (\eqn{\kappa}). High value will provide a
 tighter distribution around MU, whereas a lower value will widen the
 distribution.}
 }
 \value{
 Will return a vector the size of N draw from a Von Mises distribution
-defined by MU and KAPPA. When MU is zero the limits of the overall
-distribution will be between -pi and pi. When considering KAPPA, a higher
+defined by \eqn{\mu} and \eqn{\kappa}. When \eqn{\mu} is zero the limits of the overall
+distribution will be between -\eqn{\pi} and \eqn{\pi}. When considering \eqn{\kappa}, a higher
 value will approximate a greater likely to draw values linked to straight
 line movement.
 }
 \description{
-This is the R function counterpart to the c++ function
-cpp_vonmises. The C++ function is based on the rvm function from the
-CircStats package.
+This is the R function counterpart to the C++ function
+\emph{cpp_vonmises}. The C++ function is based on the \emph{rvm} function from the
+\href{https://cran.r-project.org/web/packages/CircStats/index.html}{CircStats package}.
 }
 \examples{
 vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
