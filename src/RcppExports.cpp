@@ -33,16 +33,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// vonmises
-std::vector<double> vonmises(int N, double MU, double KAPPA);
-RcppExport SEXP _abmAnimalMovement_vonmises(SEXP NSEXP, SEXP MUSEXP, SEXP KAPPASEXP) {
+// cpp_vonmises
+std::vector<double> cpp_vonmises(int N, double MU, double KAPPA);
+RcppExport SEXP _abmAnimalMovement_cpp_vonmises(SEXP NSEXP, SEXP MUSEXP, SEXP KAPPASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type N(NSEXP);
     Rcpp::traits::input_parameter< double >::type MU(MUSEXP);
     Rcpp::traits::input_parameter< double >::type KAPPA(KAPPASEXP);
-    rcpp_result_gen = Rcpp::wrap(vonmises(N, MU, KAPPA));
+    rcpp_result_gen = Rcpp::wrap(cpp_vonmises(N, MU, KAPPA));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -70,7 +70,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_abmAnimalMovement_find_max", (DL_FUNC) &_abmAnimalMovement_find_max, 1},
     {"_abmAnimalMovement_sample_options", (DL_FUNC) &_abmAnimalMovement_sample_options, 2},
-    {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},
+    {"_abmAnimalMovement_cpp_vonmises", (DL_FUNC) &_abmAnimalMovement_cpp_vonmises, 3},
     {"_abmAnimalMovement_walk_options_xy", (DL_FUNC) &_abmAnimalMovement_walk_options_xy, 10},
     {NULL, NULL, 0}
 };

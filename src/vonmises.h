@@ -1,2 +1,2 @@
 
-std::vector<double> vonmises(int N, double MU, double KAPPA);
+std::vector<double> cpp_vonmises(int N, double MU, double KAPPA);

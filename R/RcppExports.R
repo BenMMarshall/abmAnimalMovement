@@ -27,17 +27,19 @@ sample_options <- function(W, SEED) {
     .Call('_abmAnimalMovement_sample_options', PACKAGE = 'abmAnimalMovement', W, SEED)
 }
 
-#' vonmises
-#' Based on function fvm from teh CricStats package.
-#' @name vonmises
+#' @name cpp_vonmises
+#' @title cpp_vonmises
+#' @description A C++ conversion of the rvm function provided by the CircStats package (https://cran.r-project.org/web/packages/CircStats/index.html)
 #' @param N number to draw
 #' @param KAPPA
 #' @param MU
 #' @return Vector pulled from vonmises
-NULL
-
-vonmises <- function(N, MU, KAPPA) {
-    .Call('_abmAnimalMovement_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
+#'
+#' @references
+#' S-plus original by Ulric Lund and R port by Claudio Agostinelli (2018). CircStats: Circular Statistics, from Topics in Circular Statistics (2001). R package version 0.2-6. https://CRAN.R-project.org/package=CircStats
+#'
+cpp_vonmises <- function(N, MU, KAPPA) {
+    .Call('_abmAnimalMovement_cpp_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
 }
 
 #' Basic random walk

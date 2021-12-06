@@ -39,52 +39,16 @@ table(sampleOut) / 10000
 
 # Matrix BG creation ------------------------------------------------------
 
-# ?basic_walk()
-row <- 1000; col <- 1000
-# random matrix
-envMatTest <- matrix(runif(row*col, 0, 1), nrow = row, ncol = col)
-# split matrix, animal should remain more often in one side
-# envMatTest <- matrix(c(rep(1, row*col/2),
-#                        rep(5, row*col/2)),
-#                      nrow = row, ncol = col)
+envNoiseTest <- genLandscape_noise(1000, 1000)
+quick_plot_matrix(envNoiseTest)
 
-colnames(envMatTest) <- 1:col
-rownames(envMatTest) <- 1:row
+envGradMat <- genLandscape_gradient(1000, 1000)
+quick_plot_matrix(envGradMat)
 
-# make it work nicely with ggplot2
-# longMatData <- melt(envMatTest, c("col", "row"))
-# head(longMatData)
-#
-# (plotBgEnv <- ggplot() +
-#     geom_raster(data = longMatData,
-#                 aes(x = col, y = row, fill = value)))
+# Select envMat to use ----------------------------------------------------
 
-
-# Grad generation ---------------------------------------------------------
-
-sL1 <- NLMR::nlm_distancegradient(ncol = 100,
-                                  nrow = 100,
-                                  origin = c(10, 10, 10, 10))
-# sL2 <- NLMR::nlm_random(ncol = 100,
-#                         nrow = 100)
-#
-# mL1 <- sL1 + sL2/10
-
-mL1 <- raster::disaggregate(sL1, fact = 10)
-
-raster::plot(mL1)
-
-envMatTest <- matrix(data = raster::getValues(mL1),
-                     nrow = 1000,
-                     ncol = 1000)
-
-longEnvMat <- reshape2::melt(envGradMat, c("col", "row"))
-
-library(ggplot2)
-
-(plotBgEnv <- ggplot() +
-    geom_raster(data = longEnvMat,
-                aes(x = col, y = row, fill = value)))
+envMatTest <- envNoiseTest
+plotBgEnv <- quick_plot_matrix(envMatTest)
 
 # Random walk testing -----------------------------------------------------
 
@@ -136,7 +100,7 @@ vonResVarying <- do.call(rbind, lapply(
 
 sum(vonResVarying$draws > pi)
 sum(vonResVarying$draws < -pi)
-
+citation("CircStats")
 # mu should vary between 0 and 2*pi for circular stuff
 # https://www.zeileis.org/news/circtree/
 

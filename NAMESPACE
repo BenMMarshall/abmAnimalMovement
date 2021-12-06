@@ -2,7 +2,10 @@
 
 export(basic_walk)
 export(find_max)
+export(genLandscape_gradient)
+export(genLandscape_noise)
 export(make_shades)
+export(quick_plot_matrix)
 export(sample_options)
 export(vonmises)
 importFrom(Rcpp,sourceCpp)

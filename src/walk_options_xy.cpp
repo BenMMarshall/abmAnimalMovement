@@ -105,7 +105,7 @@ Rcpp::List walk_options_xy(
         step = Rcpp::rgamma(1, k_step, s_step)[0];
         Rcpp::Rcout << "StepLength: " << step << "; ";
 
-        vmdraw = vonmises(1, mu_angle, k_angle)[0];
+        vmdraw = cpp_vonmises(1, mu_angle, k_angle)[0];
         Rcpp::Rcout << "VM Ran: ";
         angle = vmdraw * 180/M_PI;
         Rcpp::Rcout << "Angle: " << angle << "\n";

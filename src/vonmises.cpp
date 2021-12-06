@@ -3,16 +3,19 @@
 #include <boost/math/special_functions/bessel.hpp>
 #include <cmath>
 
-//' vonmises
-//' Based on function fvm from teh CricStats package.
-//' @name vonmises
+//' @name cpp_vonmises
+//' @title cpp_vonmises
+//' @description A C++ conversion of the rvm function provided by the CircStats package (https://cran.r-project.org/web/packages/CircStats/index.html)
 //' @param N number to draw
 //' @param KAPPA
 //' @param MU
 //' @return Vector pulled from vonmises
-
+//'
+//' @references
+//' S-plus original by Ulric Lund and R port by Claudio Agostinelli (2018). CircStats: Circular Statistics, from Topics in Circular Statistics (2001). R package version 0.2-6. https://CRAN.R-project.org/package=CircStats
+//'
 // [[Rcpp::export]]
-std::vector<double> vonmises(int N, double MU, double KAPPA) {
+std::vector<double> cpp_vonmises(int N, double MU, double KAPPA) {
 
   int n = N;
   double mu = MU;
