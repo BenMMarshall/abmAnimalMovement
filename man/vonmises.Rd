@@ -11,21 +11,23 @@ vonmises(N, MU, KAPPA)
 
 \item{MU}{The mean (\eqn{\mu}) direction of the distribution to be draw from.}
 
-\item{KAPPA}{The concentration or shape parameter (\eqn{\kappa}). High value will provide a
-tighter distribution around MU, whereas a lower value will widen the
-distribution.}
+\item{KAPPA}{The concentration or shape parameter (\eqn{\kappa}). High value
+will provide a tighter distribution around MU, whereas a lower value will
+widen the distribution.}
 }
 \value{
 Will return a vector the size of N draw from a Von Mises distribution
-defined by \eqn{\mu} and \eqn{\kappa}. When \eqn{\mu} is zero the limits of the overall
-distribution will be between -\eqn{\pi} and \eqn{\pi}. When considering \eqn{\kappa}, a higher
-value will approximate a greater likely to draw values linked to straight
-line movement.
+defined by \eqn{\mu} and \eqn{\kappa}.
 }
 \description{
-This is the R function counterpart to the C++ function
-\emph{cpp_vonmises}. The C++ function is based on the \emph{rvm} function from the
-\href{https://cran.r-project.org/web/packages/CircStats/index.html}{CircStats package}.
+The R function counterpart to the C++ function \emph{cpp_vonmises}.
+The C++ function is based on the \emph{rvm} function from the \href{https://cran.r-project.org/web/packages/CircStats/index.html}{CircStats package}.
+}
+\details{
+When \eqn{\mu} is zero the limits of the overall distribution will
+be between -\eqn{\pi} and \eqn{\pi}. When considering \eqn{\kappa}, a
+higher value will approximate a greater likely to draw values linked to
+straight line movement.
 }
 \examples{
 vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
@@ -35,5 +37,6 @@ hist(vonOut)
 \references{
 S-plus original by Ulric Lund and R port by Claudio Agostinelli
 (2018). CircStats: Circular Statistics, from Topics in Circular Statistics
-(2001). R package version 0.2-6. https://CRAN.R-project.org/package=CircStats
+(2001). R package version 0.2-6.
+https://CRAN.R-project.org/package=CircStats
 }

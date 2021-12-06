@@ -1,2 +1,2 @@
 
-int sample_options(std::vector<double> W, int SEED);
+int cpp_sample_options(std::vector<double> W, int SEED);

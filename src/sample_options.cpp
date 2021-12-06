@@ -1,22 +1,25 @@
 
 #include <Rcpp.h>
-// #include <cmath>
 #include <random>
 #define pow2(n) ( 1 << (n) )
 
-//' sample_options
-//' pow2 link https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
-//' using code from
-//' https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
-//' addressed seed issue using
-//' https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/
-//' @name sample_options
-//' @param W probs
-//' @param SEED
-//' @return int selected
+//' @title cpp_sample_options
+//' @name cpp_sample_options
+//' @description The C++ sample function that takes a vector of weights and
+//'   randomly returns an integer of the choice. Sampling solution based on:
+//' [link](https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights).
+//' With the of definition of pow2 coming from: [link](https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int).
+//' A solution for the setting the random seed from: [link](https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/).
+//'
+//' @param W A vector of weights.
+//' @param SEED The seed to be used for the sampling.
+//' @details Requires a new seed for each run as a separate seed is set
+//'   internally every time the function runs.
+//' @return An integer corresponding to the chosen weight in the initially
+//'   provided vector. __NOTE: indexing begins at 0 matching C++ convention__.
 
 // [[Rcpp::export]]
-int sample_options(std::vector<double> W, int SEED){
+int cpp_sample_options(std::vector<double> W, int SEED){
 
   /* initialize random sampler */
   unsigned int seed = SEED;
