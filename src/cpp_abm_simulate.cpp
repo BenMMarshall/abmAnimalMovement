@@ -4,21 +4,26 @@
 #include "vonmises.h"
 #include "sample_options.h"
 
-//' Basic random walk
-//' @name walk_options_xy
+//' @name cpp_abm_simulate
+//' @title cpp_abm_simulate
+//' @description The C++ function that runs the agent based animal movement model.
 //' @param startx The x coord start location
 //' @param starty The y coord start location
 //' @param steps The number of steps to be simulated
 //' @param options The number of options to be considered at each step
-//' @param normmean Parameter describing step length
-//' @param normsd Parameter describing step angle
-//' @param meanang Parameter describing angle
-//' @param sdang Parameter describing angle variation
+//' @param k_step Parameter describing step length
+//' @param s_step Parameter describing step
+//' @param mu_angle Parameter describing angle
+//' @param k_angle Parameter describing angle variation
 //' @param envMat1 Environmental matrix 1
+//' @param seeds
+
 //' @return Matrix of locations chosen
 
+//' @details
+
 // [[Rcpp::export]]
-Rcpp::List walk_options_xy(
+Rcpp::List cpp_abm_simulate(
     double startx,
     double starty,
     int steps,

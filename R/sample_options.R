@@ -10,7 +10,7 @@
 #'   call to retrieve consistent seeds based upon an initial use of
 #'   *set.seed()*.
 #' @return An integer corresponding to the chosen weight in the initially provided
-#'   vector. __NOTE: indexing begins at 0 matching C++ convention__.
+#'   vector. **NOTE: indexing begins at 0 matching C++ convention**.
 #'
 #' @examples
 #' set.seed(2021)

@@ -52,30 +52,30 @@ plotBgEnv <- quick_plot_matrix(envMatTest)
 
 # Random walk testing -----------------------------------------------------
 
-basicRes <- basic_walk(start = c(500,500),
-                       steps = 200,
-                       options = 10,
-                       k_step = 8,
-                       s_step = 1,
-                       mu_angle = 0,
-                       k_angle = 0.05,
-                       envMat1 = envMatTest)
+simRes <- abm_simulate(start = c(500,500),
+                         steps = 200,
+                         options = 10,
+                         k_step = 8,
+                         s_step = 1,
+                         mu_angle = 0,
+                         k_angle = 0.05,
+                         envMat1 = envMatTest)
 
-basicRes
+simRes
 
 plotBgEnv +
-  geom_point(data = data.frame(x = basicRes$oall_x,
-                               y = basicRes$oall_y,
-                               step = basicRes$oall_step),
+  geom_point(data = data.frame(x = simRes$oall_x,
+                               y = simRes$oall_y,
+                               step = simRes$oall_step),
             aes(x = x, y = y, colour = step)) +
-  geom_path(data = data.frame(x = basicRes$loc_x,
-                               y = basicRes$loc_y),
+  geom_path(data = data.frame(x = simRes$loc_x,
+                               y = simRes$loc_y),
              aes(x = x, y = y)) +
-  geom_point(data = data.frame(x = basicRes$loc_x,
-                               y = basicRes$loc_y),
+  geom_point(data = data.frame(x = simRes$loc_x,
+                               y = simRes$loc_y),
              aes(x = x, y = y)) +
   scale_colour_scico(palette = "buda") +
-  coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
+  coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
