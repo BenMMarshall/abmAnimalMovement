@@ -124,7 +124,7 @@ plotBgEnv +
   geom_point(data = data.frame(x = basicRes$loc_x,
                                y = basicRes$loc_y,
                                size = as.factor(basicRes$loc_behave)),
-             aes(x = x, y = y, size = size, shape = size), alpha = 0.5) +
+             aes(x = x, y = y, shape = size), alpha = 1) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
   theme_bw() +
