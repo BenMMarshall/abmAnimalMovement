@@ -92,6 +92,11 @@ Rcpp::List walk_options_xy(
   double behave_s_step;
   double behave_mu_angle;
   double behave_k_angle;
+  // something that store the time adjusted behavioural shifts
+  // and intialise them with the provided base values
+  std::vector<double> b0_Options_Current = b0_Options;
+  std::vector<double> b1_Options_Current = b1_Options;
+  std::vector<double> b2_Options_Current = b2_Options;
 
   /* initial behaviour set to 0 */
   behave_Locations[0] = 0;
@@ -118,25 +123,25 @@ Rcpp::List walk_options_xy(
       i*1.0 / 60, // make i a double and convert it to hours
       1,
       0,
-      28 / 12, // make sure THETA is kept ~ to TAU so no drift
+      26 / 12, // make sure THETA is kept ~ to TAU so no drift
       12);
-
-    // this will update the behaviour shift prob depending on the time of day
-    b0_Options[0] = b0_Options[0] + b0_dailyMod;
-    b1_Options[0] = b1_Options[0] + b0_dailyMod;
-    b2_Options[0] = b2_Options[0] + b0_dailyMod;
 
     /* switch to use a given set of transition probabilities that change
     depending on the previous behavioural state*/
     switch(behave_Locations[i-1]){
       case 0:
-        behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
+        // this will update the behaviour shift prob depending on the time of day
+        b0_Options_Current[0] = b0_Options[0] + b0_dailyMod;
+        // draw from the updated behaviour probs to get the next behavioural state
+        behave_Locations[i] = sample_options(b0_Options_Current, seeds[i-1]);
         break;
       case 1:
-        behave_Locations[i] = sample_options(b1_Options, seeds[i-1]);
+        b1_Options_Current[0] = b1_Options[0] + b0_dailyMod;
+        behave_Locations[i] = sample_options(b1_Options_Current, seeds[i-1]);
         break;
       case 2:
-        behave_Locations[i] = sample_options(b2_Options, seeds[i-1]);
+        b2_Options_Current[0] = b2_Options[0] + b0_dailyMod;
+        behave_Locations[i] = sample_options(b2_Options_Current, seeds[i-1]);
         break;
       // default:
       //   behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);

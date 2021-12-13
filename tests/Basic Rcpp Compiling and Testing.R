@@ -32,7 +32,7 @@ sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
 for(i in 1:10000){
-  sampleOut[i] <- sample_options(c(0.25, 0.15, 0.5, 0.05, 0.05), get_seed())
+  sampleOut[i] <- sample_options(c(0.25, 0.2, 1, 0.05, 0.05), get_seed())
 }
 hist(sampleOut)
 table(sampleOut) / 10000
@@ -62,9 +62,11 @@ rownames(envMatTest) <- 1:row
 
 # Grad generation ---------------------------------------------------------
 
-sL1 <- NLMR::nlm_distancegradient(ncol = 100,
-                                  nrow = 100,
-                                  origin = c(10, 10, 10, 10))
+# sL1 <- NLMR::nlm_distancegradient(ncol = 100,
+#                                   nrow = 100,
+#                                   origin = c(10, 10, 10, 10))
+sL1 <- NLMR::nlm_random(ncol = 100,
+                        nrow = 100)
 # sL2 <- NLMR::nlm_random(ncol = 100,
 #                         nrow = 100)
 #
@@ -89,9 +91,9 @@ library(ggplot2)
 
 # Generate transitional matrix  --------------------------------------------
 
-b0 <- c(0.9, 0.15, 0.4)
-b1 <- c(0.3, 0.75, 0.12)
-b2 <- c(0.1, 0.5, 0.8)
+b0 <- c(0.95, 0.008, 0.004)
+b1 <- c(0.01, 0.95, 0.42)
+b2 <- c(0.01, 0.63, 0.95)
 
 behaveMatTest <- rbind(b0, b1, b2)
 
@@ -141,8 +143,6 @@ for(i in 1:length(basicRes$loc_behave)){
 }
 table(unlist(behaveTrans))
 
-library(dplyr)
-
 observedBehaveChanges <- behaveTransDF %>%
   filter(!is.na(behaveE)) %>%
   group_by(behaveS, behaveE) %>%
@@ -162,12 +162,12 @@ ggplot(longBehaveMat) +
   geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
   scale_fill_scico(palette = "lajolla")
 
-
 data.frame(
   "i" = 1:length(basicRes$loc_behave)/60,
   "behave" = basicRes$loc_behave) %>%
   ggplot() +
-  geom_point(aes(x = i, y = behave)) +
+  geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
+  geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +
   scale_x_continuous(breaks = seq(0, 72, 12))
 
 # Vonmises testing --------------------------------------------------------
