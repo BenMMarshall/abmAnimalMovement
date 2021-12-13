@@ -2,6 +2,7 @@
 #include <Rcpp.h>
 #include <cmath>
 #include "vonmises.h"
+#include "cpp_cycle_draw.h"
 #include "sample_options.h"
 
 //' Basic random walk
@@ -97,6 +98,10 @@ Rcpp::List walk_options_xy(
   // and set a basic behave switch balance for testing
   // std::vector<double> behave_Options = {0.2, 0.2, 0.1};
 
+  // CYCLE MODIFIERS
+  double b0_dailyMod;
+  std::vector<double> TIME(1);
+
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
   y_Locations[0] = starty;
@@ -107,6 +112,21 @@ Rcpp::List walk_options_xy(
     Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
     Rcpp::Rcout << "--- Step start set" << " ---\n";
+
+    /* working under the assumption that i == minute, but the cycle is defined in
+     hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
+    TIME[0] = i*1.0 / 60; // make i a double and convert it to hours
+    b0_dailyMod = cpp_cycle_draw(
+      TIME,
+      0.5,
+      0,
+      28 / 12, // make sure THETA is kept ~ to TAU so no drift
+      12)[0];
+
+    // this will update the behaviour shift prob depending on the time of day
+    b0_Options[0] = b0_Options[0] + b0_dailyMod;
+    b1_Options[0] = b0_Options[0] + b0_dailyMod;
+    b2_Options[0] = b0_Options[0] + b0_dailyMod;
 
     /* switch to use a given set of transition probabilities that change
     depending on the previous behavioural state*/

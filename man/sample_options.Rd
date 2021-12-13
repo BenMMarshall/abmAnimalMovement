@@ -2,22 +2,30 @@
 % Please edit documentation in R/RcppExports.R, R/sample_options.R
 \name{sample_options}
 \alias{sample_options}
-\title{sample_options}
+\title{sample_options
+pow2 link https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
+using code from
+https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
+addressed seed issue using
+https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/}
 \usage{
-sample_options(weights)
+sample_options(W, SEED)
 }
 \arguments{
-\item{weights}{probs}
-
-\item{vect}{weights}
+\item{W}{W}
 }
 \value{
-Matrix of locations chosen
+int selected
 
 chosen
 }
 \description{
 sample_options
+pow2 link https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
+using code from
+https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights
+addressed seed issue using
+https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/
 
 Sample options
 }

@@ -4,7 +4,17 @@
 \alias{basic_walk}
 \title{R wrap for basic walk}
 \usage{
-basic_walk(start, steps, options, k_step, s_step, mu_angle, k_angle, envMat1)
+basic_walk(
+  start,
+  steps,
+  options,
+  k_step,
+  s_step,
+  mu_angle,
+  k_angle,
+  behave_Tmat,
+  envMat1
+)
 }
 \arguments{
 \item{start}{The x and y coords of the starting location}
@@ -13,15 +23,17 @@ basic_walk(start, steps, options, k_step, s_step, mu_angle, k_angle, envMat1)
 
 \item{options}{The number of options to be considered at each step}
 
-\item{k_step}{Parameter describing step length}
+\item{k_step}{Parameter describing step length for each behavioural state}
 
-\item{s_step}{Parameter describing step length}
+\item{s_step}{Parameter describing step length for each behavioural state}
+
+\item{behave_Tmat}{Base transisition matrix for 3 behavioural states}
 
 \item{envMat1}{Environmental matrix 1}
 
-\item{meanang}{Parameter describing angle}
+\item{meanang}{Parameter describing angle for each behavioural state}
 
-\item{sdang}{Parameter describing angle variation}
+\item{sdang}{Parameter describing angle variation for each behavioural state}
 }
 \value{
 Matrix of locations chosen

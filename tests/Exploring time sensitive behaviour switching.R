@@ -52,7 +52,7 @@ ggplot(distData) +
 # recurring in each cycle), τ is the period (duration of one cycle), and e(t) is
 # the error term (Figure 1).
 
-Y(t) = M + βx + γz + e(t)
+# Y(t) = M + βx + γz + e(t)
 
 # this can be used regardless of units so need a handler to convert to minutes
 # tau = 12 # months
@@ -93,6 +93,57 @@ ggplot(cycleData) +
            label = paste0("theta: ", theta,
                           "\ntau: ", tau),
            hjust = 0.5, vjust = 1, fontface = 2) +
-
   scale_x_continuous(breaks = seq(0, 48, 2))
 
+library(abmAnimalMovement)
+
+t_seq <- seq(1, 72, 72 / 60)
+
+cycleData <- data.frame(
+  "t" = t_seq,
+  "value" = cycle_draw(TIME = t_seq,
+                       A = 1,
+                       M = 0,
+                       THETA = 24,
+                       TAU = 24)
+)
+
+ggplot(cycleData) +
+  geom_hline(yintercept = 0, linetype = 2, alpha = 0.5) +
+  geom_line(aes(x = t, y = value)) +
+  scale_x_continuous(breaks = seq(0, 48, 2))
+
+
+compareValuesLIST <- vector("list")
+i <- 0
+for(tau in seq(12, 72, 12)){
+  for(theta in seq(4, 48, 4)){
+    i <- i+1
+    currDF <- data.frame(
+      "TIME" = t_seq,
+      "VALUES" = cycle_draw(TIME = t_seq,
+                            A = 1,
+                            M = 0,
+                            THETA = theta / tau,
+                            TAU = tau)
+    )
+    currDF$THETA = theta
+    currDF$TAU = paste0(tau, " TAU")
+    compareValuesLIST[[i]] <- currDF
+  }
+}
+
+compareValuesDF <- do.call(rbind, compareValuesLIST)
+
+compareValuesDF$hour <- lubridate::hour(as.POSIXct(compareValuesDF$TIME*60*60,
+                           origin = "2000-01-01"))
+compareValuesDF$day <- dplyr::case_when(
+  compareValuesDF$hour >= 21 | compareValuesDF$hour < 8 ~ "night",
+  compareValuesDF$hour < 21 & compareValuesDF$hour >= 8 ~ "day"
+)
+
+ggplot(compareValuesDF) +
+  geom_point(aes(x = TIME, y = 0, colour = day)) +
+  geom_vline(xintercept = seq(0,72,24), linetype = 2, alpha = 0.5) +
+  geom_line(aes(x = TIME, y = VALUES)) +
+  facet_grid(THETA~TAU)

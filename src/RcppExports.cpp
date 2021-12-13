@@ -10,6 +10,21 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// cpp_cycle_draw
+std::vector<double> cpp_cycle_draw(std::vector<double> TIME, double A, double M, double THETA, double TAU);
+RcppExport SEXP _abmAnimalMovement_cpp_cycle_draw(SEXP TIMESEXP, SEXP ASEXP, SEXP MSEXP, SEXP THETASEXP, SEXP TAUSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type TIME(TIMESEXP);
+    Rcpp::traits::input_parameter< double >::type A(ASEXP);
+    Rcpp::traits::input_parameter< double >::type M(MSEXP);
+    Rcpp::traits::input_parameter< double >::type THETA(THETASEXP);
+    Rcpp::traits::input_parameter< double >::type TAU(TAUSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_cycle_draw(TIME, A, M, THETA, TAU));
+    return rcpp_result_gen;
+END_RCPP
+}
 // find_max
 int find_max(Rcpp::NumericVector vect);
 RcppExport SEXP _abmAnimalMovement_find_max(SEXP vectSEXP) {
@@ -71,6 +86,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_abmAnimalMovement_cpp_cycle_draw", (DL_FUNC) &_abmAnimalMovement_cpp_cycle_draw, 5},
     {"_abmAnimalMovement_find_max", (DL_FUNC) &_abmAnimalMovement_find_max, 1},
     {"_abmAnimalMovement_sample_options", (DL_FUNC) &_abmAnimalMovement_sample_options, 2},
     {"_abmAnimalMovement_vonmises", (DL_FUNC) &_abmAnimalMovement_vonmises, 3},

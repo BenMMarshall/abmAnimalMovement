@@ -6,8 +6,6 @@
 Based on function fvm from teh CricStats package.}
 \usage{
 vonmises(N, MU, KAPPA)
-
-vonmises(N, MU, KAPPA)
 }
 \arguments{
 \item{N}{number to draw}

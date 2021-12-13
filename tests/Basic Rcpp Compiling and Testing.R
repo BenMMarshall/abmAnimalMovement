@@ -100,7 +100,7 @@ behaveMatTest[1,]
 # Random walk testing -----------------------------------------------------
 
 basicRes <- basic_walk(start = c(500,500),
-                       steps = 400,
+                       steps = 48*60,
                        options = 10,
                        k_step = c(1, 2, 8),
                        s_step = c(0.5, 2, 2),
