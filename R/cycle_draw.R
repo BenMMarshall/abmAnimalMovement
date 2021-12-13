@@ -3,7 +3,7 @@
 #' @name cycle_draw
 #' @description A function to define and draw from a cyclical distribution used
 #'   for daily of seasonal shifts.
-#' @param TIME A vector of time intervals to draw using.
+#' @param TIME A .
 #' @param A A value defining the amplitude of the cycle, calculated as the
 #'   difference from M.
 #' @param M A value defining the cycle offset from 0.
@@ -23,14 +23,14 @@
 #' @examples
 #'
 #' # an example of a cycle approximating nocturnal activity
-#' cycle_draw(TIME = t_seq,
+#' cycle_draw(TIME = 12,
 #' A = 1,
 #' M = 0,
 #' THETA = 4 / 24,
 #' TAU = 24)
 #'
 #' # an example of a cycle approximating crepuscular activity
-#' cycle_draw(TIME = t_seq,
+#' cycle_draw(TIME = 12,
 #' A = 1,
 #' M = 0,
 #' THETA = 24 / 12,

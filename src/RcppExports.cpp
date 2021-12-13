@@ -11,12 +11,12 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_cycle_draw
-std::vector<double> cpp_cycle_draw(std::vector<double> TIME, double A, double M, double THETA, double TAU);
+double cpp_cycle_draw(double TIME, double A, double M, double THETA, double TAU);
 RcppExport SEXP _abmAnimalMovement_cpp_cycle_draw(SEXP TIMESEXP, SEXP ASEXP, SEXP MSEXP, SEXP THETASEXP, SEXP TAUSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::vector<double> >::type TIME(TIMESEXP);
+    Rcpp::traits::input_parameter< double >::type TIME(TIMESEXP);
     Rcpp::traits::input_parameter< double >::type A(ASEXP);
     Rcpp::traits::input_parameter< double >::type M(MSEXP);
     Rcpp::traits::input_parameter< double >::type THETA(THETASEXP);

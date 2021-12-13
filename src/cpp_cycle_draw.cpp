@@ -12,19 +12,16 @@
 //'   sync with period. If not proportional the cycle with drift.
 
 // [[Rcpp::export]]
-std::vector<double> cpp_cycle_draw(std::vector<double> TIME, double A, double M, double THETA, double TAU) {
+double cpp_cycle_draw(double TIME, double A, double M, double THETA, double TAU) {
 
-  int N = TIME.size();
-  std::vector<double> OUTPUT(N);
+  double OUTPUT;
   double y, x, z, B;
 
-  for(int draw = 0; draw < N; draw++){
-    B = A * std::cos(THETA);
-    y = -A * std::sin(THETA);
-    x = std::cos(2 * M_PI * TIME[draw] / TAU);
-    z = std::sin(2 * M_PI * TIME[draw] / TAU);
-    OUTPUT[draw] = M + B*x + y*z;
-  }
+  B = A * std::cos(THETA);
+  y = -A * std::sin(THETA);
+  x = std::cos(2 * M_PI * TIME / TAU);
+  z = std::sin(2 * M_PI * TIME / TAU);
+  OUTPUT = M + B*x + y*z;
 
   return(OUTPUT);
 }

@@ -100,7 +100,6 @@ Rcpp::List walk_options_xy(
 
   // CYCLE MODIFIERS
   double b0_dailyMod;
-  std::vector<double> TIME(1);
 
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
@@ -115,18 +114,17 @@ Rcpp::List walk_options_xy(
 
     /* working under the assumption that i == minute, but the cycle is defined in
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
-    TIME[0] = i*1.0 / 60; // make i a double and convert it to hours
     b0_dailyMod = cpp_cycle_draw(
-      TIME,
-      0.5,
+      i*1.0 / 60, // make i a double and convert it to hours
+      1,
       0,
       28 / 12, // make sure THETA is kept ~ to TAU so no drift
-      12)[0];
+      12);
 
     // this will update the behaviour shift prob depending on the time of day
     b0_Options[0] = b0_Options[0] + b0_dailyMod;
-    b1_Options[0] = b0_Options[0] + b0_dailyMod;
-    b2_Options[0] = b0_Options[0] + b0_dailyMod;
+    b1_Options[0] = b1_Options[0] + b0_dailyMod;
+    b2_Options[0] = b2_Options[0] + b0_dailyMod;
 
     /* switch to use a given set of transition probabilities that change
     depending on the previous behavioural state*/

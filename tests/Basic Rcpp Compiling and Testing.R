@@ -102,8 +102,8 @@ behaveMatTest[1,]
 basicRes <- basic_walk(start = c(500,500),
                        steps = 48*60,
                        options = 10,
-                       k_step = c(1, 2, 8),
-                       s_step = c(0.5, 2, 2),
+                       k_step = c(0.5, 1, 4),
+                       s_step = c(0.5, 1, 2),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.01, 0.05, 0.2),
                        behave_Tmat = behaveMatTest,
@@ -161,6 +161,14 @@ longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
 ggplot(longBehaveMat) +
   geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
   scale_fill_scico(palette = "lajolla")
+
+
+data.frame(
+  "i" = 1:length(basicRes$loc_behave)/60,
+  "behave" = basicRes$loc_behave) %>%
+  ggplot() +
+  geom_point(aes(x = i, y = behave)) +
+  scale_x_continuous(breaks = seq(0, 72, 12))
 
 # Vonmises testing --------------------------------------------------------
 
