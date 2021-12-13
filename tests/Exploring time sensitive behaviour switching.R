@@ -58,13 +58,13 @@ ggplot(distData) +
 # tau = 12 # months
 tau = 24 # hours
 A = 1
-theta = 0
+phi = 0
 
 t = seq(1, 24, 24/60)
 
 M = 0
-β = A * cos(theta)
-y = -A * sin(theta)
+β = A * cos(phi)
+y = -A * sin(phi)
 x = cos(2 * pi * t / tau)
 z = sin(2 * pi * t / tau)
 
@@ -90,7 +90,7 @@ ggplot(cycleData) +
 
   geom_line(aes(x = t, y = y)) +
   annotate("text", x = max(t)/2, y = A,
-           label = paste0("theta: ", theta,
+           label = paste0("phi: ", phi,
                           "\ntau: ", tau),
            hjust = 0.5, vjust = 1, fontface = 2) +
   scale_x_continuous(breaks = seq(0, 48, 2))
@@ -104,7 +104,7 @@ cycleData <- data.frame(
   "value" = cycle_draw(TIME = t_seq,
                        A = 1,
                        M = 0,
-                       THETA = 24,
+                       phi = 24,
                        TAU = 24)
 )
 
@@ -117,17 +117,17 @@ ggplot(cycleData) +
 compareValuesLIST <- vector("list")
 i <- 0
 for(tau in seq(12, 72, 12)){
-  for(theta in seq(4, 48, 4)){
+  for(phi in seq(4, 48, 4)){
     i <- i+1
     currDF <- data.frame(
       "TIME" = t_seq,
       "VALUES" = cycle_draw(TIME = t_seq,
                             A = 1,
                             M = 0,
-                            THETA = theta / tau,
+                            phi = phi / tau,
                             TAU = tau)
     )
-    currDF$THETA = theta
+    currDF$phi = phi
     currDF$TAU = paste0(tau, " TAU")
     compareValuesLIST[[i]] <- currDF
   }
@@ -146,4 +146,4 @@ ggplot(compareValuesDF) +
   geom_point(aes(x = TIME, y = 0, colour = day)) +
   geom_vline(xintercept = seq(0,72,24), linetype = 2, alpha = 0.5) +
   geom_line(aes(x = TIME, y = VALUES)) +
-  facet_grid(THETA~TAU)
+  facet_grid(phi~TAU)

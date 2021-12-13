@@ -11,17 +11,17 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_cycle_draw
-double cpp_cycle_draw(double TIME, double A, double M, double THETA, double TAU);
-RcppExport SEXP _abmAnimalMovement_cpp_cycle_draw(SEXP TIMESEXP, SEXP ASEXP, SEXP MSEXP, SEXP THETASEXP, SEXP TAUSEXP) {
+double cpp_cycle_draw(double TIME, double A, double M, double PHI, double TAU);
+RcppExport SEXP _abmAnimalMovement_cpp_cycle_draw(SEXP TIMESEXP, SEXP ASEXP, SEXP MSEXP, SEXP PHISEXP, SEXP TAUSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type TIME(TIMESEXP);
     Rcpp::traits::input_parameter< double >::type A(ASEXP);
     Rcpp::traits::input_parameter< double >::type M(MSEXP);
-    Rcpp::traits::input_parameter< double >::type THETA(THETASEXP);
+    Rcpp::traits::input_parameter< double >::type PHI(PHISEXP);
     Rcpp::traits::input_parameter< double >::type TAU(TAUSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_cycle_draw(TIME, A, M, THETA, TAU));
+    rcpp_result_gen = Rcpp::wrap(cpp_cycle_draw(TIME, A, M, PHI, TAU));
     return rcpp_result_gen;
 END_RCPP
 }
