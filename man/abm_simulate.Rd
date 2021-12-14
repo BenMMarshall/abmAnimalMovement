@@ -4,7 +4,18 @@
 \alias{abm_simulate}
 \title{Agent based model: Simulate animal movement}
 \usage{
-abm_simulate(start, steps, options, k_step, s_step, mu_angle, k_angle, envMat1)
+abm_simulate(
+  start,
+  steps,
+  options,
+  k_step,
+  s_step,
+  mu_angle,
+  k_angle,
+  behave_Tmat,
+  rest_Cycle,
+  envMat1
+)
 }
 \arguments{
 \item{start}{A numeric vector of length 2, including the x and y coordinates
@@ -27,6 +38,10 @@ draw turn angles for each behavioural state. A vector of length 3.}
 \item{k_angle}{The concentrations (\eqn{\kappa}) for the von Mises
 distribution used to draw turn angles for each behavioural state. A vector
 of length 3.}
+
+\item{behave_Tmat}{Base transisition matrix for 3 behavioural states}
+
+\item{rest_Cycle}{vector length 4 for A M PHI and TAU}
 
 \item{envMat1}{TESTING ENVIRONMENTAL LAYER, A matrix.}
 }

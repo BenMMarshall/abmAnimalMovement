@@ -63,13 +63,15 @@ behaveMatTest[1,]
 # Random walk testing -----------------------------------------------------
 
 simRes <- abm_simulate(start = c(500,500),
-                         steps = 200,
-                         options = 10,
-                         k_step = 8,
-                         s_step = 1,
-                         mu_angle = 0,
-                         k_angle = 0.05,
-                         envMat1 = envMatTest)
+                       steps = 48*60,
+                       options = 10,
+                       k_step = c(0.5, 1, 4),
+                       s_step = c(0.5, 1, 2),
+                       mu_angle = c(0, 0, 0),
+                       k_angle = c(0.01, 0.05, 0.2),
+                       behave_Tmat = behaveMatTest,
+                       rest_Cycle = c(0.5, 0.25, 24, 12),
+                       envMat1 = envMatTest)
 
 simRes
 
@@ -124,8 +126,8 @@ ggplot(longBehaveMat) +
   scale_fill_scico(palette = "lajolla")
 
 data.frame(
-  "i" = 1:length(basicRes$loc_behave)/60,
-  "behave" = basicRes$loc_behave) %>%
+  "i" = 1:length(simRes$loc_behave)/60,
+  "behave" = simRes$loc_behave) %>%
   ggplot() +
   geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
   geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +

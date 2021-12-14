@@ -1,8 +1,9 @@
 
 #include <Rcpp.h>
 #include <cmath>
-#include "vonmises.h"
-#include "sample_options.h"
+#include "cpp_vonmises.h"
+#include "cpp_sample_options.h"
+#include "cpp_cycle_draw.h"
 
 //' @name cpp_abm_simulate
 //' @title cpp_abm_simulate
@@ -15,6 +16,13 @@
 //' @param s_step Parameter describing step
 //' @param mu_angle Parameter describing angle
 //' @param k_angle Parameter describing angle variation
+//' @param b0_Options Behave transitional probs for behave 0
+//' @param b1_Options Behave transitional probs for behave 1
+//' @param b2_Options Behave transitional probs for behave 2
+//' @param rest_Cycle_A
+//' @param rest_Cycle_M
+//' @param rest_Cycle_PHI
+//' @param rest_Cycle_TAU
 //' @param envMat1 Environmental matrix 1
 //' @param seeds
 
@@ -28,10 +36,17 @@ Rcpp::List cpp_abm_simulate(
     double starty,
     int steps,
     int options,
-    double k_step,
-    double s_step,
-    double mu_angle,
-    double k_angle,
+    std::vector<double> k_step,
+    std::vector<double> s_step,
+    std::vector<double> mu_angle,
+    std::vector<double> k_angle,
+    std::vector<double> b0_Options,
+    std::vector<double> b1_Options,
+    std::vector<double> b2_Options,
+    double rest_Cycle_A,
+    double rest_Cycle_M,
+    double rest_Cycle_PHI,
+    double rest_Cycle_TAU,
     Rcpp::NumericMatrix envMat1,
     std::vector<int> seeds
 ){
@@ -84,6 +99,25 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> x_Locations(steps);
   std::vector<double> y_Locations(steps);
   std::vector<int> step_Locations(steps);
+  // somewhere to store the behaviours at each step
+  std::vector<int> behave_Locations(steps);
+  double behave_k_step;
+  double behave_s_step;
+  double behave_mu_angle;
+  double behave_k_angle;
+  // something that store the time adjusted behavioural shifts
+  // and initialise them with the provided base values
+  std::vector<double> b0_Options_Current = b0_Options;
+  std::vector<double> b1_Options_Current = b1_Options;
+  std::vector<double> b2_Options_Current = b2_Options;
+
+  /* initial behaviour set to 0 */
+  behave_Locations[0] = 1;
+  // and set a basic behave switch balance for testing
+  // std::vector<double> behave_Options = {0.2, 0.2, 0.1};
+
+  // CYCLE MODIFIERS
+  double b0_dailyMod;
 
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
@@ -96,6 +130,67 @@ Rcpp::List cpp_abm_simulate(
 
     Rcpp::Rcout << "--- Step start set" << " ---\n";
 
+    /* working under the assumption that i == minute, but the cycle is defined in
+     hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
+    b0_dailyMod = cpp_cycle_draw(
+      i*1.0 / 60, // make i a double and convert it to hours
+      rest_Cycle_A,
+      rest_Cycle_M,
+      rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
+      rest_Cycle_TAU);
+
+    /* switch to use a given set of transition probabilities that change
+     depending on the previous behavioural state*/
+    switch(behave_Locations[i-1]){
+      case 0:
+        // this will update the behaviour shift prob depending on the time of day
+        b0_Options_Current[0] = b0_Options[0] + b0_dailyMod;
+        // draw from the updated behaviour probs to get the next behavioural state
+        behave_Locations[i] = cpp_sample_options(b0_Options_Current, seeds[i-1]);
+        break;
+      case 1:
+        b1_Options_Current[0] = b1_Options[0] + b0_dailyMod;
+        behave_Locations[i] = cpp_sample_options(b1_Options_Current, seeds[i-1]);
+        break;
+      case 2:
+        b2_Options_Current[0] = b2_Options[0] + b0_dailyMod;
+        behave_Locations[i] = cpp_sample_options(b2_Options_Current, seeds[i-1]);
+        break;
+        // default:
+        //   behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
+        //   break;
+    }
+
+    /* assigning the step and angle parameters
+     depending on the behaviour */
+    switch(behave_Locations[i]){
+    case 0:
+      behave_k_step = k_step[0];
+      behave_s_step = s_step[0];
+      behave_mu_angle = mu_angle[0];
+      behave_k_angle = k_angle[0];
+      break;
+      case 1:
+        behave_k_step = k_step[1];
+        behave_s_step = s_step[1];
+        behave_mu_angle = mu_angle[1];
+        behave_k_angle = k_angle[1];
+        break;
+        case 2:
+          behave_k_step = k_step[2];
+          behave_s_step = s_step[2];
+          behave_mu_angle = mu_angle[2];
+          behave_k_angle = k_angle[2];
+          break;
+          // default:
+          //   behave_k_step = k_step[0];
+          //   behave_s_step = s_step[0];
+          //   behave_mu_angle = mu_angle[0];
+          //   behave_k_angle = k_angle[0];
+          //   break;
+    }
+    Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
+
     for(int j = 0; j < nopt; j++, a++){
 
       if(j == 0){
@@ -105,29 +200,29 @@ Rcpp::List cpp_abm_simulate(
         step_Options[0] = i;
         step_OptionsAll[a] = i; // this one needs assignment regardless
         continue;
-        }
+      }
 
-        step = Rcpp::rgamma(1, k_step, s_step)[0];
-        Rcpp::Rcout << "StepLength: " << step << "; ";
+      step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+      Rcpp::Rcout << "StepLength: " << step << "; ";
 
-        vmdraw = cpp_vonmises(1, mu_angle, k_angle)[0];
-        Rcpp::Rcout << "VM Ran: ";
-        angle = vmdraw * 180/M_PI;
-        Rcpp::Rcout << "Angle: " << angle << "\n";
+      vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+      Rcpp::Rcout << "VM ";
+      angle = vmdraw * 180/M_PI;
+      Rcpp::Rcout << "Angle: " << angle << "\n";
 
-        x_Options[j] = x_Options[0] + cos(angle) * step;
-        y_Options[j] = y_Options[0] + sin(angle) * step;
+      x_Options[j] = x_Options[0] + cos(angle) * step;
+      y_Options[j] = y_Options[0] + sin(angle) * step;
 
-        // add in which step the options are for
-        step_Options[j] = i;
+      // add in which step the options are for
+      step_Options[j] = i;
 
-        // a is keeping tracking of the position in a ong vector steps*nopts
-        x_OptionsAll[a] = x_Options[j];
-        y_OptionsAll[a] = y_Options[j];
-        step_OptionsAll[a] = i;
+      // a is keeping tracking of the position in a ong vector steps*nopts
+      x_OptionsAll[a] = x_Options[j];
+      y_OptionsAll[a] = y_Options[j];
+      step_OptionsAll[a] = i;
 
-        // choice vector is needed for the sample function later on
-        // choicesVec[j] = j;
+      // choice vector is needed for the sample function later on
+      // choicesVec[j] = j;
 
     }
 
@@ -172,8 +267,8 @@ Rcpp::List cpp_abm_simulate(
     // }
 
     /* using the custom sample_options, we need to feed it a different seed each time,
-    but overall those seeds are derived from the set.seed() in R prior to running
-    (see the R companion/set-up function .Call) */
+     but overall those seeds are derived from the set.seed() in R prior to running
+     (see the R companion/set-up function .Call) */
     chosen = cpp_sample_options(enVal1_Options, seeds[i-1]);
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
@@ -210,6 +305,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_x") = x_Locations,
     Rcpp::Named("loc_y") = y_Locations,
     Rcpp::Named("loc_step") = step_Locations,
+    Rcpp::Named("loc_behave") = behave_Locations,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,

@@ -104,7 +104,7 @@ cycleData <- data.frame(
   "value" = cycle_draw(TIME = t_seq,
                        A = 1,
                        M = 0,
-                       phi = 24,
+                       PHI = 24,
                        TAU = 24)
 )
 

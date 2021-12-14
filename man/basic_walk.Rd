@@ -13,6 +13,7 @@ basic_walk(
   mu_angle,
   k_angle,
   behave_Tmat,
+  rest_Cycle,
   envMat1
 )
 }
@@ -28,6 +29,8 @@ basic_walk(
 \item{s_step}{Parameter describing step length for each behavioural state}
 
 \item{behave_Tmat}{Base transisition matrix for 3 behavioural states}
+
+\item{rest_Cycle}{vector length 4 for A M PHI and TAU}
 
 \item{envMat1}{Environmental matrix 1}
 

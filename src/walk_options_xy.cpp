@@ -1,9 +1,9 @@
 
 #include <Rcpp.h>
 #include <cmath>
-#include "vonmises.h"
+#include "cpp_vonmises.h"
 #include "cpp_cycle_draw.h"
-#include "sample_options.h"
+#include "cpp_sample_options.h"
 
 //' Basic random walk
 //' @name walk_options_xy
@@ -141,15 +141,15 @@ Rcpp::List walk_options_xy(
         // this will update the behaviour shift prob depending on the time of day
         b0_Options_Current[0] = b0_Options[0] + b0_dailyMod;
         // draw from the updated behaviour probs to get the next behavioural state
-        behave_Locations[i] = sample_options(b0_Options_Current, seeds[i-1]);
+        behave_Locations[i] = cpp_sample_options(b0_Options_Current, seeds[i-1]);
         break;
       case 1:
         b1_Options_Current[0] = b1_Options[0] + b0_dailyMod;
-        behave_Locations[i] = sample_options(b1_Options_Current, seeds[i-1]);
+        behave_Locations[i] = cpp_sample_options(b1_Options_Current, seeds[i-1]);
         break;
       case 2:
         b2_Options_Current[0] = b2_Options[0] + b0_dailyMod;
-        behave_Locations[i] = sample_options(b2_Options_Current, seeds[i-1]);
+        behave_Locations[i] = cpp_sample_options(b2_Options_Current, seeds[i-1]);
         break;
       // default:
       //   behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
@@ -200,7 +200,7 @@ Rcpp::List walk_options_xy(
         step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
         Rcpp::Rcout << "StepLength: " << step << "; ";
 
-        vmdraw = vonmises(1, behave_mu_angle, behave_k_angle)[0];
+        vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
         Rcpp::Rcout << "VM ";
         angle = vmdraw * 180/M_PI;
         Rcpp::Rcout << "Angle: " << angle << "\n";
@@ -264,7 +264,7 @@ Rcpp::List walk_options_xy(
     /* using the custom sample_options, we need to feed it a different seed each time,
     but overall those seeds are derived from the set.seed() in R prior to running
     (see the R companion/set-up function .Call) */
-    chosen = sample_options(enVal1_Options, seeds[i-1]);
+    chosen = cpp_sample_options(enVal1_Options, seeds[i-1]);
 
     /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
      Rcpp::sample(choicesVec, 1, false, enVal1_Options) */

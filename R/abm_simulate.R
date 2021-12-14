@@ -18,6 +18,8 @@
 #' @param k_angle The concentrations (\eqn{\kappa}) for the von Mises
 #'   distribution used to draw turn angles for each behavioural state. A vector
 #'   of length 3.
+#' @param behave_Tmat Base transisition matrix for 3 behavioural states
+#' @param rest_Cycle vector length 4 for A M PHI and TAU
 #' @param envMat1 TESTING ENVIRONMENTAL LAYER, A matrix.
 #'
 #' @return A list with the following components:
@@ -43,7 +45,7 @@
 #' @export
 #'
 abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
-                       k_angle, envMat1){
+                       k_angle, behave_Tmat, rest_Cycle, envMat1){
   # split the vector of start location x and y
   startxIN <- start[1]
   startyIN <- start[2]
@@ -64,8 +66,17 @@ abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
     s_step = s_step,
     mu_angle = mu_angle,
     k_angle = k_angle,
+    b0_Options = behave_Tmat[1,],
+    b1_Options = behave_Tmat[2,],
+    b2_Options = behave_Tmat[3,],
+    rest_Cycle_A = rest_Cycle[1],
+    rest_Cycle_M = rest_Cycle[2],
+    rest_Cycle_PHI = rest_Cycle[3],
+    rest_Cycle_TAU = rest_Cycle[4],
     envMat1 = envMat1,
-    seeds = rep(get_seed(), steps) # make sure we have enough seeds for each time sample_options is used
+    seeds = sapply(1:steps, function(x){
+      get_seed()
+    }) # make sure we have enough seeds for each time sample_options is used
   )
 
   ## TO DO ##
@@ -78,9 +89,23 @@ abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
 }
 
 run_abm_simulate <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
-                               envMat1, seeds){
+                             b0_Options,
+                             b1_Options,
+                             b2_Options,
+                             rest_Cycle_A,
+                             rest_Cycle_M,
+                             rest_Cycle_PHI,
+                             rest_Cycle_TAU,
+                             envMat1, seeds){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
         startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
+        b0_Options,
+        b1_Options,
+        b2_Options,
+        rest_Cycle_A,
+        rest_Cycle_M,
+        rest_Cycle_PHI,
+        rest_Cycle_TAU,
         envMat1, seeds)
 }
 
