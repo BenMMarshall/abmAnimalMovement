@@ -32,7 +32,7 @@ sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
 for(i in 1:10000){
-  sampleOut[i] <- sample_options(c(0.25, 0.15, 0.5, 0.05, 0.05), get_seed())
+  sampleOut[i] <- sample_options(c(0.25, -0.2, 1, 0.05, 0.05), get_seed())
 }
 hist(sampleOut)
 table(sampleOut) / 10000
@@ -49,6 +49,16 @@ quick_plot_matrix(envGradMat)
 
 envMatTest <- envNoiseTest
 plotBgEnv <- quick_plot_matrix(envMatTest)
+
+# Generate transitional matrix  --------------------------------------------
+
+b0 <- c(0.95, 0.008, 0.004)
+b1 <- c(0.005, 0.98, 0.12)
+b2 <- c(0.005, 0.23, 0.95)
+
+behaveMatTest <- rbind(b0, b1, b2)
+
+behaveMatTest[1,]
 
 # Random walk testing -----------------------------------------------------
 
@@ -78,6 +88,48 @@ plotBgEnv +
   coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
+
+basicRes$loc_behave
+behaveTrans <- list("vector", length(basicRes$loc_behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(basicRes$loc_behave)),
+                            "behaveE" = rep(NA, length(basicRes$loc_behave)))
+for(i in 1:length(basicRes$loc_behave)){
+
+  behaveTransDF[i,"behaveS"] <- basicRes$loc_behave[i]
+  behaveTransDF[i,"behaveE"] <- basicRes$loc_behave[i+1]
+
+  behaveTrans[i] <- paste0(basicRes$loc_behave[i], "->", basicRes$loc_behave[i+1])
+}
+table(unlist(behaveTrans))
+
+library(dplyr)
+
+observedBehaveChanges <- behaveTransDF %>%
+  filter(!is.na(behaveE)) %>%
+  group_by(behaveS, behaveE) %>%
+  count() %>%
+  group_by(behaveS) %>%
+  mutate(totStepInState = sum(n),
+         obsProb = n/totStepInState)
+observedBehaveChanges
+
+ggplot(observedBehaveChanges) +
+  geom_raster(aes(x = behaveS, y = behaveE, fill = obsProb)) +
+  scale_fill_scico(palette = "lajolla")
+
+longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
+
+ggplot(longBehaveMat) +
+  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
+  scale_fill_scico(palette = "lajolla")
+
+data.frame(
+  "i" = 1:length(basicRes$loc_behave)/60,
+  "behave" = basicRes$loc_behave) %>%
+  ggplot() +
+  geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
+  geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +
+  scale_x_continuous(breaks = seq(0, 72, 12))
 
 # Vonmises testing --------------------------------------------------------
 

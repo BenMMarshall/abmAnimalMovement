@@ -28,10 +28,15 @@ int cpp_sample_options(std::vector<double> W, int SEED){
   int rnd_max = W.size();
   std::vector<double> weights(rnd_max);
 
-  // make sure whatever is fed, ie NumericVector, we work with a std::vector
-  // could remove this after testing if it causes issues
+  // if the weighting is sub-zero make zero. ie not possible
   for(int i = 0; i < rnd_max; i++){
-    weights[i] = W[i];
+
+    if(W[i] < 0){
+      weights[i] = 0;
+    } else {
+      weights[i] = W[i];
+    }
+
   }
 
   /* determine smallest power of two that is larger than N */

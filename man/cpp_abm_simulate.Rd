@@ -20,6 +20,12 @@
 
 \item{sdang}{Parameter describing angle variation}
 
+\item{b0_Options}{Behave transitional probs for behave 0}
+
+\item{b1_Options}{Behave transitional probs for behave 1}
+
+\item{b2_Options}{Behave transitional probs for behave 2}
+
 \item{envMat1}{Environmental matrix 1}
 }
 \description{

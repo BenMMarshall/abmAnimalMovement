@@ -25,6 +25,30 @@ cpp_abm_simulate <- function(startx, starty, steps, options, k_step, s_step, mu_
     .Call('_abmAnimalMovement_cpp_abm_simulate', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds)
 }
 
+#' cpp_cycle_draw
+#' @name cpp_cycle_draw
+#' @param TIME A point in time (defined as a double) during the cycle to draw a value from.
+#' @param A A double defining the amplitude of the cycle, calculated as the
+#'   difference from M (i.e., half of the overall variation in the cycle from
+#'   top to bottom).
+#' @param M A double defining the cycle offset from 0 (Midline Statistic Of
+#'   Rhythm, a rhythm-adjusted mean).
+#' @param PHI A double defining the offset of the cycle (\eqn{\phi}; i.e.,
+#'   acrophase). Must be kept proportional to \eqn{\tau} to avoid cycle drift.
+#' @param TAU A double defining the cycle frequency (\eqn{\tau}; i.e., period),
+#'   where \eqn{\tau} is the difference between peaks.
+#' @return A double that is between M+A to M-A, draw from the defined cycle at TIME.
+#' @details \eqn{\phi} must remain proportional to \eqn{\tau} if the cycle is to remained
+#'   sync with period. If not proportional the cycle with drift.
+#' @references Cornelissen, G. (2014). Cosinor-based rhythmometry. Theoretical
+#'    Biology and Medical Modelling. 11(16)
+#'    https://doi.org/10.1186/1742-4682-11-16
+NULL
+
+cpp_cycle_draw <- function(TIME, A, M, PHI, TAU) {
+    .Call('_abmAnimalMovement_cpp_cycle_draw', PACKAGE = 'abmAnimalMovement', TIME, A, M, PHI, TAU)
+}
+
 #' Find max
 #' @name find_max
 #' @param vect
@@ -68,5 +92,23 @@ cpp_sample_options <- function(W, SEED) {
 #'
 cpp_vonmises <- function(N, MU, KAPPA) {
     .Call('_abmAnimalMovement_cpp_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
+}
+
+#' Basic random walk
+#' @name walk_options_xy
+#' @param startx The x coord start location
+#' @param starty The y coord start location
+#' @param steps The number of steps to be simulated
+#' @param options The number of options to be considered at each step
+#' @param normmean Parameter describing step length
+#' @param normsd Parameter describing step angle
+#' @param meanang Parameter describing angle
+#' @param sdang Parameter describing angle variation
+#' @param envMat1 Environmental matrix 1
+#' @return Matrix of locations chosen
+NULL
+
+walk_options_xy <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds) {
+    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, envMat1, seeds)
 }
 
