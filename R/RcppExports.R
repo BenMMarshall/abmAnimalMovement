@@ -77,11 +77,15 @@ vonmises <- function(N, MU, KAPPA) {
 #' @param b0_Options Behave transitional probs for behave 0
 #' @param b1_Options Behave transitional probs for behave 1
 #' @param b2_Options Behave transitional probs for behave 2
+#' @param rest_Cycle_A
+#' @param rest_Cycle_M
+#' @param rest_Cycle_PHI
+#' @param rest_Cycle_TAU
 #' @param envMat1 Environmental matrix 1
 #' @return Matrix of locations chosen
 NULL
 
-walk_options_xy <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, envMat1, seeds) {
-    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, envMat1, seeds)
+walk_options_xy <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, envMat1, seeds) {
+    .Call('_abmAnimalMovement_walk_options_xy', PACKAGE = 'abmAnimalMovement', startx, starty, steps, options, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, envMat1, seeds)
 }
 

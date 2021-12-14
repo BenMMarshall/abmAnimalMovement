@@ -32,7 +32,7 @@ sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
 for(i in 1:10000){
-  sampleOut[i] <- sample_options(c(0.25, 0.2, 1, 0.05, 0.05), get_seed())
+  sampleOut[i] <- sample_options(c(0.25, -0.2, 1, 0.05, 0.05), get_seed())
 }
 hist(sampleOut)
 table(sampleOut) / 10000
@@ -92,8 +92,8 @@ library(ggplot2)
 # Generate transitional matrix  --------------------------------------------
 
 b0 <- c(0.95, 0.008, 0.004)
-b1 <- c(0.01, 0.95, 0.42)
-b2 <- c(0.01, 0.63, 0.95)
+b1 <- c(0.005, 0.98, 0.12)
+b2 <- c(0.005, 0.23, 0.95)
 
 behaveMatTest <- rbind(b0, b1, b2)
 
@@ -109,6 +109,7 @@ basicRes <- basic_walk(start = c(500,500),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.01, 0.05, 0.2),
                        behave_Tmat = behaveMatTest,
+                       rest_Cycle = c(1, 0, 24, 12),
                        envMat1 = envMatTest)
 
 basicRes
@@ -117,15 +118,15 @@ plotBgEnv +
   geom_point(data = data.frame(x = basicRes$oall_x,
                                y = basicRes$oall_y,
                                step = basicRes$oall_step),
-            aes(x = x, y = y, colour = step)) +
+            aes(x = x, y = y), alpha = 0.25) +
   geom_path(data = data.frame(x = basicRes$loc_x,
                                y = basicRes$loc_y),
              aes(x = x, y = y)) +
   geom_point(data = data.frame(x = basicRes$loc_x,
                                y = basicRes$loc_y,
                                size = as.factor(basicRes$loc_behave)),
-             aes(x = x, y = y, shape = size), alpha = 1) +
-  scale_colour_scico(palette = "buda") +
+             aes(x = x, y = y, shape = size, colour = size), alpha = 1) +
+  scale_colour_scico_d(palette = "buda") +
   coord_cartesian(xlim = range(basicRes$loc_x), ylim = range(basicRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
@@ -142,6 +143,8 @@ for(i in 1:length(basicRes$loc_behave)){
   behaveTrans[i] <- paste0(basicRes$loc_behave[i], "->", basicRes$loc_behave[i+1])
 }
 table(unlist(behaveTrans))
+
+library(dplyr)
 
 observedBehaveChanges <- behaveTransDF %>%
   filter(!is.na(behaveE)) %>%

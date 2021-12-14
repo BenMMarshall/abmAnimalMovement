@@ -18,6 +18,10 @@
 //' @param b0_Options Behave transitional probs for behave 0
 //' @param b1_Options Behave transitional probs for behave 1
 //' @param b2_Options Behave transitional probs for behave 2
+//' @param rest_Cycle_A
+//' @param rest_Cycle_M
+//' @param rest_Cycle_PHI
+//' @param rest_Cycle_TAU
 //' @param envMat1 Environmental matrix 1
 //' @return Matrix of locations chosen
 
@@ -34,6 +38,10 @@ Rcpp::List walk_options_xy(
     std::vector<double> b0_Options,
     std::vector<double> b1_Options,
     std::vector<double> b2_Options,
+    double rest_Cycle_A,
+    double rest_Cycle_M,
+    double rest_Cycle_PHI,
+    double rest_Cycle_TAU,
     Rcpp::NumericMatrix envMat1,
     std::vector<int> seeds
 ){
@@ -121,10 +129,10 @@ Rcpp::List walk_options_xy(
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
     b0_dailyMod = cpp_cycle_draw(
       i*1.0 / 60, // make i a double and convert it to hours
-      1,
-      0,
-      26 / 12, // make sure THETA is kept ~ to TAU so no drift
-      12);
+      rest_Cycle_A,
+      rest_Cycle_M,
+      rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
+      rest_Cycle_TAU);
 
     /* switch to use a given set of transition probabilities that change
     depending on the previous behavioural state*/
