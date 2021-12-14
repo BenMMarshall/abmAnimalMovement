@@ -4,13 +4,13 @@
 #' @description The R function to call the C++ *cpp_sample_options* function.
 #' @param W A vector of weights.
 #' @param SEED The seed to be used for the sampling.
-#' @details A new seed must be passed each time the function is ran (for
-#'   different answers). The C++ function internally set a random seed with the
-#'   random C++ library (std::mt19937). Example code below provides a shorthand
-#'   call to retrieve consistent seeds based upon an initial use of
-#'   *set.seed()*.
-#' @return An integer corresponding to the chosen weight in the initially provided
-#'   vector. **NOTE: indexing begins at 0 matching C++ convention**.
+#' @details If a weight of less than zero is provided the weight is set to zero.
+#'   A new seed must be passed each time the function is ran (for different
+#'   answers). The C++ function internally set a random seed with the random C++
+#'   library (std::mt19937). Example code below provides a shorthand call to
+#'   retrieve consistent seeds based upon an initial use of *set.seed()*.
+#' @return An integer corresponding to the chosen weight in the initially
+#'   provided vector. **NOTE: indexing begins at 0 matching C++ convention**.
 #'
 #' @examples
 #' set.seed(2021)

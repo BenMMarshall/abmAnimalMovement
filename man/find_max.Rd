@@ -6,6 +6,9 @@
 \usage{
 find_max(vect)
 }
+\arguments{
+\item{vect}{a}
+}
 \value{
 index of max
 

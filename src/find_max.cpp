@@ -2,7 +2,7 @@
 
 //' Find max
 //' @name find_max
-//' @param vect
+//' @param vect a
 //' @return index of max
 
 // [[Rcpp::export]]

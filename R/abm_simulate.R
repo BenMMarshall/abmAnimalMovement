@@ -19,23 +19,17 @@
 #'   distribution used to draw turn angles for each behavioural state. A vector
 #'   of length 3.
 #' @param behave_Tmat Base transisition matrix for 3 behavioural states
-#' @param rest_Cycle vector length 4 for A M PHI and TAU
+#' @param rest_Cycle A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
+#'   define the resting/active cycle. Ideal for defining circadian rhythm.
 #' @param envMat1 TESTING ENVIRONMENTAL LAYER, A matrix.
 #'
-#' @return A list with the following components:
-#' 1. The location dataframe describing all locations the animal occupied, where each row is equal to a
-#'   timestep. Columns include:
-#'    - step, the step as a integer;
-#'    - x, the x coordinate of the animal;
-#'    - y, the y coordinate of the animal;
-#' 2. The options dataframe describing All the options available to the animal over the entire
-#'   simulation duration. Columns include:
-#'    - a
-#'    - b
-#'    - c
-#' 3. ONWARDS... TESTING OUTPUTS Columns include:
-#'    - a
-#'    - b
+#' @return A list with the following components: 1. The location dataframe
+#'   describing all locations the animal occupied, where each row is equal to a
+#'   timestep. Columns include: - step, the step as a integer; - x, the x
+#'   coordinate of the animal; - y, the y coordinate of the animal; 2. The
+#'   options dataframe describing All the options available to the animal over
+#'   the entire simulation duration. Columns include: - a - b - c 3. ONWARDS...
+#'   TESTING OUTPUTS Columns include: - a - b
 #'
 #' @details PROVIDE DETAILS THAT WOULD GUIDE INPUTS. The function automatically
 #'   generates a list of seeds required for the *sampling_options* based upon

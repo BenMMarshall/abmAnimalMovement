@@ -1,6 +1,7 @@
 #' Find max
 #'
-#' @param vect
+#' @name find_max
+#' @param vect a
 #' @return chosen
 #'
 #' @useDynLib abmAnimalMovement

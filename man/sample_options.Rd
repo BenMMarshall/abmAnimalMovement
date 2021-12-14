@@ -12,18 +12,18 @@ sample_options(W, SEED)
 \item{SEED}{The seed to be used for the sampling.}
 }
 \value{
-An integer corresponding to the chosen weight in the initially provided
-vector. \strong{NOTE: indexing begins at 0 matching C++ convention}.
+An integer corresponding to the chosen weight in the initially
+provided vector. \strong{NOTE: indexing begins at 0 matching C++ convention}.
 }
 \description{
 The R function to call the C++ \emph{cpp_sample_options} function.
 }
 \details{
-A new seed must be passed each time the function is ran (for
-different answers). The C++ function internally set a random seed with the
-random C++ library (std::mt19937). Example code below provides a shorthand
-call to retrieve consistent seeds based upon an initial use of
-\emph{set.seed()}.
+If a weight of less than zero is provided the weight is set to zero.
+A new seed must be passed each time the function is ran (for different
+answers). The C++ function internally set a random seed with the random C++
+library (std::mt19937). Example code below provides a shorthand call to
+retrieve consistent seeds based upon an initial use of \emph{set.seed()}.
 }
 \examples{
 set.seed(2021)
