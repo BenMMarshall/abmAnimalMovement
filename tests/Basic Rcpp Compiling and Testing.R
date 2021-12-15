@@ -72,7 +72,7 @@ simRes <- abm_simulate(start = c(500,500),
                        steps = 24*60 *7,
                        des_options = 20,
                        options = 10,
-                       k_step = c(0.5, 4, 2),
+                       k_step = c(5, 4, 2),
                        s_step = c(0.5, 2, 1),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.01, 0.2, 0.05),
@@ -85,10 +85,10 @@ simRes <- abm_simulate(start = c(500,500),
 simRes
 
 plotBgEnv +
-  geom_point(data = data.frame(x = simRes$oall_x,
-                               y = simRes$oall_y,
-                               step = simRes$oall_step),
-            aes(x = x, y = y, colour = step), alpha = 0.05) +
+  # geom_point(data = data.frame(x = simRes$oall_x,
+  #                              y = simRes$oall_y,
+  #                              step = simRes$oall_step),
+  #           aes(x = x, y = y, colour = step), alpha = 0.05) +
   geom_path(data = data.frame(x = simRes$loc_x,
                                y = simRes$loc_y),
              aes(x = x, y = y), alpha = 0.15) +
@@ -97,6 +97,11 @@ plotBgEnv +
                                behave = simRes$loc_behave),
              aes(x = x, y = y, shape = as.factor(behave)),
              alpha = 0.45) +
+  geom_segment(data = data.frame(xend = simRes$desX,
+                                 yend = simRes$desY,
+                                 x = simRes$loc_x,
+                                 y = simRes$loc_y),
+    aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.25) +
   geom_point(data = data.frame(x = simRes$desX,
                                y = simRes$desY,
                                behave = simRes$loc_behave),

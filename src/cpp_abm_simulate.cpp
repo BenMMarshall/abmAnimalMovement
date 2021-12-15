@@ -130,9 +130,13 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> x_DesOptions(ndes);
   std::vector<double> y_DesOptions(ndes);
   std::vector<double> land_DesOptions(ndes);
+  // object for checking whether the animal should slow down because it's near
+  // the destination
+  double currDist;
   // a vector to hold the distance between options and the desintation
   double c_dist2;
   std::vector<double> distance_toDes(nopt);
+  double distInvert;
   std::vector<double> weights_toDes(nopt);
   // target destinations
   std::vector<double> desX_Locations(steps);
@@ -252,6 +256,11 @@ Rcpp::List cpp_abm_simulate(
       }
     }
 
+    // current distance from destination
+    c_dist2 = std::pow((x_DesOptions[chosenDes] - x_Locations[i-1]), 2) +
+      std::pow((y_DesOptions[chosenDes] - y_Locations[i-1]), 2);
+    currDist = std::sqrt(c_dist2);
+
     // MOVEMENT LOOP
     for(int j = 0; j < nopt; j++, a++){
 
@@ -264,13 +273,23 @@ Rcpp::List cpp_abm_simulate(
         continue;
       }
 
-      step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
-      Rcpp::Rcout << "StepLength: " << step << "; ";
+      if(currDist < 10){
+        step = Rcpp::rgamma(1, behave_k_step/100, behave_s_step)[0];
+        Rcpp::Rcout << "StepLength: " << step << "; ";
 
-      vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
-      Rcpp::Rcout << "VM ";
-      angle = vmdraw * 180/M_PI;
-      Rcpp::Rcout << "Angle: " << angle << "\n";
+        vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+        Rcpp::Rcout << "VM ";
+        angle = vmdraw * 180/M_PI;
+        Rcpp::Rcout << "Angle: " << angle << "\n";
+      } else {
+        step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+        Rcpp::Rcout << "StepLength: " << step << "; ";
+
+        vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+        Rcpp::Rcout << "VM ";
+        angle = vmdraw * 180/M_PI;
+        Rcpp::Rcout << "Angle: " << angle << "\n";
+      }
 
       x_Options[j] = x_Options[0] + cos(angle) * step;
       y_Options[j] = y_Options[0] + sin(angle) * step;
@@ -321,10 +340,12 @@ Rcpp::List cpp_abm_simulate(
     }
 
     for(int m; m < nopt; m++){
-      weights_toDes[m] = (distance_toDes[m] - dist_min) /
+      // first we have to invert it so ones closer to the destination are preferred
+      distInvert = abs(distance_toDes[m] - dist_max);
+      weights_toDes[m] = (distInvert - dist_min) /
         (dist_max - dist_min);
       // then combine them with the movement Matrix values
-      move_Options[m] = move_Options[m] + weights_toDes[m];
+      move_Options[m] = move_Options[m] + (weights_toDes[m] *2);
     }
 
     /* using the custom sample_options, we need to feed it a different seed each time,
