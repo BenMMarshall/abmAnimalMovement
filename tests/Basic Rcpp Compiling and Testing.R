@@ -39,15 +39,15 @@ table(sampleOut) / 10000
 
 # Matrix BG creation ------------------------------------------------------
 
-# envNoiseTest <- genLandscape_noise(1000, 1000)
+envNoiseTest <- genLandscape_noise(1000, 1000)
 # quick_plot_matrix(envNoiseTest)
 #
 # envGradMat <- genLandscape_gradient(1000, 1000)
 # quick_plot_matrix(envGradMat)
 
-landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
+# landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
 
-quick_plot_matrix(landcapeLayersList$memShelter)
+# quick_plot_matrix(landcapeLayersList$memShelter)
 
 # Select envMat to use ----------------------------------------------------
 

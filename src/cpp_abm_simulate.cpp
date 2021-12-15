@@ -4,6 +4,7 @@
 #include "cpp_vonmises.h"
 #include "cpp_sample_options.h"
 #include "cpp_cycle_draw.h"
+#include "cpp_get_values.h"
 
 //' @name cpp_abm_simulate
 //' @title cpp_abm_simulate
@@ -162,32 +163,93 @@ Rcpp::List cpp_abm_simulate(
     /* assigning the step and angle parameters
      depending on the behaviour */
     switch(behave_Locations[i]){
-    case 0:
-      behave_k_step = k_step[0];
-      behave_s_step = s_step[0];
-      behave_mu_angle = mu_angle[0];
-      behave_k_angle = k_angle[0];
-      break;
+      case 0:
+        behave_k_step = k_step[0];
+        behave_s_step = s_step[0];
+        behave_mu_angle = mu_angle[0];
+        behave_k_angle = k_angle[0];
+        break;
       case 1:
         behave_k_step = k_step[1];
         behave_s_step = s_step[1];
         behave_mu_angle = mu_angle[1];
         behave_k_angle = k_angle[1];
         break;
-        case 2:
-          behave_k_step = k_step[2];
-          behave_s_step = s_step[2];
-          behave_mu_angle = mu_angle[2];
-          behave_k_angle = k_angle[2];
-          break;
-          // default:
-          //   behave_k_step = k_step[0];
-          //   behave_s_step = s_step[0];
-          //   behave_mu_angle = mu_angle[0];
-          //   behave_k_angle = k_angle[0];
-          //   break;
+      case 2:
+        behave_k_step = k_step[2];
+        behave_s_step = s_step[2];
+        behave_mu_angle = mu_angle[2];
+        behave_k_angle = k_angle[2];
+        break;
+    // default:
+    //   behave_k_step = k_step[0];
+    //   behave_s_step = s_step[0];
+    //   behave_mu_angle = mu_angle[0];
+    //   behave_k_angle = k_angle[0];
+    //   break;
     }
     Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
+
+    // Once behaviour is know, animal will chose it's next destination
+    // for(int des = 0; des < nopt; des++){
+    //
+    //   x_DesOptions[0]
+    //   y_DesOptions[0]
+    //   step_Options[0]
+    //
+    //   /* NEED A SCALING FACTOR TO ADJUST THE DISTANCES AVAILABLE FOR DRAWING THe
+    //   DESINATIONS FROM */
+    //   /* PLACEHOLDER INCREASE OF 10 FOR THE TIME BEING, FIX WILL REQUIRE
+    //   SOMETHING TO UNITE TIME-SPACE-MOVEMENT */
+    //   step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
+    //   Rcpp::Rcout << "StepLength: " << step << "; ";
+    //
+    //   /* PLACEHOLDER ALLOWING A DESINATION IN ANY DIRECTION,
+    //   AGAIN AT THIS SCALE A LACK OF VELOCITY CORRELATION MAKES SENSE, BUT
+    //   IDEALLY SOMETHING LIKE A TRANSLATION WOULD MAKE MORE SENSE*/
+    //   vmdraw = cpp_vonmises(1, 0, 0.1)[0];
+    //   Rcpp::Rcout << "VM ";
+    //   angle = vmdraw * 180/M_PI;
+    //   Rcpp::Rcout << "Angle: " << angle << "\n";
+    //
+    //   // using the last location as start
+    //   x_DesOptions[des] = x_Locations[i-1] + cos(angle) * step;
+    //   y_DesOptions[des] = y_Locations[i-1] + sin(angle) * step;
+    //
+    //   // Now we get the appropriate values from the landscape layers
+    //   // for(int desVal = 0; desVal < nopt; desVal++){
+    //   //
+    //   //   xOpt = x_Options[desVal];
+    //   //   yOpt = y_Options[desVal];
+    //   //   // rounding the locations to correspond to matrix location
+    //   //   xOptIndex = std::floor(xOpt);
+    //   //   yOptIndex = std::floor(yOpt);
+    //   //
+    //   //   Rcpp::Rcout << "Option: " << k << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
+    //   //
+    //   //   // end function if animal leaves environmental data area
+    //   //   if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
+    //   //     Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+    //   //   }
+    //   //
+    //   //   // still using the numericMatrix Rcpp form here
+    //   //   enVal1_Options[desVal] = envMat1(xOptIndex, yOptIndex);
+    //   //
+    //   //   Rcpp::Rcout << "EnvVal: " << enVal1_Options[desVal] << "\n";
+    //   //
+    //   //   if(std::isnan(enVal1_Options[k])){
+    //   //     // printing error message
+    //   //     Rcpp::Rcerr << "NA in enviornmental data\n";
+    //   //   }
+    //   //
+    //   // }
+    //
+    //   // Now the animal choses a location based on weighted choice
+    //   chosen = cpp_sample_options(enVal1_Options, seeds[i-1]);
+    //
+    // }
+
+
 
     for(int j = 0; j < nopt; j++, a++){
 

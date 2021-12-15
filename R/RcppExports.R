@@ -53,6 +53,21 @@ cpp_cycle_draw <- function(TIME, A, M, PHI, TAU) {
     .Call('_abmAnimalMovement_cpp_cycle_draw', PACKAGE = 'abmAnimalMovement', TIME, A, M, PHI, TAU)
 }
 
+#' cpp_get_values
+#' @name cpp_get_values
+#' @param MATRIX
+#' @param XLOCS
+#' @param YLOCS
+#' @return A vector of values
+#' @details \eqn{\phi} must remain proportional to \eqn{\tau} if the cycle is to remained
+#'   sync with period. If not proportional the cycle with drift.
+#' @references ...
+NULL
+
+cpp_get_values <- function(MATRIX, XLOCS, YLOCS) {
+    .Call('_abmAnimalMovement_cpp_get_values', PACKAGE = 'abmAnimalMovement', MATRIX, XLOCS, YLOCS)
+}
+
 #' @title cpp_sample_options
 #' @name cpp_sample_options
 #' @description The C++ sample function that takes a vector of weights and
