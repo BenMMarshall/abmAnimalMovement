@@ -125,10 +125,15 @@ Rcpp::List cpp_abm_simulate(
 
 
   // DESINTATION OBJECTS -------------------------------------------------------
+  int chosenDes;
   Rcpp::NumericMatrix desMatrix;
   std::vector<double> x_DesOptions(ndes);
   std::vector<double> y_DesOptions(ndes);
   std::vector<double> land_DesOptions(ndes);
+  // a vector to hold the distance between options and the desintation
+  double c_dist2;
+  std::vector<double> distance_toDes(nopt);
+  std::vector<double> weights_toDes(nopt);
   //----------------------------------------------------------------------------
 
 
@@ -234,7 +239,7 @@ Rcpp::List cpp_abm_simulate(
       land_DesOptions = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
 
       // Now the animal choses a location based on weighted choice
-      chosen = cpp_sample_options(land_DesOptions, seeds[i-1]);
+      chosenDes = cpp_sample_options(land_DesOptions, seeds[i-1]);
 
     }
 
@@ -276,9 +281,43 @@ Rcpp::List cpp_abm_simulate(
 
     move_Options = cpp_get_values(moveMatrix, x_Options, y_Options);
 
+    /* here we need to adjust the movement objects so the animal prefers to head
+     * towards the chosen destination.
+     * a2 + b2 = c2
+     */
+    for(int k; k < nopt; k++){
+      c_dist2 = std::pow((x_DesOptions[chosenDes] - x_Options[k]), 2) +
+        std::pow((y_DesOptions[chosenDes] - y_Options[k]), 2);
+      distance_toDes[k] = std::sqrt(c_dist2);
+    }
+    /* now we need to normalise the distances to something compatible with the
+     * weighting for sample choice */
+    // (xi – min(x)) / (max(x) – min(x))
+    // find MIN
+    double dist_min = distance_toDes[0];
+    for(int l = 0; l < nopt; l++){
+      if(distance_toDes[l] < dist_min){
+        dist_min = distance_toDes[l];
+      }
+    }
+    // find MAX
+    double dist_max = distance_toDes[0];
+    for(int l = 0; l < nopt; l++){
+      if(distance_toDes[l] > dist_max){
+        dist_max = distance_toDes[l];
+      }
+    }
+
+    for(int m; m < nopt; m++){
+      weights_toDes[m] = (distance_toDes[m] - dist_min) /
+        (dist_max - dist_min);
+      // then combine them with the movement Matrix values
+      move_Options[m] = move_Options[m] + weights_toDes[m];
+    }
+
     /* using the custom sample_options, we need to feed it a different seed each time,
-     but overall those seeds are derived from the set.seed() in R prior to running
-     (see the R companion/set-up function .Call) */
+     * but overall those seeds are derived from the set.seed() in R prior to running
+     * (see the R companion/set-up function .Call) */
     chosen = cpp_sample_options(move_Options, seeds[i-1]);
 
     // for testing, pick the first options always, should mean the animal never moves

@@ -47,7 +47,7 @@ envNoiseTest <- genLandscape_noise(1000, 1000)
 
 landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
 
-quick_plot_matrix(landcapeLayersList$memShelter)
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
 
 # Select envMat to use ----------------------------------------------------
 
@@ -91,8 +91,9 @@ plotBgEnv +
                                y = simRes$loc_y),
              aes(x = x, y = y)) +
   geom_point(data = data.frame(x = simRes$loc_x,
-                               y = simRes$loc_y),
-             aes(x = x, y = y)) +
+                               y = simRes$loc_y,
+                               behave = simRes$loc_behave),
+             aes(x = x, y = y, shape = as.factor(behave))) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
