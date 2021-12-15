@@ -141,6 +141,7 @@ Rcpp::List cpp_abm_simulate(
   // target destinations
   std::vector<double> desX_Locations(steps);
   std::vector<double> desY_Locations(steps);
+  std::vector<double> desDist_Locations(steps);
   //----------------------------------------------------------------------------
 
 
@@ -260,6 +261,7 @@ Rcpp::List cpp_abm_simulate(
     c_dist2 = std::pow((x_DesOptions[chosenDes] - x_Locations[i-1]), 2) +
       std::pow((y_DesOptions[chosenDes] - y_Locations[i-1]), 2);
     currDist = std::sqrt(c_dist2);
+    desDist_Locations[i] = currDist;
 
     // MOVEMENT LOOP
     for(int j = 0; j < nopt; j++, a++){
@@ -375,6 +377,7 @@ Rcpp::List cpp_abm_simulate(
     // output for destinations
     Rcpp::Named("desX") = desX_Locations,
     Rcpp::Named("desY") = desY_Locations,
+    Rcpp::Named("desDist") = desDist_Locations,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,
