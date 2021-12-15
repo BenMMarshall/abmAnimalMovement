@@ -286,56 +286,12 @@ Rcpp::List cpp_abm_simulate(
 
     }
 
-    ////// ENVIRONMENTAL CHECK LOOP //////
-    /* for each of the options, check values in environment and use equation to pick next move */
-    for(int k = 0; k < nopt; k++){
-
-      xOpt = x_Options[k];
-      yOpt = y_Options[k];
-      // rounding the locations to correspond to matrix location
-      xOptIndex = std::floor(xOpt);
-      yOptIndex = std::floor(yOpt);
-
-      Rcpp::Rcout << "Option: " << k << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
-
-      // end function if animal leaves environmental data area
-      if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
-        Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-      }
-
-      // still using the numericMatrix Rcpp form here
-      enVal1_Options[k] = envMat1(xOptIndex, yOptIndex);
-
-      Rcpp::Rcout << "EnvVal: " << enVal1_Options[k] << "\n";
-
-      if(std::isnan(enVal1_Options[k])){
-        // printing error message
-        Rcpp::Rcerr << "NA in enviornmental data\n";
-      }
-
-    }
-    //////
-    // min = 0;
-    // finding the highest value and getting the index
-    // does mean that the animal will locate best spot and remain there
-    // for(int l = 0; l < nopt; l++){
-    //   curr = enVal1_Options[l];
-    //   if(curr > min){
-    //     min = curr;
-    //     chosen = l;
-    //   }
-    // }
+    enVal1_Options = cpp_get_values(envMat1, x_Options, y_Options);
 
     /* using the custom sample_options, we need to feed it a different seed each time,
      but overall those seeds are derived from the set.seed() in R prior to running
      (see the R companion/set-up function .Call) */
     chosen = cpp_sample_options(enVal1_Options, seeds[i-1]);
-
-    /* Choices to sample from ample data, there is a Rcpp sugar function sample that could help
-     Rcpp::sample(choicesVec, 1, false, enVal1_Options) */
-
-    // old uniform choice doesn't use any environmental input and can pick multiple new locations
-    // chosen = round(Rcpp::runif(1, 0, nopt-1)[0]);
 
     // for testing, pick the first options always, should mean the animal never moves
     // chosen = 0;
@@ -343,16 +299,6 @@ Rcpp::List cpp_abm_simulate(
     // chosen = 1;
     // chosen = 2;
 
-    // non Rcpp attempt to randomly sample, there is no weighting of choice however
-    // std::srand(std::time(0)); // use current time as seed for random generator
-    // int random_pos = std::rand() % choicesVec.size();
-    // chosen = choicesVec[random_pos];
-
-
-
-    // chosen = Rcpp::sample(choicesVec, 1, false, enVal1_Options);
-    // add choice to vector of choices, each location == step
-    // -1 is there because initial cycle starts at 1
     chosen_Options[i] = chosen;
 
     x_Locations[i] = x_Options[chosen];
