@@ -47,8 +47,8 @@ envNoiseTest <- genLandscape_noise(1000, 1000)
 
 landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
 
-# plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
-plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # Select envMat to use ----------------------------------------------------
@@ -58,9 +58,9 @@ plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
 
 # Generate transitional matrix  --------------------------------------------
 
-b0 <- c(0.95, 0.008, 0.004)
-b1 <- c(0.005, 0.98, 0.12)
-b2 <- c(0.005, 0.23, 0.95)
+b0 <- c(0.95, 0.008, 0.008) # rest
+b1 <- c(0.0005, 0.98, 0.005) # explore/move
+b2 <- c(0.0005, 0.005, 0.95) # forage
 
 behaveMatTest <- rbind(b0, b1, b2)
 
@@ -70,14 +70,14 @@ behaveMatTest[1,]
 
 simRes <- abm_simulate(start = c(500,500),
                        steps = 24*60 *7,
-                       des_options = 100,
+                       des_options = 20,
                        options = 10,
                        k_step = c(0.5, 4, 2),
                        s_step = c(0.5, 2, 1),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.01, 0.2, 0.05),
                        behave_Tmat = behaveMatTest,
-                       rest_Cycle = c(0.5, 0.25, 24, 12),
+                       rest_Cycle = c(0.5, 0.05, 24, 12),
                        memShelterMatrix = landcapeLayersList$memShelter,
                        forageMatrix = landcapeLayersList$forage,
                        move_Options = landcapeLayersList$shelter) # just using a shelter layer for testing
@@ -96,6 +96,12 @@ plotBgEnv +
                                y = simRes$loc_y,
                                behave = simRes$loc_behave),
              aes(x = x, y = y, shape = as.factor(behave)),
+             alpha = 0.45) +
+  geom_point(data = data.frame(x = simRes$desX,
+                               y = simRes$desY,
+                               behave = simRes$loc_behave),
+             aes(x = x, y = y, shape = as.factor(behave)),
+             size = 2, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +

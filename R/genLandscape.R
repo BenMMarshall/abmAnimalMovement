@@ -87,7 +87,7 @@ genLandscape_quickTriple <- function(row, col, seed){
 
   # this adds a buffer around the points for sites that are larger than a single
   # cell, e.g., a foraging area, or badger set
-  distanceRast[distanceRast[] < max(distanceRast[])-20] <- NA
+  distanceRast[distanceRast[] < max(distanceRast[])-100] <- NA
   # set min 0 max 1, normalise the values between 1 and 0
   distanceRast[] <- (distanceRast[] - min(distanceRast[], na.rm = TRUE)) /
     (max(distanceRast[], na.rm = TRUE) - min(distanceRast[], na.rm = TRUE))

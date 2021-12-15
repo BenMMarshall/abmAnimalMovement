@@ -134,6 +134,9 @@ Rcpp::List cpp_abm_simulate(
   double c_dist2;
   std::vector<double> distance_toDes(nopt);
   std::vector<double> weights_toDes(nopt);
+  // target destinations
+  std::vector<double> desX_Locations(steps);
+  std::vector<double> desY_Locations(steps);
   //----------------------------------------------------------------------------
 
 
@@ -143,6 +146,9 @@ Rcpp::List cpp_abm_simulate(
   x_OptionsAll[0] = startx;
   y_OptionsAll[0] = starty;
   step_OptionsAll[0] = 0;
+  desX_Locations[0] = startx;
+  desY_Locations[0] = starty;
+
   for(int i = 1, a = 1; i < n; i++){
     Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
@@ -215,7 +221,8 @@ Rcpp::List cpp_abm_simulate(
 
     // DESINTATION LOOP
     // Once behaviour is know, animal will chose it's next destination
-    if(i-1 % (12*60) == 0){ /// Test to see if we can pick out a new desintation every 12 hours
+    // if(i-1 % (12*60) == 0){ /// Test to see if we can pick out a new destination every 12 hours
+    if(i == 1 | !behave_Locations[i] == behave_Locations[i-1]){
       for(int des = 0; des < ndes; des++){
 
         /* NEED A SCALING FACTOR TO ADJUST THE DISTANCES AVAILABLE FOR DRAWING THe
@@ -283,6 +290,9 @@ Rcpp::List cpp_abm_simulate(
 
     move_Options = cpp_get_values(moveMatrix, x_Options, y_Options);
 
+    // record the target destination at each time step
+    desX_Locations[i] = x_DesOptions[chosenDes];
+    desY_Locations[i] = y_DesOptions[chosenDes];
     /* here we need to adjust the movement objects so the animal prefers to head
      * towards the chosen destination.
      * a2 + b2 = c2
@@ -341,6 +351,9 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_y") = y_Locations,
     Rcpp::Named("loc_step") = step_Locations,
     Rcpp::Named("loc_behave") = behave_Locations,
+    // output for destinations
+    Rcpp::Named("desX") = desX_Locations,
+    Rcpp::Named("desY") = desY_Locations,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,
