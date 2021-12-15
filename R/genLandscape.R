@@ -72,7 +72,7 @@ genLandscape_quickTriple <- function(row, col, seed){
   randomLocs <- data.frame("x" = sample(400:800, 200, replace = FALSE),
                            "y" = sample(400:800, 200, replace = FALSE))
   # see the "shelter quality" at each location
-  randomLocs$shelterVals <- extract(shelterQual, SpatialPoints(randomLocs))
+  randomLocs$shelterVals <- raster::extract(shelterQual, sp::SpatialPoints(randomLocs))
   # only look at those in good places
   randomLocs <- randomLocs[randomLocs$shelterVals > 0.5,]
   # randomly select 5
@@ -80,7 +80,7 @@ genLandscape_quickTriple <- function(row, col, seed){
                                  sample(randomLocs$shelterVals, 5, prob = randomLocs$shelterVals),]
 
   # build a distance raster for them
-  distanceRast <- distanceFromPoints(shelterQual, xy = chosenShelters[,c("x","y")])
+  distanceRast <- raster::distanceFromPoints(shelterQual, xy = chosenShelters[,c("x","y")])
 
   # invert the raster so the higher values work with highly liklihood of usage
   distanceRast[] <- abs(distanceRast[] - max(distanceRast[]))
@@ -95,8 +95,14 @@ genLandscape_quickTriple <- function(row, col, seed){
   distanceRast[is.na(distanceRast[])] <- 0
 
   return(list(
-    "forage" = forageQual,
-    "shelter" = shelterQual,
-    "memShelter" = distanceRast
+    "shelter" = matrix(data = raster::getValues(shelterQual),
+                       nrow = row,
+                       ncol = col),
+    "memShelter" = matrix(data = raster::getValues(distanceRast),
+                          nrow = row,
+                          ncol = col),
+    "forage" = matrix(data = raster::getValues(forageQual),
+                      nrow = row,
+                      ncol = col)
   ))
 }

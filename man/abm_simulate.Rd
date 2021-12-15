@@ -39,7 +39,7 @@ draw turn angles for each behavioural state. A vector of length 3.}
 distribution used to draw turn angles for each behavioural state. A vector
 of length 3.}
 
-\item{behave_Tmat}{Base transisition matrix for 3 behavioural states}
+\item{behave_Tmat}{Base transition matrix for 3 behavioural states}
 
 \item{rest_Cycle}{A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 define the resting/active cycle. Ideal for defining circadian rhythm.}
