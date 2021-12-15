@@ -8,6 +8,7 @@
 #'   of the start location.
 #' @param steps The number of time steps to be simulated, where each step is
 #'   equal to ------ ----.
+#' @param des_options
 #' @param options The number of options the animal considers at each step.
 #' @param k_step The shape parameters (k) for the gamma distribution describing
 #'   step length for each behavioural state. A vector of length 3.
@@ -21,7 +22,9 @@
 #' @param behave_Tmat Base transition matrix for 3 behavioural states
 #' @param rest_Cycle A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 #'   define the resting/active cycle. Ideal for defining circadian rhythm.
-#' @param envMat1 TESTING ENVIRONMENTAL LAYER, A matrix.
+#' @param memShelterMatrix
+#' @param forageMatrix
+#' @param move_Options
 #'
 #' @return A list with the following components: 1. The location dataframe
 #'   describing all locations the animal occupied, where each row is equal to a
@@ -38,8 +41,11 @@
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
-                       k_angle, behave_Tmat, rest_Cycle, envMat1){
+abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_angle,
+                       k_angle, behave_Tmat, rest_Cycle,
+                       memShelterMatrix,
+                       forageMatrix,
+                       move_Options){
   # split the vector of start location x and y
   startxIN <- start[1]
   startyIN <- start[2]
@@ -55,6 +61,7 @@ abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
     startx = startxIN,
     starty = startyIN,
     steps = steps,
+    des_options = des_options,
     options = options,
     k_step = k_step,
     s_step = s_step,
@@ -67,7 +74,9 @@ abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
     rest_Cycle_M = rest_Cycle[2],
     rest_Cycle_PHI = rest_Cycle[3],
     rest_Cycle_TAU = rest_Cycle[4],
-    envMat1 = envMat1,
+    memShelterMatrix = memShelterMatrix,
+    forageMatrix = forageMatrix,
+    move_Options = move_Options,
     seeds = sapply(1:steps, function(x){
       get_seed()
     }) # make sure we have enough seeds for each time sample_options is used
@@ -82,7 +91,8 @@ abm_simulate <- function(start, steps, options, k_step, s_step, mu_angle,
   return(res)
 }
 
-run_abm_simulate <- function(startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
+run_abm_simulate <- function(startx, starty, steps, des_options, options,
+                             k_step, s_step, mu_angle, k_angle,
                              b0_Options,
                              b1_Options,
                              b2_Options,
@@ -90,9 +100,12 @@ run_abm_simulate <- function(startx, starty, steps, options, k_step, s_step, mu_
                              rest_Cycle_M,
                              rest_Cycle_PHI,
                              rest_Cycle_TAU,
-                             envMat1, seeds){
+                             memShelterMatrix,
+                             forageMatrix,
+                             move_Options,
+                             seeds){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
-        startx, starty, steps, options, k_step, s_step, mu_angle, k_angle,
+        startx, starty, steps, des_options, options, k_step, s_step, mu_angle, k_angle,
         b0_Options,
         b1_Options,
         b2_Options,
@@ -100,6 +113,9 @@ run_abm_simulate <- function(startx, starty, steps, options, k_step, s_step, mu_
         rest_Cycle_M,
         rest_Cycle_PHI,
         rest_Cycle_TAU,
-        envMat1, seeds)
+        memShelterMatrix,
+        forageMatrix,
+        move_Options,
+        seeds)
 }
 

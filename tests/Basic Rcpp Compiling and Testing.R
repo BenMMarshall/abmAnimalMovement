@@ -45,14 +45,14 @@ envNoiseTest <- genLandscape_noise(1000, 1000)
 # envGradMat <- genLandscape_gradient(1000, 1000)
 # quick_plot_matrix(envGradMat)
 
-# landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
+landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
 
-# quick_plot_matrix(landcapeLayersList$memShelter)
+quick_plot_matrix(landcapeLayersList$memShelter)
 
 # Select envMat to use ----------------------------------------------------
 
-envMatTest <- envNoiseTest
-plotBgEnv <- quick_plot_matrix(envMatTest)
+# envMatTest <- envNoiseTest
+# plotBgEnv <- quick_plot_matrix(envMatTest)
 
 # Generate transitional matrix  --------------------------------------------
 
@@ -68,14 +68,17 @@ behaveMatTest[1,]
 
 simRes <- abm_simulate(start = c(500,500),
                        steps = 48*60,
+                       des_options = 20,
                        options = 10,
-                       k_step = c(0.5, 1, 4),
-                       s_step = c(0.5, 1, 2),
+                       k_step = c(0.5, 4, 2),
+                       s_step = c(0.5, 2, 1),
                        mu_angle = c(0, 0, 0),
-                       k_angle = c(0.01, 0.05, 0.2),
+                       k_angle = c(0.01, 0.2, 0.05),
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.5, 0.25, 24, 12),
-                       envMat1 = envMatTest)
+                       memShelterMatrix = landcapeLayersList$memShelter,
+                       forageMatrix = landcapeLayersList$forage,
+                       move_Options = landcapeLayersList$shelter) # just using a shelter layer for testing
 
 simRes
 
