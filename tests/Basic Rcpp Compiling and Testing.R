@@ -47,7 +47,9 @@ envNoiseTest <- genLandscape_noise(1000, 1000)
 
 landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
 
-plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # Select envMat to use ----------------------------------------------------
 
@@ -67,8 +69,8 @@ behaveMatTest[1,]
 # Random walk testing -----------------------------------------------------
 
 simRes <- abm_simulate(start = c(500,500),
-                       steps = 48*60,
-                       des_options = 20,
+                       steps = 24*60 *7,
+                       des_options = 100,
                        options = 10,
                        k_step = c(0.5, 4, 2),
                        s_step = c(0.5, 2, 1),
@@ -86,14 +88,15 @@ plotBgEnv +
   geom_point(data = data.frame(x = simRes$oall_x,
                                y = simRes$oall_y,
                                step = simRes$oall_step),
-            aes(x = x, y = y, colour = step)) +
+            aes(x = x, y = y, colour = step), alpha = 0.05) +
   geom_path(data = data.frame(x = simRes$loc_x,
                                y = simRes$loc_y),
-             aes(x = x, y = y)) +
+             aes(x = x, y = y), alpha = 0.15) +
   geom_point(data = data.frame(x = simRes$loc_x,
                                y = simRes$loc_y,
                                behave = simRes$loc_behave),
-             aes(x = x, y = y, shape = as.factor(behave))) +
+             aes(x = x, y = y, shape = as.factor(behave)),
+             alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +

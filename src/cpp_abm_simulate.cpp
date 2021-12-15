@@ -215,32 +215,34 @@ Rcpp::List cpp_abm_simulate(
 
     // DESINTATION LOOP
     // Once behaviour is know, animal will chose it's next destination
-    for(int des = 0; des < ndes; des++){
+    if(i-1 % (12*60) == 0){ /// Test to see if we can pick out a new desintation every 12 hours
+      for(int des = 0; des < ndes; des++){
 
-      /* NEED A SCALING FACTOR TO ADJUST THE DISTANCES AVAILABLE FOR DRAWING THe
-      DESINATIONS FROM */
-      /* PLACEHOLDER INCREASE OF 10 FOR THE TIME BEING, FIX WILL REQUIRE
-      SOMETHING TO UNITE TIME-SPACE-MOVEMENT */
-      step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
-      Rcpp::Rcout << "StepLength: " << step << "; ";
+        /* NEED A SCALING FACTOR TO ADJUST THE DISTANCES AVAILABLE FOR DRAWING THe
+         DESINATIONS FROM */
+        /* PLACEHOLDER INCREASE OF 10 FOR THE TIME BEING, FIX WILL REQUIRE
+         SOMETHING TO UNITE TIME-SPACE-MOVEMENT */
+        step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
+        Rcpp::Rcout << "StepLength: " << step << "; ";
 
-      /* PLACEHOLDER ALLOWING A DESINATION IN ANY DIRECTION,
-      AGAIN AT THIS SCALE A LACK OF VELOCITY CORRELATION MAKES SENSE, BUT
-      IDEALLY SOMETHING LIKE A TRANSLATION WOULD MAKE MORE SENSE*/
-      vmdraw = cpp_vonmises(1, 0, 0.1)[0];
-      Rcpp::Rcout << "VM ";
-      angle = vmdraw * 180/M_PI;
-      Rcpp::Rcout << "Angle: " << angle << "\n";
+        /* PLACEHOLDER ALLOWING A DESINATION IN ANY DIRECTION,
+         AGAIN AT THIS SCALE A LACK OF VELOCITY CORRELATION MAKES SENSE, BUT
+         IDEALLY SOMETHING LIKE A TRANSLATION WOULD MAKE MORE SENSE*/
+        vmdraw = cpp_vonmises(1, 0, 0.1)[0];
+        Rcpp::Rcout << "VM ";
+        angle = vmdraw * 180/M_PI;
+        Rcpp::Rcout << "Angle: " << angle << "\n";
 
-      // using the last location as start
-      x_DesOptions[des] = x_Locations[i-1] + cos(angle) * step;
-      y_DesOptions[des] = y_Locations[i-1] + sin(angle) * step;
+        // using the last location as start
+        x_DesOptions[des] = x_Locations[i-1] + cos(angle) * step;
+        y_DesOptions[des] = y_Locations[i-1] + sin(angle) * step;
 
-      land_DesOptions = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
+        land_DesOptions = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
 
-      // Now the animal choses a location based on weighted choice
-      chosenDes = cpp_sample_options(land_DesOptions, seeds[i-1]);
+        // Now the animal choses a location based on weighted choice
+        chosenDes = cpp_sample_options(land_DesOptions, seeds[i-1]);
 
+      }
     }
 
     // MOVEMENT LOOP
