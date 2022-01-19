@@ -5,6 +5,7 @@
 \alias{genLandscape_noise}
 \alias{genLandscape_gradient}
 \alias{quick_plot_matrix}
+\alias{genLandscape_quickTriple}
 \title{Quick generate test landscapes}
 \usage{
 genLandscape_noise(row, col)
@@ -12,6 +13,8 @@ genLandscape_noise(row, col)
 genLandscape_gradient(row, col)
 
 quick_plot_matrix(mat)
+
+genLandscape_quickTriple(row, col, seed)
 }
 \arguments{
 \item{row, col}{number of rows and columns of the final matrix. Beware the

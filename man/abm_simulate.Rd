@@ -7,6 +7,7 @@
 abm_simulate(
   start,
   steps,
+  des_options,
   options,
   k_step,
   s_step,
@@ -14,7 +15,9 @@ abm_simulate(
   k_angle,
   behave_Tmat,
   rest_Cycle,
-  envMat1
+  memShelterMatrix,
+  forageMatrix,
+  move_Options
 )
 }
 \arguments{
@@ -39,12 +42,12 @@ draw turn angles for each behavioural state. A vector of length 3.}
 distribution used to draw turn angles for each behavioural state. A vector
 of length 3.}
 
-\item{behave_Tmat}{Base transisition matrix for 3 behavioural states}
+\item{behave_Tmat}{Base transition matrix for 3 behavioural states}
 
 \item{rest_Cycle}{A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 define the resting/active cycle. Ideal for defining circadian rhythm.}
 
-\item{envMat1}{TESTING ENVIRONMENTAL LAYER, A matrix.}
+\item{move_Options}{}
 }
 \value{
 A list with the following components: 1. The location dataframe

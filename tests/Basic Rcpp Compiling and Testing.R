@@ -32,7 +32,7 @@ sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
 for(i in 1:10000){
-  sampleOut[i] <- sample_options(c(0.25, -0.2, 1, 0.05, 0.05), get_seed())
+  sampleOut[i] <- sample_options(c(2, -0.2, 5, 0.5, 0.05), get_seed())
 }
 hist(sampleOut)
 table(sampleOut) / 10000
@@ -40,21 +40,27 @@ table(sampleOut) / 10000
 # Matrix BG creation ------------------------------------------------------
 
 envNoiseTest <- genLandscape_noise(1000, 1000)
-quick_plot_matrix(envNoiseTest)
+# quick_plot_matrix(envNoiseTest)
+#
+# envGradMat <- genLandscape_gradient(1000, 1000)
+# quick_plot_matrix(envGradMat)
 
-envGradMat <- genLandscape_gradient(1000, 1000)
-quick_plot_matrix(envGradMat)
+landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
+
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # Select envMat to use ----------------------------------------------------
 
-envMatTest <- envNoiseTest
-plotBgEnv <- quick_plot_matrix(envMatTest)
+# envMatTest <- envNoiseTest
+# plotBgEnv <- quick_plot_matrix(envMatTest)
 
 # Generate transitional matrix  --------------------------------------------
 
-b0 <- c(0.95, 0.008, 0.004)
-b1 <- c(0.005, 0.98, 0.12)
-b2 <- c(0.005, 0.23, 0.95)
+b0 <- c(0.95, 0.008, 0.008) # rest
+b1 <- c(0.0005, 0.98, 0.005) # explore/move
+b2 <- c(0.0005, 0.005, 0.95) # forage
 
 behaveMatTest <- rbind(b0, b1, b2)
 
@@ -63,44 +69,60 @@ behaveMatTest[1,]
 # Random walk testing -----------------------------------------------------
 
 simRes <- abm_simulate(start = c(500,500),
-                       steps = 48*60,
+                       steps = 24*60 *7,
+                       des_options = 20,
                        options = 10,
-                       k_step = c(0.5, 1, 4),
-                       s_step = c(0.5, 1, 2),
+                       k_step = c(5, 4, 2),
+                       s_step = c(0.5, 2, 1),
                        mu_angle = c(0, 0, 0),
-                       k_angle = c(0.01, 0.05, 0.2),
+                       k_angle = c(0.01, 0.2, 0.05),
                        behave_Tmat = behaveMatTest,
-                       rest_Cycle = c(0.5, 0.25, 24, 12),
-                       envMat1 = envMatTest)
+                       rest_Cycle = c(0.5, 0.05, 24, 12),
+                       memShelterMatrix = landcapeLayersList$memShelter,
+                       forageMatrix = landcapeLayersList$forage,
+                       move_Options = landcapeLayersList$shelter) # just using a shelter layer for testing
 
 simRes
 
 plotBgEnv +
-  geom_point(data = data.frame(x = simRes$oall_x,
-                               y = simRes$oall_y,
-                               step = simRes$oall_step),
-            aes(x = x, y = y, colour = step)) +
+  # geom_point(data = data.frame(x = simRes$oall_x,
+  #                              y = simRes$oall_y,
+  #                              step = simRes$oall_step),
+  #           aes(x = x, y = y, colour = step), alpha = 0.05) +
   geom_path(data = data.frame(x = simRes$loc_x,
                                y = simRes$loc_y),
-             aes(x = x, y = y)) +
+             aes(x = x, y = y), alpha = 0.15) +
   geom_point(data = data.frame(x = simRes$loc_x,
-                               y = simRes$loc_y),
-             aes(x = x, y = y)) +
+                               y = simRes$loc_y,
+                               behave = simRes$loc_behave),
+             aes(x = x, y = y, shape = as.factor(behave)),
+             alpha = 0.45) +
+  geom_segment(data = data.frame(xend = simRes$desX,
+                                 yend = simRes$desY,
+                                 x = simRes$loc_x,
+                                 y = simRes$loc_y),
+    aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.25) +
+  geom_point(data = data.frame(x = simRes$desX,
+                               y = simRes$desY,
+                               behave = simRes$loc_behave),
+             aes(x = x, y = y, shape = as.factor(behave)),
+             size = 2, colour = "red",
+             alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
-basicRes$loc_behave
-behaveTrans <- list("vector", length(basicRes$loc_behave))
-behaveTransDF <- data.frame("behaveS" = rep(NA, length(basicRes$loc_behave)),
-                            "behaveE" = rep(NA, length(basicRes$loc_behave)))
-for(i in 1:length(basicRes$loc_behave)){
+simRes$loc_behave
+behaveTrans <- list("vector", length(simRes$loc_behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$loc_behave)),
+                            "behaveE" = rep(NA, length(simRes$loc_behave)))
+for(i in 1:length(simRes$loc_behave)){
 
-  behaveTransDF[i,"behaveS"] <- basicRes$loc_behave[i]
-  behaveTransDF[i,"behaveE"] <- basicRes$loc_behave[i+1]
+  behaveTransDF[i,"behaveS"] <- simRes$loc_behave[i]
+  behaveTransDF[i,"behaveE"] <- simRes$loc_behave[i+1]
 
-  behaveTrans[i] <- paste0(basicRes$loc_behave[i], "->", basicRes$loc_behave[i+1])
+  behaveTrans[i] <- paste0(simRes$loc_behave[i], "->", simRes$loc_behave[i+1])
 }
 table(unlist(behaveTrans))
 
