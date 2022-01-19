@@ -11,7 +11,7 @@ library(scico)
 
 # Basic Rcpp Compiling and Testing ----------------------------------------
 
-set.seed(2021)
+set.seed(2022)
 
 # so this works, remember that the index should be one lower cos Cpp starts at zero
 find_max(vect = c(4,6,5))
@@ -37,18 +37,30 @@ for(i in 1:10000){
 hist(sampleOut)
 table(sampleOut) / 10000
 
+
+# Dist to des normalise ---------------------------------------------------
+
+# distsTests <- c(50,20,324,234,683,29,101)
+distsTests <- rgamma(20, 5, 0.5)
+
+distInvert = abs(distsTests - max(distsTests))
+weights_toDes = (distInvert - min(distsTests)) /
+  (max(distsTests) - min(distsTests))
+
+weights_toDes^2
+
 # Matrix BG creation ------------------------------------------------------
 
-envNoiseTest <- genLandscape_noise(1000, 1000)
+envNoiseTest <- genLandscape_noise(2000, 2000)
 # quick_plot_matrix(envNoiseTest)
 #
 # envGradMat <- genLandscape_gradient(1000, 1000)
 # quick_plot_matrix(envGradMat)
 
-landcapeLayersList <- genLandscape_quickTriple(1000, 1000, seed = 1)
+landcapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 
-plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
-# plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # Select envMat to use ----------------------------------------------------
@@ -68,14 +80,14 @@ behaveMatTest[1,]
 
 # Random walk testing -----------------------------------------------------
 
-simRes <- abm_simulate(start = c(500,500),
+simRes <- abm_simulate(start = c(1000,1000),
                        steps = 24*60 *7,
                        des_options = 20,
-                       options = 10,
+                       options = 12,
                        k_step = c(5, 4, 2),
                        s_step = c(0.5, 2, 1),
                        mu_angle = c(0, 0, 0),
-                       k_angle = c(0.01, 0.2, 0.05),
+                       k_angle = c(0.1, 0.2, 0.05),
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.5, 0.05, 24, 12),
                        memShelterMatrix = landcapeLayersList$memShelter,
@@ -85,10 +97,10 @@ simRes <- abm_simulate(start = c(500,500),
 simRes
 
 plotBgEnv +
-  # geom_point(data = data.frame(x = simRes$oall_x,
-  #                              y = simRes$oall_y,
-  #                              step = simRes$oall_step),
-  #           aes(x = x, y = y, colour = step), alpha = 0.05) +
+  geom_point(data = data.frame(x = simRes$oall_x,
+                               y = simRes$oall_y,
+                               step = simRes$oall_step),
+            aes(x = x, y = y), alpha = 0.05, colour = "orange") +
   geom_path(data = data.frame(x = simRes$loc_x,
                                y = simRes$loc_y),
              aes(x = x, y = y), alpha = 0.15) +
@@ -101,7 +113,7 @@ plotBgEnv +
                                  yend = simRes$desY,
                                  x = simRes$loc_x,
                                  y = simRes$loc_y),
-    aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.25) +
+    aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
   geom_point(data = data.frame(x = simRes$desX,
                                y = simRes$desY,
                                behave = simRes$loc_behave),
@@ -109,7 +121,7 @@ plotBgEnv +
              size = 2, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
-  coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
+  # coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
