@@ -113,16 +113,16 @@ plotBgEnv +
   theme_bw() +
   theme(aspect.ratio = 1)
 
-basicRes$loc_behave
-behaveTrans <- list("vector", length(basicRes$loc_behave))
-behaveTransDF <- data.frame("behaveS" = rep(NA, length(basicRes$loc_behave)),
-                            "behaveE" = rep(NA, length(basicRes$loc_behave)))
-for(i in 1:length(basicRes$loc_behave)){
+simRes$loc_behave
+behaveTrans <- list("vector", length(simRes$loc_behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$loc_behave)),
+                            "behaveE" = rep(NA, length(simRes$loc_behave)))
+for(i in 1:length(simRes$loc_behave)){
 
-  behaveTransDF[i,"behaveS"] <- basicRes$loc_behave[i]
-  behaveTransDF[i,"behaveE"] <- basicRes$loc_behave[i+1]
+  behaveTransDF[i,"behaveS"] <- simRes$loc_behave[i]
+  behaveTransDF[i,"behaveE"] <- simRes$loc_behave[i+1]
 
-  behaveTrans[i] <- paste0(basicRes$loc_behave[i], "->", basicRes$loc_behave[i+1])
+  behaveTrans[i] <- paste0(simRes$loc_behave[i], "->", simRes$loc_behave[i+1])
 }
 table(unlist(behaveTrans))
 
