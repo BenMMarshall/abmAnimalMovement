@@ -32,7 +32,7 @@ sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
 
 sampleOut <- NULL
 for(i in 1:10000){
-  sampleOut[i] <- sample_options(c(0.25, -0.2, 1, 0.05, 0.05), get_seed())
+  sampleOut[i] <- sample_options(c(2, -0.2, 5, 0.5, 0.05), get_seed())
 }
 hist(sampleOut)
 table(sampleOut) / 10000
