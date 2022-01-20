@@ -35,9 +35,9 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
     Rcpp::Rcout << "Option: " << loc << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
 
     // end function if animal leaves environmental data area
-    if( (xOptIndex > mcols) | (yOptIndex > mrows) ){
-      Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-    }
+    // if( (xOptIndex > mcols) | (yOptIndex > mrows) | (xOptIndex < 0) | (yOptIndex < 0) ){
+    //   Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
+    // }
 
     // still using the numericMatrix Rcpp form here
     OUTPUT_VALUES[loc] = MATRIX(xOptIndex, yOptIndex);

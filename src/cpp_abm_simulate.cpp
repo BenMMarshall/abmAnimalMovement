@@ -60,7 +60,7 @@ Rcpp::List cpp_abm_simulate(
   int ndes = des_options;
   int nopt = options;
 
-  // location for the step and angle for each choice or desination
+  // location for the step and angle for each choice or destination
   double angle;
   double step;
 
@@ -92,6 +92,7 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> x_OptionsAll(nopt*steps);
   std::vector<double> y_OptionsAll(nopt*steps);
   std::vector<int> step_OptionsAll(nopt*steps);
+  std::vector<double> stepAll(nopt*steps);
 
   // REALISED MOVEMENT OBJECTS
   // Rcpp::NumericMatrix locMatrix(steps, 2);
@@ -133,15 +134,15 @@ Rcpp::List cpp_abm_simulate(
   // object for checking whether the animal should slow down because it's near
   // the destination
   double currDist;
-  // a vector to hold the distance between options and the desintation
+  // a vector to hold the distance between options and the destination
   double c_dist2;
+  double c_dist;
   std::vector<double> distance_toDes(nopt);
   double distInvert;
   std::vector<double> weights_toDes(nopt);
   // target destinations
-  std::vector<double> desX_Locations(steps);
-  std::vector<double> desY_Locations(steps);
-  std::vector<double> desDist_Locations(steps);
+  double centre_x = 1020;
+  double centre_y = 1020;
   //----------------------------------------------------------------------------
 
 
@@ -151,8 +152,6 @@ Rcpp::List cpp_abm_simulate(
   x_OptionsAll[0] = startx;
   y_OptionsAll[0] = starty;
   step_OptionsAll[0] = 0;
-  desX_Locations[0] = startx;
-  desY_Locations[0] = starty;
 
   for(int i = 1, a = 1; i < n; i++){
     Rcpp::Rcout << "---- Step: " << i << " ----\n";
@@ -167,11 +166,6 @@ Rcpp::List cpp_abm_simulate(
       rest_Cycle_M,
       rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
       rest_Cycle_TAU);
-
-    // a check to see if the animal has reached it's destination and therefore
-    // is ready for a behaviour switch.
-    // if(currDist < 50 | i == 1){
-
 
       /* switch to use a given set of transition probabilities that change
        depending on the previous behavioural state*/
@@ -229,47 +223,10 @@ Rcpp::List cpp_abm_simulate(
       }
       Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
 
-      // DESINTATION LOOP
-      // Once behaviour is know, animal will chose it's next destination
-      // if(i-1 % (12*60) == 0){ /// Test to see if we can pick out a new destination every 12 hours
-      if(i == 1 | !behave_Locations[i] == behave_Locations[i-1]){
-        for(int des = 0; des < ndes; des++){
-
-          /* NEED A SCALING FACTOR TO ADJUST THE DISTANCES AVAILABLE FOR DRAWING THe
-           DESINATIONS FROM */
-          /* PLACEHOLDER INCREASE OF 2 FOR THE TIME BEING, FIX WILL REQUIRE
-           SOMETHING TO UNITE TIME-SPACE-MOVEMENT */
-          /* PLACEHODLER NUMBERS FOR TESTING */
-          step = Rcpp::rgamma(1, 2, 1)[0];
-          // Rcpp::Rcout << "StepLength: " << step << "; ";
-
-          /* PLACEHOLDER ALLOWING A DESINATION IN ANY DIRECTION,
-           AGAIN AT THIS SCALE A LACK OF VELOCITY CORRELATION MAKES SENSE, BUT
-           IDEALLY SOMETHING LIKE A TRANSLATION WOULD MAKE MORE SENSE*/
-          vmdraw = cpp_vonmises(1, 0, 0.1)[0];
-          // Rcpp::Rcout << "VM ";
-          angle = vmdraw * 180/M_PI;
-          // Rcpp::Rcout << "Angle: " << angle << "\n";
-
-          // using the last location as start
-          x_DesOptions[des] = x_Locations[i-1] + cos(angle) * step;
-          y_DesOptions[des] = y_Locations[i-1] + sin(angle) * step;
-
-          land_DesOptions = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
-
-          // Now the animal choses a location based on weighted choice
-          chosenDes = cpp_sample_options(land_DesOptions, seeds[i-1]);
-
-        }
-      }
-
-    // } // end of if statement for requiring close prox to destination prior to behaviour switch
-
     // current distance from destination
-    c_dist2 = std::pow((x_DesOptions[chosenDes] - x_Locations[i-1]), 2) +
-      std::pow((y_DesOptions[chosenDes] - y_Locations[i-1]), 2);
+    c_dist2 = std::pow((centre_x - x_Locations[i-1]), 2) +
+      std::pow((centre_y - y_Locations[i-1]), 2);
     currDist = std::sqrt(c_dist2);
-    desDist_Locations[i] = currDist;
 
     // MOVEMENT LOOP
     for(int j = 0; j < nopt; j++, a++){
@@ -287,25 +244,10 @@ Rcpp::List cpp_abm_simulate(
         continue;
       }
 
-      //// if the animal is near destination it remains nearby........
-      //// until behaviour changes, but a second check is required I think for behave shelter and forage
-      // if(currDist < 50 & (behave_Locations[i] == 0 | behave_Locations[i] == 2)){
-      //   step = Rcpp::rgamma(1, behave_k_step/10, behave_s_step)[0];
-      //   Rcpp::Rcout << "StepLength: " << step << "; ";
-      //
-      //   vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
-      //   Rcpp::Rcout << "VM ";
-      //   angle = vmdraw * 180/M_PI;
-      //   Rcpp::Rcout << "Angle: " << angle << "\n";
-      // } else {
-        step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
-        // Rcpp::Rcout << "StepLength: " << step << "; ";
-
-        vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
-        // Rcpp::Rcout << "VM ";
-        angle = vmdraw * 180/M_PI;
-        // Rcpp::Rcout << "Angle: " << angle << "\n";
-      // }
+      // movement draw
+      step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+      vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+      angle = vmdraw * 180/M_PI;
 
       x_Options[j] = x_Options[0] + cos(angle) * step;
       y_Options[j] = y_Options[0] + sin(angle) * step;
@@ -317,6 +259,7 @@ Rcpp::List cpp_abm_simulate(
       x_OptionsAll[a] = x_Options[j];
       y_OptionsAll[a] = y_Options[j];
       step_OptionsAll[a] = i;
+      stepAll[a] = step;
 
       // choice vector is needed for the sample function later on
       // choicesVec[j] = j;
@@ -325,17 +268,15 @@ Rcpp::List cpp_abm_simulate(
 
     move_Options = cpp_get_values(moveMatrix, x_Options, y_Options);
 
-    // record the target destination at each time step
-    desX_Locations[i] = x_DesOptions[chosenDes];
-    desY_Locations[i] = y_DesOptions[chosenDes];
     /* here we need to adjust the movement objects so the animal prefers to head
-     * towards the chosen destination.
+     * towards the centre point.
      * a2 + b2 = c2
      */
-    for(int k; k < nopt; k++){
-      c_dist2 = std::pow((x_DesOptions[chosenDes] - x_Options[k]), 2) +
-        std::pow((y_DesOptions[chosenDes] - y_Options[k]), 2);
-      distance_toDes[k] = std::sqrt(c_dist2);
+    for(int k = 0; k < nopt; k++){
+      c_dist2 = std::pow(centre_x - x_Options[k], 2) +
+        std::pow(centre_y - y_Options[k], 2);
+      c_dist = std::sqrt(c_dist2);
+      distance_toDes[k] = c_dist;
     }
     /* now we need to normalise the distances to something compatible with the
      * weighting for sample choice */
@@ -357,17 +298,17 @@ Rcpp::List cpp_abm_simulate(
 
     // using the find max and min found above we normalise all the distances
     // from possible choices in relation to the final destination
-    for(int m; m < nopt; m++){
+    for(int m = 0; m < nopt; m++){
       // first we have to invert it so ones closer to the destination are
       // preferred. ie larger numbers and greater weighting in the sample
       // function
-      distInvert = abs(distance_toDes[m] - dist_max);
-      weights_toDes[m] = (distInvert - dist_min) /
-        (dist_max - dist_min);
+      weights_toDes[m] = 1 - ((distance_toDes[m] - dist_min) /
+        (dist_max - dist_min));
       // then combine them with the movement Matrix values
       // we can deal with some balancing issues here
+
       move_Options[m] = move_Options[m] + std::pow(weights_toDes[m], 2);
-      // move_Options[m] = move_Options[m]; //+ weights_toDes[m];
+      // move_Options[m] = move_Options[m] + weights_toDes[m];
     }
 
     /* using the custom sample_options, we need to feed it a different seed each time,
@@ -394,21 +335,25 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_y") = y_Locations,
     Rcpp::Named("loc_step") = step_Locations,
     Rcpp::Named("loc_behave") = behave_Locations,
-    // output for destinations
-    Rcpp::Named("desX") = desX_Locations,
-    Rcpp::Named("desY") = desY_Locations,
-    Rcpp::Named("desDist") = desDist_Locations,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,
     Rcpp::Named("oall_step") = step_OptionsAll,
+    Rcpp::Named("oall_stepLengths") = stepAll,
     // output for the chosen options at each step
     Rcpp::Named("chosen") = chosen_Options,
     // output for the last options just to check
     Rcpp::Named("ol_x") = x_Options,
     Rcpp::Named("ol_y") = y_Options,
     Rcpp::Named("ol_moveVal1") = move_Options, // included to check probs used
-    Rcpp::Named("ol_step") = step_Options // included to check is choice vector is the source of issues
+    Rcpp::Named("ol_step") = step_Options, // included to check is choice vector is the source of issues
+    Rcpp::Named("ol_c_dist2") = c_dist2,
+    Rcpp::Named("ol_c_dist") = std::sqrt(c_dist2),
+    Rcpp::Named("ol_dist2Des") = distance_toDes,
+    // Rcpp::Named("ol_dist2DesInvert") = distInvert,
+    Rcpp::Named("ol_distWeights") = weights_toDes,
+    Rcpp::Named("ol_centre_x") = centre_x,
+    Rcpp::Named("ol_centre_y") = centre_y
   );
   return OUTPUT;
 

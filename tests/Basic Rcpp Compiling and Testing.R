@@ -41,7 +41,7 @@ table(sampleOut) / 10000
 # Dist to des normalise ---------------------------------------------------
 
 # distsTests <- c(50,20,324,234,683,29,101)
-distsTests <- rgamma(20, 5, 0.5)
+distsTests <- rgamma(12, 5, 0.5)
 
 distInvert = abs(distsTests - max(distsTests))
 weights_toDes = (distInvert - min(distsTests)) /
@@ -59,9 +59,16 @@ envNoiseTest <- genLandscape_noise(2000, 2000)
 
 landcapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 
+# weaken the impact of the movement layer
+# landcapeLayersList$shelter[] <- landcapeLayersList$shelter[]/2
+# remove the impact for testing
+# landcapeLayersList$shelter[] <- 0
+
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
 plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
+
+plotBgEnv
 
 # Select envMat to use ----------------------------------------------------
 
@@ -92,7 +99,7 @@ simRes <- abm_simulate(start = c(1000,1000),
                        rest_Cycle = c(0.5, 0.05, 24, 12),
                        memShelterMatrix = landcapeLayersList$memShelter,
                        forageMatrix = landcapeLayersList$forage,
-                       move_Options = landcapeLayersList$shelter) # just using a shelter layer for testing
+                       move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
 simRes
 
@@ -109,19 +116,18 @@ plotBgEnv +
                                behave = simRes$loc_behave),
              aes(x = x, y = y, shape = as.factor(behave)),
              alpha = 0.45) +
-  geom_segment(data = data.frame(xend = simRes$desX,
-                                 yend = simRes$desY,
-                                 x = simRes$loc_x,
-                                 y = simRes$loc_y),
-    aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
-  geom_point(data = data.frame(x = simRes$desX,
-                               y = simRes$desY,
-                               behave = simRes$loc_behave),
-             aes(x = x, y = y, shape = as.factor(behave)),
+  # geom_segment(data = data.frame(xend = 1000,
+  #                                yend = 1000,
+  #                                x = simRes$loc_x,
+  #                                y = simRes$loc_y),
+  #   aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
+  geom_point(data = data.frame(x = 1020,
+                               y = 1020),
+             aes(x = x, y = y),
              size = 2, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
-  # coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
+  coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
