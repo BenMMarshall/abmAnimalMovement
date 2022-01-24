@@ -82,13 +82,35 @@ abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_
     }) # make sure we have enough seeds for each time sample_options is used
   )
 
-  ## TO DO ##
-
-  # add in a translating function to tidy up all objects parse via the
+  # tidy up all objects parse via the
   # list into dataframes with properly labelled columns
 
+  OUTPUTS <- vector(mode = "list", length = 3)
+  names(OUTPUTS)[1] <- "locations"
+  names(OUTPUTS)[2] <- "options"
+  names(OUTPUTS)[3] <- "others"
 
-  return(res)
+  locations <- data.frame(
+    step = res$loc_step,
+    x = res$loc_x,
+    y = res$loc_y,
+    behave = res$loc_behave,
+    chosen = res$chosen
+  )
+
+  options <- data.frame(
+    step = res$oall_step,
+    x = res$oall_x,
+    y = res$oall_y,
+    sl = res$oall_stepLengths)
+
+  OUTPUTS[["locations"]] <- locations
+  OUTPUTS[["options"]] <- options
+  OUTPUTS[["others"]] <-
+    res[!names(res) %in% c("loc_step", "loc_x", "loc_y", "loc_behave", "chosen",
+                           "oall_step", "oall_x", "oall_y", "oall_stepLengths")]
+
+  return(OUTPUTS)
 }
 
 run_abm_simulate <- function(startx, starty, steps, des_options, options,

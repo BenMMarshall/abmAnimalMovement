@@ -101,19 +101,14 @@ simRes <- abm_simulate(start = c(1000,1000),
                        forageMatrix = landcapeLayersList$forage,
                        move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
-simRes
+simRes$options
 
 plotBgEnv +
-  geom_point(data = data.frame(x = simRes$oall_x,
-                               y = simRes$oall_y,
-                               step = simRes$oall_step),
+  geom_point(data = simRes$options,
             aes(x = x, y = y), alpha = 0.05, colour = "orange") +
-  geom_path(data = data.frame(x = simRes$loc_x,
-                               y = simRes$loc_y),
+  geom_path(data = simRes$locations,
              aes(x = x, y = y), alpha = 0.15) +
-  geom_point(data = data.frame(x = simRes$loc_x,
-                               y = simRes$loc_y,
-                               behave = simRes$loc_behave),
+  geom_point(data = simRes$locations,
              aes(x = x, y = y, shape = as.factor(behave)),
              alpha = 0.45) +
   # geom_segment(data = data.frame(xend = 1000,
@@ -127,7 +122,7 @@ plotBgEnv +
              size = 2, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
-  coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
+  coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
