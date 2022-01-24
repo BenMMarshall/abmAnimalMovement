@@ -131,6 +131,76 @@ plotBgEnv +
   theme_bw() +
   theme(aspect.ratio = 1)
 
+
+# Animate movement --------------------------------------------------------
+
+# install.packages("gifski")
+# install.packages("av")
+library(gganimate)
+library(dplyr)
+
+?`gganimate-package`
+
+locations <- data.frame(
+  step = simRes$loc_step,
+  x = simRes$loc_x,
+  y = simRes$loc_y,
+  behave = simRes$loc_behave
+)
+
+p <- locations %>%
+  filter(step < 200) %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_point(size = 2, colour = "black") +
+  transition_states(step, 1, 1) +
+  shadow_mark(size = 1, colour = 'grey')
+
+p <-
+  # plotBgEnv +
+  ggplot() +
+  # geom_point(data = data.frame(x = simRes$oall_x,
+  #                              y = simRes$oall_y,
+  #                              step = simRes$oall_step),
+  #            aes(x = x, y = y), alpha = 0.05, colour = "orange") +
+  geom_path(data = locations,
+            aes(x = x, y = y), alpha = 0.05) +
+  geom_point(data = locations,
+             aes(x = x, y = y),
+             alpha = 0.45, size = 3) +
+  geom_point(data = data.frame(x = 1020,
+                               y = 1020),
+             aes(x = x, y = y),
+             size = 2, colour = "red",
+             alpha = 0.45) +
+  scale_colour_scico(palette = "buda") +
+  coord_cartesian(xlim = range(simRes$loc_x), ylim = range(simRes$loc_y)) +
+  labs(title = "Behavioural state: {locations$behave[locations$step == round(frame_along)][1]}") +
+  theme_bw() +
+  theme(aspect.ratio = 1) +
+  # transition_states(step, 1, 1) +
+  transition_reveal(step) +
+  # shadow_mark(size = 1, colour = "black") +
+  # shadow_wake(wake_length = 1, alpha = FALSE) +
+  # ease_aes("quadratic-in") +
+  NULL
+
+animate(p,
+        width = 1080,
+        height = 1080,
+        res = 240,
+        fps = 60,
+        duration = dim(locations)[1] / 60,
+        unit = "px",
+        renderer =
+          av_renderer(file = NULL, vfilter = "null", codec = NULL, audio = NULL))
+# animate(p, renderer = gifski_renderer())
+anim_save(path = "./output/figures/",
+          # file = "animated_locations.gif",
+          file = "animated_locations.mp4",
+          animation = last_animation())
+
+# Behaviour state switching check -----------------------------------------
+
 simRes$loc_behave
 behaveTrans <- list("vector", length(simRes$loc_behave))
 behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$loc_behave)),
@@ -144,7 +214,6 @@ for(i in 1:length(simRes$loc_behave)){
 }
 table(unlist(behaveTrans))
 
-library(dplyr)
 
 observedBehaveChanges <- behaveTransDF %>%
   filter(!is.na(behaveE)) %>%
