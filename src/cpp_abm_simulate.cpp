@@ -140,9 +140,18 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> distance_toDes(nopt);
   double distInvert;
   std::vector<double> weights_toDes(nopt);
+
   // target destinations
+  // PLACEHOLDER VALUES
   double centre_x = 1020;
   double centre_y = 1020;
+
+  double forage_x = 1000;
+  double forage_y = 1005;
+
+  double des_x = centre_x;
+  double des_y = centre_y;
+
   //----------------------------------------------------------------------------
 
 
@@ -223,9 +232,22 @@ Rcpp::List cpp_abm_simulate(
       }
       Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
 
+    // switch to update destination / point of attraction
+    switch(behave_Locations[i]){
+      case 0:
+      des_x = centre_x;
+      des_y = centre_y;
+      break;
+      case 1:
+      des_x = forage_x;
+      des_y = forage_y;
+      case 2:
+      des_x = forage_x;
+      des_y = forage_y;
+    }
     // current distance from destination
-    c_dist2 = std::pow((centre_x - x_Locations[i-1]), 2) +
-      std::pow((centre_y - y_Locations[i-1]), 2);
+    c_dist2 = std::pow((des_x - x_Locations[i-1]), 2) +
+      std::pow((des_y - y_Locations[i-1]), 2);
     currDist = std::sqrt(c_dist2);
 
     // MOVEMENT LOOP
@@ -245,7 +267,17 @@ Rcpp::List cpp_abm_simulate(
       }
 
       // movement draw
-      step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+
+      // an if to make sure the animal doesn't move too far from a shelter site
+      // need the initial high steps to get there.
+      // this could be swapped to maximise the step length if it is far from shelter/centre
+      if(behave_Locations[i] == 0 & currDist < 1){
+        step = Rcpp::rgamma(1, behave_k_step/100, behave_s_step)[0];
+      } else{
+
+        step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+      }
+
       vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
       angle = vmdraw * 180/M_PI;
 
@@ -273,8 +305,8 @@ Rcpp::List cpp_abm_simulate(
      * a2 + b2 = c2
      */
     for(int k = 0; k < nopt; k++){
-      c_dist2 = std::pow(centre_x - x_Options[k], 2) +
-        std::pow(centre_y - y_Options[k], 2);
+      c_dist2 = std::pow(des_x - x_Options[k], 2) +
+        std::pow(des_y - y_Options[k], 2);
       c_dist = std::sqrt(c_dist2);
       distance_toDes[k] = c_dist;
     }

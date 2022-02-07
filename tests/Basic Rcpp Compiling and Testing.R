@@ -34,7 +34,7 @@ sampleOut <- NULL
 for(i in 1:10000){
   sampleOut[i] <- sample_options(c(2, -0.2, 5, 0.5, 0.05), get_seed())
 }
-hist(sampleOut)
+# hist(sampleOut)
 table(sampleOut) / 10000
 
 
@@ -68,7 +68,7 @@ landcapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
-plotBgEnv
+# plotBgEnv
 
 # Select envMat to use ----------------------------------------------------
 
@@ -77,9 +77,9 @@ plotBgEnv
 
 # Generate transitional matrix  --------------------------------------------
 
-b0 <- c(0.95, 0.008, 0.008) # rest
-b1 <- c(0.0005, 0.98, 0.005) # explore/move
-b2 <- c(0.0005, 0.005, 0.95) # forage
+b0 <- c(0.98, 0.008, 0.008) # rest
+b1 <- c(0.0005, 0.98, 0.05) # explore/move
+b2 <- c(0.0005, 0.005, 0.98) # forage
 
 behaveMatTest <- rbind(b0, b1, b2)
 
@@ -91,17 +91,25 @@ simRes <- abm_simulate(start = c(1000,1000),
                        steps = 24*60 *7,
                        des_options = 20,
                        options = 12,
-                       k_step = c(5, 4, 2),
-                       s_step = c(0.5, 2, 1),
+                       k_step = c(1, 2, 1),
+                       s_step = c(0.5, 1, 0.5),
                        mu_angle = c(0, 0, 0),
-                       k_angle = c(0.1, 0.2, 0.05),
+                       k_angle = c(0.6, 0.99, 0.6),
                        behave_Tmat = behaveMatTest,
-                       rest_Cycle = c(0.5, 0.05, 24, 12),
+                       rest_Cycle = c(0.65, -0.3, 24, 24),
                        memShelterMatrix = landcapeLayersList$memShelter,
                        forageMatrix = landcapeLayersList$forage,
                        move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
-simRes$options
+library(dplyr)
+
+simRes$locations %>%
+  mutate(sl = sqrt(
+    (x - lag(x))^2 +
+    (y - lag(y))^2)) %>%
+  ggplot() +
+  geom_density(aes(x = sl, fill = as.factor(behave))) +
+  scale_x_sqrt()
 
 plotBgEnv +
   geom_point(data = simRes$options,
@@ -119,13 +127,62 @@ plotBgEnv +
   geom_point(data = data.frame(x = 1020,
                                y = 1020),
              aes(x = x, y = y),
-             size = 2, colour = "red",
+             pch = "1",
+             size = 4, colour = "red",
+             alpha = 0.45) +
+  geom_point(data = data.frame(x = 1000,
+                               y = 1005),
+             aes(x = x, y = y),
+             pch = "2",
+             size = 4, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 
+# Behaviour state switching check -----------------------------------------
+
+data.frame(
+  "i" = 1:length(simRes$locations$behave)/60,
+  "behave" = simRes$locations$behave) %>%
+  ggplot() +
+  geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
+  geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +
+  scale_x_continuous(breaks = seq(0, 72, 12))
+
+simRes$locations$behave
+behaveTrans <- list("vector", length(simRes$locations$behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$locations$behave)),
+                            "behaveE" = rep(NA, length(simRes$locations$behave)))
+for(i in 1:length(simRes$locations$behave)){
+
+  behaveTransDF[i,"behaveS"] <- simRes$locations$behave[i]
+  behaveTransDF[i,"behaveE"] <- simRes$locations$behave[i+1]
+
+  behaveTrans[i] <- paste0(simRes$locations$behave[i], "->", simRes$locations$behave[i+1])
+}
+table(unlist(behaveTrans))
+
+
+observedBehaveChanges <- behaveTransDF %>%
+  filter(!is.na(behaveE)) %>%
+  group_by(behaveS, behaveE) %>%
+  count() %>%
+  group_by(behaveS) %>%
+  mutate(totStepInState = sum(n),
+         obsProb = n/totStepInState)
+observedBehaveChanges
+
+ggplot(observedBehaveChanges) +
+  geom_raster(aes(x = behaveS, y = behaveE, fill = obsProb)) +
+  scale_fill_scico(palette = "lajolla")
+
+longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
+
+ggplot(longBehaveMat) +
+  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
+  scale_fill_scico(palette = "lajolla")
 
 # Animate movement --------------------------------------------------------
 
@@ -194,48 +251,6 @@ anim_save(path = "./output/figures/",
           file = "animated_locations.mp4",
           animation = last_animation())
 
-# Behaviour state switching check -----------------------------------------
-
-simRes$loc_behave
-behaveTrans <- list("vector", length(simRes$loc_behave))
-behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$loc_behave)),
-                            "behaveE" = rep(NA, length(simRes$loc_behave)))
-for(i in 1:length(simRes$loc_behave)){
-
-  behaveTransDF[i,"behaveS"] <- simRes$loc_behave[i]
-  behaveTransDF[i,"behaveE"] <- simRes$loc_behave[i+1]
-
-  behaveTrans[i] <- paste0(simRes$loc_behave[i], "->", simRes$loc_behave[i+1])
-}
-table(unlist(behaveTrans))
-
-
-observedBehaveChanges <- behaveTransDF %>%
-  filter(!is.na(behaveE)) %>%
-  group_by(behaveS, behaveE) %>%
-  count() %>%
-  group_by(behaveS) %>%
-  mutate(totStepInState = sum(n),
-         obsProb = n/totStepInState)
-observedBehaveChanges
-
-ggplot(observedBehaveChanges) +
-  geom_raster(aes(x = behaveS, y = behaveE, fill = obsProb)) +
-  scale_fill_scico(palette = "lajolla")
-
-longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
-
-ggplot(longBehaveMat) +
-  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
-  scale_fill_scico(palette = "lajolla")
-
-data.frame(
-  "i" = 1:length(simRes$loc_behave)/60,
-  "behave" = simRes$loc_behave) %>%
-  ggplot() +
-  geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
-  geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +
-  scale_x_continuous(breaks = seq(0, 72, 12))
 
 # Vonmises testing --------------------------------------------------------
 
