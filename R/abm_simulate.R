@@ -41,7 +41,14 @@
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_angle,
+abm_simulate <- function(start, steps,
+                         des_options,
+                         options,
+
+                         shelterLocations,
+                         forageLocations,
+
+                         k_step, s_step, mu_angle,
                        k_angle, behave_Tmat, rest_Cycle,
                        memShelterMatrix,
                        forageMatrix,
@@ -49,6 +56,12 @@ abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_
   # split the vector of start location x and y
   startxIN <- start[1]
   startyIN <- start[2]
+
+  # split the dataframe of shelter and forage locations
+  shelter_locs_xIN <- shelterLocations[,1]
+  shelter_locs_yIN <- shelterLocations[,2]
+  forage_locs_xIN <- forageLocations[,1]
+  forage_locs_yIN <- forageLocations[,2]
 
   # A function that gets a seed so the sampling function is fed something fresh
   # each turn. More details in sample_options documentation
@@ -63,6 +76,12 @@ abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_
     steps = steps,
     des_options = des_options,
     options = options,
+
+    shelter_locs_x = shelter_locs_xIN,
+    shelter_locs_y = shelter_locs_yIN,
+    forage_locs_x = forage_locs_xIN,
+    forage_locs_y = forage_locs_yIN,
+
     k_step = k_step,
     s_step = s_step,
     mu_angle = mu_angle,
@@ -113,7 +132,15 @@ abm_simulate <- function(start, steps, des_options, options, k_step, s_step, mu_
   return(OUTPUTS)
 }
 
-run_abm_simulate <- function(startx, starty, steps, des_options, options,
+run_abm_simulate <- function(startx, starty, steps,
+                             des_options,
+                             options,
+
+                             shelter_locs_x,
+                             shelter_locs_y,
+                             forage_locs_x,
+                             forage_locs_y,
+
                              k_step, s_step, mu_angle, k_angle,
                              b0_Options,
                              b1_Options,
@@ -127,7 +154,16 @@ run_abm_simulate <- function(startx, starty, steps, des_options, options,
                              move_Options,
                              seeds){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
-        startx, starty, steps, des_options, options, k_step, s_step, mu_angle, k_angle,
+        startx, starty, steps,
+        des_options,
+        options,
+
+        shelter_locs_x,
+        shelter_locs_y,
+        forage_locs_x,
+        forage_locs_y,
+
+        k_step, s_step, mu_angle, k_angle,
         b0_Options,
         b1_Options,
         b2_Options,

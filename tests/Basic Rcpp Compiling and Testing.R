@@ -65,8 +65,8 @@ landcapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 # landcapeLayersList$shelter[] <- 0
 
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
-plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
-# plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
+# plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
+plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # plotBgEnv
 
@@ -85,16 +85,29 @@ behaveMatTest <- rbind(b0, b1, b2)
 
 behaveMatTest[1,]
 
+shelterLocs <- data.frame(
+  "x" = c(1020, 1050, 1050),
+  "y" = c(1020, 1050, 1050)
+)
+forageLocs <- data.frame(
+  "x" = c(1000, 1050, 1020),
+  "y" = c(1005, 1020, 1040)
+)
+
 # Random walk testing -----------------------------------------------------
 
 simRes <- abm_simulate(start = c(1000,1000),
                        steps = 24*60 *7,
-                       des_options = 20,
+                       des_options = 3,
                        options = 12,
                        k_step = c(1, 2, 1),
                        s_step = c(0.5, 1, 0.5),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.6, 0.99, 0.6),
+
+                       shelterLocations = shelterLocs,
+                       forageLocations = forageLocs,
+
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.65, -0.3, 24, 24),
                        memShelterMatrix = landcapeLayersList$memShelter,
@@ -124,20 +137,19 @@ plotBgEnv +
   #                                x = simRes$loc_x,
   #                                y = simRes$loc_y),
   #   aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
-  geom_point(data = data.frame(x = 1020,
-                               y = 1020),
+  geom_point(data = shelterLocs,
              aes(x = x, y = y),
              pch = "1",
              size = 4, colour = "red",
              alpha = 0.45) +
-  geom_point(data = data.frame(x = 1000,
-                               y = 1005),
+  geom_point(data = forageLocs,
              aes(x = x, y = y),
              pch = "2",
              size = 4, colour = "red",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +
+  # coord_cartesian(xlim = range(simRes$options$x), ylim = range(simRes$options$y)) +
   theme_bw() +
   theme(aspect.ratio = 1)
 

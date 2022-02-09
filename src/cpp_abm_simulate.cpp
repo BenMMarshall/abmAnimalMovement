@@ -39,6 +39,12 @@ Rcpp::List cpp_abm_simulate(
     int steps,
     int des_options,
     int options,
+
+    std::vector<double> shelter_locs_x,
+    std::vector<double> shelter_locs_y,
+    std::vector<double> forage_locs_x,
+    std::vector<double> forage_locs_y,
+
     std::vector<double> k_step,
     std::vector<double> s_step,
     std::vector<double> mu_angle,
@@ -128,9 +134,16 @@ Rcpp::List cpp_abm_simulate(
   // DESINTATION OBJECTS -------------------------------------------------------
   int chosenDes;
   Rcpp::NumericMatrix desMatrix;
+
+  // THIS WILL ONLY WORK WITH TEH SAME NUMBER OF DESINTIATIONS IN EACH BEHAVIOUR
+  // ndes needs fixign
+  // int ndes = shelter_locs_x.size();
+  std::vector<double> des_Options(ndes);
+
   std::vector<double> x_DesOptions(ndes);
   std::vector<double> y_DesOptions(ndes);
-  std::vector<double> land_DesOptions(ndes);
+  // std::vector<double> land_DesOptions(ndes);
+
   // object for checking whether the animal should slow down because it's near
   // the destination
   double currDist;
@@ -143,14 +156,15 @@ Rcpp::List cpp_abm_simulate(
 
   // target destinations
   // PLACEHOLDER VALUES
-  double centre_x = 1020;
-  double centre_y = 1020;
+  // double centre_x = 1020;
+  // double centre_y = 1020;
+  //
+  // double forage_x = 1000;
+  // double forage_y = 1005;
 
-  double forage_x = 1000;
-  double forage_y = 1005;
-
-  double des_x = centre_x;
-  double des_y = centre_y;
+  // to intialisse the animal is attracted to the first shelter site
+  double des_x = shelter_locs_x[0];
+  double des_y = shelter_locs_y[0];
 
   //----------------------------------------------------------------------------
 
@@ -214,6 +228,8 @@ Rcpp::List cpp_abm_simulate(
           behave_s_step = s_step[1];
           behave_mu_angle = mu_angle[1];
           behave_k_angle = k_angle[1];
+          // change this to movement only?
+          desMatrix = forageMatrix;
           break;
         case 2:
           behave_k_step = k_step[2];
@@ -232,19 +248,35 @@ Rcpp::List cpp_abm_simulate(
       }
       Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
 
-    // switch to update destination / point of attraction
-    switch(behave_Locations[i]){
-      case 0:
-      des_x = centre_x;
-      des_y = centre_y;
-      break;
-      case 1:
-      des_x = forage_x;
-      des_y = forage_y;
-      case 2:
-      des_x = forage_x;
-      des_y = forage_y;
+
+    // choosing between a number of possible predefined destinations
+    // new destination should be chosen if behaviour changes or after a
+    // period of time passes e.g. a day.
+    if(!(behave_Locations[i-1] == behave_Locations[i])){
+
+      // weight up options based on quality of location from raster
+      // desMatrix updated at each behaviour switch above
+      // switch to update possible destination / point of attraction
+      switch(behave_Locations[i]){
+        case 0:
+          x_DesOptions = shelter_locs_x;
+          y_DesOptions = shelter_locs_y;
+        break;
+        case 1:
+          x_DesOptions = forage_locs_x;
+          y_DesOptions = forage_locs_y;
+        break;
+        case 2:
+          x_DesOptions = forage_locs_x;
+          y_DesOptions = forage_locs_y;
+        break;
+      }
+      des_Options = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
+      chosenDes = cpp_sample_options(des_Options, seeds[i-1]);
+      des_x = x_DesOptions[chosenDes];
+      des_y = y_DesOptions[chosenDes];
     }
+
     // current distance from destination
     c_dist2 = std::pow((des_x - x_Locations[i-1]), 2) +
       std::pow((des_y - y_Locations[i-1]), 2);
@@ -383,9 +415,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("ol_c_dist") = std::sqrt(c_dist2),
     Rcpp::Named("ol_dist2Des") = distance_toDes,
     // Rcpp::Named("ol_dist2DesInvert") = distInvert,
-    Rcpp::Named("ol_distWeights") = weights_toDes,
-    Rcpp::Named("ol_centre_x") = centre_x,
-    Rcpp::Named("ol_centre_y") = centre_y
+    Rcpp::Named("ol_distWeights") = weights_toDes
   );
   return OUTPUT;
 
