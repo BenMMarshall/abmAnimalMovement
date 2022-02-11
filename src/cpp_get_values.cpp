@@ -32,7 +32,7 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
     xOptIndex = std::floor(XLOCS[loc]);
     yOptIndex = std::floor(YLOCS[loc]);
 
-    Rcpp::Rcout << "Option: " << loc << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
+    // Rcpp::Rcout << "Option: " << loc << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
 
     // end function if animal leaves environmental data area
     // if( (xOptIndex > mcols) | (yOptIndex > mrows) | (xOptIndex < 0) | (yOptIndex < 0) ){
@@ -42,7 +42,7 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
     // still using the numericMatrix Rcpp form here
     OUTPUT_VALUES[loc] = MATRIX(xOptIndex, yOptIndex);
 
-    Rcpp::Rcout << "EnvVal: " << OUTPUT_VALUES[loc] << "\n";
+    // Rcpp::Rcout << "EnvVal: " << OUTPUT_VALUES[loc] << "\n";
 
     // if(std::isnan(enVal1_Options[loc])){
     //   // printing error message

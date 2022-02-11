@@ -42,8 +42,6 @@ Rcpp::List cpp_abm_simulate(
 
     std::vector<double> shelter_locs_x,
     std::vector<double> shelter_locs_y,
-    std::vector<double> forage_locs_x,
-    std::vector<double> forage_locs_y,
 
     std::vector<double> k_step,
     std::vector<double> s_step,
@@ -105,6 +103,9 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> x_Locations(steps);
   std::vector<double> y_Locations(steps);
   std::vector<int> step_Locations(steps);
+  std::vector<double> des_x_Locations(steps);
+  std::vector<double> des_y_Locations(steps);
+  std::vector<double> des_chosen(steps);
   //----------------------------------------------------------------------------
 
   // BEHAVIOUR RELATED OBJECTS -------------------------------------------------
@@ -122,7 +123,7 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> b2_Options_Current = b2_Options;
 
   /* initial behaviour set to 0 */
-  behave_Locations[0] = 1;
+  behave_Locations[0] = 0;
   // and set a basic behave switch balance for testing
   // std::vector<double> behave_Options = {0.2, 0.2, 0.1};
 
@@ -132,17 +133,21 @@ Rcpp::List cpp_abm_simulate(
 
 
   // DESINTATION OBJECTS -------------------------------------------------------
-  int chosenDes;
+  int chosenDes = 0;
   Rcpp::NumericMatrix desMatrix;
 
-  // THIS WILL ONLY WORK WITH TEH SAME NUMBER OF DESINTIATIONS IN EACH BEHAVIOUR
-  // ndes needs fixign
-  // int ndes = shelter_locs_x.size();
-  std::vector<double> des_Options(ndes);
+  // define the memory for the shelter site selection
+  // requires predefined vector of shelter coords
+  int shel_ndes = shelter_locs_x.size();
+  std::vector<double> des_Options(shel_ndes);
+  // std::vector<double> x_DesOptions(shel_ndes);
+  // std::vector<double> y_DesOptions(shel_ndes);
 
-  std::vector<double> x_DesOptions(ndes);
-  std::vector<double> y_DesOptions(ndes);
-  // std::vector<double> land_DesOptions(ndes);
+  // set up the sapce for foraging desintations that can be dynaimcally selected
+  // IE do not have to be predefined like the shelter ones
+  std::vector<double> x_forageOptions(ndes);
+  std::vector<double> y_forageOptions(ndes);
+  std::vector<double> des_forageOptions(ndes);
 
   // object for checking whether the animal should slow down because it's near
   // the destination
@@ -154,20 +159,15 @@ Rcpp::List cpp_abm_simulate(
   double distInvert;
   std::vector<double> weights_toDes(nopt);
 
-  // target destinations
-  // PLACEHOLDER VALUES
-  // double centre_x = 1020;
-  // double centre_y = 1020;
-  //
-  // double forage_x = 1000;
-  // double forage_y = 1005;
-
-  // to intialisse the animal is attracted to the first shelter site
+  // to intialise the animal is attracted to the first shelter site
   double des_x = shelter_locs_x[0];
   double des_y = shelter_locs_y[0];
 
   //----------------------------------------------------------------------------
 
+  // ERROR CAPTURE for sampling function
+  std::vector<double> ERROR_move_Options(nopt);
+  int ERROR_seed;
 
   /* initial location is set using the start locations */
   x_Locations[0] = startx;
@@ -176,10 +176,11 @@ Rcpp::List cpp_abm_simulate(
   y_OptionsAll[0] = starty;
   step_OptionsAll[0] = 0;
 
-  for(int i = 1, a = 1; i < n; i++){
-    Rcpp::Rcout << "---- Step: " << i << " ----\n";
+  des_x_Locations[0] = des_x;
+  des_y_Locations[0] = des_y;
 
-    Rcpp::Rcout << "--- Step start set" << " ---\n";
+  for(int i = 1, a = 1; i < n; i++){
+    // Rcpp::Rcout << "---- Step: " << i << " ----\n";
 
     /* working under the assumption that i == minute, but the cycle is defined in
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
@@ -246,12 +247,12 @@ Rcpp::List cpp_abm_simulate(
             //   behave_k_angle = k_angle[0];
             //   break;
       }
-      Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
-
+      // Rcpp::Rcout << "-- Behaviour mode: " << behave_Locations[i] << " ---\n";
 
     // choosing between a number of possible predefined destinations
     // new destination should be chosen if behaviour changes or after a
     // period of time passes e.g. a day.
+
     if(!(behave_Locations[i-1] == behave_Locations[i])){
 
       // weight up options based on quality of location from raster
@@ -259,23 +260,50 @@ Rcpp::List cpp_abm_simulate(
       // switch to update possible destination / point of attraction
       switch(behave_Locations[i]){
         case 0:
-          x_DesOptions = shelter_locs_x;
-          y_DesOptions = shelter_locs_y;
+
+          des_Options = cpp_get_values(desMatrix, shelter_locs_x, shelter_locs_y);
+          // chosenDes = cpp_sample_options(des_Options, seeds[i-1]);
+          chosenDes = 1;
+          des_x = shelter_locs_x[chosenDes];
+          des_y = shelter_locs_y[chosenDes];
+
         break;
         case 1:
-          x_DesOptions = forage_locs_x;
-          y_DesOptions = forage_locs_y;
+          // x_DesOptions = shelter_locs_x;
+          des_x = shelter_locs_x[0];
+          // y_DesOptions = shelter_locs_y;
+          des_y = shelter_locs_y[0];
         break;
         case 2:
-          x_DesOptions = forage_locs_x;
-          y_DesOptions = forage_locs_y;
+
+          for(int dopt = 0; dopt < ndes; dopt++){
+
+            step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+            vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+            angle = vmdraw * 180/M_PI;
+            x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;
+            y_forageOptions[dopt] = y_Locations[i-1] + sin(angle) * step;
+
+          }
+
+          des_forageOptions = cpp_get_values(desMatrix, x_forageOptions, y_forageOptions);
+
+          // chosenDes = cpp_sample_options(des_forageOptions, seeds[i-1]);
+          chosenDes = 5;
+          des_x = x_forageOptions[chosenDes];
+          des_y = y_forageOptions[chosenDes];
+
         break;
       }
-      des_Options = cpp_get_values(desMatrix, x_DesOptions, y_DesOptions);
-      chosenDes = cpp_sample_options(des_Options, seeds[i-1]);
-      des_x = x_DesOptions[chosenDes];
-      des_y = y_DesOptions[chosenDes];
     }
+    // Rcpp::Rcout << "Des:" << x_Locations[i-1] << ", " << y_Locations[i-1] << "\n";
+    // Rcpp::Rcout << "Chosen: " << chosenDes << "; DesStep: " <<
+    //   step << "; Angle: " << angle << "\n";
+    // Rcpp::Rcout << "Des:" << des_x << ", " << des_y << "\n";
+
+    des_x_Locations[i] = des_x;
+    des_y_Locations[i] = des_y;
+    des_chosen[i] = chosenDes;
 
     // current distance from destination
     c_dist2 = std::pow((des_x - x_Locations[i-1]), 2) +
@@ -371,7 +399,12 @@ Rcpp::List cpp_abm_simulate(
       // then combine them with the movement Matrix values
       // we can deal with some balancing issues here
 
-      move_Options[m] = move_Options[m] + std::pow(weights_toDes[m], 2);
+      // only apply distance/point attraction to non-exploratory behaviours
+      if(behave_Locations[i] == 1){
+        move_Options[m] = move_Options[m];
+      } else{
+        move_Options[m] = move_Options[m] + std::pow(weights_toDes[m], 2);
+      }
       // move_Options[m] = move_Options[m] + weights_toDes[m];
     }
 
@@ -379,6 +412,12 @@ Rcpp::List cpp_abm_simulate(
      * but overall those seeds are derived from the set.seed() in R prior to running
      * (see the R companion/set-up function .Call) */
     chosen = cpp_sample_options(move_Options, seeds[i-1]);
+
+    if(chosen > nopt){
+      Rcpp::Rcout << "CHOICE EXCEEDS OPTIONS @ step " << i << "\n";
+      ERROR_move_Options = move_Options;
+      ERROR_seed = seeds[i-1];
+    }
 
     // for testing, pick the first options always, should mean the animal never moves
     // chosen = 0;
@@ -399,6 +438,9 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_y") = y_Locations,
     Rcpp::Named("loc_step") = step_Locations,
     Rcpp::Named("loc_behave") = behave_Locations,
+    Rcpp::Named("loc_x_destinations") = des_x_Locations,
+    Rcpp::Named("loc_y_destinations") = des_y_Locations,
+    Rcpp::Named("loc_chosen_destinations") = des_chosen,
     // output for all the optionsALL
     Rcpp::Named("oall_x") = x_OptionsAll,
     Rcpp::Named("oall_y") = y_OptionsAll,
@@ -407,13 +449,21 @@ Rcpp::List cpp_abm_simulate(
     // output for the chosen options at each step
     Rcpp::Named("chosen") = chosen_Options,
     // output for the last options just to check
-    Rcpp::Named("ol_x") = x_Options,
-    Rcpp::Named("ol_y") = y_Options,
-    Rcpp::Named("ol_moveVal1") = move_Options, // included to check probs used
-    Rcpp::Named("ol_step") = step_Options, // included to check is choice vector is the source of issues
-    Rcpp::Named("ol_c_dist2") = c_dist2,
-    Rcpp::Named("ol_c_dist") = std::sqrt(c_dist2),
-    Rcpp::Named("ol_dist2Des") = distance_toDes,
+    Rcpp::Named("ol_x_forOpts") = x_forageOptions,
+    Rcpp::Named("ol_y_forOpts") = y_forageOptions,
+    Rcpp::Named("ol_des_forOpts") = des_forageOptions,
+    Rcpp::Named("ol_chosen_forOpts") = chosenDes,
+
+    Rcpp::Named("ERROR_move_Options") = ERROR_move_Options,
+    Rcpp::Named("ERROR_seed") = ERROR_seed,
+
+    // Rcpp::Named("ol_x") = x_Options,
+    // Rcpp::Named("ol_y") = y_Options,
+    // Rcpp::Named("ol_moveVal1") = move_Options, // included to check probs used
+    // Rcpp::Named("ol_step") = step_Options, // included to check is choice vector is the source of issues
+    // Rcpp::Named("ol_c_dist2") = c_dist2,
+    // Rcpp::Named("ol_c_dist") = std::sqrt(c_dist2),
+    // Rcpp::Named("ol_dist2Des") = distance_toDes,
     // Rcpp::Named("ol_dist2DesInvert") = distInvert,
     Rcpp::Named("ol_distWeights") = weights_toDes
   );

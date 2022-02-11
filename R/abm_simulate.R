@@ -46,7 +46,6 @@ abm_simulate <- function(start, steps,
                          options,
 
                          shelterLocations,
-                         forageLocations,
 
                          k_step, s_step, mu_angle,
                        k_angle, behave_Tmat, rest_Cycle,
@@ -60,8 +59,6 @@ abm_simulate <- function(start, steps,
   # split the dataframe of shelter and forage locations
   shelter_locs_xIN <- shelterLocations[,1]
   shelter_locs_yIN <- shelterLocations[,2]
-  forage_locs_xIN <- forageLocations[,1]
-  forage_locs_yIN <- forageLocations[,2]
 
   # A function that gets a seed so the sampling function is fed something fresh
   # each turn. More details in sample_options documentation
@@ -79,8 +76,6 @@ abm_simulate <- function(start, steps,
 
     shelter_locs_x = shelter_locs_xIN,
     shelter_locs_y = shelter_locs_yIN,
-    forage_locs_x = forage_locs_xIN,
-    forage_locs_y = forage_locs_yIN,
 
     k_step = k_step,
     s_step = s_step,
@@ -114,7 +109,10 @@ abm_simulate <- function(start, steps,
     x = res$loc_x,
     y = res$loc_y,
     behave = res$loc_behave,
-    chosen = res$chosen
+    chosen = res$chosen,
+    destination_x = res$loc_x_destinations,
+    destination_y = res$loc_y_destinations,
+    destination_chosen = res$loc_chosen_destinations
   )
 
   options <- data.frame(
@@ -127,6 +125,7 @@ abm_simulate <- function(start, steps,
   OUTPUTS[["options"]] <- options
   OUTPUTS[["others"]] <-
     res[!names(res) %in% c("loc_step", "loc_x", "loc_y", "loc_behave", "chosen",
+                           "loc_x_destinations", "loc_y_destinations", "loc_chosen_destinations",
                            "oall_step", "oall_x", "oall_y", "oall_stepLengths")]
 
   return(OUTPUTS)
@@ -138,8 +137,6 @@ run_abm_simulate <- function(startx, starty, steps,
 
                              shelter_locs_x,
                              shelter_locs_y,
-                             forage_locs_x,
-                             forage_locs_y,
 
                              k_step, s_step, mu_angle, k_angle,
                              b0_Options,
@@ -160,8 +157,6 @@ run_abm_simulate <- function(startx, starty, steps,
 
         shelter_locs_x,
         shelter_locs_y,
-        forage_locs_x,
-        forage_locs_y,
 
         k_step, s_step, mu_angle, k_angle,
         b0_Options,

@@ -28,8 +28,8 @@
 #' @details Requires cmath and headers for smaller C++ functions for draws.
 NULL
 
-cpp_abm_simulate <- function(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, forage_locs_x, forage_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds) {
-    .Call('_abmAnimalMovement_cpp_abm_simulate', PACKAGE = 'abmAnimalMovement', startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, forage_locs_x, forage_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds)
+cpp_abm_simulate <- function(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds) {
+    .Call('_abmAnimalMovement_cpp_abm_simulate', PACKAGE = 'abmAnimalMovement', startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds)
 }
 
 #' cpp_cycle_draw

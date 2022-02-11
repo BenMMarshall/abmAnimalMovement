@@ -89,16 +89,12 @@ shelterLocs <- data.frame(
   "x" = c(1020, 1050, 1050),
   "y" = c(1020, 1050, 1050)
 )
-forageLocs <- data.frame(
-  "x" = c(1000, 1050, 1020),
-  "y" = c(1005, 1020, 1040)
-)
 
 # Random walk testing -----------------------------------------------------
 
 simRes <- abm_simulate(start = c(1000,1000),
                        steps = 24*60 *7,
-                       des_options = 3,
+                       des_options = 10,
                        options = 12,
                        k_step = c(1, 2, 1),
                        s_step = c(0.5, 1, 0.5),
@@ -106,7 +102,6 @@ simRes <- abm_simulate(start = c(1000,1000),
                        k_angle = c(0.6, 0.99, 0.6),
 
                        shelterLocations = shelterLocs,
-                       forageLocations = forageLocs,
 
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.65, -0.3, 24, 24),
@@ -115,6 +110,19 @@ simRes <- abm_simulate(start = c(1000,1000),
                        move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
 library(dplyr)
+
+simRes$others$ol_x_forOpts
+simRes$others$ol_y_forOpts
+simRes$others$ol_des_forOpts
+simRes$others$ol_chosen_forOpts
+
+length(simRes$others$ERROR_move_Options)
+abmAnimalMovement::sample_options(simRes$others$ERROR_move_Options,
+                                  simRes$others$ERROR_seed)
+
+simRes$locations %>%
+  as_tibble() %>%
+  print(n = 7000)
 
 simRes$locations %>%
   mutate(sl = sqrt(
@@ -142,8 +150,8 @@ plotBgEnv +
              pch = "1",
              size = 4, colour = "red",
              alpha = 0.45) +
-  geom_point(data = forageLocs,
-             aes(x = x, y = y),
+  geom_point(data = simRes$locations,
+             aes(x = destination_x, y = destination_y),
              pch = "2",
              size = 4, colour = "red",
              alpha = 0.45) +
