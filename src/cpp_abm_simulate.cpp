@@ -278,7 +278,7 @@ Rcpp::List cpp_abm_simulate(
 
           for(int dopt = 0; dopt < ndes; dopt++){
 
-            step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+            step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
             vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
             angle = vmdraw * 180/M_PI;
             x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;

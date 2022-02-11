@@ -84,17 +84,17 @@ plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
 
 # Generate transitional matrix  --------------------------------------------
 
-b0 <- c(0.98, 0.008, 0.008) # rest
-b1 <- c(0.0005, 0.98, 0.05) # explore/move
-b2 <- c(0.0005, 0.005, 0.98) # forage
+b0 <- c(0.98, 0.001, 0.00001) # rest
+b1 <- c(0.0005, 0.99, 0.02) # explore/move
+b2 <- c(0.0005, 0.02, 0.97) # forage
 
 behaveMatTest <- rbind(b0, b1, b2)
 
 behaveMatTest[1,]
 
 shelterLocs <- data.frame(
-  "x" = c(1020, 1050, 1050),
-  "y" = c(1020, 1050, 1050)
+  "x" = c(1020, 1050, 1050, 1010, 1035),
+  "y" = c(1020, 1050, 1050, 1010, 1045)
 )
 
 # Random walk testing -----------------------------------------------------
@@ -154,13 +154,13 @@ plotBgEnv +
   #   aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
   geom_point(data = shelterLocs,
              aes(x = x, y = y),
-             pch = "1",
-             size = 4, colour = "red",
+             pch = "\u2776",
+             size = 4, colour = "purple",
              alpha = 0.45) +
   geom_point(data = simRes$locations,
              aes(x = destination_x, y = destination_y),
-             pch = "2",
-             size = 4, colour = "red",
+             pch = "\u2777",
+             size = 4, colour = "darkgreen",
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +

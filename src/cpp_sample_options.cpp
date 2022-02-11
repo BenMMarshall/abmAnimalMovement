@@ -28,7 +28,7 @@ int cpp_sample_options(std::vector<double> W, int SEED){
   int rnd_max = W.size();
   std::vector<double> weights(rnd_max);
 
-  // normalise all values to a 0 to 1 range ------------------------------------
+  // check for no variation in weights ------------------------------------
   double c_min = W[0];
   double c_max = W[0];
 
@@ -54,14 +54,13 @@ int cpp_sample_options(std::vector<double> W, int SEED){
       weights[j] = 1;
       // Rcpp::Rcout << weights[j] << "\n";
     }
-  } else { // otherwise create vector that keeps the newly renormalised values
+  } else { // otherwise create vector that keeps the values
     for(int j = 0; j < rnd_max; j++){
-      weights[j] = ((W[j] - c_min) /
-        (c_max - c_min));
+      weights[j] = W[j];
       // Rcpp::Rcout << weights[j] << "\n";
       }
   }
-  // END normalise all values to a 0 to 1 range --------------------------------
+
 
   /* determine smallest power of two that is larger than N */
   int tree_levels = ceil(log2((double) rnd_max));
