@@ -490,6 +490,15 @@ ggplot() +
 ggsave("./output/figures/vonmisesKappa.png",
        width = 180, height = 180, units = "mm", dpi = 300)
 
+simRes$locations$sl
+simRes$locations$ta
+round(simRes$locations$ta, digits = 2)
+round(simRes$locations$ta * 180/pi, digits = 2)
+simRes$locations %>%
+  ggplot() +
+  geom_histogram(aes(x = ta)) +
+  facet_wrap(.~behave)
+
 # Testing matrix conversion and back --------------------------------------
 
 row <- 1000; col <- 1000
