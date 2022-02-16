@@ -7,7 +7,12 @@
 library(abmAnimalMovement)
 library(ggplot2)
 library(reshape2)
+library(patchwork)
 library(scico)
+
+### PALETTE ###
+palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "2", "1", "0")
 
 # Basic Rcpp Compiling and Testing ----------------------------------------
 
@@ -29,6 +34,7 @@ get_seed <- function() {
 get_seed()
 
 sample_options(c(0.4, 0.1, 0.7, 0.1, 0.1, 0.2), get_seed())
+sample_options(c(-0.4, -0.1, -0.7), get_seed())
 sample_options(rep(0, 5), get_seed())
 sample_options(rep(-0.1, 5), get_seed())
 
@@ -134,49 +140,120 @@ simRes$locations %>%
 simRes$locations %>%
   mutate(sl = sqrt(
     (x - lag(x))^2 +
-    (y - lag(y))^2)) %>%
+      (y - lag(y))^2)) %>%
   ggplot() +
   geom_density(aes(x = sl, fill = as.factor(behave))) +
   scale_x_sqrt()
 
 plotBgEnv +
   geom_point(data = simRes$options,
-            aes(x = x, y = y), alpha = 0.05, colour = "orange") +
+             aes(x = x, y = y), alpha = 0.05, colour = palette["purp1"]) +
   geom_path(data = simRes$locations,
-             aes(x = x, y = y), alpha = 0.15) +
+            aes(x = x, y = y), alpha = 0.15) +
   geom_point(data = simRes$locations,
              aes(x = x, y = y, shape = as.factor(behave)),
-             alpha = 0.45) +
-  # geom_segment(data = data.frame(xend = 1000,
-  #                                yend = 1000,
-  #                                x = simRes$loc_x,
-  #                                y = simRes$loc_y),
-  #   aes(x = x, y = y, xend = xend, yend = yend), alpha = 0.025) +
-  geom_point(data = shelterLocs,
-             aes(x = x, y = y),
-             pch = "\u2776",
-             size = 4, colour = "purple",
              alpha = 0.45) +
   geom_point(data = simRes$locations,
              aes(x = destination_x, y = destination_y),
              pch = "\u2777",
-             size = 4, colour = "darkgreen",
+             size = 4, colour = palette["2"],
+             alpha = 0.45) +
+  geom_point(data = shelterLocs,
+             aes(x = x, y = y),
+             pch = "\u2776",
+             size = 4, colour = palette["0"],
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +
   # coord_cartesian(xlim = range(simRes$options$x), ylim = range(simRes$options$y)) +
   theme_bw() +
-  theme(aspect.ratio = 1)
+  theme(aspect.ratio = 1,
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  hjust = 1),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        # plot.background = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        axis.line = element_line(size = 0.5)) +
+  labs(x = "Easting", y = "Northing", shape = "Behaviour", fill = "Environmental\nquality")
+
+ggsave("./output/figures/overallMapping.png",
+       width = 180, height = 180, units = "mm", dpi = 300)
 
 # Behaviour state switching check -----------------------------------------
 
-data.frame(
+# rest_Cycle = c(0.65, -0.3, 24, 24),
+# 24*60 *7
+behaveProb <- sapply(1:10080/60, function(x){
+  cycle_draw(x, 0.65, -0.3, 24, 24)
+})
+
+behaviourPlotData <- data.frame(
   "i" = 1:length(simRes$locations$behave)/60,
-  "behave" = simRes$locations$behave) %>%
-  ggplot() +
-  geom_path(aes(x = i, y = behave), size = 0.5, alpha = 0.5) +
-  geom_point(aes(x = i, y = behave, colour = as.factor(behave)), size = 0.5) +
-  scale_x_continuous(breaks = seq(0, 72, 12))
+  "behaveObs" = simRes$locations$behave,
+  "behaveRest" = behaveProb
+)
+
+(plotObsBehave <- ggplot(behaviourPlotData) +
+    geom_path(aes(x = i, y = behaveObs), size = 0.5, alpha = 0.5) +
+    geom_point(aes(x = i, y = behaveObs, colour = as.factor(behaveObs)), size = 0.5) +
+    scale_x_continuous(breaks = seq(0, 24*7, 12)) +
+    scale_y_continuous(breaks = c(0, 1, 2),
+                       labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.title = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+          axis.title.y = element_text(angle = 0,
+                                      face = 2,
+                                      hjust = 1),
+          axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          plot.background = element_blank(),
+          # panel.background = element_blank(),
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          axis.line = element_line(size = 0.5),
+
+          panel.grid.major.y = element_line(linetype = 2,
+                                            size = 0.5,
+                                            colour = "grey75")
+          ) +
+    scale_colour_manual(values = palette[3:5]) +
+    labs(colour = "Behaviour"))
+
+(plotExpRest <- ggplot(behaviourPlotData) +
+    geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
+    scale_x_continuous(breaks = seq(0, 24*7, 12)) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.title = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+          axis.title.y = element_text(angle = 0,
+                                      face = 2,
+                                      hjust = 1),
+          plot.background = element_blank(),
+          # panel.background = element_blank(),
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          axis.line = element_line(size = 0.5),
+
+          panel.grid.major.y = element_line(linetype = 2,
+                                            size = 0.5,
+                                            colour = "grey75")
+    ) +
+    labs(y = "Rest prob.\nmodifier", x = "Hour"))
+
+plotObsBehave / plotExpRest + plot_layout(heights = c(1,0.5))
+
+ggsave("./output/figures/behaviourCycle.png",
+       width = 180, height = 120, units = "mm", dpi = 300)
 
 simRes$locations$behave
 behaveTrans <- list("vector", length(simRes$locations$behave))
@@ -191,7 +268,6 @@ for(i in 1:length(simRes$locations$behave)){
 }
 table(unlist(behaveTrans))
 
-
 observedBehaveChanges <- behaveTransDF %>%
   filter(!is.na(behaveE)) %>%
   group_by(behaveS, behaveE) %>%
@@ -201,15 +277,49 @@ observedBehaveChanges <- behaveTransDF %>%
          obsProb = n/totStepInState)
 observedBehaveChanges
 
-ggplot(observedBehaveChanges) +
-  geom_raster(aes(x = behaveS, y = behaveE, fill = obsProb)) +
-  scale_fill_scico(palette = "lajolla")
+
+observedBehaveChanges <- observedBehaveChanges %>%
+  select(behaveS, behaveE, "value" = obsProb) %>%
+  mutate(ObsExp = "Observed")
 
 longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
+expectedBehaveChanges <- longBehaveMat %>%
+          mutate(ObsExp = "Expected",
+                 behaveE = as.numeric(sub("^.", "", behaveE)),
+                 behaveS = behaveS - 1)
 
-ggplot(longBehaveMat) +
+rbind(observedBehaveChanges, expectedBehaveChanges) %>%
+  ggplot() +
   geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
-  scale_fill_scico(palette = "lajolla")
+  geom_text(aes(x = behaveE, y = behaveS, label = round(value, digits = 3))) +
+  scale_fill_scico(palette = "lajolla", begin = 0.1, end = 0.95) +
+  facet_wrap(ObsExp~.) +
+  coord_cartesian(expand = 0) +
+  scale_y_continuous(breaks = c(0, 1, 2),
+                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+  scale_x_continuous(breaks = c(0, 1, 2),
+                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+  theme_bw() +
+  theme(legend.position = "none",
+        aspect.ratio = 1,
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  hjust = 0.5),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        # plot.background = element_blank(),
+        # panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12, face = 4,
+                                  hjust = 0),
+        axis.line = element_line(size = 0.5)) +
+  labs(x = "Ending behaviour", y = "Starting\nbehaviour")
+
+ggsave("./output/figures/behaviourTransitions.png",
+       width = 180, height = 180, units = "mm", dpi = 300)
 
 # Animate movement --------------------------------------------------------
 
@@ -290,7 +400,7 @@ vonOut <- vonmises(N = 1000, MU = 0, KAPPA = 0.1)
 hist(vonOut)
 
 vonResVarying <- do.call(rbind, lapply(
-  c(0.01, seq(0.05, 0.8, 0.05)),
+  c(0.01, seq(0.05, 0.8, 0.1)),
   function(k){
     print(k)
     return(data.frame(kappa = paste("KAPPA =",
@@ -310,7 +420,8 @@ citation("CircStats")
 # \u03c0 is unicode for pi
 ## display the varying levels of angle concentration.
 ggplot() +
-  geom_histogram(data = vonResVarying, aes(x = draws, fill = as.factor(kappa)),
+  geom_histogram(data = vonResVarying, aes(x = draws),
+                 fill = "black", alpha = 0.5,
                  binwidth = 0.25) +
   scale_x_continuous(breaks = c(-pi, -pi/2, 0, pi/2, pi),
                      labels = c("-\u03c0", "-\u03c0/2", "0", "\u03c0/2", "\u03c0"),
@@ -319,14 +430,18 @@ ggplot() +
                      # if it'd break something in the walk. Could implement check for safety.
                      # Seems to be an approximation issue with ggplot, as checking for values >pi | <-pi return zero results
                      expand = c(0,0)
-                     ) +
+  ) +
   coord_polar() +
   theme_void() +
-  theme(axis.text.x = element_text(),
-        strip.text = element_text(face = 4, hjust = 0),
-        panel.grid.major.x = element_line(colour = "grey15")) +
+  theme(axis.text.x = element_text(vjust = 1),
+        strip.text = element_text(face = 4, hjust = 0.5),
+        # panel.grid.major.x = element_line(colour = "grey15"),
+        plot.background = element_rect(colour = NA, fill = "white"),
+        panel.background = element_rect(colour = NA, fill = "white")) +
   facet_wrap(.~kappa)
 
+ggsave("./output/figures/vonmisesKappa.png",
+       width = 180, height = 180, units = "mm", dpi = 300)
 
 # Testing matrix conversion and back --------------------------------------
 

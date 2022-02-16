@@ -185,7 +185,7 @@ Rcpp::List cpp_abm_simulate(
     /* working under the assumption that i == minute, but the cycle is defined in
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
     b0_dailyMod = cpp_cycle_draw(
-      i*1.0 / 60, // make i a double and convert it to hours
+      i*1.0 / 60, // make i a double and convert it to hours. i == 1 min so 1/60 i == hour
       rest_Cycle_A,
       rest_Cycle_M,
       rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift

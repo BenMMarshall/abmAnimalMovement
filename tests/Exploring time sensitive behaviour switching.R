@@ -22,8 +22,8 @@ ggplot(distData) +
 distData <- data.frame(
   "behave" = c(
     rep("0 - rest", TIMES),
-    rep("1 - forage", TIMES),
-    rep("2 - explore", TIMES)
+    rep("1 - explore", TIMES),
+    rep("2 - forage", TIMES)
   ),
   "values" = c(
     cos( (1:TIMES) / 200),
