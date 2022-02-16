@@ -22,8 +22,8 @@ ggplot(distData) +
 distData <- data.frame(
   "behave" = c(
     rep("0 - rest", TIMES),
-    rep("1 - forage", TIMES),
-    rep("2 - explore", TIMES)
+    rep("1 - explore", TIMES),
+    rep("2 - forage", TIMES)
   ),
   "values" = c(
     cos( (1:TIMES) / 200),
@@ -98,21 +98,30 @@ ggplot(cycleData) +
 library(abmAnimalMovement)
 
 t_seq <- seq(1, 72, 72 / 60)
-
-cycleData <- data.frame(
-  "t" = t_seq,
-  "value" = cycle_draw(TIME = t_seq,
-                       A = 1,
-                       M = 0,
-                       PHI = 24,
-                       TAU = 24)
-)
+cycleDataList = vector(mode = "list", length = length(t_seq))
+# i <- 0
+for(i in 1:length(t_seq)){
+  # i <- i+1
+  res <- cycle_draw(TIME = t_seq[i],
+                    A = 1,
+                    M = 0,
+                    PHI = 24,
+                    TAU = 24)
+  print(i)
+  print(res)
+  cycleDataList[[i]] <- data.frame(
+    "t" = t_seq[i],
+    "value" = res
+  )
+}
+cycleData <- do.call(rbind, cycleDataList)
 
 ggplot(cycleData) +
   geom_hline(yintercept = 0, linetype = 2, alpha = 0.5) +
   geom_line(aes(x = t, y = value)) +
   scale_x_continuous(breaks = seq(0, 48, 2))
 
+## BELOEW NEEDS FIXING
 
 compareValuesLIST <- vector("list")
 i <- 0

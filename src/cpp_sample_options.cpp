@@ -28,16 +28,39 @@ int cpp_sample_options(std::vector<double> W, int SEED){
   int rnd_max = W.size();
   std::vector<double> weights(rnd_max);
 
-  // if the weighting is sub-zero make zero. ie not possible
-  for(int i = 0; i < rnd_max; i++){
+  // check for no variation in weights ------------------------------------
+  double c_min = W[0];
+  double c_max = W[0];
 
-    if(W[i] < 0){
-      weights[i] = 0;
-    } else {
-      weights[i] = W[i];
+  for(int i = 0; i < rnd_max; i++){
+  // (xi – min(x)) / (max(x) – min(x))
+
+    // find min when looped
+    if(W[i] < c_min){
+      c_min = W[i];
+    }
+
+    // find max when looped
+    if(W[i] > c_max){
+      c_max = W[i];
     }
 
   }
+  // Rcpp::Rcout << c_min << "\n";
+  // Rcpp::Rcout << c_max << "\n";
+
+  if(c_min == c_max){ // if there is no variation in the weights set them all to one
+    for(int j = 0; j < rnd_max; j++){
+      weights[j] = 1;
+      // Rcpp::Rcout << weights[j] << "\n";
+    }
+  } else { // otherwise create vector that keeps the values
+    for(int j = 0; j < rnd_max; j++){
+      weights[j] = W[j];
+      // Rcpp::Rcout << weights[j] << "\n";
+      }
+  }
+
 
   /* determine smallest power of two that is larger than N */
   int tree_levels = ceil(log2((double) rnd_max));
