@@ -334,7 +334,6 @@ Rcpp::List cpp_abm_simulate(
       if(behave_Locations[i] == 0 & currDist < 1){
         step = Rcpp::rgamma(1, behave_k_step/100, behave_s_step)[0];
       } else{
-
         step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
       }
 
@@ -347,7 +346,7 @@ Rcpp::List cpp_abm_simulate(
       // add in which step the options are for
       step_Options[j] = i;
 
-      // a is keeping tracking of the position in a ong vector steps*nopts
+      // a is keeping tracking of the position in a vector steps*nopts
       x_OptionsAll[a] = x_Options[j];
       y_OptionsAll[a] = y_Options[j];
       step_OptionsAll[a] = i;

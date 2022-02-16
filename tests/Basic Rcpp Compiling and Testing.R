@@ -109,8 +109,8 @@ simRes <- abm_simulate(start = c(1000,1000),
                        steps = 24*60 *7,
                        des_options = 10,
                        options = 12,
-                       k_step = c(1, 2, 1),
-                       s_step = c(0.5, 1, 0.5),
+                       k_step = c(1, 3, 2),
+                       s_step = c(0.5, 1, 1),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.6, 0.99, 0.6),
 
@@ -137,13 +137,60 @@ simRes$locations %>%
   as_tibble() %>%
   print(n = 7000)
 
-simRes$locations %>%
+stepData <- simRes$locations %>%
   mutate(sl = sqrt(
     (x - lag(x))^2 +
-      (y - lag(y))^2)) %>%
+      (y - lag(y))^2))
+
+stepText <- stepData %>%
+  mutate(lessShelter = sl < 1) %>% # need to make sure the sl filter is the same as input shelter size
+  group_by(behave,
+           lessShelter) %>%
+  count() %>%
+  filter(!is.na(lessShelter)) %>%
+  group_by(behave) %>%
+  mutate(total = sum(n),
+         per = round(n/total*100, digits = 1)) %>%
+  filter(lessShelter) %>%
+  summarise(
+    behave = behave[1],
+    text = paste0("Zero rate: ", n, "/", total, " (", per, "%)"))
+
+c("0" = "Rest - 0",
+  "1" = "Explore - 1",
+  "2" = "Forge - 2")
+
+stepData %>%
   ggplot() +
-  geom_density(aes(x = sl, fill = as.factor(behave))) +
-  scale_x_sqrt()
+  geom_density(aes(x = sl, fill = as.factor(behave)),
+               colour = NA) +
+  geom_text(data = stepText,
+    aes(x = Inf, y = Inf, label = text),
+    hjust = 1, vjust = 1, fontface = 3) +
+  facet_wrap(behave~., ncol = 1, scales = "free_y",
+             labeller = labeller(.cols = c("0" = "0 - Rest",
+                                           "1" = "1 - Explore",
+                                           "2" = "2 - Forage"))
+  ) +
+  scale_fill_manual(values = palette[c("0", "1", "2")]) +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  hjust = 0.5),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12, face = 4,
+                                  hjust = 0),
+        axis.line = element_line(size = 0.5)) +
+  labs(x = "Step length (m)", y = "Density")
+
+ggsave("./output/figures/stepBehaviours.png",
+       width = 180, height = 160, units = "mm", dpi = 300)
 
 plotBgEnv +
   geom_point(data = simRes$options,
