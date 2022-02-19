@@ -436,11 +436,19 @@ Rcpp::List cpp_abm_simulate(
 
     chosen_Options[i] = chosen;
 
-    last_angle = last_angle + taOptions[chosen] - 360; // THIS LINE SEEMS TO BREAK EVERYTHING WITH MEMORY ISSUES
+    // Rcpp::Rcout << "last_angle: " << last_angle << "\n";
+    // Rcpp::Rcout << "taOptions[chosen]: " << taOptions[chosen] << "\n --- \n";
+    // make sure to update the direction of travel each move
+    last_angle = taOptions[chosen];
+    if(last_angle > 360){
+      last_angle = last_angle - 360;
+    } else if(last_angle < -360){
+      last_angle = last_angle + 360;
+    }
 
     x_Locations[i] = x_Options[chosen];
     y_Locations[i] = y_Options[chosen];
-    sl_Locations[i] = taOptions[chosen];
+    sl_Locations[i] = slOptions[chosen];
     ta_Locations[i] = last_angle;
     step_Locations[i] = i;
 

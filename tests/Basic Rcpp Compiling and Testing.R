@@ -9,6 +9,7 @@ library(ggplot2)
 library(reshape2)
 library(patchwork)
 library(scico)
+library(dplyr)
 
 ### PALETTE ###
 palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
@@ -105,7 +106,7 @@ shelterLocs <- data.frame(
 
 # Random walk testing -----------------------------------------------------
 
-simRes <- abm_simulate(start = c(1000,1000),
+simRes <- abm_simulate(start = c(1050,1050),
                        steps = 24*60 *7,
                        des_options = 10,
                        options = 12,
@@ -122,20 +123,8 @@ simRes <- abm_simulate(start = c(1000,1000),
                        forageMatrix = landcapeLayersList$forage,
                        move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
-library(dplyr)
 
-simRes$others$ol_x_forOpts
-simRes$others$ol_y_forOpts
-simRes$others$ol_des_forOpts
-simRes$others$ol_chosen_forOpts
-
-length(simRes$others$ERROR_move_Options)
-abmAnimalMovement::sample_options(simRes$others$ERROR_move_Options,
-                                  simRes$others$ERROR_seed)
-
-simRes$locations %>%
-  as_tibble() %>%
-  print(n = 7000)
+# Review step lengths -----------------------------------------------------
 
 stepData <- simRes$locations %>%
   mutate(sl = sqrt(
@@ -155,10 +144,6 @@ stepText <- stepData %>%
   summarise(
     behave = behave[1],
     text = paste0("Zero rate: ", n, "/", total, " (", per, "%)"))
-
-c("0" = "Rest - 0",
-  "1" = "Explore - 1",
-  "2" = "Forge - 2")
 
 stepData %>%
   ggplot() +
@@ -191,6 +176,54 @@ stepData %>%
 
 ggsave("./output/figures/stepBehaviours.png",
        width = 180, height = 160, units = "mm", dpi = 300)
+
+for(beh in 0:2){
+
+  taPlot <- simRes$locations %>%
+    filter(sl > 1, behave == beh) %>%
+    ggplot() +
+    geom_histogram(aes(x = ta, fill = as.factor(behave)),
+                   colour = NA) +
+    facet_wrap(behave~., ncol = 1,
+               labeller = labeller(.cols = c("0" = "0 - Rest",
+                                             "1" = "1 - Explore",
+                                             "2" = "2 - Forage"))
+    ) +
+    scale_x_continuous(breaks = seq(-270, 360, 90),
+                       limits = c(-360, 360),
+                       expand = c(0,0)
+    ) +
+    coord_polar(theta = "x") +
+    scale_fill_manual(values = palette[c("0", "1", "2")]) +
+    theme_bw() +
+    theme(legend.position = "none",
+          aspect.ratio = 1,
+          axis.title = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 0.5),
+          axis.title.y = element_text(angle = 0,
+                                      face = 2,
+                                      hjust = 1),
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          strip.background = element_blank(),
+          strip.text = element_text(size = 12, face = 4,
+                                    hjust = 0),
+          axis.line = element_line(size = 0.5)) +
+    labs(x = "Turn angle (degrees)", y = "Count")
+
+  assign(paste0("taPlot_", beh), taPlot)
+
+}
+
+## have to loop and combine to fix y axis issues
+taPlot_0 / taPlot_1 / taPlot_2
+
+ggsave("./output/figures/turnangleBehaviours.png",
+       width = 180, height = 160, units = "mm", dpi = 300)
+
+
+# Mapped output -----------------------------------------------------------
 
 plotBgEnv +
   geom_point(data = simRes$options,
