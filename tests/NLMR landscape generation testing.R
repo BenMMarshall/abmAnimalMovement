@@ -1,4 +1,98 @@
 
+library(abmAnimalMovement)
+library(raster)
+library(scico)
+
+genLandscape_gradient(1000, 1000)
+genLandscape_noise(1000, 1000)
+
+quick_plot_matrix(genLandscape_quickTriple(1000, 1000, 1)[1])
+
+### PALETTE ###
+palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "2", "1", "0")
+### SEED ###
+set.seed(2022)
+
+col <- 2000; row <- 2000; seed <- 2022;
+
+gf1 <- NLMR::nlm_gaussianfield(ncol = col,
+                               nrow = row,
+                               resolution = 1,
+                               autocorr_range = 40,
+                               mag_var = 5,
+                               nug = 0.2,
+                               mean = 0.5,
+                               user_seed = seed,
+                               rescale = TRUE)
+plot(gf1)
+
+forageQual <- gf1
+forageQual[forageQual[] < 0.6 & forageQual[] > 0.3] <-
+  forageQual[forageQual[] < 0.6 & forageQual[] > 0.3] + 1
+forageQual[forageQual[] < 1] <- 0
+# set min 0 max 1, normalise the values between 1 and 0
+forageQual[] <- (forageQual[] - min(forageQual[], na.rm = TRUE)) /
+  (max(forageQual[], na.rm = TRUE) - min(forageQual[], na.rm = TRUE))
+
+plot(forageQual)
+
+shelterQual <- gf1
+shelterQual[shelterQual[] < 0.6] <- shelterQual[shelterQual[] < 0.6] - 0.5
+shelterQual[shelterQual[] < 0] <- 0
+
+plot(shelterQual)
+## This is a process for the animal remembering key shelter sites to re-use
+randomLocs <- data.frame("x" = sample((col*0.35):(col*0.65), col/4, replace = FALSE),
+                         "y" = sample((row*0.35):(row*0.65), row/4, replace = FALSE))
+# see the "shelter quality" at each location
+randomLocs$shelterVals <- raster::extract(shelterQual, sp::SpatialPoints(randomLocs))
+# only look at those in good places
+randomLocs <- randomLocs[randomLocs$shelterVals > 0.5,]
+# randomly select 5
+chosenShelters <- randomLocs[randomLocs$shelterVals %in%
+                               sample(randomLocs$shelterVals, 5, prob = randomLocs$shelterVals),]
+
+plot(shelterQual)
+points(chosenShelters$x, chosenShelters$y)
+
+moveQual <- NLMR::nlm_fbm(ncol = col,
+              nrow = row,
+              resolution = 1,
+              fract_dim = 0.75,
+              user_seed = seed,
+              rescale = TRUE)
+plot(moveQual)
+
+# install.packages("devtools")
+# devtools::install_github("marcosci/layer")
+library(layer)
+library(ggplot2)
+
+# lower the res for plotting
+forageQual_aggregate <- aggregate(forageQual, fact = 10)
+moveQual_aggregate <- aggregate(moveQual, fact = 10)
+shelterQual_aggregate <- aggregate(shelterQual, fact = 10)
+
+tilt2 <- tilt_map(forageQual_aggregate, parallel = TRUE)
+tilt1 <- tilt_map(moveQual_aggregate, x_shift = 0, y_shift = 2500, parallel = TRUE)
+tilt0 <- tilt_map(shelterQual_aggregate, x_shift = 0, y_shift = 5000, parallel = TRUE)
+tilt0p <- tilt_map(as(SpatialPoints(chosenShelters), "sf"),
+                   x_shift = 0, y_shift = 5001, parallel = TRUE)
+
+map_list <- list(tilt2, tilt1, tilt0, tilt0p)
+
+plot_tiltedmaps(map_list,
+                layer = c("value", "value", "value", NA),
+                palette = c("lajolla", "lajolla", "lajolla", NA),
+                color = palette["0"],
+                alpha = 1)
+
+ggsave("./output/figures/environmentalLayers.png",
+       width = 120, height = 180, units = "mm", dpi = 300)
+
+# OLD ---------------------------------------------------------------------
+
 # install.packages("NLMR")
 # install.packages("landscapetools")
 
