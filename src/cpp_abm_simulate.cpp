@@ -102,6 +102,8 @@ Rcpp::List cpp_abm_simulate(
   // Rcpp::NumericMatrix locMatrix(steps, 2);
   std::vector<double> x_Locations(steps);
   std::vector<double> y_Locations(steps);
+  std::vector<double> sl_Locations(steps);
+  std::vector<double> ta_Locations(steps);
   std::vector<int> step_Locations(steps);
   std::vector<double> des_x_Locations(steps);
   std::vector<double> des_y_Locations(steps);
@@ -158,6 +160,13 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> distance_toDes(nopt);
   double distInvert;
   std::vector<double> weights_toDes(nopt);
+
+  // we need storage for the last angle followed as turning angle is relative
+  double last_angle = 0;
+  // as we don't know which one is chosen until after selection we need to store all until then
+  std::vector<double> taOptions(nopt);
+  // and we can add in step to make review easier
+  std::vector<double> slOptions(nopt);
 
   // to intialise the animal is attracted to the first shelter site
   double des_x = shelter_locs_x[0];
@@ -281,6 +290,7 @@ Rcpp::List cpp_abm_simulate(
             step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
             vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
             angle = vmdraw * 180/M_PI;
+            angle = last_angle + angle;
             x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;
             y_forageOptions[dopt] = y_Locations[i-1] + sin(angle) * step;
 
@@ -318,6 +328,8 @@ Rcpp::List cpp_abm_simulate(
         x_Options[0] = x_Locations[i-1];
         y_Options[0] = y_Locations[i-1];
         step_Options[0] = i;
+        slOptions[0] = 0;
+        taOptions[0] = last_angle;
 
         // these need assignment regardless
         x_OptionsAll[a] = x_Options[j];
@@ -339,6 +351,10 @@ Rcpp::List cpp_abm_simulate(
 
       vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
       angle = vmdraw * 180/M_PI;
+      angle = last_angle + angle;
+
+      taOptions[j] = angle;
+      slOptions[j] = step;
 
       x_Options[j] = x_Options[0] + cos(angle) * step;
       y_Options[j] = y_Options[0] + sin(angle) * step;
@@ -412,12 +428,6 @@ Rcpp::List cpp_abm_simulate(
      * (see the R companion/set-up function .Call) */
     chosen = cpp_sample_options(move_Options, seeds[i-1]);
 
-    if(chosen > nopt){
-      Rcpp::Rcout << "CHOICE EXCEEDS OPTIONS @ step " << i << "\n";
-      ERROR_move_Options = move_Options;
-      ERROR_seed = seeds[i-1];
-    }
-
     // for testing, pick the first options always, should mean the animal never moves
     // chosen = 0;
     // moves every time
@@ -426,8 +436,20 @@ Rcpp::List cpp_abm_simulate(
 
     chosen_Options[i] = chosen;
 
+    // Rcpp::Rcout << "last_angle: " << last_angle << "\n";
+    // Rcpp::Rcout << "taOptions[chosen]: " << taOptions[chosen] << "\n --- \n";
+    // make sure to update the direction of travel each move
+    last_angle = taOptions[chosen];
+    if(last_angle > 360){
+      last_angle = last_angle - 360;
+    } else if(last_angle < -360){
+      last_angle = last_angle + 360;
+    }
+
     x_Locations[i] = x_Options[chosen];
     y_Locations[i] = y_Options[chosen];
+    sl_Locations[i] = slOptions[chosen];
+    ta_Locations[i] = last_angle;
     step_Locations[i] = i;
 
   }
@@ -435,6 +457,8 @@ Rcpp::List cpp_abm_simulate(
     // output the location data
     Rcpp::Named("loc_x") = x_Locations,
     Rcpp::Named("loc_y") = y_Locations,
+    Rcpp::Named("loc_sl") = sl_Locations,
+    Rcpp::Named("loc_ta") = ta_Locations,
     Rcpp::Named("loc_step") = step_Locations,
     Rcpp::Named("loc_behave") = behave_Locations,
     Rcpp::Named("loc_x_destinations") = des_x_Locations,
@@ -451,10 +475,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("ol_x_forOpts") = x_forageOptions,
     Rcpp::Named("ol_y_forOpts") = y_forageOptions,
     Rcpp::Named("ol_des_forOpts") = des_forageOptions,
-    Rcpp::Named("ol_chosen_forOpts") = chosenDes,
-
-    Rcpp::Named("ERROR_move_Options") = ERROR_move_Options,
-    Rcpp::Named("ERROR_seed") = ERROR_seed,
+    Rcpp::Named("ol_chosen_forOpts") = chosenDes
 
     // Rcpp::Named("ol_x") = x_Options,
     // Rcpp::Named("ol_y") = y_Options,
@@ -464,7 +485,7 @@ Rcpp::List cpp_abm_simulate(
     // Rcpp::Named("ol_c_dist") = std::sqrt(c_dist2),
     // Rcpp::Named("ol_dist2Des") = distance_toDes,
     // Rcpp::Named("ol_dist2DesInvert") = distInvert,
-    Rcpp::Named("ol_distWeights") = weights_toDes
+    // Rcpp::Named("ol_distWeights") = weights_toDes
   );
   return OUTPUT;
 

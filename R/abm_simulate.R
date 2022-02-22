@@ -108,6 +108,8 @@ abm_simulate <- function(start, steps,
     step = res$loc_step,
     x = res$loc_x,
     y = res$loc_y,
+    sl = res$loc_sl,
+    ta = res$loc_ta,
     behave = res$loc_behave,
     chosen = res$chosen,
     destination_x = res$loc_x_destinations,
@@ -124,7 +126,9 @@ abm_simulate <- function(start, steps,
   OUTPUTS[["locations"]] <- locations
   OUTPUTS[["options"]] <- options
   OUTPUTS[["others"]] <-
-    res[!names(res) %in% c("loc_step", "loc_x", "loc_y", "loc_behave", "chosen",
+    res[!names(res) %in% c("loc_step", "loc_x", "loc_y",
+                           "loc_sl", "loc_ta",
+                           "loc_behave", "chosen",
                            "loc_x_destinations", "loc_y_destinations", "loc_chosen_destinations",
                            "oall_step", "oall_x", "oall_y", "oall_stepLengths")]
 
