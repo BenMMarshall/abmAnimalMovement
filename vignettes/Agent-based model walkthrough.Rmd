@@ -1,0 +1,143 @@
+---
+title: "Agent-based model walkthrough"
+author: "Benjamin Michael Marshall"
+date: '2022-03-02'
+output: bookdown::html_document2
+vignette: |
+  %\VignetteIndexEntry{walkthrough} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+link-citations: yes
+linkcolor: blue
+bibliography: abmAnimalMovement_refs.bib
+biblio-style: peerj
+---
+
+# Introduction
+
+- time step
+- basic workings of simulation
+- behavioural state
+- cycling
+- movement vs decisions and attraction points
+
+# Required libraries
+
+```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
+library(abmAnimalMovement)
+library(ggplot2)
+library(reshape2)
+library(patchwork)
+library(scico)
+library(dplyr)
+```
+
+# Setting a palette and seed
+
+Before running the simulation and reviewing the outputs we need to set a few constants to ensure that the outputs are reproducible.
+First, we set a palette to drawn from for later figures that takes the form of a named vector.
+For now five colours will be adequate to cover our later plotting needs.
+As we are about to run a simulation with three behavioural states –coded as 2, 1, and 0– we will name three corresponding colours in the vector as such.
+This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
+
+```{r definePalette, include=TRUE}
+palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "2", "1", "0")
+```
+
+```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
+
+data.frame(
+  names = names(palette),
+  hexcodes = palette
+) %>% 
+  ggplot() +
+  geom_col(
+    aes(x = names, y = 1, fill = names)
+  ) +
+  geom_text(
+    aes(x = names, y = 0.5, label = names),
+    vjust = 0.5, hjust = 0.5, colour = "white",
+    fontface = 2, size = 7
+  ) +
+  geom_text(
+    aes(x = names, y = 0.4, label = hexcodes),
+    vjust = 1, hjust = 0.5, colour = "white",
+    fontface = 3, size = 3
+  ) +
+  scale_x_discrete(position = "top") +
+  scale_fill_manual(values = palette) +
+  theme_void() +
+  theme(legend.position = "none")
+
+```
+To ensure that the simulation completed during the vignette is repeatable, we set a seed.
+For the sake of simplicity the year the vignette was written –2022– is used.
+
+```{r defineSeed, include=TRUE}
+set.seed(2022)
+```
+
+# Generating environmental rasters
+
+Before starting to simulate animal movement we need to generate a landscape.
+The landscapes in this case will take the form of rasters, where each cell is describing the quality of foraging, shelter, and movement ease. 
+The highest quality locations/cells are coded as 1, with quality decreasing as the values range down to 0.
+The 1 to 0 quality values in each cell are later used to help the animal to chose how and where it moves throughout the landscape.
+Depending on the behavioural state the weighing of which raster layers used will change (e.g., when in a resting behavioural state the shelter site quality layer is used).
+
+To generate each layer we use the NLMR package (neutral landscape models), and combine a selection of landscape generation methods with landscapetools [@Sciaini2018].
+
+- foraging
+- shelter
+- movement
+
+- add 3d raster display
+
+# Defining the behaviroual states
+
+## Parameterising the movement distributions
+
+As mentioned, we are running a simulation with three behavioural states: 0 - rest, 1 - explore, 2 - forage.
+Each behavioural state comprises to two distributions: a Gamma distribution that step lengths are drawn from, and a Von-Mises that turn angles are drawn from.
+The resulting step length, combined with a turn angle describes the change in animal location between each time step.
+
+## Creating behavioural transition matrix
+
+As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
+
+## Defining the rest cycle
+
+- cycle parameters cos waves stuff
+
+# Parameterising simulation
+
+We need to initially define a start location for our animal.
+To introduce some more individual variation we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
+For the simulation we need a vector of length 2, where the first value is the x location, the second is y.
+
+```{r defineStart, include=TRUE}
+startLocation <- sample(900:1100, 2, replace = TRUE)
+```
+
+- length of time
+- number of choices
+- destinations
+- inputting the rest of the predefined stuff
+
+# Reviewing observed movements
+
+## Step lengths
+
+## Turning angles
+
+# Mapping movements
+
+- would be nice to have a faceted plot, where column one are rasters with attraction points, and column two are the observed movements, each row is each behavioural state highlight (other points are greyed out)
+
+# Reviewing behavioural state cycling
+
+# Testing sampling function
+
+# Testing Von-Mises function
+
+[@Tang2010]
+
