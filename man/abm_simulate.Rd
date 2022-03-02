@@ -9,6 +9,7 @@ abm_simulate(
   steps,
   des_options,
   options,
+  shelterLocations,
   k_step,
   s_step,
   mu_angle,

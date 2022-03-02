@@ -181,12 +181,12 @@ plotBgEnv +
              alpha = 0.45) +
   geom_point(data = simRes$locations,
              aes(x = destination_x, y = destination_y),
-             pch = "\u2777",
+             pch = 17,
              size = 4, colour = palette["2"],
              alpha = 0.45) +
   geom_point(data = shelterLocs,
              aes(x = x, y = y),
-             pch = "\u2776",
+             pch = 16,
              size = 4, colour = palette["0"],
              alpha = 0.45) +
   scale_colour_scico(palette = "buda") +
