@@ -122,6 +122,8 @@ stepData %>%
 
 ggsave("./output/figures/stepBehaviours.png",
        width = 180, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/stepBehaviours.pdf",
+       width = 180, height = 160, units = "mm")
 
 ### TURN ANGLE ###
 for(beh in 0:2){
@@ -168,6 +170,8 @@ taPlot_0 / taPlot_1 / taPlot_2
 
 ggsave("./output/figures/turnangleBehaviours.png",
        width = 180, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/turnangleBehaviours.pdf",
+       width = 180, height = 160, units = "mm")
 
 ##### Mapping movements ##### --------------------------------------------------
 
@@ -209,6 +213,8 @@ plotBgEnv +
 
 ggsave("./output/figures/overallMapping.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/overallMapping.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Behaviour state cycling and switching ##### ------------------------------
 
@@ -280,6 +286,8 @@ plotObsBehave / plotExpRest + plot_layout(heights = c(1,0.5))
 
 ggsave("./output/figures/behaviourCycle.png",
        width = 180, height = 120, units = "mm", dpi = 300)
+ggsave("./output/figures/behaviourCycle.pdf",
+       width = 180, height = 120, units = "mm")
 
 ### BEHAVE TRANSITIONS ###
 simRes$locations$behave
@@ -347,6 +355,8 @@ rbind(observedBehaveChanges, expectedBehaveChanges) %>%
 
 ggsave("./output/figures/behaviourTransitions.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/behaviourTransitions.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Sampling function testing ##### ------------------------------------------
 
@@ -388,6 +398,8 @@ data.frame(
 
 ggsave("./output/figures/sampleOptions.png",
        width = 160, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/sampleOptions.pdf",
+       width = 160, height = 160, units = "mm")
 
 ##### Von-Mises draw testing ##### ---------------------------------------------
 
@@ -434,6 +446,8 @@ ggplot() +
 
 ggsave("./output/figures/vonmisesKappa.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/vonmisesKappa.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Animate movement ##### ---------------------------------------------------
 

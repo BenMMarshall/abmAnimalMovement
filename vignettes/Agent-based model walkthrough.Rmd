@@ -16,8 +16,43 @@ biblio-style: peerj
 - time step
 - basic workings of simulation
 - behavioural state
-- cycling
 - movement vs decisions and attraction points
+- cycling
+
+The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
+The model aims simulates animal locations over a given period of time at discrete time steps.
+At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations, and will chose from amongst these.
+The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
+
+The animal has three behavioural states, broadly defined as resting (or sheltering), exploring, and foraging. 
+Each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between points, whereas resting behaviour is largely defined by stationary or very low discrete movements.
+On top of the movement characteristics, the behavioural state defines what environmental layer (supplied to the model as a raster) is used govern the choice of subsequent animal locations. For example, foraging movement choices will be weighted towards areas of increased resources if the animal is in the foraging behavioural mode.
+
+The movement choices of the animal are also influenced by a movement resistance raster.
+Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
+For example, rivers or hard barriers within a landscape could present very high movement resistance and a animal would aim to avoid traversing them.
+Alternatively areas of lower movement resistance could aid movement, and potentially form movement corridors.
+
+Animals often occupy steady areas, or home ranges.
+Home ranges are mean to represent areas in which the animal can source all resources required for a given life stage.
+We can simulate the existence of home ranges using a point (or points) of attraction, an approach which has reoccurred in movement and population ecology studies.
+In the abmAnimalMovement model, we have simulated a number of points of attraction to differing resources in an attempt to simulate a home range with unequal and behavioural influenced spatial use.
+The modelled animal is provided with a number of shelter sites that serve as points of attraction when in the resting behaviour.
+The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
+Additionally, the model allows the animal to randomly select (but weighted towards areas of higher quality) a foraging destination as a point of attraction when in the foraging behavioural mode.
+Importantly the dynamic nature of the foraging destination selection allows for it to operate on a different time frame to the movement selection.
+The two time frames allow for explorations of assumptions connecting observed movement choices to choices regarding resources.
+We know that movements cannot be directly translated to animal preference, so the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
+
+The interplay between shelter sites and foraging quality attractors simulates the site fidelity required for home ranges, while allowing the environment (in the form of a raster describing resource quality) to help shape the size and diffusion of that home range.
+Multiple attractors that apply at different times and result in different movements can be missed in simulations that assume uniform circular animal space use.
+Simulating a more dynamic and messy array of movements can help test how far assumptions of uniform circular animal movement are useful.
+
+The attractor and movement characteristics are impacted by the behavioural state of the animal, and that behavioural state has a chance of changing at each time step.
+However, the changes should not be fully random nor have equal chance at each time step.
+Therefore, the model allows for a predefined cycle that influences the chances of switching in and out of the resting behavioural state.
+As such we have a means of simulating an animal with a given diel cycle, be that nocturnal, crepuscular, or anything in between.
+
 
 # Required libraries
 
