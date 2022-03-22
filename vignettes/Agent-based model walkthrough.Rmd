@@ -53,6 +53,32 @@ However, the changes should not be fully random nor have equal chance at each ti
 Therefore, the model allows for a predefined cycle that influences the chances of switching in and out of the resting behavioural state.
 As such we have a means of simulating an animal with a given diel cycle, be that nocturnal, crepuscular, or anything in between.
 
+# Generating three species
+
+The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
+The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns. 
+None of the created examples are meant to directly match previously collected data on the species movements –there are alternative methods built to fit and simulate movements from existing data– more provide some biological context for a range of simulation parametrisations.
+
+## Badger - High site fidelity
+
+Badger occupy a sett, a single home/shelter site, that they routinely return to.
+When not at the sett the badger forages, and the foraging distances are impacted by resource position <!-- 10.1111/j.1469-7998.1999.tb01015.x might help --> and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
+The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
+
+Badger movements are also impacted by their territoriality. 
+While the simulation does not attempted to simulate territoriality directly via competing simultaneously simulated badgers, we can approximate territoriality by providing a number of distant avoidance points.
+
+
+## Vulture - High movement variation
+
+Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction.
+
+- Explore behaviour should be circular
+
+## King Cobra - High resting variability
+
+
+
 
 # Required libraries
 
