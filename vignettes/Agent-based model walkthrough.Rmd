@@ -2,7 +2,13 @@
 title: "Agent-based model walkthrough"
 author: "Benjamin Michael Marshall"
 date: '2022-03-02'
-output: bookdown::html_document2
+output:
+  bookdown::html_document2:
+    theme: yeti
+    highlight: monochrome
+    # css: system.file("extdata", "style.css", package = "abmAnimalMovement")
+    css: styleOverwrite.css
+    fig_caption: true
 vignette: |
   %\VignetteIndexEntry{walkthrough} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 link-citations: yes
@@ -53,11 +59,11 @@ However, the changes should not be fully random nor have equal chance at each ti
 Therefore, the model allows for a predefined cycle that influences the chances of switching in and out of the resting behavioural state.
 As such we have a means of simulating an animal with a given diel cycle, be that nocturnal, crepuscular, or anything in between.
 
-# Generating three species
+# Generating three species {#intro .colorful}
 
 The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns. 
-None of the created examples are meant to directly match previously collected data on the species movements –there are alternative methods built to fit and simulate movements from existing data– more provide some biological context for a range of simulation parametrisations.
+None of the created examples are meant to directly match previously collected data on the species movements –there are alternative methods built to fit and simulate movements from existing data– instead the examples provide some biological context to demonstrate a range of simulation parametrisations.
 
 ## Badger - High site fidelity
 
@@ -76,6 +82,12 @@ Unlike badgers and other terrestrially moving animals, vultures can move great d
 - Explore behaviour should be circular
 
 ## King Cobra - High resting variability
+
+Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges.
+What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
+While they still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle.
+The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
+Implementing two cycles could equally be used to introduce hiberation behaviour
 
 
 
