@@ -19,6 +19,58 @@ biblio-style: peerj
 
 # Introduction
 
+## Rationale
+
+- justify studying movement - conservation + core ecology questions
+
+As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
+Developing mitigation strategies is aided by a strong understanding of animals lives and needs.
+How animals move offers a window into their decisions making process <!-- paper on bifrufacted choice here I think -->, as well as how they prioritise resources, avoid threats, and react to anthropogenic modification of the environment.
+Examinations of animal movement are frequently integrated into conservation plans <!-- fraser et al paper here --> because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology. For example, <!-- example, trade-off between size energy and space use? -->.
+
+- therefore we need studies to be more ethical and cost effective - key in conservation
+
+The information gathered from animal movement studies is only as robust as the methods and analysis applied.
+In the past <!-- "## years", look at the great Joo et al review --> the volume of animal data has exploded, but the analysis approaches to extract maximum information have lagged behind.
+The often conservation sensitivity of studies animals, as well as the bodily cost of attaching bio-telemetry devices, means we have an ethical duty to maximise the values/impact of the data collected. <!-- poss the public funding origin of research too-->
+
+- fix methods now because of replication issues?
+
+Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought.
+Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication. <!-- likely need to add something defining true replication here -->
+<!-- maybe new para here then -->
+It is hard to justify placed bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
+As we have limited scope for repeating wild movement studies, it is imperative that we maximise the quality of the initial studies.
+
+- power-analysis-esk things and planning are the way to reduce costs and minimise neg impacts
+- examples of virtual ecology being a valid approach <!-- https://www.biorxiv.org/content/10.1101/2022.03.20.485041v1.full.pdf+html possible example vrey new -->
+
+Expanding pre-study planning and developing better approaches to guide study design may provide a partial solution.
+Study scenarios where researchers have great control over the environment, randomisation, and controls satisfy the assumptions of many statistical approaches.
+Movement studies conducted in the wild are fraught with uncontrollable confounding variables and often further restricted by sample sizes limited by ethics, capture rates, and cost of bio-telemetry equipment.
+As the complexity of the research environment increases so must the analysis approach to account for the uncontrollable, but potentially extraneous to the question variables.
+Testing these analysis approaches, and their limitations therefore becomes more difficult to asses a priori.
+
+A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question.
+<!-- examples of virtual ecology here -->
+
+- example of SECR improvements because of it
+
+Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment.
+<!-- deep dive of the SECR world, and the papers that have used sims to prove approaches -->
+
+- agent-based supplements existing simulation efforts
+- agent-based good way to capture complexities of animal movement
+
+As demonstrated by the SECR example, different simulation approaches and different analyses accounting for different additional complexities offer different suggestions on the optimal study design.
+There have been prior efforts to simulate animal movement: <!-- ctmm, moveHMM, that recent paper, the C based one for rivers-->, all with different aspects of animal movement included.
+Here we present an agent-based approach to supplement those.
+The agent-based approach is well suited to explore a combination of the (not fully understood) complexities of animal movement, and the emergent properties.
+Our model requires no prior movement data, allows for multiple predefined points of attraction/avoidance, two-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
+A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
+
+## The agent-based model
+
 - time step
 - basic workings of simulation
 - behavioural state
@@ -87,10 +139,7 @@ Whereas the previous two species have a very limited or single shelter sites, ki
 What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
 While they still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle.
 The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
-Implementing two cycles could equally be used to introduce hiberation behaviour
-
-
-
+Implementing two cycles could equally be used to introduce hibernation behaviour
 
 # Required libraries
 
