@@ -18,6 +18,16 @@
 //' @param shelter_locs_y
 //' @param avoidPoints_x
 //' @param avoidPoints_y
+//' @param destinationTrans 0 - no transformation applied to the distance to
+//'   destination weighting, 1 - distance to destination weighing is
+//'   square-rooted, 2 - distance to destination weighting is squared
+//' @param destinationMod A coefficient to be applied to the distance
+//'   to destination weighting.
+//' @param avoidTrans 0 - no transformation applied to the distance to avoidance
+//'   points weighting, 1 - distance to avoidance points weighing is
+//'   square-rooted, 2 - distance to avoidance points weighting is squared
+//' @param avoidMod A coefficient to be applied to the avoidance points
+//'   weighting.
 //' @param k_step Parameter describing step length
 //' @param s_step Parameter describing step
 //' @param mu_angle Parameter describing angle
@@ -46,8 +56,14 @@ Rcpp::List cpp_abm_simulate(
 
     std::vector<double> shelter_locs_x,
     std::vector<double> shelter_locs_y,
+    double sSiteSize,
     std::vector<double> avoidPoints_x,
     std::vector<double> avoidPoints_y,
+
+    int destinationTrans,
+    double destinationMod,
+    int avoidTrans,
+    double avoidMod,
 
     std::vector<double> k_step,
     std::vector<double> s_step,
@@ -172,7 +188,7 @@ Rcpp::List cpp_abm_simulate(
   double c_dist2;
   double c_dist;
   std::vector<double> distance_toDes(nopt);
-  double distInvert;
+  // double distInvert;
   std::vector<double> weights_toDes(nopt);
 
   // we need storage for the last angle followed as turning angle is relative
@@ -360,7 +376,7 @@ Rcpp::List cpp_abm_simulate(
       // an if to make sure the animal doesn't move too far from a shelter site
       // need the initial high steps to get there.
       // this could be swapped to maximise the step length if it is far from shelter/centre
-      if(behave_Locations[i] == 0 & currDist < 1){
+      if(behave_Locations[i] == 0 & currDist < sSiteSize){
         step = Rcpp::rgamma(1, behave_k_step/100, behave_s_step)[0];
       } else{
         step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
@@ -434,11 +450,22 @@ Rcpp::List cpp_abm_simulate(
       // only apply distance/point attraction to non-exploratory behaviours
       if(behave_Locations[i] == 1){
         move_Options[m] = move_Options[m];
-      } else{
-        move_Options[m] = move_Options[m] + std::pow(weights_toDes[m], 2);
-      }
-      // move_Options[m] = move_Options[m] + weights_toDes[m];
-    }
+
+      } else {
+        // and use the different ways of balancing the influence of the destination
+        switch(destinationTrans){
+          case 0:
+            move_Options[m] = move_Options[m] + destinationMod * weights_toDes[m];
+            break;
+          case 1:
+            move_Options[m] = move_Options[m] + destinationMod * std::sqrt(weights_toDes[m]);
+            break;
+          case 2:
+            move_Options[m] = move_Options[m] + destinationMod * std::pow(weights_toDes[m], 2);
+            break;
+        } // switch end
+      } // if end
+    }// for m end
 
     cumulative_dist = 0;
     // current distances from all avoidance points
@@ -470,8 +497,8 @@ Rcpp::List cpp_abm_simulate(
       }
     }
 
-    // using the find max and min found above we normalise all the distances
-    // from possible choices in relation to the final destination
+    // use the min and max cumdists to the avoidance points to modify the
+    // move_Options draw
     for(int m = 0; m < nopt; m++){
       // This time we are not inverting it so ones farther from the avoidance
       // points are preferred.
@@ -482,9 +509,19 @@ Rcpp::List cpp_abm_simulate(
       // only apply distance/point avoidance to non-exploratory behaviours
       // if(behave_Locations[i] == 1){
       //   move_Options[m] = move_Options[m];
-      // } else{
-        move_Options[m] = move_Options[m] + 4*std::pow(weights_toDes[m], 2);
-      // }
+      // } else {
+      // and use the different ways of balancing the influence of avoidance
+      switch(avoidTrans){
+        case 0:
+          move_Options[m] = move_Options[m] + avoidMod * weights_toDes[m];
+          break;
+        case 1:
+          move_Options[m] = move_Options[m] + avoidMod * std::sqrt(weights_toDes[m]);
+          break;
+        case 2:
+          move_Options[m] = move_Options[m] + avoidMod * std::pow(weights_toDes[m], 2);
+          break;
+        } // switch end
     }
 
     //
@@ -508,7 +545,7 @@ Rcpp::List cpp_abm_simulate(
     last_angle = taOptions[chosen];
     if(last_angle > 360){
       last_angle = last_angle - 360;
-    } else if(last_angle < -360){
+    } else if(last_angle < - 360){
       last_angle = last_angle + 360;
     }
 

@@ -12,6 +12,20 @@
 
 \item{options}{The number of options to be considered at each step}
 
+\item{destinationTrans}{0 - no transformation applied to the distance to
+destination weighting, 1 - distance to destination weighing is
+square-rooted, 2 - distance to destination weighting is squared}
+
+\item{destinationMod}{A coefficient to be applied to the distance
+to destination weighting.}
+
+\item{avoidTrans}{0 - no transformation applied to the distance to avoidance
+points weighting, 1 - distance to avoidance points weighing is
+square-rooted, 2 - distance to avoidance points weighting is squared}
+
+\item{avoidMod}{A coefficient to be applied to the avoidance points
+weighting.}
+
 \item{k_step}{Parameter describing step length}
 
 \item{s_step}{Parameter describing step}

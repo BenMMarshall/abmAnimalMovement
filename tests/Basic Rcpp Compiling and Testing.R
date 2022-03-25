@@ -66,7 +66,12 @@ simRes <- abm_simulate(start = c(1050,1050),
                        k_angle = c(0.6, 0.99, 0.6),
 
                        shelterLocations = shelterLocs,
+                       shelterSize = 1,
                        avoidPoints = avoid,
+                       destinationTransformation = 2,
+                       destinationModifier = 2,
+                       avoidTransformation = 2,
+                       avoidModifier = 4,
 
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.65, -0.3, 24, 24),

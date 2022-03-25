@@ -8,10 +8,27 @@
 #'   of the start location.
 #' @param steps The number of time steps to be simulated, where each step is
 #'   equal to ------ ----.
-#' @param des_options
+#' @param des_options The number of dynamically chosen destinations presented to
+#'   the animal during the foraging behaviour state.
 #' @param options The number of options the animal considers at each step.
-#' @param shelterLocations
-#' @param avoidPoints
+#' @param shelterLocations A dataframe including the x and y coordinates for all
+#'   shelter sites, that act as points of attraction during the resting
+#'   behavioural state.
+#' @param sSiteSize
+#' @param avoidPoints A dataframe including the x and y coordinates that the
+#'   animal will avoid.
+#' @param destinationTransformation This parameter and the following three all
+#'   apply to the strength/pull/push the animal feels from a destination or
+#'   avoidance point. 0 - no transformation applied to the distance to
+#'   destination weighting, 1 - distance to destination weighing is
+#'   square-rooted, 2 - distance to destination weighting is squared
+#' @param destinationModifier A coefficient to be applied to the distance to
+#'   destination weighting.
+#' @param avoidTransformation  - no transformation applied to the distance to
+#'   avoidance points weighting, 1 - distance to avoidance points weighing is
+#'   square-rooted, 2 - distance to avoidance points weighting is squared
+#' @param avoidModifier A coefficient to be applied to the avoidance points
+#'   weighting.
 #' @param k_step The shape parameters (k) for the gamma distribution describing
 #'   step length for each behavioural state. A vector of length 3.
 #' @param s_step The scale parameters (\eqn{\theta}) for the gamma distribution
@@ -48,7 +65,12 @@ abm_simulate <- function(start, steps,
                          options,
 
                          shelterLocations,
+                         shelterSize,
                          avoidPoints,
+                         destinationTransformation,
+                         destinationModifier,
+                         avoidTransformation,
+                         avoidModifier,
 
                          k_step, s_step, mu_angle,
                        k_angle, behave_Tmat, rest_Cycle,
@@ -82,8 +104,13 @@ abm_simulate <- function(start, steps,
 
     shelter_locs_x = shelter_locs_xIN,
     shelter_locs_y = shelter_locs_yIN,
+    sSiteSize = shelterSize,
     avoidPoints_x = avoidPoints_xIN,
     avoidPoints_y = avoidPoints_yIN,
+    destinationTrans = destinationTransformation,
+    destinationMod = destinationModifier,
+    avoidTrans = avoidTransformation,
+    avoidMod = avoidModifier,
 
     k_step = k_step,
     s_step = s_step,
@@ -149,8 +176,13 @@ run_abm_simulate <- function(startx, starty, steps,
 
                              shelter_locs_x,
                              shelter_locs_y,
+                             sSiteSize,
                              avoidPoints_x,
                              avoidPoints_y,
+                             destinationTrans,
+                             destinationMod,
+                             avoidTrans,
+                             avoidMod,
 
                              k_step, s_step, mu_angle, k_angle,
                              b0_Options,
@@ -171,8 +203,13 @@ run_abm_simulate <- function(startx, starty, steps,
 
         shelter_locs_x,
         shelter_locs_y,
+        sSiteSize,
         avoidPoints_x,
         avoidPoints_y,
+        destinationTrans,
+        destinationMod,
+        avoidTrans,
+        avoidMod,
 
         k_step, s_step, mu_angle, k_angle,
         b0_Options,
