@@ -9,6 +9,10 @@
 #' @param steps The number of steps to be simulated
 #' @param des_options
 #' @param options The number of options to be considered at each step
+#' @param shelter_locs_x
+#' @param shelter_locs_y
+#' @param avoidPoints_x
+#' @param avoidPoints_y
 #' @param k_step Parameter describing step length
 #' @param s_step Parameter describing step
 #' @param mu_angle Parameter describing angle
@@ -28,8 +32,8 @@
 #' @details Requires cmath and headers for smaller C++ functions for draws.
 NULL
 
-cpp_abm_simulate <- function(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds) {
-    .Call('_abmAnimalMovement_cpp_abm_simulate', PACKAGE = 'abmAnimalMovement', startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds)
+cpp_abm_simulate <- function(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, avoidPoints_x, avoidPoints_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds) {
+    .Call('_abmAnimalMovement_cpp_abm_simulate', PACKAGE = 'abmAnimalMovement', startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, avoidPoints_x, avoidPoints_y, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds)
 }
 
 #' cpp_cycle_draw

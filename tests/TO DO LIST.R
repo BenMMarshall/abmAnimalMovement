@@ -16,3 +16,19 @@
 # line 283, 342
 # think we just need to add the new drawn angles to a previous angle
 # make sure to update currAngle each time
+
+
+# NOTES -------------------------------------------------------------------
+
+## AVOIDANCE notes
+# mO = moveoptions interator
+#
+# x_avoidPoints = vec of points
+# y_avoidPoints = vec of points
+# navp = number of points to avoid, comes from x_avoidPoints
+#
+# cumulative_dist = sum of distances for each moveOption, used once per loop
+#
+# distance_toAvoid = vec of the cum. distances for each moveOption
+#
+# haven't added anything about the avoidance only being in certain behaviours

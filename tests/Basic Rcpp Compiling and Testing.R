@@ -49,6 +49,11 @@ shelterLocs <- data.frame(
   "y" = c(1020, 1050, 1050, 1010, 1045)
 )
 
+avoid <- data.frame(
+  "x" = c(1050, 1060, 1010),
+  "y" = c(1060, 1070, 1010)
+)
+
 ##### Run core simulation function ##### ---------------------------------------
 
 simRes <- abm_simulate(start = c(1050,1050),
@@ -61,6 +66,7 @@ simRes <- abm_simulate(start = c(1050,1050),
                        k_angle = c(0.6, 0.99, 0.6),
 
                        shelterLocations = shelterLocs,
+                       avoidPoints = avoid,
 
                        behave_Tmat = behaveMatTest,
                        rest_Cycle = c(0.65, -0.3, 24, 24),
@@ -189,6 +195,11 @@ plotBgEnv +
              pch = "\u2776",
              size = 4, colour = palette["0"],
              alpha = 0.45) +
+  geom_point(data = avoid,
+             aes(x = x, y = y),
+             pch = 18,
+             size = 5, colour = palette["1"],
+             alpha = 0.85) +
   scale_colour_scico(palette = "buda") +
   coord_cartesian(xlim = range(simRes$locations$x), ylim = range(simRes$locations$y)) +
   # coord_cartesian(xlim = range(simRes$options$x), ylim = range(simRes$options$y)) +

@@ -14,6 +14,10 @@
 //' @param steps The number of steps to be simulated
 //' @param des_options
 //' @param options The number of options to be considered at each step
+//' @param shelter_locs_x
+//' @param shelter_locs_y
+//' @param avoidPoints_x
+//' @param avoidPoints_y
 //' @param k_step Parameter describing step length
 //' @param s_step Parameter describing step
 //' @param mu_angle Parameter describing angle
@@ -42,6 +46,8 @@ Rcpp::List cpp_abm_simulate(
 
     std::vector<double> shelter_locs_x,
     std::vector<double> shelter_locs_y,
+    std::vector<double> avoidPoints_x,
+    std::vector<double> avoidPoints_y,
 
     std::vector<double> k_step,
     std::vector<double> s_step,
@@ -150,6 +156,14 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> x_forageOptions(ndes);
   std::vector<double> y_forageOptions(ndes);
   std::vector<double> des_forageOptions(ndes);
+
+  // AVOIDANCE OBJECTS ---------------------------------------------------------
+
+  double navp = avoidPoints_x.size();
+  double cumulative_dist;
+  std::vector<double> distance_toAvoid(nopt);
+
+  // DISTANCE CALCULATION OBJECTS ----------------------------------------------
 
   // object for checking whether the animal should slow down because it's near
   // the destination
@@ -316,9 +330,12 @@ Rcpp::List cpp_abm_simulate(
     des_chosen[i] = chosenDes;
 
     // current distance from destination
+    ////////////////////////////////////////////////////////////////////////////
+    // IS THIS EVEN NEEDED, WE RECALC THIS LATER IN A LOOP
     c_dist2 = std::pow((des_x - x_Locations[i-1]), 2) +
       std::pow((des_y - y_Locations[i-1]), 2);
     currDist = std::sqrt(c_dist2);
+    ////////////////////////////////////////////////////////////////////////////
 
     // MOVEMENT LOOP
     for(int j = 0; j < nopt; j++, a++){
@@ -422,6 +439,55 @@ Rcpp::List cpp_abm_simulate(
       }
       // move_Options[m] = move_Options[m] + weights_toDes[m];
     }
+
+    cumulative_dist = 0;
+    // current distances from all avoidance points
+    for(int mO = 0; mO < nopt; mO++){
+      for(int avp = 0; avp < navp; avp++){
+
+        c_dist2 = std::pow(avoidPoints_x[avp] - x_Options[mO], 2) +
+          std::pow(avoidPoints_y[avp] - y_Options[mO], 2);
+        c_dist = std::sqrt(c_dist2);
+        cumulative_dist = cumulative_dist + c_dist;
+
+      }
+      distance_toAvoid[mO] = cumulative_dist;
+
+    }
+
+    // find MIN
+    double distAvoid_min = distance_toAvoid[0];
+    for(int l = 0; l < nopt; l++){
+      if(distance_toAvoid[l] < distAvoid_min){
+        distAvoid_min = distance_toAvoid[l];
+      }
+    }
+    // find MAX
+    double distAvoid_max = distance_toAvoid[0];
+    for(int l = 0; l < nopt; l++){
+      if(distance_toAvoid[l] > distAvoid_max){
+        distAvoid_max = distance_toAvoid[l];
+      }
+    }
+
+    // using the find max and min found above we normalise all the distances
+    // from possible choices in relation to the final destination
+    for(int m = 0; m < nopt; m++){
+      // This time we are not inverting it so ones farther from the avoidance
+      // points are preferred.
+      weights_toDes[m] = (distance_toAvoid[m] - dist_min) /
+        (distAvoid_max - distAvoid_min);
+      // then combine them with the movement Matrix values
+
+      // only apply distance/point avoidance to non-exploratory behaviours
+      // if(behave_Locations[i] == 1){
+      //   move_Options[m] = move_Options[m];
+      // } else{
+        move_Options[m] = move_Options[m] + 4*std::pow(weights_toDes[m], 2);
+      // }
+    }
+
+    //
 
     /* using the custom sample_options, we need to feed it a different seed each time,
      * but overall those seeds are derived from the set.seed() in R prior to running

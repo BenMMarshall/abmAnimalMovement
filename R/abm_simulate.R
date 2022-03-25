@@ -10,6 +10,8 @@
 #'   equal to ------ ----.
 #' @param des_options
 #' @param options The number of options the animal considers at each step.
+#' @param shelterLocations
+#' @param avoidPoints
 #' @param k_step The shape parameters (k) for the gamma distribution describing
 #'   step length for each behavioural state. A vector of length 3.
 #' @param s_step The scale parameters (\eqn{\theta}) for the gamma distribution
@@ -46,6 +48,7 @@ abm_simulate <- function(start, steps,
                          options,
 
                          shelterLocations,
+                         avoidPoints,
 
                          k_step, s_step, mu_angle,
                        k_angle, behave_Tmat, rest_Cycle,
@@ -59,6 +62,9 @@ abm_simulate <- function(start, steps,
   # split the dataframe of shelter and forage locations
   shelter_locs_xIN <- shelterLocations[,1]
   shelter_locs_yIN <- shelterLocations[,2]
+
+  avoidPoints_xIN <- avoidPoints[,1]
+  avoidPoints_yIN <- avoidPoints[,2]
 
   # A function that gets a seed so the sampling function is fed something fresh
   # each turn. More details in sample_options documentation
@@ -76,6 +82,8 @@ abm_simulate <- function(start, steps,
 
     shelter_locs_x = shelter_locs_xIN,
     shelter_locs_y = shelter_locs_yIN,
+    avoidPoints_x = avoidPoints_xIN,
+    avoidPoints_y = avoidPoints_yIN,
 
     k_step = k_step,
     s_step = s_step,
@@ -141,6 +149,8 @@ run_abm_simulate <- function(startx, starty, steps,
 
                              shelter_locs_x,
                              shelter_locs_y,
+                             avoidPoints_x,
+                             avoidPoints_y,
 
                              k_step, s_step, mu_angle, k_angle,
                              b0_Options,
@@ -161,6 +171,8 @@ run_abm_simulate <- function(startx, starty, steps,
 
         shelter_locs_x,
         shelter_locs_y,
+        avoidPoints_x,
+        avoidPoints_y,
 
         k_step, s_step, mu_angle, k_angle,
         b0_Options,
