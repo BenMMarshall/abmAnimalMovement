@@ -75,8 +75,7 @@ abm_simulate <- function(start, steps,
                          k_step, s_step, mu_angle,
                          k_angle, behave_Tmat,
                          rest_Cycle,
-                         includeSecondaryCycle,
-                         secondary_Cycle,
+                         additional_Cycles,
 
                          memShelterMatrix,
                          forageMatrix,
@@ -96,6 +95,13 @@ abm_simulate <- function(start, steps,
   # each turn. More details in sample_options documentation
   get_seed <- function() {
     sample.int(.Machine$integer.max, 1)
+  }
+
+  # how many additional cycles have been provided
+  if(is.null(additional_Cycles)){
+    nAdditionalCycles <- 0
+  } else {
+    nAdditionalCycles <- nrow(additional_Cycles)
   }
 
   # input all into the Cpp function
@@ -128,11 +134,11 @@ abm_simulate <- function(start, steps,
     rest_Cycle_M = rest_Cycle[2],
     rest_Cycle_PHI = rest_Cycle[3],
     rest_Cycle_TAU = rest_Cycle[4],
-    secondCycle = includeSecondaryCycle,
-    second_Cycle_A = secondary_Cycle[1],
-    second_Cycle_M = secondary_Cycle[2],
-    second_Cycle_PHI = secondary_Cycle[3],
-    second_Cycle_TAU = secondary_Cycle[4],
+    addCycles = nAdditionalCycles,
+    add_Cycle_A = additional_Cycles[,1],
+    add_Cycle_M = additional_Cycles[,2],
+    add_Cycle_PHI = additional_Cycles[,3],
+    add_Cycle_TAU = additional_Cycles[,4],
 
     memShelterMatrix = memShelterMatrix,
     forageMatrix = forageMatrix,
@@ -204,11 +210,11 @@ run_abm_simulate <- function(startx, starty, steps,
                              rest_Cycle_M,
                              rest_Cycle_PHI,
                              rest_Cycle_TAU,
-                             secondCycle,
-                             second_Cycle_A,
-                             second_Cycle_M,
-                             second_Cycle_PHI,
-                             second_Cycle_TAU,
+                             addCycles,
+                             add_Cycle_A,
+                             add_Cycle_M,
+                             add_Cycle_PHI,
+                             add_Cycle_TAU,
 
                              memShelterMatrix,
                              forageMatrix,
@@ -238,11 +244,11 @@ run_abm_simulate <- function(startx, starty, steps,
         rest_Cycle_M,
         rest_Cycle_PHI,
         rest_Cycle_TAU,
-        secondCycle,
-        second_Cycle_A,
-        second_Cycle_M,
-        second_Cycle_PHI,
-        second_Cycle_TAU,
+        addCycles,
+        add_Cycle_A,
+        add_Cycle_M,
+        add_Cycle_PHI,
+        add_Cycle_TAU,
 
         memShelterMatrix,
         forageMatrix,

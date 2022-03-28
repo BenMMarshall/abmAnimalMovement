@@ -54,11 +54,18 @@ avoid <- data.frame(
   "y" = c(1060, 1070, 1010)
 )
 
-restData <- c(0.15, -0.5, 24, 24)
-secCycleData <- c(0.35, 0.5, 24, 24*3)
+restData <- c(0.65, 0, 24, 24)
+
+## multiple cycle additions
+c0 <- c(0.2, 0, 24, 24*4) # digest
+c1 <- c(0.15, 0, 24, 24*28) # seasonal
+
+cycleMat <- rbind(c0, c1)
+
+cycleMat[1,]
 
 # how long to run the sim for
-simSteps <- 24*60 *14
+simSteps <- 24*60 *28
 ##### Run core simulation function ##### ---------------------------------------
 
 simRes <- abm_simulate(start = c(1050,1050),
@@ -81,8 +88,7 @@ simRes <- abm_simulate(start = c(1050,1050),
                        behave_Tmat = behaveMatTest,
 
                        rest_Cycle = restData,
-                       includeSecondaryCycle = TRUE,
-                       secondary_Cycle = secCycleData,
+                       additional_Cycles = cycleMat,
 
                        memShelterMatrix = landcapeLayersList$memShelter,
                        forageMatrix = landcapeLayersList$forage,
@@ -98,22 +104,54 @@ simSteps/60
 behaveProb <- sapply(1:simSteps/60, function(x){
   cycle_draw(x, restData[1], restData[2], restData[3], restData[4])
 })
-
 behaviourPlotData <- data.frame(
   "i" = 1:length(simRes$locations$behave)/60,
   "behaveObs" = simRes$locations$behave,
   "behaveRest" = behaveProb
 )
 
-behaveProb <- sapply(1:simSteps/60, function(x){
-  cycle_draw(x, secCycleData[1], secCycleData[2], secCycleData[3], secCycleData[4])
-})
+cycleMat
 
-behaviourPlotDataSecCycle <- data.frame(
-  "i" = 1:length(simRes$locations$behave)/60,
-  "behaveObs" = simRes$locations$behave,
-  "behaveRest" = behaveProb
-)
+behAddCycleVec <- vector("list", length = nrow(cycleMat))
+for(i in 1:nrow(cycleMat)){
+  behaveProb <- sapply(1:simSteps/60, function(x){
+    cycle_draw(x, cycleMat[i,1], cycleMat[i,2], cycleMat[i,3], cycleMat[i,4])
+  })
+
+  behAddCycleVec[[i]] <- data.frame(
+    "i" = 1:length(simRes$locations$behave)/60,
+    "behaveObs" = simRes$locations$behave,
+    "behaveRest" = behaveProb,
+    "cycle" = paste0("cycle_", i)
+  )
+}
+
+plotList <- lapply(behAddCycleVec, function(x){
+  plotExpRest <- ggplot(x) +
+     geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
+     scale_x_continuous(breaks = seq(0, simSteps/60, 24)) +
+     theme_bw() +
+     theme(legend.position = "none",
+           axis.title = element_text(angle = 0,
+                                     face = 2,
+                                     hjust = 1),
+           axis.text.x = element_blank(),
+           axis.title.x = element_blank(),
+           axis.title.y = element_text(angle = 0,
+                                       face = 2,
+                                       hjust = 1),
+           plot.background = element_blank(),
+           # panel.background = element_blank(),
+           panel.border = element_blank(),
+           panel.grid = element_blank(),
+           axis.line = element_line(size = 0.5),
+
+           panel.grid.major.y = element_line(linetype = 2,
+                                             size = 0.5,
+                                             colour = "grey75")
+     ) +
+     labs(y = "Rest prob.\nmodifier", x = "Hour")
+})
 
 # depends on the offest and starting scenario
 daylight <- data.frame(
@@ -127,7 +165,7 @@ daylight <- data.frame(
               fill = "yellow", alpha = 0.25) +
     geom_path(aes(x = i, y = behaveObs), size = 0.5, alpha = 0.5) +
     geom_point(aes(x = i, y = behaveObs, colour = as.factor(behaveObs)), size = 0.5) +
-    scale_x_continuous(breaks = seq(0, 24*14, 12)) +
+    scale_x_continuous(breaks = seq(0, simSteps/60, 24)) +
     scale_y_continuous(breaks = c(0, 1, 2),
                        labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
     theme_bw() +
@@ -155,7 +193,7 @@ daylight <- data.frame(
 
 (plotExpRest <- ggplot(behaviourPlotData) +
     geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
-    scale_x_continuous(breaks = seq(0, 24*14, 12)) +
+    scale_x_continuous(breaks = seq(0, simSteps/60, 24)) +
     theme_bw() +
     theme(legend.position = "none",
           axis.title = element_text(angle = 0,
@@ -178,30 +216,17 @@ daylight <- data.frame(
     ) +
     labs(y = "Rest prob.\nmodifier", x = "Hour"))
 
-(plotExpSecCyc <- ggplot(behaviourPlotDataSecCycle) +
-  geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
-  scale_x_continuous(breaks = seq(0, 24*14, 12)) +
-  theme_bw() +
-  theme(legend.position = "none",
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
+plotList[[length(plotList)]] <- plotList[[length(plotList)]] +
+  theme(axis.text.x = element_text(),
+        axis.title.x = element_text(angle = 0,
                                     face = 2,
-                                    hjust = 1),
-        plot.background = element_blank(),
-        # panel.background = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        axis.line = element_line(size = 0.5),
+                                    hjust = 1))
 
-        panel.grid.major.y = element_line(linetype = 2,
-                                          size = 0.5,
-                                          colour = "grey75")
-  ) +
-  labs(y = "Rest prob.\nmodifier", x = "Hour"))
-
-plotObsBehave / plotExpRest / plotExpSecCyc + plot_layout(heights = c(1,0.25,0.25))
+plotObsBehave / plotExpRest / do.call(patchwork::wrap_plots, c(plotList, ncol=1)) +
+  plot_layout(heights = c(1,
+                          1/(nrow(cycleMat)+1),
+                          1-(1/(nrow(cycleMat)+1))
+                          ))
 
 ggsave("./output/figures/behaviourCycle.png",
        width = 180, height = 120, units = "mm", dpi = 300)
