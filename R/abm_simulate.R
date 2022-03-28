@@ -8,8 +8,27 @@
 #'   of the start location.
 #' @param steps The number of time steps to be simulated, where each step is
 #'   equal to ------ ----.
-#' @param des_options
+#' @param des_options The number of dynamically chosen destinations presented to
+#'   the animal during the foraging behaviour state.
 #' @param options The number of options the animal considers at each step.
+#' @param shelterLocations A dataframe including the x and y coordinates for all
+#'   shelter sites, that act as points of attraction during the resting
+#'   behavioural state.
+#' @param sSiteSize
+#' @param avoidPoints A dataframe including the x and y coordinates that the
+#'   animal will avoid.
+#' @param destinationTransformation This parameter and the following three all
+#'   apply to the strength/pull/push the animal feels from a destination or
+#'   avoidance point. 0 - no transformation applied to the distance to
+#'   destination weighting, 1 - distance to destination weighing is
+#'   square-rooted, 2 - distance to destination weighting is squared
+#' @param destinationModifier A coefficient to be applied to the distance to
+#'   destination weighting.
+#' @param avoidTransformation  - no transformation applied to the distance to
+#'   avoidance points weighting, 1 - distance to avoidance points weighing is
+#'   square-rooted, 2 - distance to avoidance points weighting is squared
+#' @param avoidModifier A coefficient to be applied to the avoidance points
+#'   weighting.
 #' @param k_step The shape parameters (k) for the gamma distribution describing
 #'   step length for each behavioural state. A vector of length 3.
 #' @param s_step The scale parameters (\eqn{\theta}) for the gamma distribution
@@ -46,12 +65,22 @@ abm_simulate <- function(start, steps,
                          options,
 
                          shelterLocations,
+                         shelterSize,
+                         avoidPoints,
+                         destinationTransformation,
+                         destinationModifier,
+                         avoidTransformation,
+                         avoidModifier,
 
                          k_step, s_step, mu_angle,
-                       k_angle, behave_Tmat, rest_Cycle,
-                       memShelterMatrix,
-                       forageMatrix,
-                       move_Options){
+                         k_angle, behave_Tmat,
+                         rest_Cycle,
+                         includeSecondaryCycle,
+                         secondary_Cycle,
+
+                         memShelterMatrix,
+                         forageMatrix,
+                         move_Options){
   # split the vector of start location x and y
   startxIN <- start[1]
   startyIN <- start[2]
@@ -59,6 +88,9 @@ abm_simulate <- function(start, steps,
   # split the dataframe of shelter and forage locations
   shelter_locs_xIN <- shelterLocations[,1]
   shelter_locs_yIN <- shelterLocations[,2]
+
+  avoidPoints_xIN <- avoidPoints[,1]
+  avoidPoints_yIN <- avoidPoints[,2]
 
   # A function that gets a seed so the sampling function is fed something fresh
   # each turn. More details in sample_options documentation
@@ -76,6 +108,13 @@ abm_simulate <- function(start, steps,
 
     shelter_locs_x = shelter_locs_xIN,
     shelter_locs_y = shelter_locs_yIN,
+    sSiteSize = shelterSize,
+    avoidPoints_x = avoidPoints_xIN,
+    avoidPoints_y = avoidPoints_yIN,
+    destinationTrans = destinationTransformation,
+    destinationMod = destinationModifier,
+    avoidTrans = avoidTransformation,
+    avoidMod = avoidModifier,
 
     k_step = k_step,
     s_step = s_step,
@@ -84,10 +123,17 @@ abm_simulate <- function(start, steps,
     b0_Options = behave_Tmat[1,],
     b1_Options = behave_Tmat[2,],
     b2_Options = behave_Tmat[3,],
+
     rest_Cycle_A = rest_Cycle[1],
     rest_Cycle_M = rest_Cycle[2],
     rest_Cycle_PHI = rest_Cycle[3],
     rest_Cycle_TAU = rest_Cycle[4],
+    secondCycle = includeSecondaryCycle,
+    second_Cycle_A = secondary_Cycle[1],
+    second_Cycle_M = secondary_Cycle[2],
+    second_Cycle_PHI = secondary_Cycle[3],
+    second_Cycle_TAU = secondary_Cycle[4],
+
     memShelterMatrix = memShelterMatrix,
     forageMatrix = forageMatrix,
     move_Options = move_Options,
@@ -141,15 +187,29 @@ run_abm_simulate <- function(startx, starty, steps,
 
                              shelter_locs_x,
                              shelter_locs_y,
+                             sSiteSize,
+                             avoidPoints_x,
+                             avoidPoints_y,
+                             destinationTrans,
+                             destinationMod,
+                             avoidTrans,
+                             avoidMod,
 
                              k_step, s_step, mu_angle, k_angle,
                              b0_Options,
                              b1_Options,
                              b2_Options,
+
                              rest_Cycle_A,
                              rest_Cycle_M,
                              rest_Cycle_PHI,
                              rest_Cycle_TAU,
+                             secondCycle,
+                             second_Cycle_A,
+                             second_Cycle_M,
+                             second_Cycle_PHI,
+                             second_Cycle_TAU,
+
                              memShelterMatrix,
                              forageMatrix,
                              move_Options,
@@ -161,15 +221,29 @@ run_abm_simulate <- function(startx, starty, steps,
 
         shelter_locs_x,
         shelter_locs_y,
+        sSiteSize,
+        avoidPoints_x,
+        avoidPoints_y,
+        destinationTrans,
+        destinationMod,
+        avoidTrans,
+        avoidMod,
 
         k_step, s_step, mu_angle, k_angle,
         b0_Options,
         b1_Options,
         b2_Options,
+
         rest_Cycle_A,
         rest_Cycle_M,
         rest_Cycle_PHI,
         rest_Cycle_TAU,
+        secondCycle,
+        second_Cycle_A,
+        second_Cycle_M,
+        second_Cycle_PHI,
+        second_Cycle_TAU,
+
         memShelterMatrix,
         forageMatrix,
         move_Options,

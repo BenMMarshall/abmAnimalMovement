@@ -9,12 +9,21 @@ abm_simulate(
   steps,
   des_options,
   options,
+  shelterLocations,
+  shelterSize,
+  avoidPoints,
+  destinationTransformation,
+  destinationModifier,
+  avoidTransformation,
+  avoidModifier,
   k_step,
   s_step,
   mu_angle,
   k_angle,
   behave_Tmat,
   rest_Cycle,
+  includeSecondaryCycle,
+  secondary_Cycle,
   memShelterMatrix,
   forageMatrix,
   move_Options
@@ -27,7 +36,35 @@ of the start location.}
 \item{steps}{The number of time steps to be simulated, where each step is
 equal to ------ ----.}
 
+\item{des_options}{The number of dynamically chosen destinations presented to
+the animal during the foraging behaviour state.}
+
 \item{options}{The number of options the animal considers at each step.}
+
+\item{shelterLocations}{A dataframe including the x and y coordinates for all
+shelter sites, that act as points of attraction during the resting
+behavioural state.}
+
+\item{avoidPoints}{A dataframe including the x and y coordinates that the
+animal will avoid.}
+
+\item{destinationTransformation}{This parameter and the following three all
+apply to the strength/pull/push the animal feels from a destination or
+avoidance point. 0 - no transformation applied to the distance to
+destination weighting, 1 - distance to destination weighing is
+square-rooted, 2 - distance to destination weighting is squared}
+
+\item{destinationModifier}{A coefficient to be applied to the distance to
+destination weighting.}
+
+\item{avoidTransformation}{\itemize{
+\item no transformation applied to the distance to
+avoidance points weighting, 1 - distance to avoidance points weighing is
+square-rooted, 2 - distance to avoidance points weighting is squared
+}}
+
+\item{avoidModifier}{A coefficient to be applied to the avoidance points
+weighting.}
 
 \item{k_step}{The shape parameters (k) for the gamma distribution describing
 step length for each behavioural state. A vector of length 3.}
