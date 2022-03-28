@@ -11,8 +11,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_abm_simulate
-Rcpp::List cpp_abm_simulate(double startx, double starty, int steps, int des_options, int options, std::vector<double> shelter_locs_x, std::vector<double> shelter_locs_y, double sSiteSize, std::vector<double> avoidPoints_x, std::vector<double> avoidPoints_y, int destinationTrans, double destinationMod, int avoidTrans, double avoidMod, std::vector<double> k_step, std::vector<double> s_step, std::vector<double> mu_angle, std::vector<double> k_angle, std::vector<double> b0_Options, std::vector<double> b1_Options, std::vector<double> b2_Options, double rest_Cycle_A, double rest_Cycle_M, double rest_Cycle_PHI, double rest_Cycle_TAU, Rcpp::NumericMatrix memShelterMatrix, Rcpp::NumericMatrix forageMatrix, Rcpp::NumericMatrix moveMatrix, std::vector<int> seeds);
-RcppExport SEXP _abmAnimalMovement_cpp_abm_simulate(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP des_optionsSEXP, SEXP optionsSEXP, SEXP shelter_locs_xSEXP, SEXP shelter_locs_ySEXP, SEXP sSiteSizeSEXP, SEXP avoidPoints_xSEXP, SEXP avoidPoints_ySEXP, SEXP destinationTransSEXP, SEXP destinationModSEXP, SEXP avoidTransSEXP, SEXP avoidModSEXP, SEXP k_stepSEXP, SEXP s_stepSEXP, SEXP mu_angleSEXP, SEXP k_angleSEXP, SEXP b0_OptionsSEXP, SEXP b1_OptionsSEXP, SEXP b2_OptionsSEXP, SEXP rest_Cycle_ASEXP, SEXP rest_Cycle_MSEXP, SEXP rest_Cycle_PHISEXP, SEXP rest_Cycle_TAUSEXP, SEXP memShelterMatrixSEXP, SEXP forageMatrixSEXP, SEXP moveMatrixSEXP, SEXP seedsSEXP) {
+Rcpp::List cpp_abm_simulate(double startx, double starty, int steps, int des_options, int options, std::vector<double> shelter_locs_x, std::vector<double> shelter_locs_y, double sSiteSize, std::vector<double> avoidPoints_x, std::vector<double> avoidPoints_y, int destinationTrans, double destinationMod, int avoidTrans, double avoidMod, std::vector<double> k_step, std::vector<double> s_step, std::vector<double> mu_angle, std::vector<double> k_angle, std::vector<double> b0_Options, std::vector<double> b1_Options, std::vector<double> b2_Options, double rest_Cycle_A, double rest_Cycle_M, double rest_Cycle_PHI, double rest_Cycle_TAU, bool secondCycle, double second_Cycle_A, double second_Cycle_M, double second_Cycle_PHI, double second_Cycle_TAU, Rcpp::NumericMatrix memShelterMatrix, Rcpp::NumericMatrix forageMatrix, Rcpp::NumericMatrix moveMatrix, std::vector<int> seeds);
+RcppExport SEXP _abmAnimalMovement_cpp_abm_simulate(SEXP startxSEXP, SEXP startySEXP, SEXP stepsSEXP, SEXP des_optionsSEXP, SEXP optionsSEXP, SEXP shelter_locs_xSEXP, SEXP shelter_locs_ySEXP, SEXP sSiteSizeSEXP, SEXP avoidPoints_xSEXP, SEXP avoidPoints_ySEXP, SEXP destinationTransSEXP, SEXP destinationModSEXP, SEXP avoidTransSEXP, SEXP avoidModSEXP, SEXP k_stepSEXP, SEXP s_stepSEXP, SEXP mu_angleSEXP, SEXP k_angleSEXP, SEXP b0_OptionsSEXP, SEXP b1_OptionsSEXP, SEXP b2_OptionsSEXP, SEXP rest_Cycle_ASEXP, SEXP rest_Cycle_MSEXP, SEXP rest_Cycle_PHISEXP, SEXP rest_Cycle_TAUSEXP, SEXP secondCycleSEXP, SEXP second_Cycle_ASEXP, SEXP second_Cycle_MSEXP, SEXP second_Cycle_PHISEXP, SEXP second_Cycle_TAUSEXP, SEXP memShelterMatrixSEXP, SEXP forageMatrixSEXP, SEXP moveMatrixSEXP, SEXP seedsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -41,11 +41,16 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type rest_Cycle_M(rest_Cycle_MSEXP);
     Rcpp::traits::input_parameter< double >::type rest_Cycle_PHI(rest_Cycle_PHISEXP);
     Rcpp::traits::input_parameter< double >::type rest_Cycle_TAU(rest_Cycle_TAUSEXP);
+    Rcpp::traits::input_parameter< bool >::type secondCycle(secondCycleSEXP);
+    Rcpp::traits::input_parameter< double >::type second_Cycle_A(second_Cycle_ASEXP);
+    Rcpp::traits::input_parameter< double >::type second_Cycle_M(second_Cycle_MSEXP);
+    Rcpp::traits::input_parameter< double >::type second_Cycle_PHI(second_Cycle_PHISEXP);
+    Rcpp::traits::input_parameter< double >::type second_Cycle_TAU(second_Cycle_TAUSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type memShelterMatrix(memShelterMatrixSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type forageMatrix(forageMatrixSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type moveMatrix(moveMatrixSEXP);
     Rcpp::traits::input_parameter< std::vector<int> >::type seeds(seedsSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_abm_simulate(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, sSiteSize, avoidPoints_x, avoidPoints_y, destinationTrans, destinationMod, avoidTrans, avoidMod, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds));
+    rcpp_result_gen = Rcpp::wrap(cpp_abm_simulate(startx, starty, steps, des_options, options, shelter_locs_x, shelter_locs_y, sSiteSize, avoidPoints_x, avoidPoints_y, destinationTrans, destinationMod, avoidTrans, avoidMod, k_step, s_step, mu_angle, k_angle, b0_Options, b1_Options, b2_Options, rest_Cycle_A, rest_Cycle_M, rest_Cycle_PHI, rest_Cycle_TAU, secondCycle, second_Cycle_A, second_Cycle_M, second_Cycle_PHI, second_Cycle_TAU, memShelterMatrix, forageMatrix, moveMatrix, seeds));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -115,7 +120,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_abmAnimalMovement_cpp_abm_simulate", (DL_FUNC) &_abmAnimalMovement_cpp_abm_simulate, 29},
+    {"_abmAnimalMovement_cpp_abm_simulate", (DL_FUNC) &_abmAnimalMovement_cpp_abm_simulate, 34},
     {"_abmAnimalMovement_cpp_cycle_draw", (DL_FUNC) &_abmAnimalMovement_cpp_cycle_draw, 5},
     {"_abmAnimalMovement_cpp_get_values", (DL_FUNC) &_abmAnimalMovement_cpp_get_values, 3},
     {"_abmAnimalMovement_cpp_sample_options", (DL_FUNC) &_abmAnimalMovement_cpp_sample_options, 2},

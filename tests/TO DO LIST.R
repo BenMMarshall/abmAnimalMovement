@@ -23,3 +23,16 @@
 # distance_toAvoid = vec of the cum. distances for each moveOption
 #
 # haven't added anything about the avoidance only being in certain behaviours
+
+## SCEOND CYCLE NOTES
+
+## inputs
+# secondCycle = BOOL
+
+# secondary_Cycle_A
+# secondary_Cycle_M
+# secondary_Cycle_PHI
+# secondary_Cycle_TAU
+
+## derived
+# b0_secondaryMod

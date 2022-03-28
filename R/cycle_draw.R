@@ -17,7 +17,7 @@
 #' @details The time intervals will match the scale the cycle was defined as.
 #'   For example, a \eqn{\tau} of 24 defines a cycle repeating every 24
 #'   instances, so a draw using TIME == 1 will extract a value at hour 1. For a
-#'   draw 2 and half hours in TIME == 2.5. Theta must be proportional to tau to
+#'   draw two and half hours in, TIME == 2.5. \eqn{\phi} must be proportional to tau to
 #'   prevent the cycle from drifting. If kept proportional the cycle will remain
 #'   constrained to the \eqn{\tau} frequency defined. Implementation following
 #'   Cornelissen (2014).

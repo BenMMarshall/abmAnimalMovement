@@ -54,10 +54,15 @@ avoid <- data.frame(
   "y" = c(1060, 1070, 1010)
 )
 
+restData <- c(0.15, -0.5, 24, 24)
+secCycleData <- c(0.35, 0.5, 24, 24*3)
+
+# how long to run the sim for
+simSteps <- 24*60 *14
 ##### Run core simulation function ##### ---------------------------------------
 
 simRes <- abm_simulate(start = c(1050,1050),
-                       steps = 24*60 *7,
+                       steps = simSteps,
                        des_options = 10,
                        options = 12,
                        k_step = c(1, 3, 2),
@@ -74,11 +79,199 @@ simRes <- abm_simulate(start = c(1050,1050),
                        avoidModifier = 4,
 
                        behave_Tmat = behaveMatTest,
-                       rest_Cycle = c(0.65, -0.3, 24, 24),
+
+                       rest_Cycle = restData,
+                       includeSecondaryCycle = TRUE,
+                       secondary_Cycle = secCycleData,
+
                        memShelterMatrix = landcapeLayersList$memShelter,
                        forageMatrix = landcapeLayersList$forage,
                        move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
 
+
+##### Behaviour state cycling and switching ##### ------------------------------
+
+# number of hours
+simSteps/60
+
+### CYCLING ###
+behaveProb <- sapply(1:simSteps/60, function(x){
+  cycle_draw(x, restData[1], restData[2], restData[3], restData[4])
+})
+
+behaviourPlotData <- data.frame(
+  "i" = 1:length(simRes$locations$behave)/60,
+  "behaveObs" = simRes$locations$behave,
+  "behaveRest" = behaveProb
+)
+
+behaveProb <- sapply(1:simSteps/60, function(x){
+  cycle_draw(x, secCycleData[1], secCycleData[2], secCycleData[3], secCycleData[4])
+})
+
+behaviourPlotDataSecCycle <- data.frame(
+  "i" = 1:length(simRes$locations$behave)/60,
+  "behaveObs" = simRes$locations$behave,
+  "behaveRest" = behaveProb
+)
+
+# depends on the offest and starting scenario
+daylight <- data.frame(
+  "sDay" = seq(6,simSteps/60-18,24),
+  "eDay" = seq(18,simSteps/60,24)
+  )
+
+(plotObsBehave <- ggplot(behaviourPlotData) +
+    geom_rect(data = daylight, aes(xmin = sDay, xmax = eDay,
+                                   ymin = 0.95, ymax = 1.05),
+              fill = "yellow", alpha = 0.25) +
+    geom_path(aes(x = i, y = behaveObs), size = 0.5, alpha = 0.5) +
+    geom_point(aes(x = i, y = behaveObs, colour = as.factor(behaveObs)), size = 0.5) +
+    scale_x_continuous(breaks = seq(0, 24*14, 12)) +
+    scale_y_continuous(breaks = c(0, 1, 2),
+                       labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.title = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+          axis.title.y = element_text(angle = 0,
+                                      face = 2,
+                                      hjust = 1),
+          axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          plot.background = element_blank(),
+          # panel.background = element_blank(),
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          axis.line = element_line(size = 0.5),
+
+          panel.grid.major.y = element_line(linetype = 2,
+                                            size = 0.5,
+                                            colour = "grey75")
+          ) +
+    scale_colour_manual(values = palette[3:5]) +
+    labs(colour = "Behaviour"))
+
+(plotExpRest <- ggplot(behaviourPlotData) +
+    geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
+    scale_x_continuous(breaks = seq(0, 24*14, 12)) +
+    theme_bw() +
+    theme(legend.position = "none",
+          axis.title = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+          axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(angle = 0,
+                                      face = 2,
+                                      hjust = 1),
+          plot.background = element_blank(),
+          # panel.background = element_blank(),
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          axis.line = element_line(size = 0.5),
+
+          panel.grid.major.y = element_line(linetype = 2,
+                                            size = 0.5,
+                                            colour = "grey75")
+    ) +
+    labs(y = "Rest prob.\nmodifier", x = "Hour"))
+
+(plotExpSecCyc <- ggplot(behaviourPlotDataSecCycle) +
+  geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
+  scale_x_continuous(breaks = seq(0, 24*14, 12)) +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  hjust = 1),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        plot.background = element_blank(),
+        # panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        axis.line = element_line(size = 0.5),
+
+        panel.grid.major.y = element_line(linetype = 2,
+                                          size = 0.5,
+                                          colour = "grey75")
+  ) +
+  labs(y = "Rest prob.\nmodifier", x = "Hour"))
+
+plotObsBehave / plotExpRest / plotExpSecCyc + plot_layout(heights = c(1,0.25,0.25))
+
+ggsave("./output/figures/behaviourCycle.png",
+       width = 180, height = 120, units = "mm", dpi = 300)
+
+### BEHAVE TRANSITIONS ###
+simRes$locations$behave
+behaveTrans <- list("vector", length(simRes$locations$behave))
+behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$locations$behave)),
+                            "behaveE" = rep(NA, length(simRes$locations$behave)))
+for(i in 1:length(simRes$locations$behave)){
+
+  behaveTransDF[i,"behaveS"] <- simRes$locations$behave[i]
+  behaveTransDF[i,"behaveE"] <- simRes$locations$behave[i+1]
+
+  behaveTrans[i] <- paste0(simRes$locations$behave[i], "->", simRes$locations$behave[i+1])
+}
+table(unlist(behaveTrans))
+
+observedBehaveChanges <- behaveTransDF %>%
+  filter(!is.na(behaveE)) %>%
+  group_by(behaveS, behaveE) %>%
+  count() %>%
+  group_by(behaveS) %>%
+  mutate(totStepInState = sum(n),
+         obsProb = n/totStepInState)
+observedBehaveChanges
+
+
+observedBehaveChanges <- observedBehaveChanges %>%
+  select(behaveS, behaveE, "value" = obsProb) %>%
+  mutate(ObsExp = "Observed")
+
+longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
+expectedBehaveChanges <- longBehaveMat %>%
+          mutate(ObsExp = "Expected",
+                 behaveE = as.numeric(sub("^.", "", behaveE)),
+                 behaveS = behaveS - 1)
+
+rbind(observedBehaveChanges, expectedBehaveChanges) %>%
+  ggplot() +
+  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
+  geom_text(aes(x = behaveE, y = behaveS, label = round(value, digits = 3))) +
+  scale_fill_scico(palette = "lajolla", begin = 0.1, end = 0.95) +
+  facet_wrap(ObsExp~.) +
+  coord_cartesian(expand = 0) +
+  scale_y_continuous(breaks = c(0, 1, 2),
+                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+  scale_x_continuous(breaks = c(0, 1, 2),
+                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+  theme_bw() +
+  theme(legend.position = "none",
+        aspect.ratio = 1,
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  hjust = 0.5),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        # plot.background = element_blank(),
+        # panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12, face = 4,
+                                  hjust = 0),
+        axis.line = element_line(size = 0.5)) +
+  labs(x = "Ending behaviour", y = "Starting\nbehaviour")
+
+ggsave("./output/figures/behaviourTransitions.png",
+       width = 180, height = 180, units = "mm", dpi = 300)
 
 ##### Review step lengths and turn angles ##### --------------------------------
 
@@ -224,144 +417,6 @@ plotBgEnv +
   labs(x = "Easting", y = "Northing", shape = "Behaviour", fill = "Environmental\nquality")
 
 ggsave("./output/figures/overallMapping.png",
-       width = 180, height = 180, units = "mm", dpi = 300)
-
-##### Behaviour state cycling and switching ##### ------------------------------
-
-### CYCLING ###
-# 24*60 *7 # weeks worth of data
-behaveProb <- sapply(1:10080/60, function(x){
-  cycle_draw(x, 0.65, -0.3, 24, 24)
-})
-
-behaviourPlotData <- data.frame(
-  "i" = 1:length(simRes$locations$behave)/60,
-  "behaveObs" = simRes$locations$behave,
-  "behaveRest" = behaveProb
-)
-
-(plotObsBehave <- ggplot(behaviourPlotData) +
-    geom_path(aes(x = i, y = behaveObs), size = 0.5, alpha = 0.5) +
-    geom_point(aes(x = i, y = behaveObs, colour = as.factor(behaveObs)), size = 0.5) +
-    scale_x_continuous(breaks = seq(0, 24*7, 12)) +
-    scale_y_continuous(breaks = c(0, 1, 2),
-                       labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
-    theme_bw() +
-    theme(legend.position = "none",
-          axis.title = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-          axis.title.y = element_text(angle = 0,
-                                      face = 2,
-                                      hjust = 1),
-          axis.text.x = element_blank(),
-          axis.title.x = element_blank(),
-          plot.background = element_blank(),
-          # panel.background = element_blank(),
-          panel.border = element_blank(),
-          panel.grid = element_blank(),
-          axis.line = element_line(size = 0.5),
-
-          panel.grid.major.y = element_line(linetype = 2,
-                                            size = 0.5,
-                                            colour = "grey75")
-          ) +
-    scale_colour_manual(values = palette[3:5]) +
-    labs(colour = "Behaviour"))
-
-(plotExpRest <- ggplot(behaviourPlotData) +
-    geom_path(aes(x = i, y = behaveRest), colour = palette["0"]) +
-    scale_x_continuous(breaks = seq(0, 24*7, 12)) +
-    theme_bw() +
-    theme(legend.position = "none",
-          axis.title = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-          axis.title.y = element_text(angle = 0,
-                                      face = 2,
-                                      hjust = 1),
-          plot.background = element_blank(),
-          # panel.background = element_blank(),
-          panel.border = element_blank(),
-          panel.grid = element_blank(),
-          axis.line = element_line(size = 0.5),
-
-          panel.grid.major.y = element_line(linetype = 2,
-                                            size = 0.5,
-                                            colour = "grey75")
-    ) +
-    labs(y = "Rest prob.\nmodifier", x = "Hour"))
-
-plotObsBehave / plotExpRest + plot_layout(heights = c(1,0.5))
-
-ggsave("./output/figures/behaviourCycle.png",
-       width = 180, height = 120, units = "mm", dpi = 300)
-
-### BEHAVE TRANSITIONS ###
-simRes$locations$behave
-behaveTrans <- list("vector", length(simRes$locations$behave))
-behaveTransDF <- data.frame("behaveS" = rep(NA, length(simRes$locations$behave)),
-                            "behaveE" = rep(NA, length(simRes$locations$behave)))
-for(i in 1:length(simRes$locations$behave)){
-
-  behaveTransDF[i,"behaveS"] <- simRes$locations$behave[i]
-  behaveTransDF[i,"behaveE"] <- simRes$locations$behave[i+1]
-
-  behaveTrans[i] <- paste0(simRes$locations$behave[i], "->", simRes$locations$behave[i+1])
-}
-table(unlist(behaveTrans))
-
-observedBehaveChanges <- behaveTransDF %>%
-  filter(!is.na(behaveE)) %>%
-  group_by(behaveS, behaveE) %>%
-  count() %>%
-  group_by(behaveS) %>%
-  mutate(totStepInState = sum(n),
-         obsProb = n/totStepInState)
-observedBehaveChanges
-
-
-observedBehaveChanges <- observedBehaveChanges %>%
-  select(behaveS, behaveE, "value" = obsProb) %>%
-  mutate(ObsExp = "Observed")
-
-longBehaveMat <- reshape2::melt(behaveMatTest, c("behaveE", "behaveS"))
-expectedBehaveChanges <- longBehaveMat %>%
-          mutate(ObsExp = "Expected",
-                 behaveE = as.numeric(sub("^.", "", behaveE)),
-                 behaveS = behaveS - 1)
-
-rbind(observedBehaveChanges, expectedBehaveChanges) %>%
-  ggplot() +
-  geom_raster(aes(x = behaveE, y = behaveS, fill = value)) +
-  geom_text(aes(x = behaveE, y = behaveS, label = round(value, digits = 3))) +
-  scale_fill_scico(palette = "lajolla", begin = 0.1, end = 0.95) +
-  facet_wrap(ObsExp~.) +
-  coord_cartesian(expand = 0) +
-  scale_y_continuous(breaks = c(0, 1, 2),
-                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
-  scale_x_continuous(breaks = c(0, 1, 2),
-                     labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
-  theme_bw() +
-  theme(legend.position = "none",
-        aspect.ratio = 1,
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  hjust = 0.5),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        # plot.background = element_blank(),
-        # panel.background = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        axis.line = element_line(size = 0.5)) +
-  labs(x = "Ending behaviour", y = "Starting\nbehaviour")
-
-ggsave("./output/figures/behaviourTransitions.png",
        width = 180, height = 180, units = "mm", dpi = 300)
 
 ##### Sampling function testing ##### ------------------------------------------

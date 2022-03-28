@@ -76,6 +76,13 @@ Rcpp::List cpp_abm_simulate(
     double rest_Cycle_M,
     double rest_Cycle_PHI,
     double rest_Cycle_TAU,
+
+    bool secondCycle,
+    double second_Cycle_A,
+    double second_Cycle_M,
+    double second_Cycle_PHI,
+    double second_Cycle_TAU,
+
     Rcpp::NumericMatrix memShelterMatrix,
     Rcpp::NumericMatrix forageMatrix,
     Rcpp::NumericMatrix moveMatrix,
@@ -153,6 +160,7 @@ Rcpp::List cpp_abm_simulate(
 
   // CYCLE MODIFIERS
   double b0_dailyMod;
+  double b0_secondaryMod;
   //----------------------------------------------------------------------------
 
 
@@ -230,6 +238,19 @@ Rcpp::List cpp_abm_simulate(
       rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
       rest_Cycle_TAU);
 
+    if(secondCycle){
+
+      b0_secondaryMod = cpp_cycle_draw(
+        i*1.0 / 60, // make i a double and convert it to hours. i == 1 min so 1/60 i == hour
+        second_Cycle_A,
+        second_Cycle_M,
+        second_Cycle_PHI / second_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
+        second_Cycle_TAU);
+
+      // we then update the resting chance modifier with the second cycle output
+      b0_dailyMod = b0_dailyMod + b0_secondaryMod;
+    } // end of if
+
       /* switch to use a given set of transition probabilities that change
        depending on the previous behavioural state*/
     switch(behave_Locations[i-1]){
@@ -250,7 +271,7 @@ Rcpp::List cpp_abm_simulate(
         // default:
         //   behave_Locations[i] = sample_options(b0_Options, seeds[i-1]);
         //   break;
-      }
+      } // end of switch
 
       /* assigning the step and angle parameters
        depending on the behaviour */

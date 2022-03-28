@@ -22,6 +22,8 @@ abm_simulate(
   k_angle,
   behave_Tmat,
   rest_Cycle,
+  includeSecondaryCycle,
+  secondary_Cycle,
   memShelterMatrix,
   forageMatrix,
   move_Options
