@@ -126,6 +126,7 @@ The badger therefore expresses very high site fidelity, a range dictated by the 
 Badger movements are also impacted by their territoriality. 
 While the simulation does not attempted to simulate territoriality directly via competing simultaneously simulated badgers, we can approximate territoriality by providing a number of distant avoidance points.
 
+Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources. The model allows for a second cycle that can modify the resting behaviour on top of the baseline diel resting cycle. In this example we will allow the cycle to increase the intensity of resting behaviour during a portion of the year, while retaining a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year). A more extreme implementation of the second cycle could introduce hibernation behaviour.
 
 ## Vulture - High movement variation
 
@@ -138,8 +139,8 @@ Unlike badgers and other terrestrially moving animals, vultures can move great d
 Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges.
 What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
 While they still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle.
-The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
-Implementing two cycles could equally be used to introduce hibernation behaviour
+The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle. Unlike the badger's secondary cycle the forage digestion cycle is stable throughout the year and operates on a much shorter time frame.
+
 
 # Required libraries
 
