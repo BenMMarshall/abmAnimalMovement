@@ -17,7 +17,7 @@ bibliography: abmAnimalMovement_refs.bib
 biblio-style: peerj
 ---
 
-# Introduction
+# Introduction {#main}
 
 ## Rationale
 
@@ -113,7 +113,7 @@ However, the changes should not be fully random nor have equal chance at each ti
 Therefore, the model allows for a predefined cycle that influences the chances of switching in and out of the resting behavioural state.
 As such we have a means of simulating an animal with a given diel cycle, be that nocturnal, crepuscular, or anything in between.
 
-# Generating three species {#intro .colorful}
+# Generating three species {.colorful}
 <!-- example of css section mark-up -->
 
 The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
@@ -160,7 +160,7 @@ In this example we can also demonstrate the movement resistance dramatically imp
 King cobra movement can be limited by roads <!-- Jones et al for road stuff, Marshall et al for cobra deaths on roads -->, where unless provided with crossing structures king cobras are vulnerable to vehicle hits.
 Here we modify our movement probability raster (i.e., inverted movement resistance) to create a linear structure bisecting the environment with a movement probability of 0.
 
-# Running the simulation
+# Running the simulation 
 
 ## Required libraries
 
@@ -269,7 +269,7 @@ For this example we do not connect movement ease to any other reousrce layer.
 
 ```
 
-# Defining the behaviroual states
+# Defining the behaviroual states {#methods}
 
 ## Parameterising the movement distributions
 

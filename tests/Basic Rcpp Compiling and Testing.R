@@ -11,6 +11,8 @@ library(patchwork)
 library(scico)
 library(dplyr)
 
+??abmAnimalMovement::abm_simulate
+
 ##### SET CONSTANTS ##### ------------------------------------------------------
 
 ### PALETTE ###

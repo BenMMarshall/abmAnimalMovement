@@ -3,16 +3,22 @@
 \name{cpp_get_values}
 \alias{cpp_get_values}
 \title{cpp_get_values}
+\arguments{
+\item{MATRIX}{A numeric matrix that the value will be extracted from.}
+
+\item{XLOCS}{A vector of x locations.}
+
+\item{YLOCS}{A vector of y locations.}
+}
 \value{
-A vector of values
+A vector of values equal to the length of XLOCS extracted from
+MATRIX.
 }
 \description{
 cpp_get_values
 }
 \details{
-\eqn{\phi} must remain proportional to \eqn{\tau} if the cycle is to remained
-sync with period. If not proportional the cycle with drift.
-}
-\references{
-...
+A simple C++ function to extract a value from a Rcpp::NumericMatrix
+using two vectors describing location. Note that the counting begins for x
+and y begins at zero.
 }

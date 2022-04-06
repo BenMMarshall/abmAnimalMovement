@@ -1,14 +1,33 @@
 body {
     background-color: white;
-    color: #1a1a1a;
-    font-size: 1.1em;
-}
-h1 {
-    color: #333333;
-}
-#intro {
+    color: #1A1A1A;
     font-size: 1.3em;
 }
+h1 {
+    color: #1A1A1A;
+    font-size: 2.5em;
+}
+h2 {
+    color: #1A1A1A;
+    font-size: 2em;
+}
+caption {
+    color: #E87D13;
+    text-align: left;
+    font-size: 0.9em;
+}
+p.caption {
+    color: #E87D13;
+    text-align: left;
+    font-size: 0.9em;
+}
+#main {
+    columns: 2;
+}
+#methods {
+    font-size: 1.1em;
+    color: #AD6DED;
+}
 .colorful {
-    color: orange;
+    color: #7D26D4;
 }

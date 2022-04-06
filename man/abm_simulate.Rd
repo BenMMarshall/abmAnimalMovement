@@ -10,15 +10,12 @@ abm_simulate(
   des_options,
   options,
   shelterLocations,
-<<<<<<< HEAD
   shelterSize,
   avoidPoints,
   destinationTransformation,
   destinationModifier,
   avoidTransformation,
   avoidModifier,
-=======
->>>>>>> vignetteBegin
   k_step,
   s_step,
   mu_angle,
@@ -59,11 +56,10 @@ square-rooted, 2 - distance to destination weighting is squared}
 \item{destinationModifier}{A coefficient to be applied to the distance to
 destination weighting.}
 
-\item{avoidTransformation}{\itemize{
-\item no transformation applied to the distance to
-avoidance points weighting, 1 - distance to avoidance points weighing is
-square-rooted, 2 - distance to avoidance points weighting is squared
-}}
+\item{avoidTransformation}{Must be 0, 1, or 2: 0 = no transformation applied
+to the distance to avoidance points weighting, 1 = distance to avoidance
+points weighing is square-rooted, 2 = distance to avoidance points
+weighting is squared.}
 
 \item{avoidModifier}{A coefficient to be applied to the avoidance points
 weighting.}
@@ -86,7 +82,26 @@ of length 3.}
 \item{rest_Cycle}{A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 define the resting/active cycle. Ideal for defining circadian rhythm.}
 
-\item{move_Options}{}
+\item{additional_Cycles}{A (optional) data.frame 4 columns wide for A, M,
+\eqn{\phi} and \eqn{\tau} to define any additional activity cycles. Ideal
+for defining patterns that operate alongside circadian rhythm, e.g.,
+seasonal shifts.}
+
+\item{shelteringMatrix}{A matrix describing the sheltering quality of the
+landscape. All cells should be between 0 and 1, where 1 are the best
+shelter quality.}
+
+\item{foragingMatrix}{A matrix describing the foraging quality of the
+landscape. All cells should be between 0 and 1, where 1 are the best
+foraging areas.}
+
+\item{movementMatrix}{A matrix describing the movement ease of the landscape.
+All cells should be between 0 and 1, where 1 are the easiest to move
+through.}
+
+\item{sSiteSize}{A value describing the shelter site size. This value
+dictates at what point the animal's movements will dramatically drop
+simulating (near-)stationary behaviour.}
 }
 \value{
 A list with the following components: 1. The location dataframe
@@ -107,4 +122,9 @@ functions.
 PROVIDE DETAILS THAT WOULD GUIDE INPUTS. The function automatically
 generates a list of seeds required for the \emph{sampling_options} based upon
 any previous set R seeds set (\emph{e.g.}, using set.seed).
+}
+\seealso{
+\code{\link[=vonmises]{vonmises()}} for further guidance on turn angle distribution
+definition, \code{\link[=cycle_draw]{cycle_draw()}} for further guidance on activity cycle
+definition. \code{\link[=cpp_abm_simulate]{cpp_abm_simulate()}} is the C++ function that is called.
 }

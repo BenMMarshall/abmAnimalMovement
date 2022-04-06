@@ -4,16 +4,19 @@
 ## Add custom input for size of shelter site (ie distance where rest behaviour
 # becomes near stationary)
 
-## Add system for points of avoidance, i.e. shelter site attraction in reverse
-
-## Add a system for a second cycling, e.g. hibernation or snake digestion cycle
-
 ## Expand range of rasters
 
 ## Ensure that each raster is connected to correct behaviour. Movement vs
 # decisions
 
-<<<<<<< HEAD
+## add checks for animal exceeding environmental range. Could be done via the
+## cpp_get_values returning NA, and then a check in the main sim function to try
+## again if there is an NA given.
+
+## implement tests for all functions
+
+## tidy up sub-functions into a single header file (C++)
+
 # NOTES -------------------------------------------------------------------
 
 ## AVOIDANCE notes
@@ -41,5 +44,3 @@
 
 ## derived
 # b0_secondaryMod
-=======
->>>>>>> vignetteBegin

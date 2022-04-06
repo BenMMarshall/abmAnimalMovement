@@ -2,13 +2,14 @@
 
 //' cpp_get_values
 //' @name cpp_get_values
-//' @param MATRIX
-//' @param XLOCS
-//' @param YLOCS
-//' @return A vector of values
-//' @details \eqn{\phi} must remain proportional to \eqn{\tau} if the cycle is to remained
-//'   sync with period. If not proportional the cycle with drift.
-//' @references ...
+//' @param MATRIX A numeric matrix that the value will be extracted from.
+//' @param XLOCS A vector of x locations.
+//' @param YLOCS A vector of y locations.
+//' @return A vector of values equal to the length of XLOCS extracted from
+//'   MATRIX.
+//' @details A simple C++ function to extract a value from a Rcpp::NumericMatrix
+//'   using two vectors describing location. Note that the counting begins for x
+//'   and y begins at zero.
 
 // [[Rcpp::export]]
 std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,

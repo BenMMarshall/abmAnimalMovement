@@ -14,7 +14,9 @@
 #' @param shelterLocations A dataframe including the x and y coordinates for all
 #'   shelter sites, that act as points of attraction during the resting
 #'   behavioural state.
-#' @param sSiteSize
+#' @param sSiteSize A value describing the shelter site size. This value
+#'   dictates at what point the animal's movements will dramatically drop
+#'   simulating (near-)stationary behaviour.
 #' @param avoidPoints A dataframe including the x and y coordinates that the
 #'   animal will avoid.
 #' @param destinationTransformation This parameter and the following three all
@@ -24,9 +26,10 @@
 #'   square-rooted, 2 - distance to destination weighting is squared
 #' @param destinationModifier A coefficient to be applied to the distance to
 #'   destination weighting.
-#' @param avoidTransformation  - no transformation applied to the distance to
-#'   avoidance points weighting, 1 - distance to avoidance points weighing is
-#'   square-rooted, 2 - distance to avoidance points weighting is squared
+#' @param avoidTransformation Must be 0, 1, or 2: 0 = no transformation applied
+#'   to the distance to avoidance points weighting, 1 = distance to avoidance
+#'   points weighing is square-rooted, 2 = distance to avoidance points
+#'   weighting is squared.
 #' @param avoidModifier A coefficient to be applied to the avoidance points
 #'   weighting.
 #' @param k_step The shape parameters (k) for the gamma distribution describing
@@ -41,9 +44,19 @@
 #' @param behave_Tmat Base transition matrix for 3 behavioural states
 #' @param rest_Cycle A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 #'   define the resting/active cycle. Ideal for defining circadian rhythm.
-#' @param memShelterMatrix
-#' @param forageMatrix
-#' @param move_Options
+#' @param additional_Cycles A (optional) data.frame 4 columns wide for A, M,
+#'   \eqn{\phi} and \eqn{\tau} to define any additional activity cycles. Ideal
+#'   for defining patterns that operate alongside circadian rhythm, e.g.,
+#'   seasonal shifts.
+#' @param shelteringMatrix A matrix describing the sheltering quality of the
+#'   landscape. All cells should be between 0 and 1, where 1 are the best
+#'   shelter quality.
+#' @param foragingMatrix A matrix describing the foraging quality of the
+#'   landscape. All cells should be between 0 and 1, where 1 are the best
+#'   foraging areas.
+#' @param movementMatrix A matrix describing the movement ease of the landscape.
+#'   All cells should be between 0 and 1, where 1 are the easiest to move
+#'   through.
 #'
 #' @return A list with the following components: 1. The location dataframe
 #'   describing all locations the animal occupied, where each row is equal to a
@@ -57,6 +70,10 @@
 #'   generates a list of seeds required for the *sampling_options* based upon
 #'   any previous set R seeds set (*e.g.*, using set.seed).
 #'
+#' @seealso [vonmises()] for further guidance on turn angle distribution
+#'   definition, [cycle_draw()] for further guidance on activity cycle
+#'   definition. [cpp_abm_simulate()] is the C++ function that is called.
+#'
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
@@ -67,13 +84,16 @@ abm_simulate <- function(start, steps,
                          shelterLocations,
                          shelterSize,
                          avoidPoints,
+
                          destinationTransformation,
                          destinationModifier,
                          avoidTransformation,
                          avoidModifier,
 
-                         k_step, s_step, mu_angle,
-                         k_angle, behave_Tmat,
+                         k_step, s_step, mu_angle, k_angle,
+
+                         behave_Tmat,
+
                          rest_Cycle,
                          additional_Cycles,
 
