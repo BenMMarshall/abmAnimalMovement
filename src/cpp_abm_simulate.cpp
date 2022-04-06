@@ -77,11 +77,11 @@ Rcpp::List cpp_abm_simulate(
     double rest_Cycle_PHI,
     double rest_Cycle_TAU,
 
-    bool secondCycle,
-    double second_Cycle_A,
-    double second_Cycle_M,
-    double second_Cycle_PHI,
-    double second_Cycle_TAU,
+    int addCycles,
+    std::vector<double> add_Cycle_A,
+    std::vector<double> add_Cycle_M,
+    std::vector<double> add_Cycle_PHI,
+    std::vector<double> add_Cycle_TAU,
 
     Rcpp::NumericMatrix memShelterMatrix,
     Rcpp::NumericMatrix forageMatrix,
@@ -160,7 +160,7 @@ Rcpp::List cpp_abm_simulate(
 
   // CYCLE MODIFIERS
   double b0_dailyMod;
-  double b0_secondaryMod;
+  double b0_addMod;
   //----------------------------------------------------------------------------
 
 
@@ -238,17 +238,20 @@ Rcpp::List cpp_abm_simulate(
       rest_Cycle_PHI / rest_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
       rest_Cycle_TAU);
 
-    if(secondCycle){
+    if(addCycles > 0){
 
-      b0_secondaryMod = cpp_cycle_draw(
-        i*1.0 / 60, // make i a double and convert it to hours. i == 1 min so 1/60 i == hour
-        second_Cycle_A,
-        second_Cycle_M,
-        second_Cycle_PHI / second_Cycle_TAU, // make sure PHI is kept ~ to TAU so no drift
-        second_Cycle_TAU);
+      for(int cyc = 0; cyc < addCycles; cyc++){
 
-      // we then update the resting chance modifier with the second cycle output
-      b0_dailyMod = b0_dailyMod + b0_secondaryMod;
+        b0_addMod = cpp_cycle_draw(
+          i*1.0 / 60, // make i a double and convert it to hours. i == 1 min so 1/60 i == hour
+          add_Cycle_A[cyc],
+          add_Cycle_M[cyc],
+          add_Cycle_PHI[cyc] / add_Cycle_TAU[cyc], // make sure PHI is kept ~ to TAU so no drift
+          add_Cycle_TAU[cyc]);
+        // we then update the resting chance modifier with the second cycle output
+        b0_dailyMod = b0_dailyMod + b0_addMod;
+      }
+
     } // end of if
 
       /* switch to use a given set of transition probabilities that change
