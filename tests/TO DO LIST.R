@@ -13,6 +13,7 @@
 ## Ensure that each raster is connected to correct behaviour. Movement vs
 # decisions
 
+<<<<<<< HEAD
 # NOTES -------------------------------------------------------------------
 
 ## AVOIDANCE notes
@@ -40,3 +41,5 @@
 
 ## derived
 # b0_secondaryMod
+=======
+>>>>>>> vignetteBegin

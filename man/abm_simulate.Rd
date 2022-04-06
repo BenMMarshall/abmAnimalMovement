@@ -10,12 +10,15 @@ abm_simulate(
   des_options,
   options,
   shelterLocations,
+<<<<<<< HEAD
   shelterSize,
   avoidPoints,
   destinationTransformation,
   destinationModifier,
   avoidTransformation,
   avoidModifier,
+=======
+>>>>>>> vignetteBegin
   k_step,
   s_step,
   mu_angle,
