@@ -90,6 +90,7 @@ The movement choices of the animal are also influenced by a movement resistance 
 Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
 For example, rivers or hard barriers within a landscape could present very high movement resistance and a animal would aim to avoid traversing them.
 Alternatively areas of lower movement resistance could aid movement, and potentially form movement corridors.
+The movement raster has values ranging from 0 to 1, that describes the movement probability.
 
 Animals often occupy steady areas, or home ranges.
 Home ranges are mean to represent areas in which the animal can source all resources required for a given life stage.
@@ -97,6 +98,7 @@ We can simulate the existence of home ranges using a point (or points) of attrac
 In the abmAnimalMovement model, we have simulated a number of points of attraction to differing resources in an attempt to simulate a home range with unequal and behavioural influenced spatial use.
 The modelled animal is provided with a number of shelter sites that serve as points of attraction when in the resting behaviour.
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
+
 Additionally, the model allows the animal to randomly select (but weighted towards areas of higher quality) a foraging destination as a point of attraction when in the foraging behavioural mode.
 Importantly the dynamic nature of the foraging destination selection allows for it to operate on a different time frame to the movement selection.
 The two time frames allow for explorations of assumptions connecting observed movement choices to choices regarding resources.
@@ -112,6 +114,7 @@ Therefore, the model allows for a predefined cycle that influences the chances o
 As such we have a means of simulating an animal with a given diel cycle, be that nocturnal, crepuscular, or anything in between.
 
 # Generating three species {#intro .colorful}
+<!-- example of css section mark-up -->
 
 The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns. 
@@ -125,24 +128,44 @@ The badger therefore expresses very high site fidelity, a range dictated by the 
 
 Badger movements are also impacted by their territoriality. 
 While the simulation does not attempted to simulate territoriality directly via competing simultaneously simulated badgers, we can approximate territoriality by providing a number of distant avoidance points.
+An alternative way of simulating this behaviour would be to create areas of high movement resistance prevent the badger from entering.
 
-Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources. The model allows for a second cycle that can modify the resting behaviour on top of the baseline diel resting cycle. In this example we will allow the cycle to increase the intensity of resting behaviour during a portion of the year, while retaining a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year). A more extreme implementation of the second cycle could introduce hibernation behaviour.
+Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources.
+The model allows for a second cycle that can modify the resting behaviour on top of the baseline diel resting cycle.
+In this example we will allow the cycle to increase the intensity of resting behaviour during a portion of the year, while retaining a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year).
+A more extreme implementation of the second cycle could introduce hibernation behaviour.
 
 ## Vulture - High movement variation
 
 Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction.
+Therefore, we set the movement resistance raster entirely to 1.
+Vultures can also move greater distances more rapidly, resulting in a more variable and distribution of step lengths.
+We can change arguments describing the step length distributions of behaviour to reflect this high movement capacity.
+Additionally we need to adjust the turn angle distributions.
+In the case of vultures we actually modify the mean angle for the explore behaviour.
+By skewing the turn angle distribution to the left or right, we can simulate the circling and soaring behaviour exhibited by vultures searching for food.
 
-- Explore behaviour should be circular
+Similar to badgers vultures exhibit significant site fidelity <!-- Bracis paper stuff is powerful, but field guides are a weaker fall back for some extra details: https://www.allaboutbirds.org/news/information-seekers-roosting-black-vultures -->, re-using roosting and nesting sites.
+In the same fashion as the badger, we can supply the simulation with predefined shelter sites, either randomly based on the shelter raster or manually defined (e.g., if shelter sites were known __a priori__ discovered via the capture and tagged of animals).
 
 ## King Cobra - High resting variability
 
 Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges.
 What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
 While they still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle.
-The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle. Unlike the badger's secondary cycle the forage digestion cycle is stable throughout the year and operates on a much shorter time frame.
+The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
+Unlike the badger's secondary cycle the forage digestion cycle is stable throughout the year and operates on a much shorter time frame.
 
+In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
+King cobra movement can be limited by roads <!-- Jones et al for road stuff, Marshall et al for cobra deaths on roads -->, where unless provided with crossing structures king cobras are vulnerable to vehicle hits.
+Here we modify our movement probability raster (i.e., inverted movement resistance) to create a linear structure bisecting the environment with a movement probability of 0.
 
-# Required libraries
+# Running the simulation
+
+## Required libraries
+
+First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
+None of these libraries are required for running the core simulation.
 
 ```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
 library(abmAnimalMovement)
@@ -151,14 +174,42 @@ library(reshape2)
 library(patchwork)
 library(scico)
 library(dplyr)
+
+## we should be probably citing the vignette building stuff for completeness sake
+# rmarkdown
+# bookdown
+# tinytex
 ```
 
-# Setting a palette and seed
+```{r librariesTable, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
+RpackageTable <- do.call(rbind, lapply(list("ggplot2",
+            "reshape2",
+            "patchwork",
+            "scico",
+            "dplyr"),
+       function(x){
+         data.frame("Package" = x,
+                    "Version" = packageVersion(x))
+       }))
+RpackageTable <- RpackageTable[order(RpackageTable$Package),]
+RpackageTable$Reference <- NA
 
-Before running the simulation and reviewing the outputs we need to set a few constants to ensure that the outputs are reproducible.
-First, we set a palette to drawn from for later figures that takes the form of a named vector.
-For now five colours will be adequate to cover our later plotting needs.
+knitr::kable(RpackageTable, "simple", row.names = FALSE,
+             caption = "R packages used to organise and visual inputs and outputs for the animal simulation.", align = "lcc")
+```
+
+## Setting a palette and seed
+
+To ensure that the simulation completed during the vignette is repeatable, we set a seed.
+For the sake of simplicity the year the vignette was written –2022– is used.
+We are also going to set a consistent palette for later plotting, in the form of a named vector.
+
+```{r defineSeed, include=TRUE}
+set.seed(2022)
+```
+
 As we are about to run a simulation with three behavioural states –coded as 2, 1, and 0– we will name three corresponding colours in the vector as such.
+We will also include two accent colour to help with the more complex plots.
 This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
 
 ```{r definePalette, include=TRUE}
@@ -192,14 +243,8 @@ data.frame(
   theme(legend.position = "none")
 
 ```
-To ensure that the simulation completed during the vignette is repeatable, we set a seed.
-For the sake of simplicity the year the vignette was written –2022– is used.
 
-```{r defineSeed, include=TRUE}
-set.seed(2022)
-```
-
-# Generating environmental rasters
+## Generating environmental rasters
 
 Before starting to simulate animal movement we need to generate a landscape.
 The landscapes in this case will take the form of rasters, where each cell is describing the quality of foraging, shelter, and movement ease. 
@@ -207,13 +252,22 @@ The highest quality locations/cells are coded as 1, with quality decreasing as t
 The 1 to 0 quality values in each cell are later used to help the animal to chose how and where it moves throughout the landscape.
 Depending on the behavioural state the weighing of which raster layers used will change (e.g., when in a resting behavioural state the shelter site quality layer is used).
 
-To generate each layer we use the NLMR package (neutral landscape models), and combine a selection of landscape generation methods with landscapetools [@Sciaini2018].
-
-- foraging
-- shelter
-- movement
+For most applications a landscape would be known __a priori__, but for this demonstration and testing of methods we will use a selection of random generated landscape rasters.
+To generate each layer (shelter, forage, movement) we use the NLMR package (neutral landscape models), and combine a selection of landscape generation methods with landscapetools [@Sciaini2018].
+For sheltering we use a Gaussian field with an autocorrelation range of 40, a mag_var = 5, nug = 0.2, and a mean = 0.5.
+For foraging, we build on the Gaussian field already produced.
+Building upon the previous layer allows us to reduce incidental correlation between shelter sites and foraging locations, as we are operating under the assumption that the animal will require movement to find foraging resources. 
+To achieve this we assign cells with values between 0.6 and 0.3 a higher foraging quality [Figure \@ref(fig:landscapeLayers)], and reduce the shelter quality in all cells with values < 0.3 (i.e., to prevent sheltering in completely unsuitable locations).
+<!-- We need to double check that the sheltering layer is left and not adjusted to the distance to shelter site from an older version -->
+Finally, we use ___________ to create an independent layer describing movement ease.
+For this example we do not connect movement ease to any other reousrce layer.
 
 - add 3d raster display
+
+```{r landscapeLayers, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="The three resulting landscape layers to be fed into the simulation: shelter quality, foraging resources, movement ease."}
+
+
+```
 
 # Defining the behaviroual states
 
