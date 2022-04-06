@@ -1,0 +1,14 @@
+body {
+    background-color: white;
+    color: #1a1a1a;
+    font-size: 1.1em;
+}
+h1 {
+    color: #333333;
+}
+#intro {
+    font-size: 1.3em;
+}
+.colorful {
+    color: orange;
+}

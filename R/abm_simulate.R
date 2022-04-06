@@ -77,17 +77,120 @@ abm_simulate <- function(start, steps,
                          rest_Cycle,
                          additional_Cycles,
 
-                         memShelterMatrix,
-                         forageMatrix,
-                         move_Options){
+                         shelteringMatrix,
+                         foragingMatrix,
+                         movementMatrix){
+
+
+# Verify/check inputs -----------------------------------------------------
+
+  ## start
+  if(!is.vector(start) | !length(start) == 2 | !is.numeric(start)){
+    stop("Start location is not a numeric vector of length 2")
+  }
+  ## steps
+  if(!steps%%1==0 | !length(steps)==1){
+    stop("Number of time steps should be a single integer")
+  }
+  ## des_options
+  if(!des_options%%1==0 | !length(des_options)==1){
+    stop("Number of destination options (des_options) should be a single integer")
+  }
+  ## options
+  if(!options%%1==0 | !length(options)==1){
+    stop("Number of movement options (options) should be a single integer")
+  }
+  ## shelterLocations
+  if(!is.data.frame(shelterLocations) | !ncol(shelterLocations) == 2){
+    stop("Shelter location input (shelterLocations) is not a data.frame with two columns")
+  }
+  if(!is.numeric(shelterLocs[,1]) | !is.numeric(shelterLocs[,2])){
+    stop("Non-numeric elements in the shelter locations input (shelterLocations)")
+  }
+  ## shelterSize
+  if(!is.numeric(shelterSize) | shelterSize <= 0){
+    stop("Shelter site size (shelterSize) should be should be a single positive numeric value")
+  }
+  ## avoidPoints
+  if(!is.data.frame(avoidPoints) | !ncol(avoidPoints) == 2){
+    stop("Avoidance location input (avoidPoints) is not a data.frame with two columns")
+  }
+  if(!is.numeric(avoidPoints[,1]) | !is.numeric(avoidPoints[,2])){
+    stop("Non-numeric elements in the avoidance locations input (avoidPoints)")
+  }
+  ## destinationTransformation
+  ## avoidTransformation
+  if(!destinationTransformation %in% c(0,1,2) | !avoidTransformation %in% c(0,1,2)){
+    stop("destinationTransformation and avoidTransformation must be 0, 1 or 2 to
+         chose the transformation type")
+  }
+  ## destinationModifier
+  ## avoidModifier
+  if(!is.numeric(destinationModifier) | !is.numeric(avoidModifier)){
+    stop("destinationModifier and avoidModifier should be should be a single numeric value")
+  }
+  ## k_step
+  ## s_step
+  ## mu_angle
+  ## k_angle
+  if(
+    !is.vector(k_step) | !length(k_step) == 3 | !is.numeric(k_step)|
+    !is.vector(s_step) | !length(s_step) == 3 | !is.numeric(s_step)|
+    !is.vector(mu_angle) | !length(mu_angle) == 3 | !is.numeric(mu_angle)|
+    !is.vector(k_angle) | !length(k_angle) == 3 | !is.numeric(k_angle)
+     ){
+    stop("All step and angle distribution variables (k_step, s_step, mu_angle, k_angle)
+         need to be numeric vector of length 3")
+  }
+  ## behave_Tmat
+  if(
+    !is.matrix(behave_Tmat) | !is.numeric(behave_Tmat) |
+    !dim(behave_Tmat)[1] == 3 | !dim(behave_Tmat)[2] == 3 |
+    !all(behave_Tmat <= 1) | !all(behave_Tmat >= 0)
+  ){
+    stop("The behavioural transition matrix (behave_Tmat) should be a 3x3
+         numeric matrix where all values are between 0 and 1")
+  }
+  ## rest_Cycle
+  if(!is.vector(rest_Cycle) | !length(rest_Cycle) == 4 | !is.numeric(rest_Cycle)){
+    stop("The rest cycle parameters should be a numeric vector of length 4")
+  }
+  ## additional_Cycles
+  if(!is.null(additional_Cycles)){
+    if(!is.data.frame(additional_Cycles) | !ncol(additional_Cycles) == 4 |
+       !is.numeric(additional_Cycles[,1])| !is.numeric(additional_Cycles[,2]) |
+       !is.numeric(additional_Cycles[,3])| !is.numeric(additional_Cycles[,4])
+       ){
+      stop("The additional cycles data.frame (cycleMat), if needed, requires four numeric columns")
+    }}
+  ## memShelterMatrix
+  ## forageMatrix
+  ## move_Options
+  if(!is.matrix(shelterMatrix) |
+     !is.matrix(forageMatrix) |
+     !is.matrix(moveMatrix) |
+     !all(shelterMatrix <= 1) |
+     !all(forageMatrix <= 1) |
+     !all(moveMatrix <= 1) |
+     !all(shelterMatrix >= 0) |
+     !all(moveMatrix >= 0) |
+     !all(forageMatrix >= 0)
+  ){
+    stop("All the landscape layers (shelterMatrix, forageMatrix, moveMatrix)
+       should be numeric matricies, with values between 0 and 1")
+  }
+
+# Rearrange inputs for C++ ------------------------------------------------
+
   # split the vector of start location x and y
   startxIN <- start[1]
   startyIN <- start[2]
 
-  # split the dataframe of shelter and forage locations
+  # split the data.frame of shelter locations
   shelter_locs_xIN <- shelterLocations[,1]
   shelter_locs_yIN <- shelterLocations[,2]
 
+  # split the data.frame of avoidance points
   avoidPoints_xIN <- avoidPoints[,1]
   avoidPoints_yIN <- avoidPoints[,2]
 
@@ -97,7 +200,8 @@ abm_simulate <- function(start, steps,
     sample.int(.Machine$integer.max, 1)
   }
 
-  # how many additional cycles have been provided
+  # how many additional cycles have been provided, and get that value ready for
+  # C++
   if(is.null(additional_Cycles)){
     nAdditionalCycles <- 0
   } else {
@@ -140,9 +244,9 @@ abm_simulate <- function(start, steps,
     add_Cycle_PHI = additional_Cycles[,3],
     add_Cycle_TAU = additional_Cycles[,4],
 
-    memShelterMatrix = memShelterMatrix,
-    forageMatrix = forageMatrix,
-    move_Options = move_Options,
+    shelterMatrix = shelteringMatrix,
+    forageMatrix = foragingMatrix,
+    moveMatrix = movementMatrix,
     seeds = sapply(1:steps, function(x){
       get_seed()
     }) # make sure we have enough seeds for each time sample_options is used
@@ -216,9 +320,9 @@ run_abm_simulate <- function(startx, starty, steps,
                              add_Cycle_PHI,
                              add_Cycle_TAU,
 
-                             memShelterMatrix,
+                             shelterMatrix,
                              forageMatrix,
-                             move_Options,
+                             moveMatrix,
                              seeds){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
         startx, starty, steps,
@@ -250,9 +354,9 @@ run_abm_simulate <- function(startx, starty, steps,
         add_Cycle_PHI,
         add_Cycle_TAU,
 
-        memShelterMatrix,
+        shelterMatrix,
         forageMatrix,
-        move_Options,
+        moveMatrix,
         seeds)
 }
 

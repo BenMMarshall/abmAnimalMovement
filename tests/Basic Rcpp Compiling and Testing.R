@@ -90,9 +90,9 @@ simRes <- abm_simulate(start = c(1050,1050),
                        rest_Cycle = restData,
                        additional_Cycles = cycleMat,
 
-                       memShelterMatrix = landcapeLayersList$memShelter,
-                       forageMatrix = landcapeLayersList$forage,
-                       move_Options = landcapeLayersList$shelter) # just using a place holder layer for testing
+                       shelteringMatrix = landcapeLayersList$memShelter,
+                       foragingMatrix = landcapeLayersList$forage,
+                       movementMatrix = landcapeLayersList$shelter) # just using a place holder layer for testing
 
 
 ##### Behaviour state cycling and switching ##### ------------------------------
@@ -351,6 +351,8 @@ stepData %>%
 
 ggsave("./output/figures/stepBehaviours.png",
        width = 180, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/stepBehaviours.pdf",
+       width = 180, height = 160, units = "mm")
 
 ### TURN ANGLE ###
 for(beh in 0:2){
@@ -397,6 +399,8 @@ taPlot_0 / taPlot_1 / taPlot_2
 
 ggsave("./output/figures/turnangleBehaviours.png",
        width = 180, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/turnangleBehaviours.pdf",
+       width = 180, height = 160, units = "mm")
 
 ##### Mapping movements ##### --------------------------------------------------
 
@@ -410,12 +414,12 @@ plotBgEnv +
              alpha = 0.45) +
   geom_point(data = simRes$locations,
              aes(x = destination_x, y = destination_y),
-             pch = "\u2777",
+             pch = 17,
              size = 4, colour = palette["2"],
              alpha = 0.45) +
   geom_point(data = shelterLocs,
              aes(x = x, y = y),
-             pch = "\u2776",
+             pch = 16,
              size = 4, colour = palette["0"],
              alpha = 0.45) +
   geom_point(data = avoid,
@@ -443,6 +447,8 @@ plotBgEnv +
 
 ggsave("./output/figures/overallMapping.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/overallMapping.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Sampling function testing ##### ------------------------------------------
 
@@ -484,6 +490,8 @@ data.frame(
 
 ggsave("./output/figures/sampleOptions.png",
        width = 160, height = 160, units = "mm", dpi = 300)
+ggsave("./output/figures/sampleOptions.pdf",
+       width = 160, height = 160, units = "mm")
 
 ##### Von-Mises draw testing ##### ---------------------------------------------
 
@@ -530,6 +538,8 @@ ggplot() +
 
 ggsave("./output/figures/vonmisesKappa.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/vonmisesKappa.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Animate movement ##### ---------------------------------------------------
 
