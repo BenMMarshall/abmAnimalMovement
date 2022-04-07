@@ -70,7 +70,7 @@ cycleMat[1,]
 simSteps <- 24*60 *28
 ##### Run core simulation function ##### ---------------------------------------
 
-simRes <- abm_simulate(start = c(1050,1050),
+simRes <- abm_simulate(start = c(1000,1000),
                        steps = simSteps,
                        des_options = 10,
                        options = 12,
@@ -95,7 +95,6 @@ simRes <- abm_simulate(start = c(1050,1050),
                        shelteringMatrix = landcapeLayersList$memShelter,
                        foragingMatrix = landcapeLayersList$forage,
                        movementMatrix = landcapeLayersList$shelter) # just using a place holder layer for testing
-
 
 ##### Behaviour state cycling and switching ##### ------------------------------
 
@@ -451,8 +450,6 @@ ggsave("./output/figures/overallMapping.png",
        width = 180, height = 180, units = "mm", dpi = 300)
 ggsave("./output/figures/overallMapping.pdf",
        width = 180, height = 180, units = "mm")
-<<<<<<< HEAD
-=======
 
 ##### Behaviour state cycling and switching ##### ------------------------------
 
@@ -595,7 +592,6 @@ ggsave("./output/figures/behaviourTransitions.png",
        width = 180, height = 180, units = "mm", dpi = 300)
 ggsave("./output/figures/behaviourTransitions.pdf",
        width = 180, height = 180, units = "mm")
->>>>>>> vignetteBegin
 
 ##### Sampling function testing ##### ------------------------------------------
 

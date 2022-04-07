@@ -177,28 +177,51 @@ abm_simulate <- function(start, steps,
   }
   ## additional_Cycles
   if(!is.null(additional_Cycles)){
-    if(!is.data.frame(additional_Cycles) | !ncol(additional_Cycles) == 4 |
+    if(!is.matrix(additional_Cycles) | !ncol(additional_Cycles) == 4 |
        !is.numeric(additional_Cycles[,1])| !is.numeric(additional_Cycles[,2]) |
        !is.numeric(additional_Cycles[,3])| !is.numeric(additional_Cycles[,4])
        ){
       stop("The additional cycles data.frame (cycleMat), if needed, requires four numeric columns")
     }}
-  ## memShelterMatrix
-  ## forageMatrix
-  ## move_Options
-  if(!is.matrix(shelterMatrix) |
-     !is.matrix(forageMatrix) |
-     !is.matrix(moveMatrix) |
-     !all(shelterMatrix <= 1) |
-     !all(forageMatrix <= 1) |
-     !all(moveMatrix <= 1) |
-     !all(shelterMatrix >= 0) |
-     !all(moveMatrix >= 0) |
-     !all(forageMatrix >= 0)
+  ## shelteringMatrix
+  ## foragingMatrix
+  ## movementMatrix
+  if(!is.matrix(shelteringMatrix) |
+     !is.matrix(foragingMatrix) |
+     !is.matrix(movementMatrix) |
+     !all(shelteringMatrix <= 1) |
+     !all(foragingMatrix <= 1) |
+     !all(movementMatrix <= 1) |
+     !all(shelteringMatrix >= 0) |
+     !all(foragingMatrix >= 0) |
+     !all(movementMatrix >= 0)
   ){
     stop("All the landscape layers (shelterMatrix, forageMatrix, moveMatrix)
        should be numeric matricies, with values between 0 and 1")
   }
+  if(any(shelterLocations[,1] > nrow(shelteringMatrix)) |
+     any(shelterLocations[,2] > ncol(shelteringMatrix)) |
+     any(shelterLocations[,1] < 0) |
+     any(shelterLocations[,2] < 0)){
+    stop("Shelter locations (shelterLocations) must be contained within environmental rasters
+         (shelteringMatrix, foragingMatrix, movementMatrix)")
+  }
+  if(any(start[1] > nrow(shelteringMatrix)) |
+     any(start[2] > ncol(shelteringMatrix)) |
+     any(start[1] < 0) |
+     any(start[2] < 0)){
+    stop("Start location (start) must be contained within environmental rasters
+         (shelteringMatrix, foragingMatrix, movementMatrix)")
+  }
+  if(
+    all(all(dim(shelteringMatrix) == dim(movementMatrix)),
+        all(dim(foragingMatrix) == dim(shelteringMatrix)),
+        all(dim(movementMatrix) == dim(foragingMatrix)))
+  ){
+    stop("All environmental layers require the same dimensions (shelteringMatrix,
+         foragingMatrix, movementMatrix)")
+  }
+
 
 # Rearrange inputs for C++ ------------------------------------------------
 

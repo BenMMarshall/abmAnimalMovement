@@ -45,6 +45,14 @@
 #' @export
 #'
 cycle_draw <- function(TIME, A,  M, PHI, TAU){
+
+  if(!is.numeric(TIME) | !is.numeric(A) |
+     !is.numeric(M)| !is.numeric(PHI) |
+     !is.numeric(TAU)
+  ){
+    stop("All inputs must be numeric")
+  }
+
   .Call("_abmAnimalMovement_cpp_cycle_draw",
         TIME, A,  M, PHI, TAU)
 }

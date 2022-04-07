@@ -29,6 +29,16 @@
 #' hist(vonOut)
 #'
 vonmises <- function(N, MU, KAPPA){
+
+  if(!N%%1==0 | !length(N)==1){
+    stop("Number of draws (N) should be a single integer")
+  }
+
+  if(!is.numeric(MU) | !is.numeric(KAPPA)
+  ){
+    stop("MU and KAPPA inputs must be numeric")
+  }
+
   .Call("_abmAnimalMovement_cpp_vonmises",
         N, MU, KAPPA)
 }

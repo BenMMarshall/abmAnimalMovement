@@ -29,6 +29,16 @@
 #' @export
 #'
 sample_options <- function(W, SEED){
+
+  if(!length(W)>0){
+    stop("Weights (W) must be a vector of length > 0")
+  }
+
+  if(!is.numeric(SEED)
+  ){
+    stop("SEED must be numeric")
+  }
+
   .Call("_abmAnimalMovement_cpp_sample_options",
         W, SEED)
 }

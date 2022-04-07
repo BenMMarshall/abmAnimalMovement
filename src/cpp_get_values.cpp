@@ -36,9 +36,15 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
     // Rcpp::Rcout << "Option: " << loc << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
 
     // end function if animal leaves environmental data area
-    // if( (xOptIndex > mcols) | (yOptIndex > mrows) | (xOptIndex < 0) | (yOptIndex < 0) ){
-    //   Rcpp::Rcerr << "Exceeding background environmental limits or NA in enviornmental data\n";
-    // }
+    if( (xOptIndex > mcols) |
+        (yOptIndex > mrows) |
+        (xOptIndex < 0) |
+        (yOptIndex < 0) ){
+      // give a value of zero for exceeding environment so the chances of moving
+      // are minimised
+      OUTPUT_VALUES[loc] = 0;
+      Rcpp::Rcerr << "Exceeding background environmental limits\n";
+    }
 
     // still using the numericMatrix Rcpp form here
     OUTPUT_VALUES[loc] = MATRIX(xOptIndex, yOptIndex);
@@ -47,7 +53,7 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
 
     // if(std::isnan(enVal1_Options[loc])){
     //   // printing error message
-    //   Rcpp::Rcerr << "NA in enviornmental data\n";
+    //   Rcpp::Rcerr << "NA in environmental data\n";
     // }
 
   }

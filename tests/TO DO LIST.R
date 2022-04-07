@@ -1,17 +1,10 @@
 
 # TO DO -------------------------------------------------------------------
 
-## Add custom input for size of shelter site (ie distance where rest behaviour
-# becomes near stationary)
-
 ## Expand range of rasters
 
 ## Ensure that each raster is connected to correct behaviour. Movement vs
 # decisions
-
-## add checks for animal exceeding environmental range. Could be done via the
-## cpp_get_values returning NA, and then a check in the main sim function to try
-## again if there is an NA given.
 
 ## implement tests for all functions
 
