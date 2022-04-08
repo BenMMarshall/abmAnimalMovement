@@ -6,7 +6,7 @@
 #'   functions.
 #' @param start A numeric vector of length 2, including the x and y coordinates
 #'   of the start location.
-#' @param steps The number of time steps to be simulated, where each step is
+#' @param timesteps The number of time steps to be simulated, where each step is
 #'   equal to ------ ----.
 #' @param des_options The number of dynamically chosen destinations presented to
 #'   the animal during the foraging behaviour state.
@@ -77,7 +77,7 @@
 #' @useDynLib abmAnimalMovement
 #' @export
 #'
-abm_simulate <- function(start, steps,
+abm_simulate <- function(start, timesteps,
                          des_options,
                          options,
 
@@ -109,7 +109,7 @@ abm_simulate <- function(start, steps,
     stop("Start location is not a numeric vector of length 2")
   }
   ## steps
-  if(!steps%%1==0 | !length(steps)==1){
+  if(!timesteps%%1==0 | !length(timesteps)==1){
     stop("Number of time steps should be a single integer")
   }
   ## des_options
@@ -255,9 +255,9 @@ abm_simulate <- function(start, steps,
   res <- run_abm_simulate(
     startx = startxIN,
     starty = startyIN,
-    steps = steps,
-    des_options = des_options,
-    options = options,
+    timesteps = timesteps,
+    ndes = des_options,
+    nopt = options,
 
     shelter_locs_x = shelter_locs_xIN,
     shelter_locs_y = shelter_locs_yIN,
@@ -290,7 +290,7 @@ abm_simulate <- function(start, steps,
     shelterMatrix = shelteringMatrix,
     forageMatrix = foragingMatrix,
     moveMatrix = movementMatrix,
-    seeds = sapply(1:steps, function(x){
+    seeds = sapply(1:timesteps, function(x){
       get_seed()
     }) # make sure we have enough seeds for each time sample_options is used
   )
@@ -304,7 +304,7 @@ abm_simulate <- function(start, steps,
   names(OUTPUTS)[3] <- "others"
 
   locations <- data.frame(
-    step = res$loc_step,
+    timestep = res$loc_step,
     x = res$loc_x,
     y = res$loc_y,
     sl = res$loc_sl,
@@ -334,9 +334,10 @@ abm_simulate <- function(start, steps,
   return(OUTPUTS)
 }
 
-run_abm_simulate <- function(startx, starty, steps,
-                             des_options,
-                             options,
+run_abm_simulate <- function(startx, starty,
+                             timesteps,
+                             ndes,
+                             nopt,
 
                              shelter_locs_x,
                              shelter_locs_y,
@@ -368,9 +369,10 @@ run_abm_simulate <- function(startx, starty, steps,
                              moveMatrix,
                              seeds){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
-        startx, starty, steps,
-        des_options,
-        options,
+        startx, starty,
+        timesteps,
+        ndes,
+        nopt,
 
         shelter_locs_x,
         shelter_locs_y,
