@@ -82,6 +82,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_max
+double cpp_max(std::vector<double> x);
+RcppExport SEXP _abmAnimalMovement_cpp_max(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_max(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_min
+double cpp_min(std::vector<double> x);
+RcppExport SEXP _abmAnimalMovement_cpp_min(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_min(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_sample_options
 int cpp_sample_options(std::vector<double> W, int SEED);
 RcppExport SEXP _abmAnimalMovement_cpp_sample_options(SEXP WSEXP, SEXP SEEDSEXP) {
@@ -123,6 +145,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_abmAnimalMovement_cpp_abm_simulate", (DL_FUNC) &_abmAnimalMovement_cpp_abm_simulate, 34},
     {"_abmAnimalMovement_cpp_cycle_draw", (DL_FUNC) &_abmAnimalMovement_cpp_cycle_draw, 5},
     {"_abmAnimalMovement_cpp_get_values", (DL_FUNC) &_abmAnimalMovement_cpp_get_values, 3},
+    {"_abmAnimalMovement_cpp_max", (DL_FUNC) &_abmAnimalMovement_cpp_max, 1},
+    {"_abmAnimalMovement_cpp_min", (DL_FUNC) &_abmAnimalMovement_cpp_min, 1},
     {"_abmAnimalMovement_cpp_sample_options", (DL_FUNC) &_abmAnimalMovement_cpp_sample_options, 2},
     {"_abmAnimalMovement_cpp_vonmises", (DL_FUNC) &_abmAnimalMovement_cpp_vonmises, 3},
     {"_abmAnimalMovement_find_max", (DL_FUNC) &_abmAnimalMovement_find_max, 1},

@@ -105,6 +105,20 @@ cpp_get_values <- function(MATRIX, XLOCS, YLOCS) {
     .Call('_abmAnimalMovement_cpp_get_values', PACKAGE = 'abmAnimalMovement', MATRIX, XLOCS, YLOCS)
 }
 
+#' Get maximum or minimum value
+#' @name cpp_max/cpp_min
+#' @param x A vector of doubles to the max/min found.
+#' @return The maximum or minimum value in the vector.
+NULL
+
+cpp_max <- function(x) {
+    .Call('_abmAnimalMovement_cpp_max', PACKAGE = 'abmAnimalMovement', x)
+}
+
+cpp_min <- function(x) {
+    .Call('_abmAnimalMovement_cpp_min', PACKAGE = 'abmAnimalMovement', x)
+}
+
 #' @title cpp_sample_options
 #' @name cpp_sample_options
 #' @description The C++ sample function that takes a vector of weights and

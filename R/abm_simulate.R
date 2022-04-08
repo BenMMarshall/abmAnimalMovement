@@ -214,7 +214,7 @@ abm_simulate <- function(start, steps,
          (shelteringMatrix, foragingMatrix, movementMatrix)")
   }
   if(
-    all(all(dim(shelteringMatrix) == dim(movementMatrix)),
+    !all(all(dim(shelteringMatrix) == dim(movementMatrix)),
         all(dim(foragingMatrix) == dim(shelteringMatrix)),
         all(dim(movementMatrix) == dim(foragingMatrix)))
   ){

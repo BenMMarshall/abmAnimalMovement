@@ -5,6 +5,7 @@
 #include "cpp_sample_options.h"
 #include "cpp_cycle_draw.h"
 #include "cpp_get_values.h"
+#include "cpp_maxmin.h"
 
 //' @name cpp_abm_simulate
 //' @title cpp_abm_simulate
@@ -389,14 +390,6 @@ Rcpp::List cpp_abm_simulate(
     des_y_Locations[i] = des_y;
     des_chosen[i] = chosenDes;
 
-    // current distance from destination
-    ////////////////////////////////////////////////////////////////////////////
-    // IS THIS EVEN NEEDED, WE RECALC THIS LATER IN A LOOP
-    c_dist2 = std::pow((des_x - x_Locations[i-1]), 2) +
-      std::pow((des_y - y_Locations[i-1]), 2);
-    currDist = std::sqrt(c_dist2);
-    ////////////////////////////////////////////////////////////////////////////
-
     // MOVEMENT LOOP
     for(int j = 0; j < nopt; j++, a++){
 
@@ -467,18 +460,20 @@ Rcpp::List cpp_abm_simulate(
     // (xi – min(x)) / (max(x) – min(x))
     // find MIN
     double dist_min = distance_toDes[0];
-    for(int l = 0; l < nopt; l++){
-      if(distance_toDes[l] < dist_min){
-        dist_min = distance_toDes[l];
-      }
-    }
+    dist_min = cpp_min(distance_toDes);
+    // for(int l = 0; l < nopt; l++){
+    //   if(distance_toDes[l] < dist_min){
+    //     dist_min = distance_toDes[l];
+    //   }
+    // }
     // find MAX
     double dist_max = distance_toDes[0];
-    for(int l = 0; l < nopt; l++){
-      if(distance_toDes[l] > dist_max){
-        dist_max = distance_toDes[l];
-      }
-    }
+    dist_max = cpp_max(distance_toDes);
+    // for(int l = 0; l < nopt; l++){
+    //   if(distance_toDes[l] > dist_max){
+    //     dist_max = distance_toDes[l];
+    //   }
+    // }
 
     // using the find max and min found above we normalise all the distances
     // from possible choices in relation to the final destination
@@ -528,18 +523,21 @@ Rcpp::List cpp_abm_simulate(
 
     // find MIN
     double distAvoid_min = distance_toAvoid[0];
-    for(int l = 0; l < nopt; l++){
-      if(distance_toAvoid[l] < distAvoid_min){
-        distAvoid_min = distance_toAvoid[l];
-      }
-    }
+    distAvoid_min = cpp_min(distance_toAvoid);
+    // for(int l = 0; l < nopt; l++){
+    //   if(distance_toAvoid[l] < distAvoid_min){
+    //     distAvoid_min = distance_toAvoid[l];
+    //   }
+    // }
+
     // find MAX
     double distAvoid_max = distance_toAvoid[0];
-    for(int l = 0; l < nopt; l++){
-      if(distance_toAvoid[l] > distAvoid_max){
-        distAvoid_max = distance_toAvoid[l];
-      }
-    }
+    distAvoid_max = cpp_max(distance_toAvoid);
+    // for(int l = 0; l < nopt; l++){
+    //   if(distance_toAvoid[l] > distAvoid_max){
+    //     distAvoid_max = distance_toAvoid[l];
+    //   }
+    // }
 
     // use the min and max cumdists to the avoidance points to modify the
     // move_Options draw
