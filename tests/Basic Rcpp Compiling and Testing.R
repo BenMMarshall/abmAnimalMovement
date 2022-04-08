@@ -52,8 +52,8 @@ shelterLocs <- data.frame(
 )
 
 avoid <- data.frame(
-  "x" = c(1050, 1060, 1010),
-  "y" = c(1060, 1070, 1010)
+  "x" = c(950, 1010, 1000),
+  "y" = c(950, 1090, 1020)
 )
 
 restData <- c(0.65, 0, 24, 24)
@@ -82,6 +82,9 @@ simRes <- abm_simulate(start = c(1000,1000),
                        shelterLocations = shelterLocs,
                        shelterSize = 1,
                        avoidPoints = avoid,
+
+                       destinationRange = c(50, 2),
+                       destinationDirection = c(0, 0.01),
                        destinationTransformation = 2,
                        destinationModifier = 2,
                        avoidTransformation = 2,

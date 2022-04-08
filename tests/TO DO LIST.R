@@ -12,6 +12,13 @@
 
 # NOTES -------------------------------------------------------------------
 
+## destination/perceptual range
+# k_desRange
+# s_desRange
+# mu_desDir
+# k_desDir
+
+
 ## AVOIDANCE notes
 # mO = moveoptions interator
 #
