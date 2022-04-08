@@ -6,12 +6,14 @@
 \usage{
 abm_simulate(
   start,
-  steps,
+  timesteps,
   des_options,
   options,
   shelterLocations,
   shelterSize,
   avoidPoints,
+  destinationRange,
+  destinationDirection,
   destinationTransformation,
   destinationModifier,
   avoidTransformation,
@@ -32,7 +34,7 @@ abm_simulate(
 \item{start}{A numeric vector of length 2, including the x and y coordinates
 of the start location.}
 
-\item{steps}{The number of time steps to be simulated, where each step is
+\item{timesteps}{The number of time steps to be simulated, where each step is
 equal to ------ ----.}
 
 \item{des_options}{The number of dynamically chosen destinations presented to
@@ -46,6 +48,16 @@ behavioural state.}
 
 \item{avoidPoints}{A dataframe including the x and y coordinates that the
 animal will avoid.}
+
+\item{destinationRange}{A numeric vector of length two where the first value
+provides the shape (k) parameter and the second value provides the scale
+parameter (\eqn{\theta}) of the gamma distribution guiding the distance of
+foraging destinations.}
+
+\item{destinationDirection}{A numeric vector of length two where the first
+value provides the mean (\eqn{\mu}) and the second value provides the
+concentration (\eqn{\kappa}) of the Von Mises distribution guiding the
+direction of foraging destinations.}
 
 \item{destinationTransformation}{This parameter and the following three all
 apply to the strength/pull/push the animal feels from a destination or

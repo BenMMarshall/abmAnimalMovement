@@ -80,6 +80,10 @@ Rcpp::List cpp_abm_simulate(
     std::vector<double> avoidPoints_x,
     std::vector<double> avoidPoints_y,
 
+    double k_desRange,
+    double s_desRange,
+    double mu_desDir,
+    double k_desDir,
     int destinationTrans,
     double destinationMod,
     int avoidTrans,
@@ -326,8 +330,8 @@ Rcpp::List cpp_abm_simulate(
           for(int dopt = 0; dopt < ndes; dopt++){
 
             // DO WE NEED AN ADDITIONAL VARIABLE TO CONTROL THE DESTINATION CHOICE RANGE
-            step = Rcpp::rgamma(1, behave_k_step*10, behave_s_step*2)[0];
-            vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
+            step = Rcpp::rgamma(1, k_desRange, s_desRange)[0];
+            vmdraw = cpp_vonmises(1, mu_desDir, k_desDir)[0];
             angle = vmdraw * 180/M_PI;
             angle = last_angle + angle;
             x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;

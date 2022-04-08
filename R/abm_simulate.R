@@ -19,6 +19,14 @@
 #'   simulating (near-)stationary behaviour.
 #' @param avoidPoints A dataframe including the x and y coordinates that the
 #'   animal will avoid.
+#' @param destinationRange A numeric vector of length two where the first value
+#'   provides the shape (k) parameter and the second value provides the scale
+#'   parameter (\eqn{\theta}) of the gamma distribution guiding the distance of
+#'   foraging destinations.
+#' @param destinationDirection A numeric vector of length two where the first
+#'   value provides the mean (\eqn{\mu}) and the second value provides the
+#'   concentration (\eqn{\kappa}) of the Von Mises distribution guiding the
+#'   direction of foraging destinations.
 #' @param destinationTransformation This parameter and the following three all
 #'   apply to the strength/pull/push the animal feels from a destination or
 #'   avoidance point. 0 - no transformation applied to the distance to
@@ -85,6 +93,8 @@ abm_simulate <- function(start, timesteps,
                          shelterSize,
                          avoidPoints,
 
+                         destinationRange,
+                         destinationDirection,
                          destinationTransformation,
                          destinationModifier,
                          avoidTransformation,
@@ -106,11 +116,11 @@ abm_simulate <- function(start, timesteps,
 
   ## start
   if(!is.vector(start) | !length(start) == 2 | !is.numeric(start)){
-    stop("Start location is not a numeric vector of length 2")
+    stop("Start location (start) is not a numeric vector of length 2")
   }
   ## steps
   if(!timesteps%%1==0 | !length(timesteps)==1){
-    stop("Number of time steps should be a single integer")
+    stop("Number of time steps (timesteps) should be a single integer")
   }
   ## des_options
   if(!des_options%%1==0 | !length(des_options)==1){
@@ -138,6 +148,14 @@ abm_simulate <- function(start, timesteps,
   if(!is.numeric(avoidPoints[,1]) | !is.numeric(avoidPoints[,2])){
     stop("Non-numeric elements in the avoidance locations input (avoidPoints)")
   }
+  ## destinationRange, destinationDirection
+  if(!is.vector(destinationRange) | !length(destinationRange) == 2 | !is.numeric(destinationRange)){
+    stop("Destination range (destinationRange) is not a numeric vector of length 2")
+  }
+  if(!is.vector(destinationDirection) | !length(destinationDirection) == 2 | !is.numeric(destinationDirection)){
+    stop("Destination direction (destinationDirection) is not a numeric vector of length 2")
+  }
+
   ## destinationTransformation
   ## avoidTransformation
   if(!destinationTransformation %in% c(0,1,2) | !avoidTransformation %in% c(0,1,2)){
@@ -264,6 +282,11 @@ abm_simulate <- function(start, timesteps,
     sSiteSize = shelterSize,
     avoidPoints_x = avoidPoints_xIN,
     avoidPoints_y = avoidPoints_yIN,
+
+    k_desRange = destinationRange[1],
+    s_desRange = destinationRange[2],
+    mu_desDir = destinationDirection[1],
+    k_desDir = destinationDirection[2],
     destinationTrans = destinationTransformation,
     destinationMod = destinationModifier,
     avoidTrans = avoidTransformation,
@@ -344,6 +367,11 @@ run_abm_simulate <- function(startx, starty,
                              sSiteSize,
                              avoidPoints_x,
                              avoidPoints_y,
+
+                             k_desRange,
+                             s_desRange,
+                             mu_desDir,
+                             k_desDir,
                              destinationTrans,
                              destinationMod,
                              avoidTrans,
@@ -379,6 +407,11 @@ run_abm_simulate <- function(startx, starty,
         sSiteSize,
         avoidPoints_x,
         avoidPoints_y,
+
+        k_desRange,
+        s_desRange,
+        mu_desDir,
+        k_desDir,
         destinationTrans,
         destinationMod,
         avoidTrans,
