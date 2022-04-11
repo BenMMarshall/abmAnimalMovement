@@ -234,6 +234,8 @@ plotObsBehave / plotExpRest / do.call(patchwork::wrap_plots, c(plotList, ncol=1)
 
 ggsave("./output/figures/behaviourCycle.png",
        width = 180, height = 120, units = "mm", dpi = 300)
+ggsave("./output/figures/behaviourCycle.pdf",
+       width = 180, height = 120, units = "mm")
 
 ### BEHAVE TRANSITIONS ###
 simRes$locations$behave
@@ -301,6 +303,8 @@ rbind(observedBehaveChanges, expectedBehaveChanges) %>%
 
 ggsave("./output/figures/behaviourTransitions.png",
        width = 180, height = 180, units = "mm", dpi = 300)
+ggsave("./output/figures/behaviourTransitions.pdf",
+       width = 180, height = 180, units = "mm")
 
 ##### Review step lengths and turn angles ##### --------------------------------
 
@@ -410,10 +414,13 @@ ggsave("./output/figures/turnangleBehaviours.pdf",
 
 plotBgEnv +
   geom_point(data = simRes$options,
-             aes(x = x, y = y), alpha = 0.05, colour = palette["purp1"]) +
+             aes(x = x, y = y),
+             size = 0.35,
+             alpha = 0.05, colour = palette["purp1"]) +
   geom_path(data = simRes$locations,
             aes(x = x, y = y), alpha = 0.15) +
   geom_point(data = simRes$locations,
+             size = 0.65,
              aes(x = x, y = y, shape = as.factor(behave)),
              alpha = 0.45) +
   ## forage

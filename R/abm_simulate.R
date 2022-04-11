@@ -19,7 +19,6 @@
 #'   simulating (near-)stationary behaviour.
 #' @param avoidPoints A dataframe including the x and y coordinates that the
 #'   animal will avoid.
-<<<<<<< HEAD
 #' @param destinationRange A numeric vector of length two where the first value
 #'   provides the shape (k) parameter and the second value provides the scale
 #'   parameter (\eqn{\theta}) of the gamma distribution guiding the distance of
@@ -28,10 +27,8 @@
 #'   value provides the mean (\eqn{\mu}) and the second value provides the
 #'   concentration (\eqn{\kappa}) of the Von Mises distribution guiding the
 #'   direction of foraging destinations.
-=======
 #' @param destinationRange
 #' @param destinationDirection
->>>>>>> main
 #' @param destinationTransformation This parameter and the following three all
 #'   apply to the strength/pull/push the animal feels from a destination or
 #'   avoidance point. 0 - no transformation applied to the distance to

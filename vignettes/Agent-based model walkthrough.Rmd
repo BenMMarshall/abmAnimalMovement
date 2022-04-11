@@ -100,13 +100,15 @@ The modelled animal is provided with a number of shelter sites that serve as poi
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
 
 Additionally, the model allows the animal to randomly select (but weighted towards areas of higher quality) a foraging destination as a point of attraction when in the foraging behavioural mode.
+Movements cannot be directly translated to animal preference <!-- movement of deer paper -->, so the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
 Importantly the dynamic nature of the foraging destination selection allows for it to operate on a different time frame to the movement selection.
-The two time frames allow for explorations of assumptions connecting observed movement choices to choices regarding resources.
-We know that movements cannot be directly translated to animal preference, so the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
+The two time frames allow for explorations of assumptions connecting observed movement choices to choices regarding resources, and whether downstream analyses can accurately recover a hidden decision making process.
+<!-- decoupling movement and decisions making requires sims so we can set and know the internal decision making of the animal-- ie how well can analyses recover hidden decision making process -->
 
 The interplay between shelter sites and foraging quality attractors simulates the site fidelity required for home ranges, while allowing the environment (in the form of a raster describing resource quality) to help shape the size and diffusion of that home range.
 Multiple attractors that apply at different times and result in different movements can be missed in simulations that assume uniform circular animal space use.
 Simulating a more dynamic and messy array of movements can help test how far assumptions of uniform circular animal movement are useful.
+
 
 The attractor and movement characteristics are impacted by the behavioural state of the animal, and that behavioural state has a chance of changing at each time step.
 However, the changes should not be fully random nor have equal chance at each time step.
@@ -120,20 +122,56 @@ The best way to demonstrate the variation that movement ecology methods needs to
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns. 
 None of the created examples are meant to directly match previously collected data on the species movements –there are alternative methods built to fit and simulate movements from existing data– instead the examples provide some biological context to demonstrate a range of simulation parametrisations.
 
+- behaveMat
+- shelterLocs + size
+- avoidLocs
+- dayCycle
+- otherCycle
+- 3 step and angle parameters
+- destination parameters
+
 ## Badger - High site fidelity
 
 Badger occupy a sett, a single home/shelter site, that they routinely return to.
 When not at the sett the badger forages, and the foraging distances are impacted by resource position <!-- 10.1111/j.1469-7998.1999.tb01015.x might help --> and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
+We parametrise these aspects in the following ways:
+
+- For the sett, we pass a single set of coordinates (shelterLocations) and define the size of the shelter site as 5 m (shelterSize). Shelter site size describes the distance from a shelter site that the animal dramatically lowers its movements <!-- see vignette on sheltesize variation -->. Five metres allows for small movements near/within the sett during resting behaviour. 
+
+``` {r BADGERsettingShelter}
+
+```
+
+- The terrestrial movement of badgers influences the step and turning angle characteristics of all behavioural modes.
+We provide these via k_step and s_step for the shape (k) and scale (\eqn{\theta}) of the step gamma distribution, as well as mu_angle and k_angle for the mean (\eqn{\mu}) and concentration (\eqn{\kappa}) of the Von Mises distribution.
+Similarly, the perceptual range requires setting, in other words, where the badger decides to forage (destinationRange, destinationDirection).
+We can alter the impact of the destinations with destinationTransformation and destinationModifier, where a stronger attraction will lead to more direct movements to the destinations chosen.
+
+``` {r BADGERsettingMoveDes}
+
+```
 
 Badger movements are also impacted by their territoriality. 
 While the simulation does not attempted to simulate territoriality directly via competing simultaneously simulated badgers, we can approximate territoriality by providing a number of distant avoidance points.
-An alternative way of simulating this behaviour would be to create areas of high movement resistance prevent the badger from entering.
+An alternative way of simulating this behaviour would be to create areas of high movement resistance prevent the badger from entering. We provide a set of x, y coordinates of location to be avoided.
+Alongside the locations we need to provide define how strongly the badger will avoid them using avoidTransformation and avoidModifier.
+The avoidance behaviour will directly counteract the attraction to destination behaviour <!-- see vignette exploring this -->
+
+``` {r BADGERsettingAvoid}
+
+```
 
 Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources.
 The model allows for a second cycle that can modify the resting behaviour on top of the baseline diel resting cycle.
 In this example we will allow the cycle to increase the intensity of resting behaviour during a portion of the year, while retaining a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year).
 A more extreme implementation of the second cycle could introduce hibernation behaviour.
+We input the daily cycle (rest_Cycle) by providing values for the amplitude, midline, offset (\eqn{\phi}) and frequency (\eqn{\tau}).
+We also have the option to provide a second cycle to describe the longer rests later in the year with additional_Cycles.
+
+``` {r BADGERsettingCycle}
+
+```
 
 ## Vulture - High movement variation
 
