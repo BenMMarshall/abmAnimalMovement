@@ -15,6 +15,11 @@ library(dplyr)
 
 ##### SET CONSTANTS ##### ------------------------------------------------------
 
+paste0(paste0("k<sub>", all_simRes[[listIndex]][[5]][,1], "</sup>=",
+              all_simRes[[listIndex]][[5]][,2]),
+       paste0(" s<sub>", all_simRes[[listIndex]][[5]][,1], "</sup>=",
+              all_simRes[[listIndex]][[5]][,3]), collapse = " | ")
+
 ### PALETTE ###
 palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
 names(palette) <- c("purp1", "purp2", "2", "1", "0")
@@ -52,8 +57,8 @@ shelterLocs <- data.frame(
 )
 
 avoid <- data.frame(
-  "x" = c(950, 1010, 1000),
-  "y" = c(950, 1090, 1020)
+  "x" = c(950, 1010, 990),
+  "y" = c(950, 1090, 1050)
 )
 
 restData <- c(0.65, 0, 24, 24)
@@ -98,6 +103,17 @@ simRes <- abm_simulate(start = c(1000,1000),
                        shelteringMatrix = landcapeLayersList$memShelter,
                        foragingMatrix = landcapeLayersList$forage,
                        movementMatrix = landcapeLayersList$shelter) # just using a place holder layer for testing
+
+##### Quick plot testing ##### ------------------------------
+
+abmMapPlot(simResults = simRes,
+           shelterLocations = shelterLocs,
+           avoidance = avoid,
+           timeLimits = c(1, 60*24* 14))
+
+###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0
+simRes$options[simRes$options$x< 500,]
+######################################################################
 
 ##### Behaviour state cycling and switching ##### ------------------------------
 

@@ -10,6 +10,8 @@
 
 ## tidy up sub-functions into a single header file (C++)
 
+###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0
+
 # NOTES -------------------------------------------------------------------
 
 ## destination/perceptual range
