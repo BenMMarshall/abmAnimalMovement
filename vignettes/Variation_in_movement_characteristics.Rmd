@@ -1,7 +1,7 @@
 ---
 title: "Variation in movement characteristics"
 author: "Benjamin Michael Marshall"
-date: '2022-04-11'
+date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
     theme: yeti
@@ -147,7 +147,6 @@ for(i in 1:dim(k_step_all)[1]){
     listIndex <- listIndex + 1
     
     tempPlot <- abmMapPlot(all_simRes[[listIndex]],
-                           shelterLocations = shelterLocs, avoidance = avoid,
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title = 
                       paste0(paste0("k<sub>", c(0,1,2), "</sub>=",
@@ -271,7 +270,6 @@ for(i in 1:dim(k_step_all)[1]){
   listIndex <- listIndex + 1
   
   tempPlot <- abmMapPlot(all_simRes[[listIndex]],
-                         shelterLocations = shelterLocs, avoidance = avoid,
                          timeLimits = c(1, simSteps)) +
     ggplot2::labs(title = 
                     paste0(paste0("s<sub>", c(0,1,2), "</sub>=",

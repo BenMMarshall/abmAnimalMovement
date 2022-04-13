@@ -1,7 +1,7 @@
 ---
 title: "Agent-based model walkthrough"
 author: "Benjamin Michael Marshall"
-date: '2022-03-02'
+date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
     theme: yeti

@@ -1,7 +1,7 @@
 ---
 title: "Variation in destination parameters"
 author: "Benjamin Michael Marshall"
-date: '2022-04-11'
+date: "`r Sys.Date()`"
 output:
   bookdown::html_document2:
     theme: yeti
@@ -136,7 +136,6 @@ for(i in 1:length(destinationRange_all)[1]){
     listIndex <- listIndex + 1
     
     tempPlot <- abmMapPlot(all_simRes[[listIndex]],
-                           shelterLocations = shelterLocs, avoidance = avoid,
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title =
                       paste0("k=", all_simRes[[listIndex]]$inputs$in_k_desRange, 
@@ -255,7 +254,6 @@ for(i in 1:length(destinationRange_all)[1]){
     listIndex <- listIndex + 1
     
     tempPlot <- abmMapPlot(all_simRes[[listIndex]],
-                           shelterLocations = shelterLocs, avoidance = avoid,
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title =
                       paste0("trans.=",
@@ -379,7 +377,6 @@ for(i in 1:length(avoidTransformation_all)[1]){
     listIndex <- listIndex + 1
     
     tempPlot <- abmMapPlot(all_simRes[[listIndex]],
-                           shelterLocations = shelterLocs, avoidance = avoid,
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title =
                       paste0("trans.=",

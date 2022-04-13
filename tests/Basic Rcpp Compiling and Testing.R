@@ -102,9 +102,12 @@ simRes <- abm_simulate(start = c(1000,1000),
 ##### Quick plot testing ##### ------------------------------
 
 abmMapPlot(simResults = simRes,
-           shelterLocations = shelterLocs,
-           avoidance = avoid,
+           # shelterLocations = shelterLocs,
+           # avoidance = avoid,
            timeLimits = c(1, 60*24* 14))
+
+abmCyclePlot(simResults = simRes,
+             timeLimits = c(1, 60*24* 7))
 
 ###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0
 simRes$options[simRes$options$x< 500,]
