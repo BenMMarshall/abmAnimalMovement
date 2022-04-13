@@ -610,6 +610,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("opt_y_forOpts") = y_forageOptions,
     Rcpp::Named("opt_des_forOpts") = des_forageOptions,
     Rcpp::Named("opt_chosen_forOpts") = chosenDes,
+    // bring in all the input lists together
     Rcpp::Named("inputs_list") = Rcpp::List::create(
       Rcpp::Named("inputs_basic") = INPUT_basic,
       Rcpp::Named("inputs_destination") = INPUT_destination,

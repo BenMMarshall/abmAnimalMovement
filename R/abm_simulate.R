@@ -348,12 +348,19 @@ abm_simulate <- function(start, timesteps,
     y = res$oall_y,
     sl = res$oall_stepLengths)
 
-  inputs <- list(
-    basic = res$inputs_list$inputs_basic,
-    destination = res$inputs_list$inputs_destination,
-    movement = res$inputs_list$inputs_movement,
-    cycle = res$inputs_list$inputs_cycle,
-    layerSeed = res$inputs_list$inputs_layerSeed
+  # inputs <- list(
+  #   basic = res$inputs_list$inputs_basic,
+  #   destination = res$inputs_list$inputs_destination,
+  #   movement = res$inputs_list$inputs_movement,
+  #   cycle = res$inputs_list$inputs_cycle,
+  #   layerSeed = res$inputs_list$inputs_layerSeed
+  # )
+  inputs <- c(
+    res$inputs_list$inputs_basic,
+    res$inputs_list$inputs_destination,
+    res$inputs_list$inputs_movement,
+    res$inputs_list$inputs_cycle,
+    res$inputs_list$inputs_layerSeed
   )
 
   OUTPUTS[["locations"]] <- locations

@@ -148,9 +148,9 @@ for(i in 1:dim(k_step_all)[1]){
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title = 
                       paste0(paste0("k<sub>", c(0,1,2), "</sub>=",
-                                    all_simRes[[listIndex]]$inputs$movement$in_k_step),
-                             paste0(" s<sub>", c(0,1,2), "</sub>=",
-                                    all_simRes[[listIndex]]$inputs$movement$in_s_step),
+                                    all_simRes[[listIndex]]$inputs$in_k_step),
+                             paste0(", s<sub>", c(0,1,2), "</sub>=",
+                                    all_simRes[[listIndex]]$inputs$in_s_step),
                              collapse = "; ")
       ) +
       ggplot2::theme(legend.position = "none",
