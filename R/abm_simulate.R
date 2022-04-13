@@ -323,10 +323,11 @@ abm_simulate <- function(start, timesteps,
   # tidy up all objects parse via the
   # list into dataframes with properly labelled columns
 
-  OUTPUTS <- vector(mode = "list", length = 3)
+  OUTPUTS <- vector(mode = "list", length = 4)
   names(OUTPUTS)[1] <- "locations"
   names(OUTPUTS)[2] <- "options"
   names(OUTPUTS)[3] <- "others"
+  names(OUTPUTS)[4] <- "inputs"
 
   locations <- data.frame(
     timestep = res$loc_step,
@@ -335,7 +336,7 @@ abm_simulate <- function(start, timesteps,
     sl = res$loc_sl,
     ta = res$loc_ta,
     behave = res$loc_behave,
-    chosen = res$chosen,
+    chosen = res$loc_chosen,
     destination_x = res$loc_x_destinations,
     destination_y = res$loc_y_destinations,
     destination_chosen = res$loc_chosen_destinations
@@ -347,14 +348,19 @@ abm_simulate <- function(start, timesteps,
     y = res$oall_y,
     sl = res$oall_stepLengths)
 
+  inputs <- list(
+    basic = res$inputs_list$inputs_basic,
+    destination = res$inputs_list$inputs_destination,
+    movement = res$inputs_list$inputs_movement,
+    cycle = res$inputs_list$inputs_cycle,
+    layerSeed = res$inputs_list$inputs_layerSeed
+  )
+
   OUTPUTS[["locations"]] <- locations
   OUTPUTS[["options"]] <- options
   OUTPUTS[["others"]] <-
-    res[!names(res) %in% c("loc_step", "loc_x", "loc_y",
-                           "loc_sl", "loc_ta",
-                           "loc_behave", "chosen",
-                           "loc_x_destinations", "loc_y_destinations", "loc_chosen_destinations",
-                           "oall_step", "oall_x", "oall_y", "oall_stepLengths")]
+    res[!grepl("loc|oall|input", names(res))]
+  OUTPUTS[["inputs"]] <- inputs
 
   return(OUTPUTS)
 }

@@ -531,6 +531,62 @@ Rcpp::List cpp_abm_simulate(
     step_Locations[i] = i;
 
   }
+
+  Rcpp::List INPUT_basic = Rcpp::List::create(
+    Rcpp::Named("in_startx") = startx,
+    Rcpp::Named("in_starty") = starty,
+    Rcpp::Named("in_timesteps") = timesteps,
+    Rcpp::Named("in_ndes") = ndes,
+    Rcpp::Named("in_nopt") = nopt
+  );
+
+  Rcpp::List INPUT_destination = Rcpp::List::create(
+    Rcpp::Named("in_shelter_locs_x") = shelter_locs_x,
+    Rcpp::Named("in_shelter_locs_y") = shelter_locs_y,
+    Rcpp::Named("in_sSiteSize") = sSiteSize,
+    Rcpp::Named("in_avoidPoints_x") = avoidPoints_x,
+    Rcpp::Named("in_avoidPoints_y") = avoidPoints_y,
+    Rcpp::Named("in_k_desRange") = k_desRange,
+    Rcpp::Named("in_s_desRange") = s_desRange,
+    Rcpp::Named("in_mu_desDir") = mu_desDir,
+    Rcpp::Named("in_k_desDir") = k_desDir,
+    Rcpp::Named("in_destinationTrans") = destinationTrans,
+    Rcpp::Named("in_destinationMod") = destinationMod,
+    Rcpp::Named("in_avoidTrans") = avoidTrans,
+    Rcpp::Named("in_avoidMod") = avoidMod
+    );
+
+  Rcpp::List INPUT_movement = Rcpp::List::create(
+    Rcpp::Named("in_k_step") = k_step,
+    Rcpp::Named("in_s_step") = s_step,
+    Rcpp::Named("in_mu_angle") = mu_angle,
+    Rcpp::Named("in_k_angle") = k_angle,
+    Rcpp::Named("in_b0_Options") = b0_Options,
+    Rcpp::Named("in_b1_Options") = b1_Options,
+    Rcpp::Named("in_b2_Options") = b2_Options
+  );
+
+  Rcpp::List INPUT_cycle = Rcpp::List::create(
+    Rcpp::Named("in_rest_Cycle_A") = rest_Cycle_A,
+    Rcpp::Named("in_rest_Cycle_M") = rest_Cycle_M,
+    Rcpp::Named("in_rest_Cycle_PHI") = rest_Cycle_PHI,
+    Rcpp::Named("in_rest_Cycle_TAU") = rest_Cycle_TAU,
+    Rcpp::Named("in_addCycles") = addCycles,
+    Rcpp::Named("in_add_Cycle_A") = add_Cycle_A,
+    Rcpp::Named("in_add_Cycle_M") = add_Cycle_M,
+    Rcpp::Named("in_add_Cycle_PHI") = add_Cycle_PHI,
+    Rcpp::Named("in_add_Cycle_TAU") = add_Cycle_TAU
+  );
+
+
+  Rcpp::List INPUT_layerSeed = Rcpp::List::create(
+    Rcpp::Named("in_shelterMatrix") = shelterMatrix,
+    Rcpp::Named("in_forageMatrix") = forageMatrix,
+    Rcpp::Named("in_moveMatrix") = moveMatrix,
+    Rcpp::Named("in_seeds") = seeds
+  );
+
+
   Rcpp::List OUTPUT = Rcpp::List::create(
     // output the location data
     Rcpp::Named("loc_x") = x_Locations,
@@ -539,6 +595,8 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_ta") = ta_Locations,
     Rcpp::Named("loc_step") = step_Locations,
     Rcpp::Named("loc_behave") = behave_Locations,
+    // output for the chosen options at each step
+    Rcpp::Named("loc_chosen") = chosen_Options,
     Rcpp::Named("loc_x_destinations") = des_x_Locations,
     Rcpp::Named("loc_y_destinations") = des_y_Locations,
     Rcpp::Named("loc_chosen_destinations") = des_chosen,
@@ -547,13 +605,17 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("oall_y") = y_OptionsAll,
     Rcpp::Named("oall_step") = step_OptionsAll,
     Rcpp::Named("oall_stepLengths") = stepAll,
-    // output for the chosen options at each step
-    Rcpp::Named("chosen") = chosen_Options,
     // output for the last options just to check
-    Rcpp::Named("ol_x_forOpts") = x_forageOptions,
-    Rcpp::Named("ol_y_forOpts") = y_forageOptions,
-    Rcpp::Named("ol_des_forOpts") = des_forageOptions,
-    Rcpp::Named("ol_chosen_forOpts") = chosenDes
+    Rcpp::Named("opt_x_forOpts") = x_forageOptions,
+    Rcpp::Named("opt_y_forOpts") = y_forageOptions,
+    Rcpp::Named("opt_des_forOpts") = des_forageOptions,
+    Rcpp::Named("opt_chosen_forOpts") = chosenDes,
+    Rcpp::Named("inputs_list") = Rcpp::List::create(
+      Rcpp::Named("inputs_basic") = INPUT_basic,
+      Rcpp::Named("inputs_destination") = INPUT_destination,
+      Rcpp::Named("inputs_movement") = INPUT_movement,
+      Rcpp::Named("inputs_cycle") = INPUT_cycle,
+      Rcpp::Named("inputs_layerSeed") = INPUT_layerSeed)
     // Rcpp::Named("ol_x") = x_Options,
     // Rcpp::Named("ol_y") = y_Options,
     // Rcpp::Named("ol_moveVal1") = move_Options, // included to check probs used

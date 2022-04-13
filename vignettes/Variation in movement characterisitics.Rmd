@@ -120,17 +120,6 @@ for(i in 1:dim(k_step_all)[1]){
                     foragingMatrix = landcapeLayersList$forage,
                     movementMatrix = landcapeLayersList$shelter)
     
-    simRes[[4]] <- paste0("i=", i, ", j=", j)
-    parameterTable <- data.frame(
-      "Behaviour" = c("0", "1", "2"),
-      "k" = c(k_step_all[i,1],
-              k_step_all[i,2],
-              k_step_all[i,3]),
-      "s" = c(s_step_all[j,1],
-              s_step_all[j,2],
-              s_step_all[j,3]))
-    simRes[[5]] <- parameterTable
-    
     all_simRes[[listIndex]] <- simRes
     
   } # j
@@ -147,9 +136,6 @@ locationExtents <- do.call(rbind, lapply(all_simRes, function(x){
              "maxy" = max(x$locations$y))
 }))
 
-min(locationExtents$minx)
-max(locationExtents$maxx)
-
 listIndex <- 0
 plotList <- vector("list", length = plotNumber)
 for(i in 1:dim(k_step_all)[1]){
@@ -161,10 +147,11 @@ for(i in 1:dim(k_step_all)[1]){
                            shelterLocations = shelterLocs, avoidance = avoid,
                            timeLimits = c(1, simSteps)) +
       ggplot2::labs(title = 
-                      paste0(paste0("k<sub>", all_simRes[[listIndex]][[5]][,1], "</sub>=",
-              all_simRes[[listIndex]][[5]][,2]),
-       paste0(" s<sub>", all_simRes[[listIndex]][[5]][,1], "</sub>=",
-              all_simRes[[listIndex]][[5]][,3]), collapse = "; ")
+                      paste0(paste0("k<sub>", c(0,1,2), "</sub>=",
+                                    all_simRes[[listIndex]]$inputs$movement$in_k_step),
+                             paste0(" s<sub>", c(0,1,2), "</sub>=",
+                                    all_simRes[[listIndex]]$inputs$movement$in_s_step),
+                             collapse = "; ")
       ) +
       ggplot2::theme(legend.position = "none",
                      plot.title = ggtext::element_markdown(size = 8),

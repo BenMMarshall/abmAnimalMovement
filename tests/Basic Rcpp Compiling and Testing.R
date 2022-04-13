@@ -15,11 +15,6 @@ library(dplyr)
 
 ##### SET CONSTANTS ##### ------------------------------------------------------
 
-paste0(paste0("k<sub>", all_simRes[[listIndex]][[5]][,1], "</sup>=",
-              all_simRes[[listIndex]][[5]][,2]),
-       paste0(" s<sub>", all_simRes[[listIndex]][[5]][,1], "</sup>=",
-              all_simRes[[listIndex]][[5]][,3]), collapse = " | ")
-
 ### PALETTE ###
 palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
 names(palette) <- c("purp1", "purp2", "2", "1", "0")
