@@ -104,7 +104,27 @@ simRes <- abm_simulate(start = c(1000,1000),
 abmMapPlot(simResults = simRes,
            # shelterLocations = shelterLocs,
            # avoidance = avoid,
-           timeLimits = c(1, 60*24* 14))
+           timeLimits = c(1, 60*24* 3))
+# ggsave("./output/figures/movement.pdf")
+timeLimits <- c(1, 60*24* 3)
+optionData <- simRes$options
+optionData <- optionData[optionData$step > timeLimits[1] &
+                           optionData$step < timeLimits[2],]
+range(optionData$x)
+range(optionData$y)
+quick_plot_matrix(landcapeLayersList$forage) +
+  coord_cartesian(xlim = range(optionData$x),
+                  ylim = range(optionData$y)) +
+  theme(aspect.ratio = 1) +
+  scale_fill_gradient(low = "#cc6e10", high = "#f5bc82")
+ggsave("./output/figures/raster_F.pdf", width = 9, height = 9)
+
+quick_plot_matrix(landcapeLayersList$shelter) +
+  coord_cartesian(xlim = range(optionData$x),
+                  ylim = range(optionData$y)) +
+  theme(aspect.ratio = 1) +
+  scale_fill_gradient(low = "#965A1D", high = "#e3aa6f")
+ggsave("./output/figures/raster_M.pdf", width = 9, height = 9)
 
 abmCyclePlot(simResults = simRes,
              timeLimits = c(1, 60*24* 7))
