@@ -25,20 +25,19 @@ biblio-style: peerj
 
 As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
 Developing mitigation strategies is aided by a strong understanding of animals lives and needs.
-How animals move offers a window into their decisions making process <!-- paper on bifrufacted choice here I think -->, as well as how they prioritise resources, avoid threats, and react to anthropogenic modification of the environment.
-Examinations of animal movement are frequently integrated into conservation plans <!-- fraser et al paper here --> because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology. For example, <!-- example, trade-off between size energy and space use? -->.
+How animals move offers a window into their decisions making process [@Bastille-Rousseau2017; @sridhar_geometry_2021], as well as how they prioritise resources, avoid threats, and react to anthropogenic modification of the environment.
+Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018], because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology. For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020].
 
 - therefore we need studies to be more ethical and cost effective - key in conservation
 
 The information gathered from animal movement studies is only as robust as the methods and analysis applied.
-In the past <!-- "## years", look at the great Joo et al review --> the volume of animal data has exploded, but the analysis approaches to extract maximum information have lagged behind.
-The often conservation sensitivity of studies animals, as well as the bodily cost of attaching bio-telemetry devices, means we have an ethical duty to maximise the values/impact of the data collected. <!-- poss the public funding origin of research too-->
+In the past decade the volume of animal data has exploded, but the analysis approaches to extract maximum information have lagged behind [@joo_decade_2020].
+The possible conservation sensitivity of studies' animals, as well as the bodily cost of attaching bio-telemetry devices [with examples from reptiles @Weatherhead2004; mammals @robstad_impact_2021; and birds @portugal_externally_2022], means we have an ethical duty to maximise the values/impact of the data collected. <!-- poss the public funding origin of research too-->
 
 - fix methods now because of replication issues?
 
-Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought.
-Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication. <!-- likely need to add something defining true replication here -->
-<!-- maybe new para here then -->
+Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought [@clark_ocean_2020; @roche_behavioural_2020; @sanchez-tojar_meta-analysis_2018; @wang_irreproducible_2018].
+Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication [@fraser_role_2020]. <!-- likely need to add something defining true replication here if not paired with mutliverse context review -->
 It is hard to justify placed bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
 As we have limited scope for repeating wild movement studies, it is imperative that we maximise the quality of the initial studies.
 
@@ -46,10 +45,11 @@ As we have limited scope for repeating wild movement studies, it is imperative t
 - examples of virtual ecology being a valid approach <!-- https://www.biorxiv.org/content/10.1101/2022.03.20.485041v1.full.pdf+html possible example vrey new -->
 
 Expanding pre-study planning and developing better approaches to guide study design may provide a partial solution.
-Study scenarios where researchers have great control over the environment, randomisation, and controls satisfy the assumptions of many statistical approaches.
+Study scenarios –where researchers have control over the environment, randomisation, and controls– satisfy the assumptions of many statistical approaches [@christie_simple_2019].
 Movement studies conducted in the wild are fraught with uncontrollable confounding variables and often further restricted by sample sizes limited by ethics, capture rates, and cost of bio-telemetry equipment.
 As the complexity of the research environment increases so must the analysis approach to account for the uncontrollable, but potentially extraneous to the question variables.
-Testing these analysis approaches, and their limitations therefore becomes more difficult to asses a priori.
+Testing these analysis approaches, and their limitations therefore becomes more difficult to asses *a priori*.
+
 
 A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question.
 <!-- examples of virtual ecology here -->
@@ -57,7 +57,7 @@ A potential solution is virtual ecology: where synthetic data is simulated to co
 - example of SECR improvements because of it
 
 Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment.
-<!-- deep dive of the SECR world, and the papers that have used sims to prove approaches -->
+<!-- deep dive of the SECR world, and the papers that have used sims to prove approaches e.g. https://esajournals.onlinelibrary.wiley.com/doi/epdf/10.1002/ecy.3676?saml_referrer -->
 
 - agent-based supplements existing simulation efforts
 - agent-based good way to capture complexities of animal movement
@@ -70,6 +70,8 @@ Our model requires no prior movement data, allows for multiple predefined points
 A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
 
 ## The agent-based model
+
+- R most used in movement eco [@joo_decade_2020] - also survery here: https://rociojoo.github.io/mov-eco-review/survey-about-movement-ecology.html#description-of-the-survey
 
 - time step
 - basic workings of simulation
