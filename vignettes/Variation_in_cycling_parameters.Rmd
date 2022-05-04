@@ -152,4 +152,7 @@ for(i in 1:length(restData_Amp_all)[1]){
 
 do.call(patchwork::wrap_plots, c(plotList, ncol = length(restData_Amp_all)[1]))
 
+ggplot2::ggsave(here::here("inst/figures/plotRestCycleVariations.png"),
+       width = 360, height = 180, units = "mm", dpi = 300)
+
 ```

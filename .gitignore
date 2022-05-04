@@ -8,6 +8,7 @@
 # User-specific files
 .Ruserdata
 /output/
+/inst/figures/
 
 # Example code in package build process
 *-Ex.R

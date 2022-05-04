@@ -182,6 +182,9 @@ for(i in 1:length(destinationRange_all)[1]){
 
 do.call(patchwork::wrap_plots, c(plotList, ncol = length(destinationRange_all)[1]))
 
+ggplot2::ggsave(here::here("inst/figures/plotDesRangeVariations.png"),
+       width = 180, height = 180, units = "mm", dpi = 300)
+
 ```
 
 # Varying strengths/tranformations of attraction
@@ -305,6 +308,9 @@ for(i in 1:length(destinationRange_all)[1]){
 do.call(patchwork::wrap_plots,
         c(plotList, ncol = length(destinationTransformation_all)[1]))
 
+ggplot2::ggsave(here::here("inst/figures/plotDesAttracVariations.png"),
+       width = 180, height = 180, units = "mm", dpi = 300)
+
 ```
 
 # Varying strengths/tranformations of avoidance
@@ -427,5 +433,8 @@ for(i in 1:length(avoidTransformation_all)[1]){
 
 do.call(patchwork::wrap_plots,
         c(plotList, ncol = length(avoidTransformation_all)[1]))
+
+ggplot2::ggsave(here::here("inst/figures/plotAvoidVariations.png"),
+       width = 180, height = 180, units = "mm", dpi = 300)
 
 ```

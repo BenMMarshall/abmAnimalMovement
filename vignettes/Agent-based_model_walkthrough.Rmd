@@ -29,10 +29,13 @@ How animals move offers a window into their decisions making process [@Bastille-
 Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018], because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology. For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020].
 
 - therefore we need studies to be more ethical and cost effective - key in conservation
+<!-- webb et al on ethics animal stuff -->
 
 The information gathered from animal movement studies is only as robust as the methods and analysis applied.
 In the past decade the volume of animal data has exploded, but the analysis approaches to extract maximum information have lagged behind [@joo_decade_2020].
 The possible conservation sensitivity of studies' animals, as well as the bodily cost of attaching bio-telemetry devices [with examples from reptiles @Weatherhead2004; mammals @robstad_impact_2021; and birds @portugal_externally_2022], means we have an ethical duty to maximise the values/impact of the data collected. <!-- poss the public funding origin of research too-->
+
+<!-- Studd paper on lynx shows the tech advances, also Wild et al paper on wifi -->
 
 - fix methods now because of replication issues?
 
@@ -40,6 +43,9 @@ Meta-analyses have revealed that several textbook examples in ecology are not as
 Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication [@fraser_role_2020]. <!-- likely need to add something defining true replication here if not paired with mutliverse context review -->
 It is hard to justify placed bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
 As we have limited scope for repeating wild movement studies, it is imperative that we maximise the quality of the initial studies.
+
+<!-- Tam paper that more endangered mammal species are less studied -->
+<!-- something added about variation and personality could be a discussion point Stuber et al 2022 as a starting point? -->
 
 - power-analysis-esk things and planning are the way to reduce costs and minimise neg impacts
 - examples of virtual ecology being a valid approach <!-- https://www.biorxiv.org/content/10.1101/2022.03.20.485041v1.full.pdf+html possible example vrey new -->
@@ -51,13 +57,20 @@ As the complexity of the research environment increases so must the analysis app
 Testing these analysis approaches, and their limitations therefore becomes more difficult to asses *a priori*.
 
 
-A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question.
+A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question [@gupta_reserve_2019].
+The suite of tools for simulating aspects of ecological systems [e.g., landscapes @Sciaini2018, genetics @petr_slendr_2022, conservation choices @gupta_reserve_2019] is growing, and is bolstered by a history of virtual ecology.
 <!-- examples of virtual ecology here -->
 
 - example of SECR improvements because of it
 
 Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment.
-<!-- deep dive of the SECR world, and the papers that have used sims to prove approaches e.g. https://esajournals.onlinelibrary.wiley.com/doi/epdf/10.1002/ecy.3676?saml_referrer -->
+<!-- deep dive of the SECR world, and the papers that have used sims to prove approaches e.g. https://esajournals.onlinelibrary.wiley.com/doi/epdf/10.1002/ecy.3676?saml_referrer --> [@theng_confronting_2022]
+Once validated with real-world data, it presents opportunities to understand the trade-offs between effort and precision [@cappelle_estimating_2021].
+But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes [@abolaffio_avoiding_2019].
+
+<!-- Keller paper is example -->
+<!-- Milleret paper is example -->
+<!-- DeBruine example of sims helping teach GLMMs -->
 
 - agent-based supplements existing simulation efforts
 - agent-based good way to capture complexities of animal movement
@@ -232,7 +245,7 @@ RpackageTable <- do.call(rbind, lapply(list("ggplot2",
                     "Version" = packageVersion(x))
        }))
 RpackageTable <- RpackageTable[order(RpackageTable$Package),]
-RpackageTable$Reference <- NA
+# RpackageTable$Reference <- NA
 
 knitr::kable(RpackageTable, "simple", row.names = FALSE,
              caption = "R packages used to organise and visual inputs and outputs for the animal simulation.", align = "lcc")

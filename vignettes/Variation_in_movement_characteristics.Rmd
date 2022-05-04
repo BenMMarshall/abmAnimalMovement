@@ -195,6 +195,9 @@ for(i in 1:dim(k_step_all)[1]){
 
 do.call(patchwork::wrap_plots, c(plotList, ncol = dim(k_step_all)[1]))
 
+ggplot2::ggsave(here::here("inst/figures/plotStepVariations.png"),
+       width = 180, height = 180, units = "mm", dpi = 300)
+
 ```
 
 # Varying turn angles
@@ -254,7 +257,7 @@ for(i in 1:dim(k_angle_all)[1]){
 
 ```
 
-```{r plotVariations, include=TRUE, echo=FALSE, message=FALSE, fig.align='center', fig.width=11, fig.height=3.5, fig.cap="Varitaion of turn angle concentration."}
+```{r plotAngleVariations, include=TRUE, echo=FALSE, message=FALSE, fig.align='center', fig.width=11, fig.height=3.5, fig.cap="Varitaion of turn angle concentration."}
 
 locationExtents <- do.call(rbind, lapply(all_simRes, function(x){
   data.frame("minx" = min(x$locations$x),
@@ -308,5 +311,8 @@ for(i in 1:dim(k_step_all)[1]){
 } # i
 
 do.call(patchwork::wrap_plots, c(plotList, ncol = dim(k_step_all)[1]))
+
+ggplot2::ggsave(here::here("inst/figures/plotAngleVariations.png"),
+       width = 180, height = 60, units = "mm", dpi = 300)
 
 ```
