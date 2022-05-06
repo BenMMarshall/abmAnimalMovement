@@ -91,6 +91,7 @@ A new independently developed approach to simulating animal movement will provid
 - behavioural state
 - movement vs decisions and attraction points
 - cycling
+<!-- importance of diel activity See Riveria et al 2022 (paper with Asia Murphy) -->
 
 The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
 The model aims simulates animal locations over a given period of time at discrete time steps.
