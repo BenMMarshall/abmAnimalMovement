@@ -47,13 +47,17 @@ behaveMatTest <- rbind(b0, b1, b2)
 behaveMatTest[1,]
 
 shelterLocs <- data.frame(
-  "x" = c(1020, 1050, 1050, 1010, 1035),
-  "y" = c(1020, 1050, 1050, 1010, 1045)
+  "x" = c(1000, 990),
+  "y" = c(975, 960)
 )
 
+# avoid <- data.frame(
+#   "x" = c(950, 950, 950, 950, 950, 950, 950),
+#   "y" = c(950, 960, 970, 980, 990, 1000, 1010)
+# )
 avoid <- data.frame(
-  "x" = c(950, 1010, 990),
-  "y" = c(950, 1090, 1050)
+  "x" = rep(950, 10),
+  "y" = seq(950, 1010, length.out = 20)
 )
 
 restData <- c(0.65, 0, 24, 24)
@@ -70,7 +74,7 @@ cycleMat[1,]
 simSteps <- 24*60 *28
 ##### Run core simulation function ##### ---------------------------------------
 
-simRes <- abm_simulate(start = c(1000,1000),
+simRes <- abm_simulate(start = c(900,1000),
                        timesteps = simSteps,
                        des_options = 10,
                        options = 12,
@@ -83,7 +87,7 @@ simRes <- abm_simulate(start = c(1000,1000),
                        shelterSize = 1,
                        avoidPoints = avoid,
 
-                       destinationRange = c(50, 2),
+                       destinationRange = c(35, 2),
                        destinationDirection = c(0, 0.01),
                        destinationTransformation = 2,
                        destinationModifier = 2,
