@@ -136,7 +136,7 @@ abm_simulate <- function(start, timesteps,
   if(!is.data.frame(shelterLocations) | !ncol(shelterLocations) == 2){
     stop("Shelter location input (shelterLocations) is not a data.frame with two columns")
   }
-  if(!is.numeric(shelterLocs[,1]) | !is.numeric(shelterLocs[,2])){
+  if(!is.numeric(shelterLocations[,1]) | !is.numeric(shelterLocations[,2])){
     stop("Non-numeric elements in the shelter locations input (shelterLocations)")
   }
   ## shelterSize

@@ -124,13 +124,6 @@ for(i in 1:length(restData_Amp_all)[1]){
 
 ```{r plotRestCycleVariations, include=TRUE, echo=FALSE, message=FALSE, fig.align='center', fig.width=22, fig.height=11, fig.cap="Varitaion of ."}
 
-locationExtents <- do.call(rbind, lapply(all_simRes, function(x){
-  data.frame("minx" = min(x$locations$x),
-             "maxx" = max(x$locations$x),
-             "miny" = min(x$locations$y),
-             "maxy" = max(x$locations$y))
-}))
-
 listIndex <- 0
 plotList <- vector("list", length = plotNumber)
 for(i in 1:length(restData_Amp_all)[1]){

@@ -136,7 +136,7 @@ abmMapPlot <- function(simResults,
 #' @rdname abm_plot
 #' @export
 abmCyclePlot <- function(simResults,
-                         timeLimits = NA){
+                         timeLimits = NA, drop_x = FALSE){
 
   palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
   names(palette) <- c("purp1", "purp2", "2", "1", "0")
@@ -282,11 +282,13 @@ abmCyclePlot <- function(simResults,
       ggplot2::scale_x_continuous(limits = c(timeLimits[1], timeLimits[2]))
   }
 
-  plotList[[length(plotList)]] <- plotList[[length(plotList)]] +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(),
-                   axis.title.x = ggplot2::element_text(angle = 0,
-                                                        face = 2,
-                                                        hjust = 1))
+  if(!drop_x){
+    plotList[[length(plotList)]] <- plotList[[length(plotList)]] +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(),
+                     axis.title.x = ggplot2::element_text(angle = 0,
+                                                          face = 2,
+                                                          hjust = 1))
+  }
 
   plotListComp <- vector("list", length = length(plotList)+1)
   plotListComp[[1]] <- plotExpRest

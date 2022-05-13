@@ -110,8 +110,8 @@ b0 <- c(0.98, 0.001, 0.00001) # rest
 b1 <- c(0.0005, 0.99, 0.02) # explore/move
 b2 <- c(0.0005, 0.02, 0.97) # forage
 
-behaveMatTest <- rbind(b0, b1, b2)
-behaveMatTest
+behaveMatrixDefault <- rbind(b0, b1, b2)
+behaveMatrixDefault
 ```
 
 <!-- importance of diel activity See Riveria et al 2022 (paper with Asia Murphy) -->
@@ -192,6 +192,12 @@ For this example we do not connect movement ease to any other resource layer, bu
 
 
 ```
+```{r landscapePlaceHOLDER}
+library(abmAnimalMovement)
+landscapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
+
+
+```
 
 ### Badger - High site fidelity
 
@@ -241,7 +247,7 @@ The avoidance behaviour will directly counteract the attraction to destination b
 
 ```{r BADGERsettingAvoid}
 
-BADGER_avoid <- data.frame(
+BADGER_avoidLocs <- data.frame(
   "x" = c(950, 1010, 990),
   "y" = c(950, 1090, 1050)
 )
@@ -251,6 +257,7 @@ BADGER_avoidModifier <- 4
 ```
 
 Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources.
+<!-- Crepsucular fix -->
 The model allows for a second cycle that can modify the resting behaviour on top of the baseline diel resting cycle.
 In this example we will allow the cycle to increase the intensity of resting behaviour during a portion of the year, while retaining a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year).
 A more extreme implementation of the second cycle could introduce hibernation behaviour.
@@ -259,13 +266,13 @@ We also have the option to provide a second cycle to describe the longer rests l
 
 ```{r BADGERsettingCycle}
 
-BADGER_restData <- c(0.65, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.65, 0, 24, 24)
 
 ## multiple cycle additions
 c0 <- c(0.15, 0, 24, 24*28) # seasonal
 
-BADGER_cycleMat <- rbind(c0)
-BADGER_cycleMat
+BADGER_additional_Cycles <- rbind(c0)
+BADGER_additional_Cycles
 ```
 
 ### Vulture - High movement variation
@@ -274,7 +281,10 @@ Unlike badgers and other terrestrially moving animals, vultures can move great d
 Therefore, we set the movement resistance raster entirely to 1, thereby replacing the values generated via the NMLR package before.
 
 ```{r VULTUREmoveRaster}
-# VULTURE_move
+# VULTURE_movementMatrix
+
+landscapeLayersList$movement[] <- 0
+
 ```
 
 Vultures can also move greater distances more rapidly, resulting in a more variable and distribution of step lengths.
@@ -317,7 +327,7 @@ Again, we can modify the existing NLMR generated landscape.
 
 ```{r VULTUREforageRaster}
 
-# VULTURE_forage
+# VULTURE_forageMatrix
 
 ```
 
@@ -345,14 +355,14 @@ However, we can add seasonality (albeit weaker due to king cobras occupying trop
 
 ```{r KINGCOBRAsettingCycle}
 
-KINGCOBRA_restData <- c(0.65, 0, 24, 24)
+KINGCOBRA_rest_Cycle <- c(0.45, 0, 24, 24)
 
 ## multiple cycle additions
 c0 <- c(0.2, 0, 24, 24*4) # digest
 c1 <- c(0.15, 0, 24, 24*28) # seasonal
 
-KINGCOBRA_cycleMat <- rbind(c0, c1)
-KINGCOBRA_cycleMat
+KINGCOBRA_additional_Cycles <- rbind(c0, c1)
+KINGCOBRA_additional_Cycles
 ```
 
 In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
@@ -362,7 +372,17 @@ We can also add a few avoidance points simulating human settlements where king c
 However, we will not make the avoidance very strong as king cobras will repeatedly enter settlement areas regardless of the risks.
 
 ```{r KINGCOBRAmoveRaster}
-# KINGCOBRA_move
+# KINGCOBRA_movementMatrix
+
+
+KINGCOBRA_avoidLocs <- data.frame(
+  "x" = c(950, 1010, 990),
+  "y" = c(950, 1090, 1050)
+)
+KINGCOBRA_avoidTransformation <- 2
+KINGCOBRA_avoidModifier <- 1
+
+
 ```
 
 Finally, we modify the movement characteristics, reducing them dramatically from the vulture's, but with similar shape to the badger with greater variability (i.e., scale). 
@@ -409,14 +429,14 @@ library(landscapetools)
 
 ```{r librariesTable, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
 RpackageTable <- do.call(rbind, lapply(list("ggplot2",
-            "reshape2",
-            "patchwork",
-            "scico",
-            "dplyr"),
-       function(x){
-         data.frame("Package" = x,
-                    "Version" = packageVersion(x))
-       }))
+                                            "reshape2",
+                                            "patchwork",
+                                            "scico",
+                                            "dplyr"),
+                                       function(x){
+                                         data.frame("Package" = x,
+                                                    "Version" = packageVersion(x))
+                                       }))
 RpackageTable <- RpackageTable[order(RpackageTable$Package),]
 # RpackageTable$Reference <- NA
 
@@ -439,8 +459,8 @@ We will also include two accent colour to help with the more complex plots.
 This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
 
 ```{r definePalette, include=TRUE}
-palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
-names(palette) <- c("purp1", "purp2", "2", "1", "0")
+palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "purp3", "2", "1", "0")
 ```
 
 ```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
@@ -490,7 +510,7 @@ We finally have some parameters that describe the scope and intensity of the sim
 `des_options`
 
 
-``` {r runSimulations, include=TRUE, eval=FALSE}
+``` {r runSimulationsSHOW, include=TRUE, eval=FALSE}
 simSteps <- 24*60 *28
 des_options <- 10
 options <- 12
@@ -503,7 +523,7 @@ simRes <- abm_simulate(start = startLocation,
                        s_step = SPECIES_s_step,
                        mu_angle = SPECIES_mu_angle,
                        k_angle = SPECIES_k_angle,
-
+                       
                        shelterLocations = SPECIES_shelterLocs,
                        shelterSize = SPECIES_shelterSize,
                        avoidPoints = SPECIES_avoid,
@@ -514,12 +534,12 @@ simRes <- abm_simulate(start = startLocation,
                        destinationModifier = SPECIES_destinationModifier,
                        avoidTransformation = SPECIES_avoidTransformation,
                        avoidModifier = SPECIES_avoidModifier,
-
+                       
                        behave_Tmat = behaveMatTest,
-
+                       
                        rest_Cycle = SPECIES_restData,
                        additional_Cycles = SPECIES_cycleMat,
-
+                       
                        shelteringMatrix = SPECIES_shelter,
                        foragingMatrix = SPECIES_forage,
                        movementMatrix = SPECIES_move)
@@ -527,19 +547,432 @@ simRes <- abm_simulate(start = startLocation,
 
 ```
 
+``` {r runSimulationsRUN, include=FALSE, eval=TRUE}
+simSteps <- 24*60 *28
+des_options <- 10
+options <- 12
+
+vecSpecies <- c("BADGER", "VULTURE", "KINGCOBRA")
+simResultsList <- vector("list", length = 3)
+names(simResultsList) <- vecSpecies
+
+for(species in vecSpecies){
+  # species <- vecSpecies[2]
+  simResultsList[[species]] <- abm_simulate(
+    
+    # constants between all species simulations
+    start = startLocation,
+    timesteps = simSteps,
+    des_options = des_options,
+    options = options,
+    
+    k_step = if(length(ls(pattern = paste0("^", species, ".*k_step"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*k_step")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    s_step = if(length(ls(pattern = paste0("^", species, ".*s_step"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*s_step")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    mu_angle = if(length(ls(pattern = paste0("^", species, ".*mu_angle"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*mu_angle")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    k_angle = if(length(ls(pattern = paste0("^", species, ".*k_angle"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*k_angle")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    shelterLocations = if(length(ls(pattern = paste0("^", species, ".*shelterLocs"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*shelterLocs")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    shelterSize = if(length(ls(pattern = paste0("^", species, ".*shelterSize"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*shelterSize")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    avoidPoints = if(length(ls(pattern = paste0("^", species, ".*avoidLocs"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*avoidLocs")))
+    } else {
+      # DEFAULT HERE, required a location, but if avoidance not provided see 0
+      # weighting in avoidModifier
+      data.frame("x" = startLocation[1],
+                 "y" = startLocation[2])
+    },
+    
+    destinationRange = if(length(ls(pattern = paste0("^", species, ".*destinationRange"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*destinationRange")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    destinationDirection = if(length(ls(pattern =
+                                        paste0("^", species, ".*destinationDirection"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*destinationDirection")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    destinationTransformation = if(length(ls(pattern =
+                                             paste0("^", species, ".*destinationTransformation"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*destinationTransformation")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    destinationModifier = if(length(ls(pattern = paste0("^", species, ".*destinationModifier"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*destinationModifier")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    avoidTransformation = if(length(ls(pattern = paste0("^", species, ".*avoidTransformation"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*avoidTransformation")))
+    } else {
+      0
+    },
+    
+    avoidModifier = if(length(ls(pattern = paste0("^", species, ".*avoidModifier"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*avoidModifier")))
+    } else {
+      0
+    },
+    
+    behave_Tmat = if(length(ls(pattern = paste0("^", species, ".*behave_Tmat"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*behave_Tmat")))
+    } else {
+      # DEFAULT HERE
+      behaveMatrixDefault
+    },
+    
+    rest_Cycle = if(length(ls(pattern = paste0("^", species, ".*rest_Cycle"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*rest_Cycle")))
+    } else {
+      # DEFAULT HERE, Diurnal rest cycle, but may not work well with additional cycles
+      c(0.65, 0, 24, 24)
+    },
+    
+    additional_Cycles = if(length(ls(pattern = paste0("^", species, ".*additional_Cycles"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*additional_Cycles")))
+    } else {
+      # DEFAULT HERE
+      BADGER_additional_Cycles
+    },
+    
+    shelteringMatrix = if(length(ls(pattern = paste0("^", species, ".*shelteringMatrix"))) > 0){
+      get(ls(pattern = paste0("^", sp, ".*shelteringMatrix")))
+    } else {
+      # DEFAULT HERE
+      landscapeLayersList$shelter
+    }
+    ,
+    foragingMatrix = if(length(ls(pattern = paste0("^", species, ".*foragingMatrix"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*foragingMatrix")))
+    } else {
+      # DEFAULT HERE
+      landscapeLayersList$forage
+    }
+    ,
+    movementMatrix = if(length(ls(pattern = paste0("^", species, ".*movementMatrix"))) > 0){
+      get(ls(pattern = paste0("^", sp, ".*movementMatrix")))
+    } else {
+      # DEFAULT HERE
+      landscapeLayersList$movement
+    }
+  )
+  
+}
+```
+
 # Reviewing observed movements
 
 Once ran we can review the movement characteristics of the three species.
 
-## Step lengths
+## Movement characteristics
 
-## Turning angles
+```{r moveCharFigureGen, echo=FALSE, eval=TRUE}
+
+moveCharPlotList <- vector("list", length = 3)
+names(moveCharPlotList) <- vecSpecies
+for(species in vecSpecies){
+  
+  simRes <- simResultsList[[species]]
+  
+  stepData <- simRes$locations %>%
+    mutate(sl = sqrt(
+      (x - lag(x))^2 +
+        (y - lag(y))^2))
+  
+  stepTextData <- stepData %>%
+    mutate(lessShelter = sl < 1) %>%
+    group_by(behave,
+             lessShelter) %>%
+    count() %>%
+    filter(!is.na(lessShelter)) %>%
+    group_by(behave) %>%
+    mutate(total = sum(n),
+           per = round(n/total*100, digits = 1))
+  
+  stepText <- stepTextData %>% 
+    filter(lessShelter) %>%
+    summarise(
+      behave = behave[1],
+      text = paste0("<1 rate:\n", n, "/", total, "\n(", per, "%)"))
+  
+  behavePlotList <- vector("list", length = 3)
+  names(behavePlotList) <- as.character(0:2)
+  for(beh in 0:2){
+    
+    zeroPlot <- ggplot(stepTextData %>% 
+                         ungroup() %>% 
+                         filter(behave == beh) %>% 
+                         mutate(lessShelter = ifelse(lessShelter, "Stationary", beh),
+                                lessShelter = factor(lessShelter,
+                                                     levels = c(as.character(0:2), "Stationary")
+                                )) %>% 
+                         select(n, lessShelter) %>% 
+                         melt()) +
+      geom_col(aes(x = 1, y = value, fill = lessShelter),
+               alpha = 0.75) +
+      geom_text(data = stepText %>% 
+                  filter(behave == beh),
+                aes(x = -Inf, y = -Inf, label = text),
+                hjust = 0.5, vjust = 0.5, fontface = 3,
+                size = 4) +
+      coord_polar(theta = "y") +
+      scale_fill_manual(
+        values = c("Stationary" = "grey75", palette[names(palette) == beh])) +
+      theme_void() +
+      theme(legend.position = "none",
+            text = element_text(colour = "#191919"),
+            line = element_line(colour = "#191919"),
+            axis.line = element_blank(),
+            panel.grid = element_blank())
+    
+    stepPlot <- stepData %>%
+      filter(sl > max(simRes$inputs$in_k_step/100), # if larger than the largest non-movement ie., the time when sheltering and the k_step is decreased 100 fold
+             behave == beh) %>%
+      ggplot() +
+      geom_density(aes(x = sl),
+                   fill = palette[names(palette) == beh],
+                   colour = NA) +
+      # facet_wrap(behave~., ncol = 1, scales = "free_y",
+      #            labeller = labeller(.cols = c("0" = "0 - Rest",
+      #                                          "1" = "1 - Explore",
+      #                                          "2" = "2 - Forage"))
+      # ) +
+      scale_fill_manual(values = palette[c("0", "1", "2")]) +
+      theme_bw() +
+      theme(legend.position = "none",
+            text = element_text(colour = "#191919"),
+            line = element_line(colour = "#191919"),
+            axis.title = element_text(angle = 0,
+                                      face = 2,
+                                      size = 10,
+                                      hjust = 0.5),
+            axis.title.y = element_text(angle = 0,
+                                        face = 2,
+                                        hjust = 1),
+            axis.text.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            panel.border = element_blank(),
+            panel.grid = element_blank(),
+            strip.background = element_blank(),
+            strip.text = element_text(size = 12, face = 4,
+                                      hjust = 0),
+            title = element_text(size = 12, face = 4,
+                                      hjust = 0),
+            axis.line = element_line(size = 0.5)) +
+      labs(x = ifelse(beh == 2, "Step Length (m)", ""),
+           y = ""
+           )
+    
+    taPlot <- simRes$locations %>%
+      filter(sl > 1, behave == beh) %>%
+      ggplot() +
+      geom_histogram(aes(x = ta, fill = as.factor(behave)),
+                     colour = NA, binwidth = 30) +
+      # facet_wrap(behave~., ncol = 1,
+      #            labeller = labeller(.cols = c("0" = "0 - Rest",
+      #                                          "1" = "1 - Explore",
+      #                                          "2" = "2 - Forage"))
+      # ) +
+      scale_x_continuous(breaks = seq(-180, 180, 90),
+                         # limits = c(-360, 360),
+                         expand = c(0,0)
+      ) +
+      coord_polar(theta = "x") +
+      scale_fill_manual(values = palette[c("0", "1", "2")]) +
+      theme_void() +
+      theme(legend.position = "none",
+            text = element_text(colour = "#191919"),
+            line = element_line(colour = "#191919"),
+            axis.line = element_blank(),
+            aspect.ratio = 1,
+            axis.title = element_text(angle = 0,
+                                      size = 10,
+                                      face = 2,
+                                      hjust = 0.5),
+            axis.title.y = element_text(angle = 0,
+                                        face = 2,
+                                        hjust = 1),
+            panel.border = element_blank(),
+            panel.grid = element_line(size = 0.25,
+                                      colour = "grey85"),
+            axis.text.x = element_text(
+              angle = 0, size = 6, hjust = 0.5, vjust = 0.5),
+            plot.title = element_text(size = 12, face = 4,
+                                 hjust = 0),
+            plot.subtitle = element_text(size = 8, face = 2,
+                                 hjust = 0.5, vjust = 1),
+            # axis.line = element_line(size = 0.5),
+            strip.background = element_blank(),
+            strip.text = element_text(size = 12, face = 4,
+                                      hjust = 0)
+            ) +
+      labs(
+        subtitle = ifelse(beh == 0, "Turn angle (°)", ""),
+        x = "",
+        y = "",
+        title = paste0(
+          beh, " - ", ifelse(beh == 2, "Forage",
+                             ifelse(beh == 1, "Explore", "Shelter"))))
+    
+    behaveLevelCombo <- patchwork::wrap_plots(list(taPlot,
+                             stepPlot +
+                             inset_element(zeroPlot,
+                                           0.6, 0.4, 1, 1,
+                                           clip = FALSE, align_to = "plot")), nrow = 1)
+    
+    behavePlotList[[as.character(beh)]] <- behaveLevelCombo
+    
+  }
+  
+  speciesLevelCombo <- behavePlotList[["0"]] / behavePlotList[["1"]] / behavePlotList[["2"]] +
+    plot_layout(ncol = 1)
+  
+  moveCharPlotList[[species]] <- speciesLevelCombo
+}
+
+```
+
+
+```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+
+moveCharPlotList[["BADGER"]]
+
+```
+```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+
+moveCharPlotList[["VULTURE"]]
+
+```
+
+```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+
+moveCharPlotList[["KINGCOBRA"]]
+
+```
 
 # Mapping movements
+
+```{r mapsFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="...."}
+
+mapPlotList <- vector("list", length = 3)
+names(mapPlotList) <- vecSpecies
+for(species in vecSpecies){
+  
+  simRes <- simResultsList[[species]]
+  
+  tempPlot <- abmMapPlot(simRes,
+                         timeLimits = c(1, simSteps)) +
+    ggplot2::labs(title = 
+                    ifelse(species == "BADGER", "Badger",
+                           ifelse(species == "VULTURE", "Vulture",
+                                            "King Cobra"))
+                  ) +
+    ggplot2::theme(legend.position = "none",
+                   text = element_text(colour = "#191919"),
+                   line = element_line(colour = "#191919"),
+                   plot.title = element_text(size = 8, face = 4,
+                                 hjust = 0),
+                   # plot.title = ggplot2::element_text(size = 8),
+                   axis.text.y = ggplot2::element_blank(),
+                   axis.title.x = ggplot2::element_blank(),
+                   axis.title.y = ggplot2::element_blank()) +
+    ggplot2::coord_fixed()
+  
+  if(species == "BADGER"){
+    tempPlot <- tempPlot +
+      ggplot2::theme(axis.text.y = ggplot2::element_text(),
+                     axis.title.y = ggplot2::element_text(hjust = 0.5,
+                                                          vjust = 0.5))
+  }
+  if(species == "VULTURE"){
+    tempPlot <- tempPlot +
+      ggplot2::theme(axis.title.x = ggplot2::element_text(hjust = 0.5,
+                                                          vjust = 0.5))
+  }
+  
+  mapPlotList[[species]] <- tempPlot
+  
+}
+
+patchwork::wrap_plots(mapPlotList, ncol = 3)
+
+```
 
 -   would be nice to have a faceted plot, where column one are rasters with attraction points, and column two are the observed movements, each row is each behavioural state highlight (other points are greyed out)
 
 # Reviewing behavioural state cycling
+
+```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=8, fig.cap="...."}
+
+cyclePlotList <- vector("list", length = 3)
+names(cyclePlotList) <- vecSpecies
+for(species in vecSpecies){
+  
+    simRes <- simResultsList[[species]]
+    
+    tempPlot <- abmCyclePlot(simRes,
+                             timeLimits = c(1, simSteps),
+                             drop_x = ifelse(species == "KINGCOBRA", FALSE, TRUE)) +
+      theme(text = element_text(colour = "#191919"),
+            line = element_line(colour = "#191919"))
+    
+    if(species == "BADGER"){
+      tempPlot <- tempPlot +
+        theme(axis.title.x = element_blank())
+    }
+    
+    cyclePlotList[[species]] <- tempPlot
+    
+}
+
+patchwork::wrap_plots(cyclePlotList, ncol = 1)
+
+```
 
 # Testing sampling function
 

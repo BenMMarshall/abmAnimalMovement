@@ -95,14 +95,14 @@ genLandscape_quickTriple <- function(row, col, seed){
   distanceRast[is.na(distanceRast[])] <- 0
 
   return(list(
-    "shelter" = matrix(data = raster::getValues(shelterQual),
-                       nrow = row,
-                       ncol = col),
-    "memShelter" = matrix(data = raster::getValues(distanceRast),
+    "shelter" = matrix(data = raster::getValues(distanceRast),
                           nrow = row,
                           ncol = col),
     "forage" = matrix(data = raster::getValues(forageQual),
                       nrow = row,
-                      ncol = col)
+                      ncol = col),
+    "movement" = matrix(data = raster::getValues(shelterQual),
+                       nrow = row,
+                       ncol = col)
   ))
 }

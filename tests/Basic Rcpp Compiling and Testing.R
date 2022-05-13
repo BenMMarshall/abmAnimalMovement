@@ -29,12 +29,12 @@ envNoiseTest <- genLandscape_noise(2000, 2000)
 # envGradMat <- genLandscape_gradient(1000, 1000)
 # quick_plot_matrix(envGradMat)
 
-landcapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
+landscapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 
 # Select which environment for post-simulation mapping
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
-plotBgEnv <- quick_plot_matrix(landcapeLayersList$forage)
+plotBgEnv <- quick_plot_matrix(landscapeLayersList$forage)
 
 ##### Create behavioural transitional matrix ###### ----------------------------
 
@@ -99,9 +99,9 @@ simRes <- abm_simulate(start = c(900,1000),
                        rest_Cycle = restData,
                        additional_Cycles = cycleMat,
 
-                       shelteringMatrix = landcapeLayersList$memShelter,
-                       foragingMatrix = landcapeLayersList$forage,
-                       movementMatrix = landcapeLayersList$shelter) # just using a place holder layer for testing
+                       shelteringMatrix = landscapeLayersList$memShelter,
+                       foragingMatrix = landscapeLayersList$forage,
+                       movementMatrix = landscapeLayersList$shelter) # just using a place holder layer for testing
 
 ##### Quick plot testing ##### ------------------------------
 
@@ -353,7 +353,7 @@ stepData <- simRes$locations %>%
       (y - lag(y))^2))
 
 stepText <- stepData %>%
-  mutate(lessShelter = sl < 1) %>% # need to make sure the sl filter is the same as input shelter size
+  mutate(lessShelter = sl < simRes$inputs$in_sSiteSize) %>%
   group_by(behave,
            lessShelter) %>%
   count() %>%
