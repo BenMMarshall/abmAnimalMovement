@@ -1,16 +1,17 @@
 
 # TO DO -------------------------------------------------------------------
 
-## Expand range of rasters
-
-## Ensure that each raster is connected to correct behaviour. Movement vs
-# decisions
+## Expand range of rasters and make custom ones for the three species
 
 ## tidy up sub-functions into a single header file (C++)
 
 ###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0
 
-###### FIX over turning thing where -360 should be -180 each step (i think)
+## Maybe we need autocorrelated velocities???
+
+
+
+
 
 # NOTES -------------------------------------------------------------------
 

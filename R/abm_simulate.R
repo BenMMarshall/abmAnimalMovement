@@ -343,7 +343,7 @@ abm_simulate <- function(start, timesteps,
   )
 
   options <- data.frame(
-    step = res$oall_step,
+    timestep = res$oall_step,
     x = res$oall_x,
     y = res$oall_y,
     sl = res$oall_stepLengths)

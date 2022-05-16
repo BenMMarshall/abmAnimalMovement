@@ -171,6 +171,94 @@ None of the created examples are meant to directly match previously collected da
 -   3 step and angle parameters
 -   destination parameters ([see examples of varying destination parameters](Variation%20in%20destination%20parameters.html))
 
+## Required libraries
+
+First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
+Only the abmAnimalMovement package is required for running the core simulation.
+
+```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
+library(abmAnimalMovement)
+library(dplyr)
+library(reshape2)
+
+library(ggplot2)
+library(ggtext)
+library(patchwork)
+
+library(raster)
+library(NLMR)
+library(landscapetools)
+
+## we should be probably citing the vignette building stuff for completeness sake
+# rmarkdown
+# bookdown
+# tinytex
+## and the landscape ones
+```
+
+```{r librariesTable, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
+RpackageTable <- do.call(rbind, lapply(list("ggplot2",
+                                            "reshape2",
+                                            "patchwork",
+                                            "dplyr"),
+                                       function(x){
+                                         data.frame("Package" = x,
+                                                    "Version" = packageVersion(x))
+                                       }))
+RpackageTable <- RpackageTable[order(RpackageTable$Package),]
+# RpackageTable$Reference <- NA
+
+knitr::kable(RpackageTable, "simple", row.names = FALSE,
+             caption = "R packages used to organise and visual inputs and outputs for the animal simulation.", align = "lcc")
+```
+
+## Setting a palette and seed
+
+To ensure that the simulation completed during this example is repeatable, we set a seed.
+For the sake of simplicity the year the examples was written --2022-- is used.
+We are also going to set a consistent palette for later plotting, in the form of a named vector.
+
+```{r defineSeed, include=TRUE}
+set.seed(2022)
+```
+
+As we are about to run a simulation with three behavioural states --coded as 2, 1, and 0-- we will name three corresponding colours in the vector as such.
+We will also include three accent colour to help with the more complex plots.
+This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
+
+```{r definePalette, include=FALSE, eval=TRUE}
+palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "purp3", "2", "1", "0")
+```
+
+```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
+
+data.frame(
+  names = names(palette),
+  hexcodes = palette
+) %>% 
+  ggplot() +
+  geom_col(
+    aes(x = names, y = 1, fill = names)
+  ) +
+  geom_text(
+    aes(x = names, y = 0.5, label = names),
+    vjust = 0.5, hjust = 0.5, colour = "white",
+    fontface = 2, size = 7
+  ) +
+  geom_text(
+    aes(x = names, y = 0.4, label = hexcodes),
+    vjust = 1, hjust = 0.5, colour = "white",
+    fontface = 3, size = 3
+  ) +
+  scale_x_discrete(position = "top") +
+  scale_fill_manual(values = palette) +
+  theme_void() +
+  theme(legend.position = "none")
+
+```
+
+
 ### Generating environmental rasters
 
 Before starting to simulate animal movement we need to generate a landscape.
@@ -179,25 +267,139 @@ The highest quality locations/cells are coded as 1, with quality decreasing as t
 The 1 to 0 quality values in each cell are later used to help the animal to chose how and where it moves throughout the landscape.
 Depending on the behavioural state the weighing of which raster layers used will change (e.g., when in a resting behavioural state the shelter site quality layer is used).
 
-For most applications a landscape would be known **a priori**, but for this demonstration and testing of methods we will use a selection of random generated landscape rasters.
+For most applications a landscape would be known **a priori**, but for this demonstration and testing of methods we will use a selection of random generated landscape rasters [Figure \@ref(fig:BADGERlayersFigure)].
 To generate each layer (shelter, forage, movement) we use the NLMR package (neutral landscape models), and combine a selection of landscape generation methods with landscapetools [@Sciaini2018].
+<!-- All the below numbers must be updated  -->
 For sheltering we use a Gaussian field with an autocorrelation range of 40, a mag_var = 5, nug = 0.2, and a mean = 0.5.
 For foraging, we build on the Gaussian field already produced.
 Building upon the previous layer allows us to reduce incidental correlation between shelter sites and foraging locations, as we are operating under the assumption that the animal will require movement to find foraging resources.
-To achieve this we assign cells with values between 0.6 and 0.3 a higher foraging quality [Figure \@ref(fig:landscapeLayers)], and reduce the shelter quality in all cells with values less than 0.3 (i.e., to prevent sheltering in completely unsuitable locations).
+To achieve this we assign cells with values between 0.6 and 0.3 a higher foraging quality [Figure \@ref(fig:BADGERlayersFigure)], and reduce the shelter quality in all cells with values less than 0.3 (i.e., to prevent sheltering in completely unsuitable locations).
 <!-- We need to double check that the sheltering layer is left and not adjusted to the distance to shelter site from an older version --> Finally, we use xxxxxx to create an independent layer describing movement ease.
 For this example we do not connect movement ease to any other resource layer, but equally one could introduce any about of correlation between the three layers.
 
-```{r landscapeLayers, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="The three resulting landscape layers to be fed into the simulation: shelter quality, foraging resources, movement ease."}
+```{r landscapeLayers, echo=FALSE, eval=TRUE}
 
+row = 2000; col = 2000; seed = 1
+
+gf1 <- NLMR::nlm_gaussianfield(ncol = col,
+                               nrow = row,
+                               resolution = 1,
+                               autocorr_range = 40,
+                               mag_var = 5,
+                               nug = 0.2,
+                               mean = 0.5,
+                               user_seed = seed,
+                               rescale = TRUE)
+
+forageQual <- gf1
+
+forageQual[forageQual[] < 0.4] <- 0
+# set min 0 max 1, normalise the values between 1 and 0
+forageQual[] <- (forageQual[] - min(forageQual[], na.rm = TRUE)) /
+  (max(forageQual[], na.rm = TRUE) - min(forageQual[], na.rm = TRUE))
+
+moveQual <- gf1
+# areas with high resources are accessible (> 0.6, increased by 0.5), but the
+# fastest least resistance routes are actually edge habitat areas (0.6 to 0.3,
+# increased by 1). Core areas of low resrouce are also difficult to move
+# through.
+moveQual[moveQual[] > 0.6] <- moveQual[moveQual[] > 0.6] + 0.5
+moveQual[moveQual[] < 0.6 & moveQual[] > 0.3] <-
+  moveQual[moveQual[] < 0.6 & moveQual[] > 0.3] + 1
+moveQual[] <- (moveQual[] - min(moveQual[], na.rm = TRUE)) /
+  (max(moveQual[], na.rm = TRUE) - min(moveQual[], na.rm = TRUE))
+
+
+shelterQual <- gf1
+# shelter sites are best found near the edge of high resource areas, but deeper than the best movement routes
+shelterQual[shelterQual[] < 0.7 & shelterQual[] > 0.5] <-
+  shelterQual[shelterQual[] < 0.7 & shelterQual[] > 0.5] + 1
+shelterQual[] <- (shelterQual[] - min(shelterQual[], na.rm = TRUE)) /
+  (max(shelterQual[], na.rm = TRUE) - min(shelterQual[], na.rm = TRUE))
+
+landscapeLayersList <- list(
+  "shelter" = matrix(data = raster::getValues(shelterQual),
+                     nrow = row,
+                     ncol = col),
+  "forage" = matrix(data = raster::getValues(forageQual),
+                    nrow = row,
+                    ncol = col),
+  "movement" = matrix(data = raster::getValues(moveQual),
+                      nrow = row,
+                      ncol = col))
 
 ```
-```{r landscapePlaceHOLDER}
-library(abmAnimalMovement)
-landscapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 
+```{r plotMatrixFunction, eval=TRUE, echo=FALSE}
+
+plot_landscapeLayersList <- function(targetList){
+  
+  combinedLayers <- do.call(rbind, lapply(names(targetList), function(x){
+    currLayer <- targetList[[x]]
+    layerDF <- melt(currLayer, c("col", "row"))
+    layerDF$layer <- x
+    return(layerDF)
+  }))
+  combinedLayers$layer <- factor(combinedLayers$layer, levels = c("shelter", "forage", "movement"))
+  
+  ggplot(combinedLayers) +
+    geom_raster(aes(x = col, y = row, fill = value)) +
+    facet_wrap(.~layer,
+               labeller = as_labeller(facetLabels <- c(
+                 shelter = "<span style='color:#302010'>Shelter Quality</span>",
+                 forage = "<span style='color:#965A1D'>Foraging Resources</span>",
+                 movement = "<span style='color:#E87D13'>Movement Ease</span>"))
+    ) +
+    scale_x_continuous(breaks = seq(0, 2000, 500)) +
+    scale_y_continuous(breaks = seq(0, 2000, 500)) +
+    coord_fixed(expand = 0.001) +
+    scale_fill_gradient2(high = palette["2"],
+                         mid = palette["1"],
+                         low = palette["0"],
+                         midpoint = 0.5,
+                         breaks = seq(0,1,0.2),
+                         label = seq(0,1,0.2),
+                         limits = c(0,1),
+                         expand = c(0,0))+
+    labs(x = "x<br><i>matrix column number</i>", y = "y<br><i>matrix row number</i>",
+         fill = "<b>Weighting</b><br><i><span style='font-size:8pt'>(higher values are more likely to be chosen)</span></i>") +
+    theme_bw() +
+    theme(
+      text = element_text(colour = "#191919"),
+      line = element_line(colour = "#808080"),
+      axis.text = element_text(size = 6, colour = "#808080"),
+      axis.title = element_markdown(size = 8, face = 2),
+      axis.title.x = element_markdown(angle = 0, hjust = 0, vjust = 0,
+                                      margin = margin(t = 10, r = 0, b = 0, l = 0)),
+      axis.title.y = element_markdown(angle = 0, hjust = 1, vjust = 1,
+                                      margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.ticks = element_line(size = 0.5),
+      axis.ticks.length = unit(1.5, "mm"),
+      axis.line = element_line(size = 0.5),
+      panel.border = element_blank(),
+      panel.grid = element_blank(),
+      strip.background = element_blank(),
+      strip.text = element_markdown(size = 12, face = 4,
+                                    hjust = 0),
+      legend.position = "bottom",
+      legend.title.align = 0.5,
+      legend.title = element_markdown(size = 12)) +
+    guides(fill = guide_colourbar(
+      direction = "horizontal",
+      title.position = "top",
+      label.hjust = 0.5,
+      label.vjust = 1,
+      nbin = 100,
+      draw.llim = FALSE,
+      draw.ulim = FALSE,
+      ticks.linewidth = unit(1, "mm"),
+      ticks.colour = "#191919",
+      barwidth = unit(85, "mm"),
+      barheight = unit(5, "mm")))
+}
 
 ```
+
 
 ### Badger - High site fidelity
 
@@ -206,17 +408,39 @@ When not at the sett the badger forages, and the foraging distances are impacted
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
 We parametrise these aspects in the following ways:
 
--   For the sett, we pass a single set of coordinates (`shelterLocations`) and define the size of the shelter site as 5 m (`shelterSize`).
+-   For the sett, we draw a single set of coordinates (`shelterLocations`) from the shelter quality layer, and define the size of the shelter site as 5 m (`shelterSize`).
 Shelter site size describes the distance from a shelter site that the animal dramatically lowers its movements <!-- see vignette on sheltesize variation -->.
 Five metres allows for small movements near/within the sett during resting behaviour.
 
 ```{r BADGERsettingShelter}
 
+# draw shelter sites from the landscape based on the shelter quality layer weighting
+# extent limited to the centre of the landscape
+sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 2,
+             ext = extent(0.35, 0.65, 0.35, 0.65), 
+             rowcol = TRUE)
+
 BADGER_shelterLocs <- data.frame(
-  "x" = c(1020),
-  "y" = c(1020)
+  "x" = sampledShelters[,2], # two columns
+  "y" = sampledShelters[,1] # two rows
 )
 BADGER_shelterSize <- 5
+
+```
+
+```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=10, fig.height=5, fig.cap="The three resulting landscape layers to be fed into the simulation: shelter quality, foraging resources, movement ease."}
+
+plot_landscapeLayersList(landscapeLayersList) +
+  geom_point(data = cbind(BADGER_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y), size = 2, colour = "white") +
+  geom_text(data = cbind(BADGER_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y, label = "S"), size = 1.5,
+             hjust = 0.5, vjust = 0.5, fontface = 2,
+             colour = palette["0"])
 
 ```
 
@@ -283,7 +507,8 @@ Therefore, we set the movement resistance raster entirely to 1, thereby replacin
 ```{r VULTUREmoveRaster}
 # VULTURE_movementMatrix
 
-landscapeLayersList$movement[] <- 0
+VULTURE_movementMatrix <- landscapeLayersList$movement
+VULTURE_movementMatrix[] <- 1
 
 ```
 
@@ -308,13 +533,13 @@ VULTURE_destinationModifier <- 2
 ```
 
 Similar to badgers vultures exhibit significant site fidelity <!-- Bracis paper stuff is powerful, but field guides are a weaker fall back for some extra details: https://www.allaboutbirds.org/news/information-seekers-roosting-black-vultures -->, re-using roosting and nesting sites.
-In the same fashion as the badger, we can supply the simulation with predefined shelter sites, either randomly based on the shelter raster or manually defined (e.g., if shelter sites were known *a priori* discovered via the capture and tagged of animals).
+Whereas we randomly drew shelter locations for the badger, we can alternatively supply the simulation with predefined shelter sites (e.g., if shelter sites were known *a priori* discovered via the capture and tagged of animals).
 
 ```{r VULTUREsettingShelter}
 
 VULTURE_shelterLocs <- data.frame(
-  "x" = c(1020, 1250, 980),
-  "y" = c(1020, 1450, 900)
+  "x" = c(1024, 1005, 1215), # columns
+  "y" = c(1193, 1070, 782) # rows
 )
 VULTURE_shelterSize <- 3
 
@@ -327,7 +552,31 @@ Again, we can modify the existing NLMR generated landscape.
 
 ```{r VULTUREforageRaster}
 
-# VULTURE_forageMatrix
+VULTURE_forageMatrix <- landscapeLayersList$forage
+VULTURE_forageMatrix[1:750,1:2000] <- VULTURE_forageMatrix[1:750,1:2000] - 0.5
+VULTURE_forageMatrix[VULTURE_forageMatrix[] < 0] <- 0
+
+```
+
+```{r VULTURElayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=10, fig.height=5, fig.cap="The three resulting landscape layers to be fed into the simulation: shelter quality, foraging resources, movement ease."}
+
+VULTURE_landscapeLayersList <- list(
+  "shelter" = landscapeLayersList$shelter,
+  "forage" = VULTURE_forageMatrix,
+  "movement" = VULTURE_movementMatrix
+)
+
+plot_landscapeLayersList(VULTURE_landscapeLayersList) +
+  geom_point(data = cbind(VULTURE_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y), size = 2, colour = "white") +
+  geom_text(data = cbind(VULTURE_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y, label = "S"), size = 1.5,
+             hjust = 0.5, vjust = 0.5, fontface = 2,
+             colour = palette["0"])
 
 ```
 
@@ -339,9 +588,15 @@ It is worth noting that shelter sites are not all created equal, and the weighti
 
 ```{r KINGCOBRAsettingShelter}
 
+# draw shelter sites from the landscape based on the shelter quality layer weighting
+# extent limited to the centre of the landscape
+sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 12,
+             ext = extent(0.35, 0.65, 0.35, 0.65), 
+             rowcol = TRUE)
+
 KINGCOBRA_shelterLocs <- data.frame(
-  "x" = c(1020, 1250, 980, 1000, 800, 700, 1200, 1400),
-  "y" = c(1020, 1450, 900, 1000, 800, 700, 1200, 1400)
+  "x" = sampledShelters[,2],
+  "y" = sampledShelters[,1]
 )
 KINGCOBRA_shelterSize <- 10
 
@@ -373,7 +628,12 @@ However, we will not make the avoidance very strong as king cobras will repeated
 
 ```{r KINGCOBRAmoveRaster}
 # KINGCOBRA_movementMatrix
+KINGCOBRA_movementMatrix <- landscapeLayersList$movement
 
+# two strong intersections hampering movement
+KINGCOBRA_movementMatrix[1200:1240,1:2000] <- KINGCOBRA_movementMatrix[1200:1240,1:2000] - 0.85
+KINGCOBRA_movementMatrix[1:2000,850:890] <- KINGCOBRA_movementMatrix[1:2000,850:890] - 0.85
+KINGCOBRA_movementMatrix[KINGCOBRA_movementMatrix[] < 0] <- 0
 
 KINGCOBRA_avoidLocs <- data.frame(
   "x" = c(950, 1010, 990),
@@ -382,6 +642,28 @@ KINGCOBRA_avoidLocs <- data.frame(
 KINGCOBRA_avoidTransformation <- 2
 KINGCOBRA_avoidModifier <- 1
 
+
+```
+
+```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=10, fig.height=5, fig.cap="The three resulting landscape layers to be fed into the simulation: shelter quality, foraging resources, movement ease."}
+
+KINGCOBRA_landscapeLayersList <- list(
+  "shelter" = landscapeLayersList$shelter,
+  "forage" = landscapeLayersList$forage,
+  "movement" = KINGCOBRA_movementMatrix
+)
+
+plot_landscapeLayersList(KINGCOBRA_landscapeLayersList) +
+  geom_point(data = cbind(KINGCOBRA_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y), size = 2, colour = "white") +
+  geom_text(data = cbind(KINGCOBRA_shelterLocs,
+                          layer = factor("shelter",
+                                         levels = c("shelter", "forage", "movement"))),
+             aes(x = x, y = y, label = "S"), size = 1.5,
+             hjust = 0.5, vjust = 0.5, fontface = 2,
+             colour = palette["0"])
 
 ```
 
@@ -403,92 +685,6 @@ KINGCOBRA_destinationModifier <- 2
 ```
 
 # Running the simulation
-
-## Required libraries
-
-First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
-None of these libraries are required for running the core simulation.
-
-```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
-library(abmAnimalMovement)
-library(ggplot2)
-library(reshape2)
-library(patchwork)
-library(scico)
-library(dplyr)
-
-library(NLMR)
-library(landscapetools)
-
-## we should be probably citing the vignette building stuff for completeness sake
-# rmarkdown
-# bookdown
-# tinytex
-## and the landscape ones
-```
-
-```{r librariesTable, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
-RpackageTable <- do.call(rbind, lapply(list("ggplot2",
-                                            "reshape2",
-                                            "patchwork",
-                                            "scico",
-                                            "dplyr"),
-                                       function(x){
-                                         data.frame("Package" = x,
-                                                    "Version" = packageVersion(x))
-                                       }))
-RpackageTable <- RpackageTable[order(RpackageTable$Package),]
-# RpackageTable$Reference <- NA
-
-knitr::kable(RpackageTable, "simple", row.names = FALSE,
-             caption = "R packages used to organise and visual inputs and outputs for the animal simulation.", align = "lcc")
-```
-
-## Setting a palette and seed
-
-To ensure that the simulation completed during this example is repeatable, we set a seed.
-For the sake of simplicity the year the examples was written --2022-- is used.
-We are also going to set a consistent palette for later plotting, in the form of a named vector.
-
-```{r defineSeed, include=TRUE}
-set.seed(2022)
-```
-
-As we are about to run a simulation with three behavioural states --coded as 2, 1, and 0-- we will name three corresponding colours in the vector as such.
-We will also include two accent colour to help with the more complex plots.
-This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
-
-```{r definePalette, include=TRUE}
-palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
-names(palette) <- c("purp1", "purp2", "purp3", "2", "1", "0")
-```
-
-```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
-
-data.frame(
-  names = names(palette),
-  hexcodes = palette
-) %>% 
-  ggplot() +
-  geom_col(
-    aes(x = names, y = 1, fill = names)
-  ) +
-  geom_text(
-    aes(x = names, y = 0.5, label = names),
-    vjust = 0.5, hjust = 0.5, colour = "white",
-    fontface = 2, size = 7
-  ) +
-  geom_text(
-    aes(x = names, y = 0.4, label = hexcodes),
-    vjust = 1, hjust = 0.5, colour = "white",
-    fontface = 3, size = 3
-  ) +
-  scale_x_discrete(position = "top") +
-  scale_fill_manual(values = palette) +
-  theme_void() +
-  theme(legend.position = "none")
-
-```
 
 ## Defining other simulation parameters
 
@@ -695,7 +891,7 @@ for(species in vecSpecies){
     }
     ,
     movementMatrix = if(length(ls(pattern = paste0("^", species, ".*movementMatrix"))) > 0){
-      get(ls(pattern = paste0("^", sp, ".*movementMatrix")))
+      get(ls(pattern = paste0("^", species, ".*movementMatrix")))
     } else {
       # DEFAULT HERE
       landscapeLayersList$movement
@@ -751,7 +947,7 @@ for(species in vecSpecies){
                                 lessShelter = factor(lessShelter,
                                                      levels = c(as.character(0:2), "Stationary")
                                 )) %>% 
-                         select(n, lessShelter) %>% 
+                         dplyr::select(n, lessShelter) %>% 
                          melt()) +
       geom_col(aes(x = 1, y = value, fill = lessShelter),
                alpha = 0.75) +
@@ -812,17 +1008,17 @@ for(species in vecSpecies){
       filter(sl > 1, behave == beh) %>%
       ggplot() +
       geom_histogram(aes(x = ta, fill = as.factor(behave)),
-                     colour = NA, binwidth = 30) +
+                     colour = NA, binwidth = 10) +
       # facet_wrap(behave~., ncol = 1,
       #            labeller = labeller(.cols = c("0" = "0 - Rest",
       #                                          "1" = "1 - Explore",
       #                                          "2" = "2 - Forage"))
       # ) +
-      scale_x_continuous(breaks = seq(-180, 180, 90),
-                         # limits = c(-360, 360),
+      scale_x_continuous(breaks = seq(-135, 180, 45),
+                         limits = c(-180, 180),
                          expand = c(0,0)
       ) +
-      coord_polar(theta = "x") +
+      coord_polar(theta = "x", start = pi) +
       scale_fill_manual(values = palette[c("0", "1", "2")]) +
       theme_void() +
       theme(legend.position = "none",

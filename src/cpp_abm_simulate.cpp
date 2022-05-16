@@ -518,10 +518,10 @@ Rcpp::List cpp_abm_simulate(
 
     // make sure to update the direction of travel each move
     last_angle = taOptions[chosen];
-    if(last_angle > 360){
-      last_angle = last_angle - 360;
-    } else if(last_angle < - 360){
-      last_angle = last_angle + 360;
+    if(last_angle > 180){
+      last_angle = last_angle - 180;
+    } else if(last_angle < - 180){
+      last_angle = last_angle + 180;
     }
 
     x_Locations[i] = x_Options[chosen];

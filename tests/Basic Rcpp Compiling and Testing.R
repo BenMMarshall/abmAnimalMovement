@@ -34,7 +34,7 @@ landscapeLayersList <- genLandscape_quickTriple(2000, 2000, seed = 1)
 # Select which environment for post-simulation mapping
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$memShelter)
 # plotBgEnv <- quick_plot_matrix(landcapeLayersList$shelter)
-plotBgEnv <- quick_plot_matrix(landscapeLayersList$forage)
+# plotBgEnv <- quick_plot_matrix(landscapeLayersList$forage)
 
 ##### Create behavioural transitional matrix ###### ----------------------------
 
@@ -51,14 +51,14 @@ shelterLocs <- data.frame(
   "y" = c(975, 960)
 )
 
-# avoid <- data.frame(
-#   "x" = c(950, 950, 950, 950, 950, 950, 950),
-#   "y" = c(950, 960, 970, 980, 990, 1000, 1010)
-# )
 avoid <- data.frame(
-  "x" = rep(950, 10),
-  "y" = seq(950, 1010, length.out = 20)
+  "x" = c(950, 950, 950, 950),
+  "y" = c(950, 960, 970,  1010)
 )
+# avoid <- data.frame(
+#   "x" = rep(950, 10),
+#   "y" = seq(950, 1010, length.out = 20)
+# )
 
 restData <- c(0.65, 0, 24, 24)
 
@@ -77,6 +77,7 @@ simSteps <- 24*60 *28
 simRes <- abm_simulate(start = c(900,1000),
                        timesteps = simSteps,
                        des_options = 10,
+                       # options = 5,
                        options = 12,
                        k_step = c(1, 3, 2),
                        s_step = c(0.5, 1, 1),
@@ -99,9 +100,9 @@ simRes <- abm_simulate(start = c(900,1000),
                        rest_Cycle = restData,
                        additional_Cycles = cycleMat,
 
-                       shelteringMatrix = landscapeLayersList$memShelter,
+                       shelteringMatrix = landscapeLayersList$shelter,
                        foragingMatrix = landscapeLayersList$forage,
-                       movementMatrix = landscapeLayersList$shelter) # just using a place holder layer for testing
+                       movementMatrix = landscapeLayersList$movement) # just using a place holder layer for testing
 
 ##### Quick plot testing ##### ------------------------------
 
@@ -407,17 +408,17 @@ for(beh in 0:2){
     filter(sl > 1, behave == beh) %>%
     ggplot() +
     geom_histogram(aes(x = ta, fill = as.factor(behave)),
-                   colour = NA) +
+                   colour = NA, binwidth = 10) +
     facet_wrap(behave~., ncol = 1,
                labeller = labeller(.cols = c("0" = "0 - Rest",
                                              "1" = "1 - Explore",
                                              "2" = "2 - Forage"))
     ) +
-    scale_x_continuous(breaks = seq(-270, 360, 90),
-                       limits = c(-360, 360),
+    scale_x_continuous(breaks = seq(-135, 180, 45),
+                       limits = c(-180, 180),
                        expand = c(0,0)
     ) +
-    coord_polar(theta = "x") +
+    coord_polar(theta = "x", start = pi) +
     scale_fill_manual(values = palette[c("0", "1", "2")]) +
     theme_bw() +
     theme(legend.position = "none",
@@ -428,6 +429,8 @@ for(beh in 0:2){
           axis.title.y = element_text(angle = 0,
                                       face = 2,
                                       hjust = 1),
+          axis.text.x = element_text(
+            angle = 0, size = 6, hjust = 0.5, vjust = 0.5),
           panel.border = element_blank(),
           panel.grid = element_blank(),
           strip.background = element_blank(),

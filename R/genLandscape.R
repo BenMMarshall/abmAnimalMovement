@@ -56,53 +56,41 @@ genLandscape_quickTriple <- function(row, col, seed){
                                  rescale = TRUE)
 
   forageQual <- gf1
-  forageQual[forageQual[] < 0.6 & forageQual[] > 0.3] <-
-    forageQual[forageQual[] < 0.6 & forageQual[] > 0.3] + 1
-  forageQual[forageQual[] < 1] <- 0
+
+  forageQual[forageQual[] < 0.4] <- 0
   # set min 0 max 1, normalise the values between 1 and 0
   forageQual[] <- (forageQual[] - min(forageQual[], na.rm = TRUE)) /
     (max(forageQual[], na.rm = TRUE) - min(forageQual[], na.rm = TRUE))
 
+  moveQual <- gf1
+  # areas with high resources are accessible (> 0.6, increased by 0.5), but the
+  # fastest least resistance routes are actually edge habitat areas (0.6 to 0.3,
+  # increased by 1). Core areas of low resrouce are also difficult to move
+  # through.
+  moveQual[moveQual[] > 0.6] <- moveQual[moveQual[] > 0.6] + 0.5
+  moveQual[moveQual[] < 0.6 & moveQual[] > 0.3] <-
+    moveQual[moveQual[] < 0.6 & moveQual[] > 0.3] + 1
+  moveQual[] <- (moveQual[] - min(moveQual[], na.rm = TRUE)) /
+    (max(moveQual[], na.rm = TRUE) - min(moveQual[], na.rm = TRUE))
+
+
   shelterQual <- gf1
-  shelterQual[shelterQual[] < 0.6] <- shelterQual[shelterQual[] < 0.6] - 0.5
-  shelterQual[shelterQual[] < 0] <- 0
+  # shelter sites are best found near the edge of high resource areas, but deeper than the best movement routes
+  shelterQual[shelterQual[] < 0.7 & shelterQual[] > 0.5] <-
+    shelterQual[shelterQual[] < 0.7 & shelterQual[] > 0.5] + 1
+  shelterQual[] <- (shelterQual[] - min(shelterQual[], na.rm = TRUE)) /
+    (max(shelterQual[], na.rm = TRUE) - min(shelterQual[], na.rm = TRUE))
 
-  # Generate random re-used shelter sites -------------------------------------------
-  ## This is a process for the animal remembering key shelter sites to re-use
-  randomLocs <- data.frame("x" = sample(400:800, 200, replace = FALSE),
-                           "y" = sample(400:800, 200, replace = FALSE))
-  # see the "shelter quality" at each location
-  randomLocs$shelterVals <- raster::extract(shelterQual, sp::SpatialPoints(randomLocs))
-  # only look at those in good places
-  randomLocs <- randomLocs[randomLocs$shelterVals > 0.5,]
-  # randomly select 5
-  chosenShelters <- randomLocs[randomLocs$shelterVals %in%
-                                 sample(randomLocs$shelterVals, 5, prob = randomLocs$shelterVals),]
-
-  # build a distance raster for them
-  distanceRast <- raster::distanceFromPoints(shelterQual, xy = chosenShelters[,c("x","y")])
-
-  # invert the raster so the higher values work with highly liklihood of usage
-  distanceRast[] <- abs(distanceRast[] - max(distanceRast[]))
-
-  # this adds a buffer around the points for sites that are larger than a single
-  # cell, e.g., a foraging area, or badger set
-  distanceRast[distanceRast[] < max(distanceRast[])-100] <- NA
-  # set min 0 max 1, normalise the values between 1 and 0
-  distanceRast[] <- (distanceRast[] - min(distanceRast[], na.rm = TRUE)) /
-    (max(distanceRast[], na.rm = TRUE) - min(distanceRast[], na.rm = TRUE))
-
-  distanceRast[is.na(distanceRast[])] <- 0
-
-  return(list(
-    "shelter" = matrix(data = raster::getValues(distanceRast),
-                          nrow = row,
-                          ncol = col),
+  landscapeLayersList <- list(
+    "shelter" = matrix(data = raster::getValues(shelterQual),
+                       nrow = row,
+                       ncol = col),
     "forage" = matrix(data = raster::getValues(forageQual),
                       nrow = row,
                       ncol = col),
-    "movement" = matrix(data = raster::getValues(shelterQual),
-                       nrow = row,
-                       ncol = col)
-  ))
+    "movement" = matrix(data = raster::getValues(moveQual),
+                        nrow = row,
+                        ncol = col))
+
+  return(landscapeLayersList)
 }
