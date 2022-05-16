@@ -133,8 +133,14 @@ The predefined and steady state of these shelter sites provides the stability we
 Using a point (or points) of attraction, is an approach that has reoccurred in movement and population ecology studies.
 As the abmAnimalMovement model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
 
-``` {r }
+``` {r animatedDigram, echo=FALSE, eval=TRUE}
 ## we need some sort of diagram illustrating the destination vs movement
+# if (knitr:::is_latex_output()) {
+#   knitr::asis_output('\\url{....}')
+# } else {
+  knitr::include_graphics(here::here("inst", "figures", "Simulation Process Diagram.gif"))
+# }
+
 ```
 
 In addition to the predefined attraction to shelter sites, the abmAnimalMovement package allows for a more dynamic attraction to areas of high resource quality.
