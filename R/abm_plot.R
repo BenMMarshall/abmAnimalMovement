@@ -35,13 +35,13 @@ abmMapPlot <- function(simResults,
   realisedData$behave[realisedData$behave == 2] <- "2 - Foraging"
 
   shelterLocations <- data.frame(
-    "x" = simRes$inputs$in_shelter_locs_x,
-    "y" = simRes$inputs$in_shelter_locs_y
+    "x" = simResults$inputs$in_shelter_locs_x,
+    "y" = simResults$inputs$in_shelter_locs_y
   )
 
   avoidance <- data.frame(
-    "x" = simRes$inputs$in_avoidPoints_x,
-    "y" = simRes$inputs$in_avoidPoints_y
+    "x" = simResults$inputs$in_avoidPoints_x,
+    "y" = simResults$inputs$in_avoidPoints_y
   )
 
   outPlot <- ggplot2::ggplot() +

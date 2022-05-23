@@ -105,6 +105,8 @@ simRes <- abm_simulate(start = c(900,1000),
                        foragingMatrix = landscapeLayersList$forage,
                        movementMatrix = landscapeLayersList$movement) # just using a place holder layer for testing
 
+simRes$inputs$in_rescale
+
 ##### Quick plot testing ##### ------------------------------
 
 abmMapPlot(simResults = simRes,

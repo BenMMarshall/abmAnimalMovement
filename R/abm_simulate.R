@@ -27,8 +27,6 @@
 #'   value provides the mean (\eqn{\mu}) and the second value provides the
 #'   concentration (\eqn{\kappa}) of the Von Mises distribution guiding the
 #'   direction of foraging destinations.
-#' @param destinationRange
-#' @param destinationDirection
 #' @param destinationTransformation This parameter and the following three all
 #'   apply to the strength/pull/push the animal feels from a destination or
 #'   avoidance point. 0 - no transformation applied to the distance to

@@ -8,7 +8,7 @@
 \usage{
 abmMapPlot(simResults, timeLimits = NA)
 
-abmCyclePlot(simResults, timeLimits = NA)
+abmCyclePlot(simResults, timeLimits = NA, drop_x = FALSE)
 }
 \arguments{
 \item{simResults}{The resulting object created by \code{\link[=abm_simuate]{abm_simuate()}}.}

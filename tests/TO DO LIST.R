@@ -1,14 +1,6 @@
 
 # TO DO -------------------------------------------------------------------
 
-##We need to add in a rescale factor, so you can input steps etc as m, but then
-##it run using a matrix where a cell == 10m or whatever # all this needs is a
-##new input variable or rescale that is the same as the m dimension of a cell.
-##Then internally we can divide the step lengths by that value. For output we
-##should provide two coord outputs, one rescaled and one not. Any step length
-##calculations will have to be based off the non-rescaled versions.
-
-
 ## tidy up sub-functions into a single header file (C++)
 
 ###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0

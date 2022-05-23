@@ -490,10 +490,14 @@ BADGER_s_step <- c(0.5, 0.5, 0.25)
 BADGER_mu_angle <- c(0, 0, 0)
 BADGER_k_angle <- c(0.6, 0.99, 0.6)
 
-BADGER_destinationRange <- c(3.5, 1)
+BADGER_destinationRange <- c(5, 150)
 BADGER_destinationDirection <- c(0, 0.01)
 BADGER_destinationTransformation <- 2
 BADGER_destinationModifier <- 2
+
+# and we will need to rescale the values to ensure they fit within a 2000x2000 matrix
+# In this case we are treating each cell as a 5m by 5m
+BADGER_rescale <- 5
 
 n <- 1000
 
@@ -516,7 +520,7 @@ data.frame(
 
 data.frame(
   "var" = rep("Destination Range", n),
-  "value" =rgamma(n, shape = BADGER_destinationRange[1],
+  "value" = rgamma(n, shape = BADGER_destinationRange[1],
                   scale = BADGER_destinationRange[2])) %>% 
   ggplot() +
   geom_density(aes(x = value), alpha = 0.5,
@@ -555,7 +559,7 @@ We also have the option to provide a second cycle to describe the longer rests l
 
 ```{r BADGERsettingCycle}
 
-BADGER_rest_Cycle <- c(0.65, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.45, 0, 24/12, 12)
 
 ## multiple cycle additions
 c0 <- c(0.15, 0, 24, 24*28) # seasonal
@@ -585,15 +589,17 @@ By skewing the turn angle distribution to the left or right, we can simulate the
 
 ```{r VULTUREsettingMoveDes}
 
-VULTURE_k_step <- c(1, 3, 2)
+VULTURE_k_step <- c(1, 50, 20)
 VULTURE_s_step <- c(0.5, 1, 1)
 VULTURE_mu_angle <- c(0, 0, 0)
 VULTURE_k_angle <- c(0.6, 0.99, 0.6)
 
-VULTURE_destinationRange <- c(50, 2)
+VULTURE_destinationRange <- c(200, 5)
 VULTURE_destinationDirection <- c(0, 0.01)
 VULTURE_destinationTransformation <- 2
 VULTURE_destinationModifier <- 2
+
+VULTURE_rescale <- 20
 
 ```
 
@@ -747,6 +753,8 @@ KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 2
 
+KINGCOBRA_rescale <- 2
+
 ```
 
 # Running the simulation
@@ -784,6 +792,7 @@ simRes <- abm_simulate(start = startLocation,
                        s_step = SPECIES_s_step,
                        mu_angle = SPECIES_mu_angle,
                        k_angle = SPECIES_k_angle,
+                       rescale_step2cell = SPECIES_rescale
                        
                        shelterLocations = SPECIES_shelterLocs,
                        shelterSize = SPECIES_shelterSize,
@@ -818,7 +827,7 @@ simResultsList <- vector("list", length = 3)
 names(simResultsList) <- vecSpecies
 
 for(species in vecSpecies){
-  # species <- vecSpecies[2]
+  # species <- vecSpecies[1]
   simResultsList[[species]] <- abm_simulate(
     
     # constants between all species simulations
@@ -850,6 +859,13 @@ for(species in vecSpecies){
     
     k_angle = if(length(ls(pattern = paste0("^", species, ".*k_angle"))) > 0){
       get(ls(pattern = paste0("^", species, ".*k_angle")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    rescale_step2cell = if(length(ls(pattern = paste0("^", species, ".*rescale"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*rescale")))
     } else {
       # DEFAULT HERE, Shouldn't reach here when knit
       stop("Missing parameter in sim loop.")
@@ -971,19 +987,20 @@ for(species in vecSpecies){
 Once ran we can review the movement characteristics of the three species.
 
 ## Movement characteristics
-
+rescale needs mentioning
 ```{r moveCharFigureGen, echo=FALSE, eval=TRUE}
 
 moveCharPlotList <- vector("list", length = 3)
 names(moveCharPlotList) <- vecSpecies
 for(species in vecSpecies){
-  
+  # species <- vecSpecies[1]
   simRes <- simResultsList[[species]]
   
   stepData <- simRes$locations %>%
     mutate(sl = sqrt(
       (x - lag(x))^2 +
-        (y - lag(y))^2))
+        (y - lag(y))^2) * simRes$inputs$in_rescale ## we have to reapply the rescale to get the proper step lengths
+      )
   
   stepTextData <- stepData %>%
     mutate(lessShelter = sl < 1) %>%

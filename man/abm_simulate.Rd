@@ -22,6 +22,7 @@ abm_simulate(
   s_step,
   mu_angle,
   k_angle,
+  rescale_step2cell = 1,
   behave_Tmat,
   rest_Cycle,
   additional_Cycles,
@@ -88,6 +89,15 @@ draw turn angles for each behavioural state. A vector of length 3.}
 \item{k_angle}{The concentrations (\eqn{\kappa}) for the von Mises
 distribution used to draw turn angles for each behavioural state. A vector
 of length 3.}
+
+\item{rescale_step2cell}{A value that describes the cell size of the
+environmental matrices relative to the units of the step lengths. Must be
+greater than zero. E.g., step lengths described in metres, and using a
+matrix where a cell is 1mx1m the rescale value would be 1. Whereas step
+lengths in metres with a cell size of 10mx10m the rescale value would be
+10. The step lengths returned are on the scale of the matrix and need to be
+back transformed to match the input step length units for comparison.
+Default is 1, step and matrix unit are the same.}
 
 \item{behave_Tmat}{Base transition matrix for 3 behavioural states}
 
