@@ -83,6 +83,7 @@ simRes <- abm_simulate(start = c(900,1000),
                        s_step = c(0.5, 1, 1),
                        mu_angle = c(0, 0, 0),
                        k_angle = c(0.6, 0.99, 0.6),
+                       rescale_step2cell = 1,
 
                        shelterLocations = shelterLocs,
                        shelterSize = 1,

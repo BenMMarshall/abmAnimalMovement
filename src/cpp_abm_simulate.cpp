@@ -93,9 +93,12 @@ Rcpp::List cpp_abm_simulate(
     std::vector<double> s_step,
     std::vector<double> mu_angle,
     std::vector<double> k_angle,
+    double rescale,
+
     std::vector<double> b0_Options,
     std::vector<double> b1_Options,
     std::vector<double> b2_Options,
+
     double rest_Cycle_A,
     double rest_Cycle_M,
     double rest_Cycle_PHI,
@@ -329,8 +332,8 @@ Rcpp::List cpp_abm_simulate(
 
           for(int dopt = 0; dopt < ndes; dopt++){
 
-            // DO WE NEED AN ADDITIONAL VARIABLE TO CONTROL THE DESTINATION CHOICE RANGE
             step = Rcpp::rgamma(1, k_desRange, s_desRange)[0];
+            step = step / rescale;
             vmdraw = cpp_vonmises(1, mu_desDir, k_desDir)[0];
             angle = vmdraw * 180/M_PI;
             angle = last_angle + angle;
@@ -385,8 +388,10 @@ Rcpp::List cpp_abm_simulate(
       // this could be swapped to maximise the step length if it is far from shelter/centre
       if(behave_Locations[i] == 0 & currDist < sSiteSize){
         step = Rcpp::rgamma(1, behave_k_step/100, behave_s_step)[0];
+        step = step / rescale;
       } else{
         step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
+        step = step / rescale;
       }
 
       vmdraw = cpp_vonmises(1, behave_mu_angle, behave_k_angle)[0];
@@ -561,6 +566,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("in_s_step") = s_step,
     Rcpp::Named("in_mu_angle") = mu_angle,
     Rcpp::Named("in_k_angle") = k_angle,
+    Rcpp::Named("in_rescale") = rescale,
     Rcpp::Named("in_b0_Options") = b0_Options,
     Rcpp::Named("in_b1_Options") = b1_Options,
     Rcpp::Named("in_b2_Options") = b2_Options
@@ -594,6 +600,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("loc_sl") = sl_Locations,
     Rcpp::Named("loc_ta") = ta_Locations,
     Rcpp::Named("loc_step") = step_Locations,
+    Rcpp::Named("loc_step_rescale") = rescale,
     Rcpp::Named("loc_behave") = behave_Locations,
     // output for the chosen options at each step
     Rcpp::Named("loc_chosen") = chosen_Options,
