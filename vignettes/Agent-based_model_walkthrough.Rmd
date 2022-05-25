@@ -29,15 +29,14 @@ editor_options:
 As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
 Developing mitigation strategies is aided by a strong understanding of animals lives and needs.
 How animals move offers a window into their decisions making process [@Bastille-Rousseau2017; @sridhar_geometry_2021], as well as how they prioritise resources, avoid threats, and react to anthropogenic modification of the environment.
-Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018], because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology.
-For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020], and movement has provided incredible insights into behaviour <!-- Studd paper on lynx -->.
+Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018] because of the insights they provide on habitat and space requirements; but also offer avenues to explore fundamental question about ecology.
+For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020], and movement has provided incredible insights into behaviour [@studd_purrfect_2021].
 
 -   therefore we need studies to be more ethical and cost effective - key in conservation <!-- webb et al on ethics animal stuff -->
 
 The information gathered from animal movement studies is only as robust as the methods and analysis applied.
-In the past decade the volume of animal data has exploded, and the infrastructure for collating that data improved drastically [@kays_movebank_2022].
-There are stand out examples of novel methods and exceptionally detailed insights into animal behaviour using new bio-logging technology.
-<!-- Studd paper on lynx shows the tech advances, also Wild et al paper on wifi -->
+In the past decade the volume of animal data has exploded [@joo_decade_2020; @wild_internet_2022], and the infrastructure for collating that data has improved drastically [@kays_movebank_2022].
+There are stand out examples of novel methods [@saunders_radio-tracking_2022; ], and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., @studd_purrfect_2021).
 However, the on the whole analysis approaches to maximise the information extracted has arguably lagged behind the technological and data improvements [@joo_decade_2020].
 The bodily cost of attaching bio-telemetry devices [with examples from reptiles @Weatherhead2004; mammals @robstad_impact_2021; and birds @portugal_externally_2022], as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the values/impact of the data collected.
 
@@ -48,7 +47,7 @@ Meta-analyses have revealed that several textbook examples in ecology are not as
 Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication [@fraser_role_2020].
 <!-- likely need to add something defining true replication here if not paired with multiverse context review -->
 It is hard to justify placed bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
-Studies tend to focus on larger, less vulnerable species [@crane_lots_2021; @tam_quantifying_2021], but as the benefits of detailed movement data grow we can expect greater demand for tracking species of conservation concern.
+Studies tend to focus on larger, less vulnerable species [@crane_lots_2021; @tam_quantifying_2021], but as the benefits of detailed movement data grow we can expect greater demand for tracking species of conservation concern [@Fraser2018].
 With the limited scope for repeating wild movement studies, and the desire to maximise study-to-benefit ratio for sensitive species, it is imperative that we maximise the quality of the initial studies.
 
 <!-- something added about variation and personality could be a discussion point Stuber et al 2022 as a starting point? -->
@@ -56,7 +55,7 @@ With the limited scope for repeating wild movement studies, and the desire to ma
 -   power-analysis-esk things and planning are the way to reduce costs and minimise neg impacts
 -   examples of virtual ecology being a valid approach
 
-Expanding pre-study planning and developing better approaches to guide study design may provide a partial solution.
+Expanding pre-study planning and developing better approaches to guide study design may provide a partial solution [@williams_optimizing_2020].
 Study scenarios where researchers have control over the environment, randomisation, and controls can satisfy the assumptions of many statistical approaches [@christie_simple_2019].
 Movement studies conducted in the wild are fraught with uncontrollable confounding variables and often further restricted by sample sizes limited by ethics, capture rates, and cost of bio-telemetry equipment <!-- Joo et al has something here too -->.
 As the complexity of the research environment increases so must the analytical approach to account for the uncontrollable, but potentially extraneous to the question variables.
@@ -65,7 +64,7 @@ Testing these analysis approaches, and their limitations therefore becomes more 
 A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question [@gupta_reserve_2019].
 Exploration of analysis methods using simulations can yield useful insights even for widely used techniques (e.g., GLMMs [@debruine_understanding_2021]).
 Such an approach has the potential to adequately recreate the complex emergent properties that could hamper analyses [@debruine_understanding_2021].
-The suite of tools for simulating aspects of ecological systems [e.g., landscapes @Sciaini2018, genetics @petr_slendr_2022, conservation choices @gupta_reserve_2019] is growing.
+The suite of tools for simulating aspects of ecological systems [e.g., landscapes @Sciaini2018, genetics @petr_slendr_2022, conservation choices @gupta_reserve_2019, ecological community comparisons @guerracastro_ssp_2021; resource selection @street_solving_2021] is growing, and some are explicitly focusing on aiding study design.
 And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict [e.g., snakes @goldstein_integrating_2021; tigers @Ahearn2001].
 <!-- examples of virtual ecology here -->
 
@@ -81,10 +80,20 @@ But similarly, disagreements on the implementation of surveying methods have led
 -   agent-based good way to capture complexities of animal movement
 
 As illustrated by the SECR example, different simulation approaches and different analyses accounting for different additional complexities offer different suggestions on the optimal study design.
-There are a number of existing approaches for simulating animal movement: <!-- ctmm, moveHMM, that recent paper, the C based one for rivers-->, all with different aspects of animal movement included.
-Some efforts can be quite specialised to a particular scenario, such as migratory behaviour [@bennett_modelling_2006]; while other target one aspect of movement such as home range [@VanMoorter2009].
+There are a number of approaches for simulating animal movement including (but not limited to):
 
-Here we present an agent-based approach to supplement those, and provide a unique combination of features.
+1. continuous movement processes, best exemplified by the *ctmm* package [@Calabrese2016] and worked examples such as @silva_autocorrelationinformed_2022 and @theng_confronting_2022.
+These methods rely on a mathematically defined movement process (such as Ornstein–Uhlenbeck foraging process @Fleming2014).
+A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
+
+2. hidden markov models, best exemplified by the `simData` function from the *moveHMM* package [@Michelot2016].
+Their biggest contribution to simulating animal movement is the inclusion of state switching (i.e., different behaviours).
+They are best used in conjunction with existing movement data for parametric bootstrapping to explore estimator uncertainty. 
+
+3. agent-based approach, is a bottom-up approach where simulations of an agent (e.g., an animal) are based upon a number of rules [@Tang2010], and through repeatedly following those rules a complex output emerges, in our case the movement pathways in a landscape.
+Previous examples of agent-based movement models have targeted specific key components of animal movements such as movement heavily constrained by landscape features [@quaglietta_simriv_2019], simulating memory/home range [@VanMoorter2009], or migratory behaviour [@bennett_modelling_2006]
+
+Here we present an agent-based approach to supplement those existing simulations, which provides a unique combination of features.
 The agent-based approach is well suited to explore a combination of the complexities of animal movement, and the emergent properties.
 Our model requires fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
 A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
@@ -96,16 +105,13 @@ A new independently developed approach to simulating animal movement will provid
 -   R most used in movement eco [@joo_decade_2020] - also survery here: <https://rociojoo.github.io/mov-eco-review/survey-about-movement-ecology.html#description-of-the-survey>
 
 The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
-We wrote the model using C++ <!-- VERSION --> to ensure it runs efficiently <!-- CITE? -->, and used Rcpp <!-- CITE --> to allow for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology <https://rociojoo.github.io/mov-eco-review/survey-about-movement-ecology.html#description-of-the-survey>).
+We wrote the model using *C++* via *Rcpp* `r paste0("v.", packageVersion("Rcpp"))` package [@here2020] to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology [@joo_decade_2020].
+We used *R* `r paste0("v.", version$major, ".", version$minor)` [@R-base] via *RStudio* v.`r rstudioapi::versionInfo()$version` [@RStudioTeam2021].
+
 The model aims simulates animal locations over a given period of time at discrete time steps.
-At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations, and will chose from amongst these.
+At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations [Figure \@ref(fig:animatedDiagram)], and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state; (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement [@Tang2010; @Nathan2008].
-
-
-``` {r stepSelectDiagram}
-
-```
 
 The animal has three behavioural states, broadly defined here as resting (or sheltering), exploring, and foraging.
 Each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between points, whereas resting behaviour is largely defined by stationary or very low discrete movements.
@@ -147,23 +153,22 @@ The predefined and steady state of these shelter sites provides the stability we
 Using a point (or points) of attraction, is an approach that has reoccurred in movement and population ecology studies.
 As the abmAnimalMovement model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
 
-``` {r animatedDigram, echo=FALSE, eval=TRUE}
-## we need some sort of diagram illustrating the destination vs movement
+``` {r animatedDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="An animated example of how the destination decision underlies the movement decisions and creates a random walk."}
 ## if (knitr:::is_latex_output()) {
 ##   knitr::asis_output('\\url{....}')
 ## } else {
-  # knitr::include_graphics(here::here("inst", "figures", "Simulation Process Diagram.gif"))
+  knitr::include_graphics(here::here("inst", "figures", "Simulation Process Diagram.gif"))
 ## }
 
 ```
 
 In addition to the predefined attraction to shelter sites, the abmAnimalMovement package allows for a more dynamic attraction to areas of high resource quality.
 As movements cannot be directly translated to animal preference <!-- movement of deer paper -->, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
-When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction.
+When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction [Figure \@ref(fig:animatedDiagram)].
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move) options closer to the foraging destination.
 Therefore, foraging destination choice operates on a different time frame to the movement.
-The two time frames allow for explorations of assumptions connecting observed movement choices to choices regarding resources, and whether downstream analyses can accurately recover a hidden decision making process.
-<!-- decoupling movement and decisions making requires sims so we can set and know the internal decision making of the animal-- ie how well can analyses recover hidden decision making process -->
+This presents a critical benefit of the simulation approach, as we define the internal state decision making process of the animal.
+The two time frames also allows for explorations of assumptions connecting observed movement choices to choices regarding resources, and whether downstream analyses can accurately recover a hidden decision making process.
 
 At all times the subsequent locations of the animal impacted by a movement resistance raster.
 Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
