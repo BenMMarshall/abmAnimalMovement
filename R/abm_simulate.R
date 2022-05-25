@@ -27,8 +27,6 @@
 #'   value provides the mean (\eqn{\mu}) and the second value provides the
 #'   concentration (\eqn{\kappa}) of the Von Mises distribution guiding the
 #'   direction of foraging destinations.
-#' @param destinationRange
-#' @param destinationDirection
 #' @param destinationTransformation This parameter and the following three all
 #'   apply to the strength/pull/push the animal feels from a destination or
 #'   avoidance point. 0 - no transformation applied to the distance to
@@ -51,6 +49,14 @@
 #' @param k_angle The concentrations (\eqn{\kappa}) for the von Mises
 #'   distribution used to draw turn angles for each behavioural state. A vector
 #'   of length 3.
+#' @param rescale_step2cell A value that describes the cell size of the
+#'   environmental matrices relative to the units of the step lengths. Must be
+#'   greater than zero. E.g., step lengths described in metres, and using a
+#'   matrix where a cell is 1mx1m the rescale value would be 1. Whereas step
+#'   lengths in metres with a cell size of 10mx10m the rescale value would be
+#'   10. The step lengths returned are on the scale of the matrix and need to be
+#'   back transformed to match the input step length units for comparison.
+#'   Default is 1, step and matrix unit are the same.
 #' @param behave_Tmat Base transition matrix for 3 behavioural states
 #' @param rest_Cycle A vector length 4 for A, M, \eqn{\phi} and \eqn{\tau} to
 #'   define the resting/active cycle. Ideal for defining circadian rhythm.
@@ -103,6 +109,7 @@ abm_simulate <- function(start, timesteps,
                          avoidModifier,
 
                          k_step, s_step, mu_angle, k_angle,
+                         rescale_step2cell = 1,
 
                          behave_Tmat,
 
@@ -181,6 +188,10 @@ abm_simulate <- function(start, timesteps,
      ){
     stop("All step and angle distribution variables (k_step, s_step, mu_angle, k_angle)
          need to be numeric vector of length 3")
+  }
+  ## rescale_step2cell
+  if(rescale_step2cell <=0){
+    stop("Rescale factor (rescale_step2cell) must be greater than 0")
   }
   ## behave_Tmat
   if(
@@ -298,6 +309,7 @@ abm_simulate <- function(start, timesteps,
     s_step = s_step,
     mu_angle = mu_angle,
     k_angle = k_angle,
+    rescale = rescale_step2cell,
     b0_Options = behave_Tmat[1,],
     b1_Options = behave_Tmat[2,],
     b2_Options = behave_Tmat[3,],
@@ -334,6 +346,7 @@ abm_simulate <- function(start, timesteps,
     x = res$loc_x,
     y = res$loc_y,
     sl = res$loc_sl,
+    sl_rescale = res$inputs_list$inputs_movement$in_rescale,
     ta = res$loc_ta,
     behave = res$loc_behave,
     chosen = res$loc_chosen,
@@ -393,6 +406,7 @@ run_abm_simulate <- function(startx, starty,
                              avoidMod,
 
                              k_step, s_step, mu_angle, k_angle,
+                             rescale,
                              b0_Options,
                              b1_Options,
                              b2_Options,
@@ -433,6 +447,7 @@ run_abm_simulate <- function(startx, starty,
         avoidMod,
 
         k_step, s_step, mu_angle, k_angle,
+        rescale,
         b0_Options,
         b1_Options,
         b2_Options,

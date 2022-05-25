@@ -1,8 +1,6 @@
 
 # TO DO -------------------------------------------------------------------
 
-## Expand range of rasters and make custom ones for the three species
-
 ## tidy up sub-functions into a single header file (C++)
 
 ###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0

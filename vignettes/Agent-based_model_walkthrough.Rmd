@@ -149,11 +149,11 @@ As the abmAnimalMovement model can have multiple attraction (rest) sites supplie
 
 ``` {r animatedDigram, echo=FALSE, eval=TRUE}
 ## we need some sort of diagram illustrating the destination vs movement
-# if (knitr:::is_latex_output()) {
-#   knitr::asis_output('\\url{....}')
-# } else {
-  knitr::include_graphics(here::here("inst", "figures", "Simulation Process Diagram.gif"))
-# }
+## if (knitr:::is_latex_output()) {
+##   knitr::asis_output('\\url{....}')
+## } else {
+  # knitr::include_graphics(here::here("inst", "figures", "Simulation Process Diagram.gif"))
+## }
 
 ```
 
@@ -423,6 +423,35 @@ plot_landscapeLayersList <- function(targetList){
 
 ### Badger - High site fidelity
 
+
+<!-- "Badgers moved with an average speed of 0.9 km/hour." that's 0.25 m/s -->
+<!-- Badgers travelled, on average, 7.0 km per 24-hour peri-od (Table 1) -->
+<!-- Mean DMD during the nights when badgers returned to the same sett at the end of their activity period, did not differ when compared to nights when badgers changed setts -->
+<!-- In summer, when the abundance of earthworms reached its seasonal lowest level (see Kowalczyk et al. 2003b), badgers every night searched an area nearly two-fold larger than in spring, and over three times larger than in autumn (see Table 2). -->
+<!-- Badgers moved more than twice as fast after the emergence and before the return to their sett than during the peak of their activity period (ANOVA: F = 4.11, P < 0.0005). When watching badgers at setts, we observed that bad- gers spent very short time around the sett, and then, as recorded by radio- tracking, they moved away fast for as long as 1-2 km. They slowed down when they reached a feeding patch. -->
+<!-- The maximal speed of movement recorded for individual badgers varied from 2.5 to 7.1 km/hour, on average 4.7 ± 1.6 km/hour. -->
+<!-- https://bioone.org/journals/wildlife-biology/volume-12/issue-4/0909-6396(2006)12[385:DMATUB]2.0.CO;2/Daily-movement-and-territory-use-by-badgers-Meles-meles-in/10.2981/0909-6396(2006)12[385:DMATUB]2.0.CO;2.pdf -->
+max speed of 2 m/s, but average of 0.25 m/s
+7km travel in night == 3.5km forage movement distance?
+explore movements fast
+
+<!-- Badgers were predominantly nocturnal, emerging from the sett close to sunset (mean first emergence time=20:12) and returning close to sunrise (mean last sett return time=06:33) (Fig. 2). The time the badgers spent above ground, outside their sett, varied from 4 h 54 min to 10 h 22 min. -->
+<!-- https://link.springer.com/article/10.1186/s40317-022-00282-2#Sec9 -->
+active for 5 to 11 hours
+
+<!-- Badgers were mainly nocturnal, starting activity between 0:30h before and 2:00h after sunset (in 75% of the cases), and ending it between 2:00h before and 0:30h after sunrise (in 78% of the cases). They spent on average 8.26 hours (SE = 0.29, range: 0.3-11.78) active per day (winter: 8.48h, SE = 0.53; spring: 8.43h, SE = 0.44; sum-mer: 8.43h, SE = 0.35; autumn: 7.83h, SE = 0.81), with no inactive intervals in between (Fig. 2).  -->
+<!-- fig 1 and 2 of this paper are great example of the activity cycling idea -->
+<!-- On average badgers travelled a minimum of 4377 m (SE = 239, range: 0-9159) per daily activity period. -->
+<!-- The mean distance between setts used on consec- utive days was 294 m  -->
+<!-- https://doi.org/10.1515/mamm.2005.031 -->
+active for avg 8 hours
+min of 4.3 km per night so 2km distance forage destination
+setts on avg 294m apart
+
+<!-- The total distance travelled by badgers in one night was estimated to vary from 1.69 to 9.16 km; -->
+<!-- https://doi.org/10.1007/s11284-006-0325-0 -->
+travel distance 1.7 to 9 km, so 0.5 to 4.5 km destination distance
+
 Badger occupy a sett, a single home/shelter site, that they routinely return to.
 When not at the sett the badger forages, and the foraging distances are impacted by resource position <!-- 10.1111/j.1469-7998.1999.tb01015.x might help --> and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
@@ -437,7 +466,7 @@ Five metres allows for small movements near/within the sett during resting behav
 # draw shelter sites from the landscape based on the shelter quality layer weighting
 # extent limited to the centre of the landscape
 sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 2,
-             ext = extent(0.35, 0.65, 0.35, 0.65), 
+             ext = extent(0.45, 0.65, 0.45, 0.65), 
              rowcol = TRUE)
 
 BADGER_shelterLocs <- data.frame(
@@ -470,15 +499,48 @@ Similarly, the perceptual range requires setting, in other words, where the badg
 
 ```{r BADGERsettingMoveDes}
 
-BADGER_k_step <- c(1, 3, 2)
-BADGER_s_step <- c(0.5, 1, 1)
+BADGER_k_step <- c(1.5, 1.5, 0.5)
+BADGER_s_step <- c(0.5, 0.5, 0.25)
 BADGER_mu_angle <- c(0, 0, 0)
 BADGER_k_angle <- c(0.6, 0.99, 0.6)
 
-BADGER_destinationRange <- c(50, 2)
+BADGER_destinationRange <- c(5, 150)
 BADGER_destinationDirection <- c(0, 0.01)
 BADGER_destinationTransformation <- 2
 BADGER_destinationModifier <- 2
+
+# and we will need to rescale the values to ensure they fit within a 2000x2000 matrix
+# In this case we are treating each cell as a 5m by 5m
+BADGER_rescale <- 5
+
+n <- 1000
+
+data.frame(
+  "var" = c(
+    rep("0", n),
+    rep("1", n),
+    rep("2", n)
+  ),
+  "value" =
+    c(rgamma(n, shape = BADGER_k_step[1], scale = BADGER_s_step[1]),
+      rgamma(n, shape = BADGER_k_step[2], scale = BADGER_s_step[2]),
+      rgamma(n, shape = BADGER_k_step[3], scale = BADGER_s_step[3]))) %>% 
+  ggplot() +
+  geom_density(aes(x = value, fill = var, colour = var), alpha = 0.5) +
+  scale_fill_manual(values = palette[c("1", "2", "0")]) +
+  scale_colour_manual(values = palette[c("1", "2", "0")]) +
+  geom_boxplot(aes(x = value, y = -0.4), width = 0.2) +
+  labs(x = "Step length (m)")
+
+data.frame(
+  "var" = rep("Destination Range", n),
+  "value" = rgamma(n, shape = BADGER_destinationRange[1],
+                  scale = BADGER_destinationRange[2])) %>% 
+  ggplot() +
+  geom_density(aes(x = value), alpha = 0.5,
+               colour = palette["2"], fill = palette["2"]) +
+  geom_boxplot(aes(x = value, y = 0), width = 0.001) +
+  labs(x = "Destination Range (m)")
 
 ```
 
@@ -508,9 +570,10 @@ A more extreme implementation of the second cycle could introduce hibernation be
 We input the daily cycle (`rest_Cycle`) by providing values for the amplitude, midline, offset (\eqn{\phi}) and frequency (\eqn{\tau}).
 We also have the option to provide a second cycle to describe the longer rests later in the year with `additional_Cycles.`
 
+
 ```{r BADGERsettingCycle}
 
-BADGER_rest_Cycle <- c(0.65, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.45, 0, 24/12, 12)
 
 ## multiple cycle additions
 c0 <- c(0.15, 0, 24, 24*28) # seasonal
@@ -540,15 +603,17 @@ By skewing the turn angle distribution to the left or right, we can simulate the
 
 ```{r VULTUREsettingMoveDes}
 
-VULTURE_k_step <- c(1, 3, 2)
+VULTURE_k_step <- c(1, 50, 20)
 VULTURE_s_step <- c(0.5, 1, 1)
 VULTURE_mu_angle <- c(0, 0, 0)
 VULTURE_k_angle <- c(0.6, 0.99, 0.6)
 
-VULTURE_destinationRange <- c(50, 2)
+VULTURE_destinationRange <- c(200, 5)
 VULTURE_destinationDirection <- c(0, 0.01)
 VULTURE_destinationTransformation <- 2
 VULTURE_destinationModifier <- 2
+
+VULTURE_rescale <- 20
 
 ```
 
@@ -702,6 +767,8 @@ KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 2
 
+KINGCOBRA_rescale <- 2
+
 ```
 
 # Running the simulation
@@ -739,6 +806,7 @@ simRes <- abm_simulate(start = startLocation,
                        s_step = SPECIES_s_step,
                        mu_angle = SPECIES_mu_angle,
                        k_angle = SPECIES_k_angle,
+                       rescale_step2cell = SPECIES_rescale
                        
                        shelterLocations = SPECIES_shelterLocs,
                        shelterSize = SPECIES_shelterSize,
@@ -805,6 +873,13 @@ for(species in vecSpecies){
     
     k_angle = if(length(ls(pattern = paste0("^", species, ".*k_angle"))) > 0){
       get(ls(pattern = paste0("^", species, ".*k_angle")))
+    } else {
+      # DEFAULT HERE, Shouldn't reach here when knit
+      stop("Missing parameter in sim loop.")
+    },
+    
+    rescale_step2cell = if(length(ls(pattern = paste0("^", species, ".*rescale"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*rescale")))
     } else {
       # DEFAULT HERE, Shouldn't reach here when knit
       stop("Missing parameter in sim loop.")
@@ -926,19 +1001,20 @@ for(species in vecSpecies){
 Once ran we can review the movement characteristics of the three species.
 
 ## Movement characteristics
-
+rescale needs mentioning
 ```{r moveCharFigureGen, echo=FALSE, eval=TRUE}
 
 moveCharPlotList <- vector("list", length = 3)
 names(moveCharPlotList) <- vecSpecies
 for(species in vecSpecies){
-  
+  # species <- vecSpecies[1]
   simRes <- simResultsList[[species]]
   
   stepData <- simRes$locations %>%
     mutate(sl = sqrt(
       (x - lag(x))^2 +
-        (y - lag(y))^2))
+        (y - lag(y))^2) * simRes$inputs$in_rescale ## we have to reapply the rescale to get the proper step lengths
+      )
   
   stepTextData <- stepData %>%
     mutate(lessShelter = sl < 1) %>%
