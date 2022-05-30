@@ -530,29 +530,29 @@ b_stepPlot <- data.frame(
        fill = "", colour = "") +
   theme_bw() +
   theme(
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        legend.title = element_text(size = 8),
-        legend.position = c(0.9, 0.9),
-        legend.key.height = unit(4, "mm"),
-        legend.text = element_markdown(face = 4),
-        axis.line = element_line(size = 0.5)) +
+    text = element_text(colour = "#191919"),
+    line = element_line(colour = "#191919"),
+    axis.title = element_text(angle = 0,
+                              face = 2,
+                              size = 10,
+                              hjust = 1),
+    axis.title.y = element_text(angle = 0,
+                                face = 2,
+                                hjust = 1),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(size = 12, face = 4,
+                              hjust = 0),
+    title = element_text(size = 12, face = 4,
+                         hjust = 0),
+    legend.title = element_text(size = 8),
+    legend.position = c(0.9, 0.9),
+    legend.key.height = unit(4, "mm"),
+    legend.text = element_markdown(face = 4),
+    axis.line = element_line(size = 0.5)) +
   guides(colour = guide_legend(override.aes = list(colour = NA)),
          fill = guide_legend(override.aes = list(alpha = 1)))
 
@@ -701,29 +701,29 @@ v_stepPlot <- data.frame(
        fill = "", colour = "") +
   theme_bw() +
   theme(
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        legend.title = element_text(size = 8),
-        legend.position = c(0.9, 0.9),
-        legend.key.height = unit(4, "mm"),
-        legend.text = element_markdown(face = 4),
-        axis.line = element_line(size = 0.5)) +
+    text = element_text(colour = "#191919"),
+    line = element_line(colour = "#191919"),
+    axis.title = element_text(angle = 0,
+                              face = 2,
+                              size = 10,
+                              hjust = 1),
+    axis.title.y = element_text(angle = 0,
+                                face = 2,
+                                hjust = 1),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(size = 12, face = 4,
+                              hjust = 0),
+    title = element_text(size = 12, face = 4,
+                         hjust = 0),
+    legend.title = element_text(size = 8),
+    legend.position = c(0.9, 0.9),
+    legend.key.height = unit(4, "mm"),
+    legend.text = element_markdown(face = 4),
+    axis.line = element_line(size = 0.5)) +
   guides(colour = guide_legend(override.aes = list(colour = NA)),
          fill = guide_legend(override.aes = list(alpha = 1)))
 
@@ -968,29 +968,29 @@ k_stepPlot <- data.frame(
        fill = "", colour = "") +
   theme_bw() +
   theme(
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        legend.title = element_text(size = 8),
-        legend.position = c(0.9, 0.9),
-        legend.key.height = unit(4, "mm"),
-        legend.text = element_markdown(face = 4),
-        axis.line = element_line(size = 0.5)) +
+    text = element_text(colour = "#191919"),
+    line = element_line(colour = "#191919"),
+    axis.title = element_text(angle = 0,
+                              face = 2,
+                              size = 10,
+                              hjust = 1),
+    axis.title.y = element_text(angle = 0,
+                                face = 2,
+                                hjust = 1),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(size = 12, face = 4,
+                              hjust = 0),
+    title = element_text(size = 12, face = 4,
+                         hjust = 0),
+    legend.title = element_text(size = 8),
+    legend.position = c(0.9, 0.9),
+    legend.key.height = unit(4, "mm"),
+    legend.text = element_markdown(face = 4),
+    axis.line = element_line(size = 0.5)) +
   guides(colour = guide_legend(override.aes = list(colour = NA)),
          fill = guide_legend(override.aes = list(alpha = 1)))
 
@@ -1274,7 +1274,7 @@ for(species in vecSpecies){
       (x - lag(x))^2 +
         (y - lag(y))^2) * simRes$inputs$in_rescale ## we have to reapply the rescale to get the proper step lengths
     )
-
+  
   stepTextData <- stepData %>%
     mutate(lessShelter = sl < simRes$inputs$in_sSiteSize) %>%
     group_by(behave,
@@ -1460,9 +1460,9 @@ for(species in vecSpecies){
                          timeLimits = c(1, simSteps),
                          plotOptions = FALSE) +
     ggplot2::labs(title = 
-                    ifelse(species == "BADGER", "Badger",
-                           ifelse(species == "VULTURE", "Vulture",
-                                  "King Cobra"))
+                    ifelse(species == "BADGER", "A-  Badger",
+                           ifelse(species == "VULTURE", "B - Vulture",
+                                  "C - King Cobra"))
     ) +
     ggplot2::theme(legend.position = "none",
                    text = element_text(colour = "#191919"),
@@ -1499,7 +1499,7 @@ patchwork::wrap_plots(mapPlotList, ncol = 3)
 
 # Reviewing behavioural state cycling
 
-```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=8, fig.cap="...."}
+```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=8, fig.height=14, fig.cap="...."}
 
 cyclePlotList <- vector("list", length = 3)
 names(cyclePlotList) <- vecSpecies
@@ -1507,16 +1507,98 @@ for(species in vecSpecies){
   
   simRes <- simResultsList[[species]]
   
-  tempPlot <- abmCyclePlot(simRes,
-                           timeLimits = c(1, 24*60 * 4),
-                           drop_x = ifelse(species == "KINGCOBRA", FALSE, TRUE)) +
-    theme(text = element_text(colour = "#191919"),
-          line = element_line(colour = "#191919"))
+  ### CYCLING ###
+  behaveProb <- sapply(1:simSteps/60, function(x){
+    cycle_draw(x,
+               simRes$inputs$in_rest_Cycle_A,
+               simRes$inputs$in_rest_Cycle_M,
+               simRes$inputs$in_rest_Cycle_PHI,
+               simRes$inputs$in_rest_Cycle_TAU)
+  })
+  behaviourPlotData <- data.frame(
+    "i" = 1:simSteps,
+    "behaveObs" = simRes$locations$behave,
+    "behaveRest" = behaveProb,
+    "cycle" = "rest"
+  )
   
-  if(species == "BADGER"){
-    tempPlot <- tempPlot +
-      theme(axis.title.x = element_blank())
+  behAddCycleVec <- vector("list",
+                           length = length(simRes$inputs$in_add_Cycle_A))
+  for(i in 1:length(simRes$inputs$in_add_Cycle_A)){
+    behaveProb <- sapply(1:simSteps/60, function(x){
+      cycle_draw(x,
+                 simRes$inputs$in_add_Cycle_A[i],
+                 simRes$inputs$in_add_Cycle_M[i],
+                 simRes$inputs$in_add_Cycle_PHI[i],
+                 simRes$inputs$in_add_Cycle_TAU[i])
+    })
+    
+    behAddCycleVec[[i]] <- data.frame(
+      "i" = 1:simSteps,
+      "behaveObs" = simRes$locations$behave,
+      "behaveRest" = behaveProb,
+      "cycle" = paste0("cycle_", i)
+    )
   }
+  
+  cycleData <- rbind(behaviourPlotData, do.call(rbind, behAddCycleVec))
+  
+  zoom_breaks <- function(x){
+    if(max(x) > 5){
+      seq(0, simSteps/60/24, simSteps/60/24/7)
+    }else{
+      seq(0, 4, 1)
+    }
+  }
+  
+  tempPlot <- cycleData %>%
+    mutate(i = i/60/24) %>%
+    ggplot2::ggplot() +
+    ggplot2::geom_hline(yintercept = seq(-1,1,0.5), linetype = 2,
+                        colour = "grey85") +
+    ggplot2::geom_path(ggplot2::aes(x = i, y = behaveRest, group = cycle),
+                       colour = "#191919") +
+    ggplot2::geom_line(ggplot2::aes(x = i, y = behaveObs + 1.4), size = 0.5,
+                       colour = "grey75") +
+    ggplot2::geom_point(ggplot2::aes(x = i, y = behaveObs + 1.4,
+                                     colour = as.factor(behaveObs + 1.4)), size = 0.5) +
+    ggplot2::scale_y_continuous(breaks = c(seq(-0.5, 0.5, 0.5), 1.4, 2.4, 3.4),
+                                labels = c(seq(-0.5, 0.5, 0.5),
+                                           "<span style='color:#302010'>0 - Shelter</span>",
+                                           "<span style='color:#965A1D'>1 - Explore</span>",
+                                           "<span style='color:#E87D13'>2 - Forage</span>")) +
+    ggplot2::scale_colour_manual(values = unname(palette[c("0", "1", "2")])) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "none",
+                   text = ggplot2::element_text(colour = "#191919"),
+                   line = ggplot2::element_line(colour = "#191919"),
+                   axis.title = ggplot2::element_text(angle = 0,
+                                                      face = 2,
+                                                      hjust = 1),
+                   axis.title.y = ggplot2::element_text(angle = 0,
+                                                        face = 2,
+                                                        hjust = 1,
+                                                        vjust = 0.25,
+                                                        margin = margin(0,10,0,10)),
+                   plot.title = element_text(size = 12, face = 2),
+                   plot.title.position = "plot",
+                   axis.text.y = element_markdown(),
+                   strip.background = element_rect(fill = "grey90", colour = NA),
+                   plot.background = ggplot2::element_blank(),
+                   panel.border = ggplot2::element_blank(),
+                   panel.grid = ggplot2::element_blank(),
+                   axis.line = ggplot2::element_line(size = 0.5),
+                   panel.grid.major.y = ggplot2::element_blank()
+    ) +
+    ggplot2::labs(y = ifelse(species == "BADGER",
+                             "Observed\nbehaviour\n&\nRest prob.\nmodifier", ""),
+                  x = "Days",
+                  title = ifelse(
+                    species == "BADGER", "A - Badger",
+                    ifelse(species == "VULTURE", "B - Vulture", "C - King Cobra")
+                  )) +
+    ggforce::facet_zoom(xlim = c(0, 4)) +
+    ggplot2::scale_x_continuous(breaks = zoom_breaks)
   
   cyclePlotList[[species]] <- tempPlot
   
