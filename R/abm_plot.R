@@ -14,7 +14,8 @@ NULL
 #' @rdname abm_plot
 #' @export
 abmMapPlot <- function(simResults,
-                       timeLimits = NA
+                       timeLimits = NA,
+                       plotOptions = TRUE
 ){
 
   palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
@@ -45,10 +46,6 @@ abmMapPlot <- function(simResults,
   )
 
   outPlot <- ggplot2::ggplot() +
-    ggplot2::geom_point(data = optionData,
-                        ggplot2::aes(x = x, y = y),
-                        size = 0.35,
-                        alpha = 0.05, colour = palette["purp1"]) +
     ggplot2::geom_path(data = realisedData,
                        ggplot2::aes(x = x, y = y),
                        alpha = 0.15) +
@@ -114,6 +111,14 @@ abmMapPlot <- function(simResults,
                                                   label.hjust = 0,
                                                   label.position = "right")) +
     ggplot2::labs(x = "X", y = "Y", shape = "Behaviour", fill = "Environmental\nquality")
+
+  if(plotOptions){
+    outPlot <- outPlot +
+      ggplot2::geom_point(data = optionData,
+                          ggplot2::aes(x = x, y = y),
+                          size = 0.35,
+                          alpha = 0.05, colour = palette["purp1"])
+  }
 
   # if(!is.null(avoidance)){
   #   outPlot <- outPlot +

@@ -131,8 +131,7 @@ b0 <- c(0.98, 0.001, 0.00001) # rest
 b1 <- c(0.0005, 0.99, 0.02) # explore/move
 b2 <- c(0.0005, 0.02, 0.97) # forage
 
-behaveMatrixDefault <- rbind(b0, b1, b2)
-behaveMatrixDefault
+(Default_behaveMatrix <- rbind(b0, b1, b2))
 ```
 
 <!-- importance of diel activity See Riveria et al 2022 (paper with Asia Murphy) -->
@@ -302,6 +301,10 @@ Building upon the previous layer allows us to reduce incidental correlation betw
 To achieve this we assign cells with values between 0.6 and 0.3 a higher foraging quality [Figure \@ref(fig:BADGERlayersFigure)], and reduce the shelter quality in all cells with values less than 0.3 (i.e., to prevent sheltering in completely unsuitable locations).
 <!-- We need to double check that the sheltering layer is left and not adjusted to the distance to shelter site from an older version --> Finally, we use xxxxxx to create an independent layer describing movement ease.
 For this example we do not connect movement ease to any other resource layer, but equally one could introduce any about of correlation between the three layers.
+
+```{r rfOptions, echo = FALSE, eval=TRUE}
+RandomFields::RFoptions(install="no")
+```
 
 ```{r landscapeLayers, echo=FALSE, eval=TRUE}
 
@@ -483,8 +486,8 @@ We can alter the impact of the destinations with `destinationTransformation` and
 
 ```{r BADGERsettingMoveDes}
 
-BADGER_k_step <- c(1.5, 1.25, 0.25)
-BADGER_s_step <- c(0.25, 0.25, 0.15)
+BADGER_k_step <- c(1.5*60, 1.25*60, 0.25*60)
+BADGER_s_step <- c(0.25, 0.25, 0.5)
 BADGER_mu_angle <- c(0, 0, 0)
 BADGER_k_angle <- c(0.6, 0.99, 0.6)
 
@@ -512,16 +515,17 @@ b_stepPlot <- data.frame(
       rgamma(n, shape = BADGER_k_step[2], scale = BADGER_s_step[2]),
       rgamma(n, shape = BADGER_k_step[3], scale = BADGER_s_step[3])),
   "boxPost" = c(
-    rep(-2, n),
-    rep(-4, n),
-    rep(-6, n)
+    rep(-0.1, n),
+    rep(-0.2, n),
+    rep(-0.3, n)
   )) %>% 
   ggplot() +
   geom_density(aes(x = value, fill = var), alpha = 0.5, colour = NA) +
   scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
   scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
   geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
-               width = 1.85, alpha = 0.25) +
+               width = 0.05,
+               alpha = 0.25) +
   labs(x = "Step length (m)", y = "Density",
        fill = "", colour = "") +
   theme_bw() +
@@ -598,8 +602,8 @@ The avoidance behaviour will directly counteract the attraction to destination b
 ```{r BADGERsettingAvoid}
 
 BADGER_avoidLocs <- data.frame(
-  "x" = c(950, 1010, 990),
-  "y" = c(950, 1090, 1050)
+  "x" = c(1205, 1500, 1165),
+  "y" = c(980, 1090, 1250)
 )
 BADGER_avoidTransformation <- 2
 BADGER_avoidModifier <- 4
@@ -620,13 +624,19 @@ We also have the option to provide a second cycle to describe the longer rests l
 
 ```{r BADGERsettingCycle}
 
-BADGER_rest_Cycle <- c(0.45, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.40, 0, 24, 24)
 
 ## multiple cycle additions
-c0 <- c(0.15, 0, 24, 24*28) # seasonal
+c0 <- c(0.01, 0, 24, 24*28) # seasonal
 
 BADGER_additional_Cycles <- rbind(c0)
 BADGER_additional_Cycles
+
+BADGER_behaveMatrix <- Default_behaveMatrix
+BADGER_behaveMatrix[1,1] <- 0.95
+BADGER_behaveMatrix[1,2] <- 0.005
+BADGER_behaveMatrix[1,3] <- 0.005
+BADGER_behaveMatrix[2,3] <- 0.01
 ```
 
 ### Vulture - High movement variation
@@ -650,7 +660,7 @@ By skewing the turn angle distribution to the left or right, we can simulate the
 
 ```{r VULTUREsettingMoveDes}
 
-VULTURE_k_step <- c(1, 2, 1.5)
+VULTURE_k_step <- c(1.25*60, 2*60, 1.5*60)
 VULTURE_s_step <- c(0.5, 1.2, 1)
 VULTURE_mu_angle <- c(0, 0, 0)
 VULTURE_k_angle <- c(0.6, 0.99, 0.6)
@@ -760,8 +770,8 @@ A shelter site is selected each time the animal enters the resting state, weight
 ```{r VULTUREsettingShelter}
 
 VULTURE_shelterLocs <- data.frame(
-  "x" = c(1024, 1005, 1215), # columns
-  "y" = c(1193, 1070, 782) # rows
+  "x" = c(1024, 1005, 1115), # columns
+  "y" = c(1193, 1070, 882) # rows
 )
 VULTURE_shelterSize <- 3
 
@@ -804,17 +814,25 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
 
 Vultures were used as an example that day-night cycles can impact rates of location collection; how the the animals' activity cycle and the probability of collected data interact could be key consideration for some research questions [@silva_seasonal_2017]. 
 We provide vultures with a very similar cycle pattern to the badgers, one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
+But also we will increase the chances of transitioning between foraging and exploration, as the aerial exploration is more energy efficient. 
 Again similar to badgers we simulate a shift in seasons via an increase and decrease in activity over a longer period of time that has been demonstrated to impact vulture movements [@peshev_new_2021; @garcia-jimenez_drivers_2018; @hribsek_first_2021].
 
-```{r BADGERsettingCycle}
+```{r VULTUREsettingCycle}
 
-VULTURE_rest_Cycle <- c(0.40, 0, 24, 24)
+VULTURE_rest_Cycle <- c(0.42, 0, 24, 24)
 
 ## multiple cycle additions
-c0 <- c(0.15, 0, 24, 24*28) # seasonal
+c0 <- c(0.02, 0, 24, 24*28) # seasonal
 
 VULTURE_additional_Cycles <- rbind(c0)
-VULTURE_additional_Cycles
+
+VULTURE_behaveMatrix <- Default_behaveMatrix
+VULTURE_behaveMatrix[2,2] <- 0.990
+VULTURE_behaveMatrix[2,3] <- 0.01
+VULTURE_behaveMatrix[3,2] <- 0.05
+VULTURE_behaveMatrix[1,1] <- 0.85
+VULTURE_behaveMatrix[1,2] <- 0.01
+
 ```
 
 ### King Cobra - High resting variability
@@ -873,8 +891,8 @@ KINGCOBRA_movementMatrix[1:2000,850:890] <- KINGCOBRA_movementMatrix[1:2000,850:
 KINGCOBRA_movementMatrix[KINGCOBRA_movementMatrix[] < 0] <- 0
 
 KINGCOBRA_avoidLocs <- data.frame(
-  "x" = c(950, 1010, 990),
-  "y" = c(950, 1090, 1050)
+  "x" = c(552, 1232, 1587),
+  "y" = c(789, 975, 1356)
 )
 KINGCOBRA_avoidTransformation <- 2
 KINGCOBRA_avoidModifier <- 1
@@ -909,17 +927,106 @@ We will keep the destination parameters quite large as king cobras are known to 
 
 ```{r KINGCOBRAsettingMoveDes}
 
-KINGCOBRA_k_step <- c(1, 3, 2)
-KINGCOBRA_s_step <- c(0.5, 1, 1)
+KINGCOBRA_k_step <- c(30, 40, 20)
+KINGCOBRA_s_step <- c(0.75, 1.2, 1.75)
 KINGCOBRA_mu_angle <- c(0, 0, 0)
 KINGCOBRA_k_angle <- c(0.6, 0.99, 0.6)
 
-KINGCOBRA_destinationRange <- c(50, 2)
+KINGCOBRA_destinationRange <- c(100, 8)
 KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 2
 
 KINGCOBRA_rescale <- 2
+
+n <- 1000
+
+k_stepPlot <- data.frame(
+  "var" = factor(c(
+    rep("<span style='color:#302010'>0 - Shelter</span>", n),
+    rep("<span style='color:#965A1D'>1 - Explore</span>", n),
+    rep("<span style='color:#E87D13'>2 - Forage</span>", n)),
+    levels = c("<span style='color:#302010'>0 - Shelter</span>",
+               "<span style='color:#965A1D'>1 - Explore</span>",
+               "<span style='color:#E87D13'>2 - Forage</span>")),
+  "value" =
+    c(rgamma(n, shape = KINGCOBRA_k_step[1], scale = KINGCOBRA_s_step[1]),
+      rgamma(n, shape = KINGCOBRA_k_step[2], scale = KINGCOBRA_s_step[2]),
+      rgamma(n, shape = KINGCOBRA_k_step[3], scale = KINGCOBRA_s_step[3])),
+  "boxPost" = c(
+    rep(-0.1, n),
+    rep(-0.2, n),
+    rep(-0.3, n)
+  )) %>% 
+  ggplot() +
+  geom_density(aes(x = value, fill = var), alpha = 0.5, colour = NA) +
+  scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
+  scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
+  geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
+               width = 0.085, alpha = 0.25) +
+  labs(x = "Step length (m)", y = "Density",
+       fill = "", colour = "") +
+  theme_bw() +
+  theme(
+        text = element_text(colour = "#191919"),
+        line = element_line(colour = "#191919"),
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  size = 10,
+                                  hjust = 1),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12, face = 4,
+                                  hjust = 0),
+        title = element_text(size = 12, face = 4,
+                             hjust = 0),
+        legend.title = element_text(size = 8),
+        legend.position = c(0.9, 0.9),
+        legend.key.height = unit(4, "mm"),
+        legend.text = element_markdown(face = 4),
+        axis.line = element_line(size = 0.5)) +
+  guides(colour = guide_legend(override.aes = list(colour = NA)),
+         fill = guide_legend(override.aes = list(alpha = 1)))
+
+k_destPlot <- data.frame(
+  "var" = rep("Destination range", n),
+  "value" = rgamma(n, shape = KINGCOBRA_destinationRange[1],
+                   scale = KINGCOBRA_destinationRange[2])) %>% 
+  ggplot() +
+  geom_density(aes(x = value), alpha = 0.5,
+               colour = NA, fill = palette["2"]) +
+  geom_boxplot(aes(x = value, y = -0.0001), width = 0.0001,
+               colour = palette["2"], fill = palette["2"], alpha = 0.25) +
+  labs(x = "Destination range (m)", y = "") +
+  theme_bw() +
+  theme(legend.position = "none",
+        text = element_text(colour = "#191919"),
+        line = element_line(colour = "#191919"),
+        axis.title = element_text(angle = 0,
+                                  face = 2,
+                                  size = 10,
+                                  hjust = 1),
+        axis.title.y = element_text(angle = 0,
+                                    face = 2,
+                                    hjust = 1),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12, face = 4,
+                                  hjust = 0),
+        title = element_text(size = 12, face = 4,
+                             hjust = 0),
+        axis.line = element_line(size = 0.5))
+
+k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65))
 
 ```
 
@@ -1102,11 +1209,11 @@ for(species in vecSpecies){
       0
     },
     
-    behave_Tmat = if(length(ls(pattern = paste0("^", species, ".*behave_Tmat"))) > 0){
-      get(ls(pattern = paste0("^", species, ".*behave_Tmat")))
+    behave_Tmat = if(length(ls(pattern = paste0("^", species, ".*behaveMatrix"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*behaveMatrix")))
     } else {
       # DEFAULT HERE
-      behaveMatrixDefault
+      Default_behaveMatrix
     },
     
     rest_Cycle = if(length(ls(pattern = paste0("^", species, ".*rest_Cycle"))) > 0){
@@ -1167,9 +1274,9 @@ for(species in vecSpecies){
       (x - lag(x))^2 +
         (y - lag(y))^2) * simRes$inputs$in_rescale ## we have to reapply the rescale to get the proper step lengths
     )
-  
+
   stepTextData <- stepData %>%
-    mutate(lessShelter = sl < 1) %>%
+    mutate(lessShelter = sl < simRes$inputs$in_sSiteSize) %>%
     group_by(behave,
              lessShelter) %>%
     count() %>%
@@ -1182,7 +1289,7 @@ for(species in vecSpecies){
     filter(lessShelter) %>%
     summarise(
       behave = behave[1],
-      text = paste0("<1 rate:\n", n, "/", total, "\n(", per, "%)"))
+      text = paste0("<site rate:\n", n, "/", total, "\n(", per, "%)"))
   
   behavePlotList <- vector("list", length = 3)
   names(behavePlotList) <- as.character(0:2)
@@ -1253,7 +1360,7 @@ for(species in vecSpecies){
       )
     
     taPlot <- simRes$locations %>%
-      filter(sl > 1, behave == beh) %>%
+      filter(behave == beh) %>%
       ggplot() +
       geom_histogram(aes(x = ta, fill = as.factor(behave)),
                      colour = NA, binwidth = 10) +
@@ -1322,7 +1429,7 @@ for(species in vecSpecies){
 ```
 
 
-```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="...."}
 
 moveCharPlotList[["BADGER"]]
 
@@ -1350,7 +1457,8 @@ for(species in vecSpecies){
   simRes <- simResultsList[[species]]
   
   tempPlot <- abmMapPlot(simRes,
-                         timeLimits = c(1, simSteps)) +
+                         timeLimits = c(1, simSteps),
+                         plotOptions = FALSE) +
     ggplot2::labs(title = 
                     ifelse(species == "BADGER", "Badger",
                            ifelse(species == "VULTURE", "Vulture",
@@ -1400,7 +1508,7 @@ for(species in vecSpecies){
   simRes <- simResultsList[[species]]
   
   tempPlot <- abmCyclePlot(simRes,
-                           timeLimits = c(1, simSteps),
+                           timeLimits = c(1, 24*60 * 4),
                            drop_x = ifelse(species == "KINGCOBRA", FALSE, TRUE)) +
     theme(text = element_text(colour = "#191919"),
           line = element_line(colour = "#191919"))
