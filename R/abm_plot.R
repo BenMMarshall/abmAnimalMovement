@@ -58,8 +58,8 @@ abmMapPlot <- function(simResults,
     ggplot2::geom_point(data = realisedData,
                         ggplot2::aes(x = destination_x, y = destination_y),
                         pch = 15,
-                        size = 2, colour = palette["2"],
-                        alpha = 0.85) +
+                        size = 0.25, colour = palette["2"],
+                        alpha = 0.25) +
     ## shelter
     ggplot2::geom_point(data = shelterLocations,
                         ggplot2::aes(x = x, y = y),

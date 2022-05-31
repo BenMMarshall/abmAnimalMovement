@@ -486,8 +486,8 @@ We can alter the impact of the destinations with `destinationTransformation` and
 
 ```{r BADGERsettingMoveDes}
 
-BADGER_k_step <- c(1.5*60, 1.25*60, 0.25*60)
-BADGER_s_step <- c(0.25, 0.25, 0.5)
+BADGER_k_step <- c(0.3*60, 1.25*60, 0.25*60)
+BADGER_s_step <- c(0.8, 0.25, 0.5)
 BADGER_mu_angle <- c(0, 0, 0)
 BADGER_k_angle <- c(0.6, 0.99, 0.6)
 
@@ -624,10 +624,10 @@ We also have the option to provide a second cycle to describe the longer rests l
 
 ```{r BADGERsettingCycle}
 
-BADGER_rest_Cycle <- c(0.40, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.40, 0.1, 24, 24)
 
 ## multiple cycle additions
-c0 <- c(0.01, 0, 24, 24*28) # seasonal
+c0 <- c(0.2, 0, 24* (365/2), 24* 365) # seasonal
 
 BADGER_additional_Cycles <- rbind(c0)
 BADGER_additional_Cycles
@@ -660,8 +660,8 @@ By skewing the turn angle distribution to the left or right, we can simulate the
 
 ```{r VULTUREsettingMoveDes}
 
-VULTURE_k_step <- c(1.25*60, 2*60, 1.5*60)
-VULTURE_s_step <- c(0.5, 1.2, 1)
+VULTURE_k_step <- c(2, 2.2*60, 1.5*60)
+VULTURE_s_step <- c(40, 1.2, 1)
 VULTURE_mu_angle <- c(0, 0, 0)
 VULTURE_k_angle <- c(0.6, 0.99, 0.6)
 
@@ -785,7 +785,7 @@ Again, we can modify the existing NLMR generated landscape.
 ```{r VULTUREforageRaster}
 
 VULTURE_forageMatrix <- landscapeLayersList$forage
-VULTURE_forageMatrix[1:750,1:2000] <- VULTURE_forageMatrix[1:750,1:2000] - 0.5
+VULTURE_forageMatrix[1:950,1:2000] <- VULTURE_forageMatrix[1:950,1:2000] - 0.6
 VULTURE_forageMatrix[VULTURE_forageMatrix[] < 0] <- 0
 
 ```
@@ -819,10 +819,10 @@ Again similar to badgers we simulate a shift in seasons via an increase and decr
 
 ```{r VULTUREsettingCycle}
 
-VULTURE_rest_Cycle <- c(0.42, 0, 24, 24)
+VULTURE_rest_Cycle <- c(0.42, 0.1, 24, 24)
 
 ## multiple cycle additions
-c0 <- c(0.02, 0, 24, 24*28) # seasonal
+c0 <- c(0.12, -0.05, 24* (365/2), 24* 365) # seasonal
 
 VULTURE_additional_Cycles <- rbind(c0)
 
@@ -869,7 +869,7 @@ KINGCOBRA_rest_Cycle <- c(0.45, 0, 24, 24)
 
 ## multiple cycle additions
 c0 <- c(0.2, 0, 24, 24*4) # digest
-c1 <- c(0.15, 0, 24, 24*28) # seasonal
+c1 <- c(0.2, 0, 24 * (365/2), 24* 365 ) # seasonal
 
 KINGCOBRA_additional_Cycles <- rbind(c0, c1)
 KINGCOBRA_additional_Cycles
@@ -932,12 +932,12 @@ KINGCOBRA_s_step <- c(0.75, 1.2, 1.75)
 KINGCOBRA_mu_angle <- c(0, 0, 0)
 KINGCOBRA_k_angle <- c(0.6, 0.99, 0.6)
 
-KINGCOBRA_destinationRange <- c(100, 8)
+KINGCOBRA_destinationRange <- c(50, 10)
 KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 2
 
-KINGCOBRA_rescale <- 2
+KINGCOBRA_rescale <- 4
 
 n <- 1000
 
@@ -1091,7 +1091,7 @@ simRes <- abm_simulate(start = startLocation,
 ```
 
 ``` {r runSimulationsRUN, include=FALSE, eval=TRUE}
-simSteps <- 24*60 *28
+simSteps <- 24*60 *365
 des_options <- 10
 options <- 12
 
@@ -1237,8 +1237,8 @@ for(species in vecSpecies){
       landscapeLayersList$shelter
     }
     ,
-    foragingMatrix = if(length(ls(pattern = paste0("^", species, ".*foragingMatrix"))) > 0){
-      get(ls(pattern = paste0("^", species, ".*foragingMatrix")))
+    foragingMatrix = if(length(ls(pattern = paste0("^", species, ".*forageMatrix"))) > 0){
+      get(ls(pattern = paste0("^", species, ".*forageMatrix")))
     } else {
       # DEFAULT HERE
       landscapeLayersList$forage
@@ -1258,9 +1258,10 @@ for(species in vecSpecies){
 # Reviewing observed movements
 
 Once ran we can review the movement characteristics of the three species.
+The simplest to examine is the movement speeds or step lengths.
+During the simulation parametrisation we provided a rescale values to describe the the size of the cells describing environmental information.
+The simulated movement will return the scaled values, so to plot something comparable to the input values we must rescale the simulated step lengths.
 
-## Movement characteristics
-rescale needs mentioning
 ```{r moveCharFigureGen, echo=FALSE, eval=TRUE}
 
 moveCharPlotList <- vector("list", length = 3)
@@ -1322,7 +1323,7 @@ for(species in vecSpecies){
             panel.grid = element_blank())
     
     stepPlot <- stepData %>%
-      filter(sl > max(simRes$inputs$in_k_step/100), # if larger than the largest non-movement ie., the time when sheltering and the k_step is decreased 100 fold
+      filter(sl >= simRes$inputs$in_sSiteSize,
              behave == beh) %>%
       ggplot() +
       geom_density(aes(x = sl),
@@ -1350,7 +1351,7 @@ for(species in vecSpecies){
             panel.border = element_blank(),
             panel.grid = element_blank(),
             strip.background = element_blank(),
-            strip.text = element_text(size = 12, face = 4,
+            strip.text = element_markdown(size = 12, face = 4,
                                       hjust = 0),
             title = element_text(size = 12, face = 4,
                                  hjust = 0),
@@ -1393,7 +1394,7 @@ for(species in vecSpecies){
                                       colour = "grey85"),
             axis.text.x = element_text(
               angle = 0, size = 6, hjust = 0.5, vjust = 0.5),
-            plot.title = element_text(size = 12, face = 4,
+            plot.title = element_markdown(size = 12, face = 4,
                                       hjust = 0),
             plot.subtitle = element_text(size = 8, face = 2,
                                          hjust = 0.5, vjust = 1),
@@ -1407,8 +1408,11 @@ for(species in vecSpecies){
         x = "",
         y = "",
         title = paste0(
-          beh, " - ", ifelse(beh == 2, "Forage",
-                             ifelse(beh == 1, "Explore", "Shelter"))))
+          ifelse(beh == 2, "<span style='color:#E87D13'>",
+                             ifelse(beh == 1, "<span style='color:#965A1D'>",
+                                    "<span style='color:#302010'>")),
+          beh, " - ", ifelse(beh == 2, "Forage</span>",
+                             ifelse(beh == 1, "Explore</span>", "Shelter</span>"))))
     
     behaveLevelCombo <- patchwork::wrap_plots(list(taPlot,
                                                    stepPlot +
@@ -1428,12 +1432,12 @@ for(species in vecSpecies){
 
 ```
 
-
 ```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="...."}
 
 moveCharPlotList[["BADGER"]]
 
 ```
+
 ```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
 
 moveCharPlotList[["VULTURE"]]
@@ -1446,9 +1450,15 @@ moveCharPlotList[["KINGCOBRA"]]
 
 ```
 
+We can compare the inputs from Figure \@ref(fig:BADGERsettingMoveDes) to the observed outputs in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
+The turn angles are more variable, as the destination decisions and attraction to locations heavily influence the distribution overriding the parametrisation of the Von Mises.
+Figures \@ref(fig:VULTUREsettingMoveDes) and \@ref(fig:KINGCOBRAsettingMoveDes) describe the inputs for the Vulture and King Cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure).
+Figures \@ref(fig:BADGERmoveCharFigure), \@ref(fig:VULTUREmoveCharFigure), and \@ref(fig:KINGCOBRAmoveCharFigure) also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
+The King Cobra example in particular highlights the prolonged near weekly resting periods.
+
 # Mapping movements
 
-```{r mapsFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="...."}
+```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="...."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
@@ -1459,21 +1469,30 @@ for(species in vecSpecies){
   tempPlot <- abmMapPlot(simRes,
                          timeLimits = c(1, simSteps),
                          plotOptions = FALSE) +
-    ggplot2::labs(title = 
-                    ifelse(species == "BADGER", "A-  Badger",
-                           ifelse(species == "VULTURE", "B - Vulture",
-                                  "C - King Cobra"))
+    ggplot2::labs(title = ifelse(
+                    species == "BADGER",
+                    "<span style='color:#4F0E99'>A - Badger</span>",
+                    ifelse(species == "VULTURE",
+                           "<span style='color:#7D26D4'>B - Vulture</span>",
+                           "<span style='color:#AD6DED'>C - King Cobra</span>")
+                  ),
+                  subtitle = paste0("Each cell == ",
+                                    simResultsList[[species]]$inputs$in_rescale, "m")
     ) +
     ggplot2::theme(legend.position = "none",
                    text = element_text(colour = "#191919"),
                    line = element_line(colour = "#191919"),
-                   plot.title = element_text(size = 8, face = 4,
+                   plot.title = element_markdown(size = 8, face = 4,
                                              hjust = 0),
-                   # plot.title = ggplot2::element_text(size = 8),
+                   plot.subtitle = element_markdown(size = 6, face = 3,
+                                             hjust = 0),
+                   axis.text = element_text(size = 5),
                    axis.text.y = ggplot2::element_blank(),
                    axis.title.x = ggplot2::element_blank(),
                    axis.title.y = ggplot2::element_blank()) +
-    ggplot2::coord_fixed()
+    ggplot2::coord_fixed() +
+    scale_x_continuous(breaks = seq(0,2000,250)) +
+    scale_y_continuous(breaks = seq(0,2000,250))
   
   if(species == "BADGER"){
     tempPlot <- tempPlot +
@@ -1545,7 +1564,7 @@ for(species in vecSpecies){
   
   zoom_breaks <- function(x){
     if(max(x) > 5){
-      seq(0, simSteps/60/24, simSteps/60/24/7)
+      seq(0, 31*3, 7)
     }else{
       seq(0, 4, 1)
     }
@@ -1553,11 +1572,16 @@ for(species in vecSpecies){
   
   tempPlot <- cycleData %>%
     mutate(i = i/60/24) %>%
+    filter(i < 31*3) %>% 
     ggplot2::ggplot() +
     ggplot2::geom_hline(yintercept = seq(-1,1,0.5), linetype = 2,
                         colour = "grey85") +
     ggplot2::geom_path(ggplot2::aes(x = i, y = behaveRest, group = cycle),
-                       colour = "#191919") +
+                       colour = ifelse(
+                         species == "BADGER", "#4F0E99", ifelse(species == "VULTURE",
+                                                                "#7D26D4",
+                                                                "#AD6DED")
+                       )) +
     ggplot2::geom_line(ggplot2::aes(x = i, y = behaveObs + 1.4), size = 0.5,
                        colour = "grey75") +
     ggplot2::geom_point(ggplot2::aes(x = i, y = behaveObs + 1.4,
@@ -1580,7 +1604,7 @@ for(species in vecSpecies){
                                                         hjust = 1,
                                                         vjust = 0.25,
                                                         margin = margin(0,10,0,10)),
-                   plot.title = element_text(size = 12, face = 2),
+                   plot.title = element_markdown(size = 12, face = 2),
                    plot.title.position = "plot",
                    axis.text.y = element_markdown(),
                    strip.background = element_rect(fill = "grey90", colour = NA),
@@ -1594,8 +1618,11 @@ for(species in vecSpecies){
                              "Observed\nbehaviour\n&\nRest prob.\nmodifier", ""),
                   x = "Days",
                   title = ifelse(
-                    species == "BADGER", "A - Badger",
-                    ifelse(species == "VULTURE", "B - Vulture", "C - King Cobra")
+                    species == "BADGER",
+                    "<span style='color:#4F0E99'>A - Badger</span>",
+                    ifelse(species == "VULTURE",
+                           "<span style='color:#7D26D4'>B - Vulture</span>",
+                           "<span style='color:#AD6DED'>C - King Cobra</span>")
                   )) +
     ggforce::facet_zoom(xlim = c(0, 4)) +
     ggplot2::scale_x_continuous(breaks = zoom_breaks)
@@ -1608,9 +1635,69 @@ patchwork::wrap_plots(cyclePlotList, ncol = 1)
 
 ```
 
-# Testing sampling function
+We can check the number of time steps in each behavioural state throughout the year. 
 
-# Testing Von-Mises function
+```{r cycleSeasonalFigure, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.align='center', fig.width=8, fig.height=5, fig.cap="...."}
+
+options(dplyr.summarise.inform = FALSE)
+
+tempList <- vector("list", length(vecSpecies))
+i <- 0
+for(species in vecSpecies){
+  i <- i+1
+  simResultsList[[species]]$locations$species <- species
+  tempList[[i]] <- simResultsList[[species]]$locations
+}
+allSimLocations <- do.call(rbind, tempList)
+
+allSimLocations %>% 
+  mutate(
+    day = floor(timestep/60/24)+1) %>% 
+  group_by(species, day) %>% 
+  summarise(perRest = sum(behave == 0) / (60*24) *100) %>% 
+  ungroup() %>% 
+  mutate(species = factor(
+    case_when(
+      species == "BADGER" ~ "<span style='color:#4F0E99'>Badger</span>",
+      species == "VULTURE" ~ "<span style='color:#7D26D4'>Vulture</span>",
+      species == "KINGCOBRA" ~ "<span style='color:#AD6DED'>King Cobra</span>"
+      ), levels = c(
+        "<span style='color:#4F0E99'>Badger</span>",
+        "<span style='color:#7D26D4'>Vulture</span>",
+        "<span style='color:#AD6DED'>King Cobra</span>"))) %>% 
+  ggplot() +
+  geom_col(aes(x = day, y = perRest, fill = species)) +
+  scale_fill_manual(values = unname(palette[c("purp3", "purp2", "purp1")])) +
+  scale_x_continuous(breaks = c(seq(0,300,100), 365)) +
+  facet_wrap(.~species, ncol = 1) +
+  ggplot2::theme_bw() +
+  ggplot2::theme(legend.position = "none",
+                 text = ggplot2::element_text(colour = "#191919"),
+                 line = ggplot2::element_line(colour = "#191919"),
+                 axis.title = ggplot2::element_text(angle = 0,
+                                                    face = 2,
+                                                    hjust = 1),
+                 axis.title.y = ggplot2::element_text(angle = 0,
+                                                      face = 2,
+                                                      hjust = 1,
+                                                      vjust = 1,
+                                                      margin = margin(0,10,0,10)),
+                 plot.title = element_text(size = 12, face = 2),
+                 plot.title.position = "plot",
+                 axis.text.y = element_markdown(),
+                 strip.background = element_rect(fill = NA, colour = NA),
+                 strip.text = element_markdown(face = 4, hjust = 0, size = 12),
+                 plot.background = ggplot2::element_blank(),
+                 panel.border = ggplot2::element_blank(),
+                 panel.grid = ggplot2::element_blank(),
+                 axis.line = ggplot2::element_line(size = 0.5),
+                 panel.grid.major.y = ggplot2::element_blank()
+  ) +
+  ggplot2::labs(y = "Daily\npercentage\nresting",
+                x = "Days")
+
+
+```
 
 # Discussion / Conclusion
 
