@@ -31,9 +31,9 @@ abmMapPlot <- function(simResults,
                                optionData$timestep < timeLimits[2],]
   }
 
-  realisedData$behave[realisedData$behave == 0] <- "0 - Resting"
-  realisedData$behave[realisedData$behave == 1] <- "1 - Exploring"
-  realisedData$behave[realisedData$behave == 2] <- "2 - Foraging"
+  realisedData$behave[realisedData$behave == 0] <- "0 - Shelter"
+  realisedData$behave[realisedData$behave == 1] <- "1 - Explore"
+  realisedData$behave[realisedData$behave == 2] <- "2 - Forage"
 
   shelterLocations <- data.frame(
     "x" = simResults$inputs$in_shelter_locs_x,
@@ -231,7 +231,7 @@ abmCyclePlot <- function(simResults,
       ggplot2::geom_point(ggplot2::aes(x = i, y = behaveObs, colour = as.factor(behaveObs)), size = 0.5) +
       ggplot2::scale_x_continuous(breaks = seq(0, simSteps/60, 24)) +
       ggplot2::scale_y_continuous(breaks = c(0, 1, 2),
-                                  labels = c("0 - Rest", "1 - Explore", "2 - Forage")) +
+                                  labels = c("0 - Shelter", "1 - Explore", "2 - Forage")) +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.position = "none",
                      axis.title = ggplot2::element_text(angle = 0,

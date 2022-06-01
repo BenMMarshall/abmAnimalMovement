@@ -106,8 +106,8 @@ A new independently developed approach to simulating animal movement will provid
 <!-- -   R most used in movement eco [@joo_decade_2020] - also survery here: <https://rociojoo.github.io/mov-eco-review/survey-about-movement-ecology.html#description-of-the-survey> -->
 
 The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
-We wrote the model using *C++* via *Rcpp* `r paste0("v.", packageVersion("Rcpp"))` package [@here2020] to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology [@joo_decade_2020].
-We used *R* `r paste0("v.", version$major, ".", version$minor)` [@R-base] via *RStudio* v.`r rstudioapi::versionInfo()$version` [@RStudioTeam2021].
+We wrote the model using *C++* via *Rcpp* `r paste0("v.", packageVersion("Rcpp"))` package <!-- CITE --> to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology [@joo_decade_2020].
+We used *R* `r paste0("v.", version$major, ".", version$minor)` [@R-base] <!-- CITE missing bib --> via *RStudio* v.`r rstudioapi::versionInfo()$version` [@RStudioTeam2021] <!-- CITE missing bib -->.
 
 The model aims simulates animal locations over a given period of time at discrete time steps.
 At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations [Figure \@ref(fig:animatedDiagram)], and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
@@ -208,6 +208,7 @@ library(reshape2)
 
 library(ggplot2)
 library(ggtext)
+library(ggridges)
 library(patchwork)
 
 library(raster)
@@ -222,14 +223,18 @@ library(landscapetools)
 ```
 
 ```{r librariesTable, echo=FALSE, include=TRUE, warning=FALSE, message=FALSE}
-RpackageTable <- do.call(rbind, lapply(list("ggplot2",
-                                            "reshape2",
-                                            "patchwork",
-                                            "dplyr"),
-                                       function(x){
-                                         data.frame("Package" = x,
-                                                    "Version" = packageVersion(x))
-                                       }))
+RpackageTable <- do.call(rbind, lapply(list(
+  "here",
+  "ggplot2",
+  "ggtext",
+  "ggridges",
+  "reshape2",
+  "patchwork",
+  "dplyr"),
+  function(x){
+    data.frame("Package" = x,
+               "Version" = packageVersion(x))
+  }))
 RpackageTable <- RpackageTable[order(RpackageTable$Package),]
 # RpackageTable$Reference <- NA
 
@@ -452,7 +457,7 @@ BADGER_shelterLocs <- data.frame(
   "x" = sampledShelters[,2], # two columns
   "y" = sampledShelters[,1] # two rows
 )
-BADGER_shelterSize <- 5
+BADGER_shelterSize <- 8
 
 ```
 
@@ -491,7 +496,7 @@ BADGER_s_step <- c(0.8, 0.25, 0.5)
 BADGER_mu_angle <- c(0, 0, 0)
 BADGER_k_angle <- c(0.6, 0.99, 0.6)
 
-BADGER_destinationRange <- c(5, 150)
+BADGER_destinationRange <- c(3, 120)
 BADGER_destinationDirection <- c(0, 0.01)
 BADGER_destinationTransformation <- 2
 BADGER_destinationModifier <- 2
@@ -499,6 +504,11 @@ BADGER_destinationModifier <- 2
 # and we will need to rescale the values to ensure they fit within a 2000x2000 matrix
 # In this case we are treating each cell as a 5m by 5m
 BADGER_rescale <- 5
+
+```
+
+
+```{r BADGERsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="..."}
 
 n <- 1000
 
@@ -513,19 +523,15 @@ b_stepPlot <- data.frame(
   "value" =
     c(rgamma(n, shape = BADGER_k_step[1], scale = BADGER_s_step[1]),
       rgamma(n, shape = BADGER_k_step[2], scale = BADGER_s_step[2]),
-      rgamma(n, shape = BADGER_k_step[3], scale = BADGER_s_step[3])),
-  "boxPost" = c(
-    rep(-0.1, n),
-    rep(-0.2, n),
-    rep(-0.3, n)
-  )) %>% 
+      rgamma(n, shape = BADGER_k_step[3], scale = BADGER_s_step[3]))) %>% 
   ggplot() +
-  geom_density(aes(x = value, fill = var), alpha = 0.5, colour = NA) +
+  geom_density_ridges(aes(x = value, y = var, fill = var),
+                      alpha = 0.5, colour = NA) +
+  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
+               width = 0.12, position = position_nudge(y = -0.1),
+               alpha = 0.25) +
   scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
   scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
-               width = 0.05,
-               alpha = 0.25) +
   labs(x = "Step length (m)", y = "Density",
        fill = "", colour = "") +
   theme_bw() +
@@ -672,6 +678,10 @@ VULTURE_destinationModifier <- 2
 
 VULTURE_rescale <- 20
 
+```
+
+```{r VULTUREsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="..."}
+
 n <- 1000
 
 v_stepPlot <- data.frame(
@@ -692,11 +702,15 @@ v_stepPlot <- data.frame(
     rep(-0.3, n)
   )) %>% 
   ggplot() +
-  geom_density(aes(x = value, fill = var), alpha = 0.5, colour = NA) +
+  geom_density_ridges(aes(x = value, y = var, fill = var),
+                      alpha = 0.5, colour = NA) +
+  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
+               width = 0.12, position = position_nudge(y = -0.1),
+               alpha = 0.25) +
   scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
   scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
-               width = 0.085, alpha = 0.25) +
+  # geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
+  #              width = 0.085, alpha = 0.25) +
   labs(x = "Step length (m)", y = "Density",
        fill = "", colour = "") +
   theme_bw() +
@@ -773,7 +787,7 @@ VULTURE_shelterLocs <- data.frame(
   "x" = c(1024, 1005, 1115), # columns
   "y" = c(1193, 1070, 882) # rows
 )
-VULTURE_shelterSize <- 3
+VULTURE_shelterSize <- 5
 
 ```
 
@@ -939,6 +953,10 @@ KINGCOBRA_destinationModifier <- 2
 
 KINGCOBRA_rescale <- 4
 
+```
+
+```{r KINGCOBRAsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="..."}
+
 n <- 1000
 
 k_stepPlot <- data.frame(
@@ -959,11 +977,15 @@ k_stepPlot <- data.frame(
     rep(-0.3, n)
   )) %>% 
   ggplot() +
-  geom_density(aes(x = value, fill = var), alpha = 0.5, colour = NA) +
+    geom_density_ridges(aes(x = value, y = var, fill = var),
+                      alpha = 0.5, colour = NA) +
+  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
+               width = 0.12, position = position_nudge(y = -0.1),
+               alpha = 0.25) +
   scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
   scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
-               width = 0.085, alpha = 0.25) +
+  # geom_boxplot(aes(x = value, y = boxPost, colour = var, fill = var),
+  #              width = 0.085, alpha = 0.25) +
   labs(x = "Step length (m)", y = "Density",
        fill = "", colour = "") +
   theme_bw() +
@@ -1001,7 +1023,7 @@ k_destPlot <- data.frame(
   ggplot() +
   geom_density(aes(x = value), alpha = 0.5,
                colour = NA, fill = palette["2"]) +
-  geom_boxplot(aes(x = value, y = -0.0001), width = 0.0001,
+  geom_boxplot(aes(x = value, y = -0.001), width = 0.001,
                colour = palette["2"], fill = palette["2"], alpha = 0.25) +
   labs(x = "Destination range (m)", y = "") +
   theme_bw() +
@@ -1030,9 +1052,9 @@ k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65))
 
 ```
 
-# Running the simulation
+## Running the simulation
 
-## Defining other simulation parameters
+### Defining other simulation parameters
 
 We need to initially define a start location for our animal.
 To introduce some more individual variation we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
@@ -1255,7 +1277,9 @@ for(species in vecSpecies){
 }
 ```
 
-# Reviewing observed movements
+# Results
+
+## Reviewing observed movements
 
 Once ran we can review the movement characteristics of the three species.
 The simplest to examine is the movement speeds or step lengths.
@@ -1267,14 +1291,13 @@ The simulated movement will return the scaled values, so to plot something compa
 moveCharPlotList <- vector("list", length = 3)
 names(moveCharPlotList) <- vecSpecies
 for(species in vecSpecies){
-  # species <- vecSpecies[1]
+
   simRes <- simResultsList[[species]]
   
   stepData <- simRes$locations %>%
     mutate(sl = sqrt(
       (x - lag(x))^2 +
-        (y - lag(y))^2) * simRes$inputs$in_rescale ## we have to reapply the rescale to get the proper step lengths
-    )
+        (y - lag(y))^2) * simRes$inputs$in_rescale)
   
   stepTextData <- stepData %>%
     mutate(lessShelter = sl < simRes$inputs$in_sSiteSize) %>%
@@ -1329,11 +1352,6 @@ for(species in vecSpecies){
       geom_density(aes(x = sl),
                    fill = palette[names(palette) == beh],
                    colour = NA) +
-      # facet_wrap(behave~., ncol = 1, scales = "free_y",
-      #            labeller = labeller(.cols = c("0" = "0 - Rest",
-      #                                          "1" = "1 - Explore",
-      #                                          "2" = "2 - Forage"))
-      # ) +
       scale_fill_manual(values = palette[c("0", "1", "2")]) +
       theme_bw() +
       theme(legend.position = "none",
@@ -1365,11 +1383,6 @@ for(species in vecSpecies){
       ggplot() +
       geom_histogram(aes(x = ta, fill = as.factor(behave)),
                      colour = NA, binwidth = 10) +
-      # facet_wrap(behave~., ncol = 1,
-      #            labeller = labeller(.cols = c("0" = "0 - Rest",
-      #                                          "1" = "1 - Explore",
-      #                                          "2" = "2 - Forage"))
-      # ) +
       scale_x_continuous(breaks = seq(-135, 180, 45),
                          limits = c(-180, 180),
                          expand = c(0,0)
@@ -1432,33 +1445,40 @@ for(species in vecSpecies){
 
 ```
 
-```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="...."}
+```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="The Badger example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["BADGER"]]
 
 ```
 
-```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="The Vulture example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["VULTURE"]]
 
 ```
 
-```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="...."}
+```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=7, fig.cap="The King Cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["KINGCOBRA"]]
 
 ```
 
-We can compare the inputs from Figure \@ref(fig:BADGERsettingMoveDes) to the observed outputs in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
+We can compare the inputs from Figure \@ref(fig:BADGERsettingMoveDesPlot) to the observed outputs in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
 The turn angles are more variable, as the destination decisions and attraction to locations heavily influence the distribution overriding the parametrisation of the Von Mises.
-Figures \@ref(fig:VULTUREsettingMoveDes) and \@ref(fig:KINGCOBRAsettingMoveDes) describe the inputs for the Vulture and King Cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure).
+Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveDesPlot) describe the inputs for the Vulture and King Cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure).
 Figures \@ref(fig:BADGERmoveCharFigure), \@ref(fig:VULTUREmoveCharFigure), and \@ref(fig:KINGCOBRAmoveCharFigure) also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
 The King Cobra example in particular highlights the prolonged near weekly resting periods.
 
-# Mapping movements
+## Mapping movements
 
-```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="...."}
+We can review how the movements appear in space.
+With the Badger example the impact of the avoidance points is clearly visible [Figure \@ref(fig:mapsFigure)a], whereas the lack of or weaker avoidance in Vulture [Figure \@ref(fig:mapsFigure)b] and King Cobra [Figure \@ref(fig:mapsFigure)c] makes the avoidance less influential.
+The Vulture's movements and chosen foraging locations are largely to the east.
+This demonstrates the impact of decreased foraging quality we simulated via the foraging quality environmental layer; we reduced the weighting of reduced all cells west of x 950 by 0.6.
+Foraging differences are also very apparent in the King Cobra plot.
+The highlighted sheltering behaviour means that the King Cobra made fewer shifts to the foraging behaviour resulting in fewer dynamically selected foraging destinations.
+
+```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
@@ -1476,7 +1496,7 @@ for(species in vecSpecies){
                            "<span style='color:#7D26D4'>B - Vulture</span>",
                            "<span style='color:#AD6DED'>C - King Cobra</span>")
                   ),
-                  subtitle = paste0("Each cell == ",
+                  subtitle = paste0("Each cell = ",
                                     simResultsList[[species]]$inputs$in_rescale, "m")
     ) +
     ggplot2::theme(legend.position = "none",
@@ -1494,17 +1514,17 @@ for(species in vecSpecies){
     scale_x_continuous(breaks = seq(0,2000,250)) +
     scale_y_continuous(breaks = seq(0,2000,250))
   
-  if(species == "BADGER"){
-    tempPlot <- tempPlot +
-      ggplot2::theme(axis.text.y = ggplot2::element_text(),
-                     axis.title.y = ggplot2::element_text(hjust = 0.5,
-                                                          vjust = 0.5))
-  }
-  if(species == "VULTURE"){
-    tempPlot <- tempPlot +
-      ggplot2::theme(axis.title.x = ggplot2::element_text(hjust = 0.5,
-                                                          vjust = 0.5))
-  }
+  # if(species == "BADGER"){
+  #   tempPlot <- tempPlot +
+  #     ggplot2::theme(axis.text.y = ggplot2::element_text(),
+  #                    axis.title.y = ggplot2::element_text(hjust = 0.5,
+  #                                                         vjust = 0.5))
+  # }
+  # if(species == "VULTURE"){
+  #   tempPlot <- tempPlot +
+  #     ggplot2::theme(axis.title.x = ggplot2::element_text(hjust = 0.5,
+  #                                                         vjust = 0.5))
+  # }
   
   mapPlotList[[species]] <- tempPlot
   
@@ -1514,11 +1534,172 @@ patchwork::wrap_plots(mapPlotList, ncol = 3)
 
 ```
 
--   would be nice to have a faceted plot, where column one are rasters with attraction points, and column two are the observed movements, each row is each behavioural state highlight (other points are greyed out)
+```{r oneMonthMapFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=5, fig.height=5, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra) over the first month of time steps. Grey path shows the overall movement during that month, overlaid points indicate where the animal was in a given behavioural mode. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points, black squares show the dynamically selected foraging destinations. Note that the size represented by each unit on the x and y axis differs depending on the species."}
 
-# Reviewing behavioural state cycling
+speciesMapPlotList <- vector("list", length = length(vecSpecies))
+names(speciesMapPlotList) <- vecSpecies
+for(species in vecSpecies){
+  
+  realisedData <- simResultsList[[species]]$locations
+  
+  timeLimits <- c(1, 60*24*31)
+  
+  if(!is.na(timeLimits[1]) & !is.na(timeLimits[2])){
+    realisedData <- realisedData[realisedData$timestep > timeLimits[1] &
+                                   realisedData$timestep < timeLimits[2],]
+  }
+  
+  realisedData$behave[realisedData$behave == 0] <- "0 - Shelter"
+  realisedData$behave[realisedData$behave == 1] <- "1 - Explore"
+  realisedData$behave[realisedData$behave == 2] <- "2 - Forage"
+  
+  shelterLocations <- data.frame(
+    "x" = simResultsList[[species]]$inputs$in_shelter_locs_x,
+    "y" = simResultsList[[species]]$inputs$in_shelter_locs_y
+  )
+  
+  avoidance <- data.frame(
+    "x" = simResultsList[[species]]$inputs$in_avoidPoints_x,
+    "y" = simResultsList[[species]]$inputs$in_avoidPoints_y
+  )
+  
+  behaveVec <- c("0 - Shelter",
+                 "1 - Explore",
+                 "2 - Forage")
+  
+  behPlotList <- vector("list", length = length(behaveVec))
+  names(behPlotList) <- behaveVec
+  for(beh in behaveVec){
+    
+    tempBehPlot <- ggplot2::ggplot() +
+      ggplot2::geom_path(data = realisedData,
+                         size = 0.5,
+                         ggplot2::aes(x = x, y = y),
+                         alpha = 0.45) +
+      ggplot2::geom_point(data = realisedData %>% 
+                            mutate(behBinary = behave == beh) %>% 
+                            arrange(behBinary),
+                          size = 0.1,
+                          pch = ".",
+                          ggplot2::aes(x = x, y = y,
+                                       colour = behBinary),
+                          alpha = 0.45) +
+      ## avoidance
+      ggplot2::geom_point(data = avoidance,
+                          ggplot2::aes(x = x, y = y),
+                          pch = 16,
+                          size = 4, colour = "grey90",
+                          alpha = 1) +
+      ggplot2::geom_point(data = avoidance,
+                          ggplot2::aes(x = x, y = y),
+                          pch = "A",
+                          size = 3, colour = "grey10",
+                          alpha = 1) +
+      scale_colour_manual(values = c("grey75", ifelse(beh == "0 - Shelter", 
+                                                      unname(palette["0"]),
+                                                      ifelse(beh == "1 - Explore",
+                                                             unname(palette["1"]),
+                                                             unname(palette["2"])))
+      )) +
+      ggplot2::coord_fixed(xlim = range(realisedData$destination_x)+c(-50, +50),
+                           ylim = range(realisedData$destination_y)+c(-50, +50),
+                           expand = TRUE) +
+      ggplot2::theme_bw() +
+      ggplot2::theme(aspect.ratio = 1,
+                     legend.position = "none",
+                     legend.justification = "top",
+                     legend.title = ggplot2::element_text(face = 2),
+                     legend.key.width = ggplot2::unit(5, "mm"),
+                     legend.key.height = ggplot2::unit(10, "mm"),
+                     axis.title = ggplot2::element_blank(),
+                     panel.background = ggplot2::element_blank(),
+                     panel.border = ggplot2::element_blank(),
+                     panel.grid = ggplot2::element_blank(),
+                     plot.title = element_markdown(size = 12, face = 4),
+                     plot.subtitle = element_markdown(size = 8, face = 4),
+                     axis.line = ggplot2::element_line(size = 0.5)) +
+      ggplot2::guides(shape = ggplot2::guide_legend(override.aes = list(size = 4,
+                                                                        alpha = 1),
+                                                    direction = "vertical",
+                                                    title.position = "top",
+                                                    title.hjust = 0,
+                                                    label.vjust = 0.5,
+                                                    label.hjust = 0,
+                                                    label.position = "right")) +
+      ggplot2::labs(x = "X", y = "Y",
+                    shape = "Behaviour",
+                    fill = "Environmental\nquality",
+                    subtitle = case_when(
+                      beh == "0 - Shelter" ~ "<span style='color:#302010'>0 - Shelter</span>",
+                      beh == "1 - Explore" ~ "<span style='color:#965A1D'>1 - Explore</span>",
+                      beh == "2 - Forage" ~ "<span style='color:#E87D13'>2 - Forage</span>"
+                    ),
+                    title = ifelse(beh == "0 - Shelter",
+                                   ifelse(species == "BADGER",
+                                          "<span style='color:#4F0E99'>A - Badger</span>",
+                                          ifelse(species == "VULTURE",
+                                                 "<span style='color:#7D26D4'>B - Vulture</span>",
+                                                 "<span style='color:#AD6DED'>C - King Cobra</span>")),
+                                   ""))
+    
+    if(beh == "0 - Shelter"){
+      
+      tempBehPlot <- tempBehPlot +
+        ## shelter
+        ggplot2::geom_point(data = shelterLocations,
+                            ggplot2::aes(x = x, y = y),
+                            pch = 16,
+                            size = 4, colour = palette["0"],
+                            alpha = 1) +
+        ggplot2::geom_point(data = shelterLocations,
+                            ggplot2::aes(x = x, y = y),
+                            pch = "S",
+                            size = 3, colour = "grey90",
+                            alpha = 1)
+    } else if(beh == "2 - Forage"){
+      tempBehPlot <- tempBehPlot +
+        ## forage
+        ggplot2::geom_point(data = realisedData %>%
+                              filter(!duplicated(destination_x) & !duplicated(destination_y)),
+                            ggplot2::aes(x = destination_x, y = destination_y),
+                            pch = 15,
+                            size = 0.45, colour = "#191919",
+                            alpha = 1)
+    }
+    
+    behPlotList[[beh]] <- tempBehPlot 
+  }
+  
+  spComboPlot <- (behPlotList[["0 - Shelter"]] +
+                    theme(axis.text.x = element_blank(),
+                          axis.title.x = element_blank())) /
+    (behPlotList[["1 - Explore"]] +
+       theme(axis.text.x = element_blank(),
+             plot.title = element_blank(),
+             axis.title.x = element_blank())) /
+    (behPlotList[["2 - Forage"]] +
+       theme(plot.title = element_blank()))
+  
+  speciesMapPlotList[[species]] <- spComboPlot
+  
+}
 
-```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=8, fig.height=14, fig.cap="...."}
+wrap_plots(speciesMapPlotList[["BADGER"]],
+           speciesMapPlotList[["VULTURE"]],
+           speciesMapPlotList[["KINGCOBRA"]])
+```
+
+## Reviewing behavioural state cycling
+
+The activity cycles and the timing of behavioural shifts is a key component in the simulations.
+We can examine that the predefined cycles are resulting in expected patterns.
+A year worth of data makes observing all but the broadest cycles difficult to visualise, so in Figure \@ref(fig:cycleFigure) we can look at several months worth of day as well as the daily cycle.
+Badger and Vulture daily cycles are largely the same [Figure \@ref(fig:cycleFigure)a & b], with a consistent daily activity cycle differing only slightly in the time spent active and balance between shifts from sheltering to foraging and exploring.
+Some of the differences are a result of the different behavioural transition matrix provided to simulated the two species, where both had different baseline probabilities of shifting between behavioural states.
+By contrast, the King Cobra example demonstrates the interaction between the daily and weekly cycle we input [Figure \@ref(fig:cycleFigure)].
+We can see we intermittently get extended sheltering periods, punctuated by short exploratory or foraging bouts.
+
+```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=8, fig.height=14, fig.cap="The observered (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. Note that the input waves acting on the simulated animal in conjunction with the beahvioural transition matrix."}
 
 cyclePlotList <- vector("list", length = 3)
 names(cyclePlotList) <- vecSpecies
@@ -1635,7 +1816,10 @@ patchwork::wrap_plots(cyclePlotList, ncol = 1)
 
 ```
 
-We can check the number of time steps in each behavioural state throughout the year. 
+At the daily and monthly scale we cannot see the impact of the broad scale seasonal cycles.
+Instead we can look at the percentage of time steps per day the animal was in sheltering behaviour [Figure \@ref(fig:cycleSeasonalFigure)].
+Again the Badger and Vulture sheltering rates are similar, differing in intensity, but with both demonstrating a seasonal decrease in the middle of the simulation.
+The King Cobra cycles reveals an decrease in the number of days spent entirely sheltering, and an overall impression that the seasonal cycle is less influential (as it is only one of three activity cycles).
 
 ```{r cycleSeasonalFigure, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.align='center', fig.width=8, fig.height=5, fig.cap="...."}
 
