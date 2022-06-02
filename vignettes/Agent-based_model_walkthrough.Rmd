@@ -308,7 +308,7 @@ To achieve this we assign cells with values between 0.6 and 0.3 a higher foragin
 For this example we do not connect movement ease to any other resource layer, but equally one could introduce any about of correlation between the three layers.
 
 ```{r rfOptions, echo = FALSE, eval=TRUE}
-RandomFields::RFoptions(install="no")
+# RandomFields::RFoptions(install="no")
 ```
 
 ```{r landscapeLayers, echo=FALSE, eval=TRUE}
@@ -1478,7 +1478,7 @@ This demonstrates the impact of decreased foraging quality we simulated via the 
 Foraging differences are also very apparent in the King Cobra plot.
 The highlighted sheltering behaviour means that the King Cobra made fewer shifts to the foraging behaviour resulting in fewer dynamically selected foraging destinations.
 
-```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
+```{r mapsFigure, echo=FALSE, eval=FALSE, warning=FALSE, fig.align='center', fig.width=5, fig.height=2.25, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
