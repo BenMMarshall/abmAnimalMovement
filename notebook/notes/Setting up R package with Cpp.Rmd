@@ -1,0 +1,90 @@
+---
+title: "Setting up R package with Cpp"
+author: "Benjamin Michael Marshall"
+date: "03/11/2021"
+output: html_document
+---
+
+Setting up a new project in a R package format (with Cpp additions)
+
+Need 
+install.packages("devtools")
+install.packages("roxygen2")
+
+Make git repo
+
+Clone git repo to computer
+
+Run usethis::create_package(getwd()) to genereate the r package files
+
+Run roxygen2::roxygenise() to produce man folder for docuemtnation
+
+Add
+LinkingTo: Rcpp
+Imports: Rcpp
+To the DESRCIPTION file
+
+Make sure your NAMESPACE includes:
+useDynLib(mypackage)
+importFrom(Rcpp, sourceCpp)
+you can use usethis::use_rcpp() to achieve this
+Rcpp::Rcpp.package.skeleton() will alo do some of this
+
+Run 
+dir.create("./src/")
+to make location for Cpp files
+
+use devtools::document() to generate exported function documentation
+
+
+Rcpp::compileAttributes()
+may be needed for making Cpp function available in R, but requires in // [[Rcpp::export]] in the function file
+
+this builds a package level document that is needed to use Rcpp in package
+usethis::use_package_doc()
+
+This is needed in the R function so it can find the Cpp function
+#' @useDynLib abmAnimalMovement
+
+
+## For compiling with visualstudio and heavy installs
+# not sure if needed because rcpp uses Rtools
+
+https://sourceforge.net/projects/mingw/
+https://techsupportwhale.com/install-gcc-compiler-on-windows/
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+```{r definePalette, include=FALSE, eval=TRUE}
+palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
+names(palette) <- c("purp1", "purp2", "purp3", "2", "1", "0")
+```
+
+```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
+
+data.frame(
+  names = names(palette),
+  hexcodes = palette
+) %>% 
+  ggplot() +
+  geom_col(
+    aes(x = names, y = 1, fill = names)
+  ) +
+  geom_text(
+    aes(x = names, y = 0.5, label = names),
+    vjust = 0.5, hjust = 0.5, colour = "white",
+    fontface = 2, size = 7
+  ) +
+  geom_text(
+    aes(x = names, y = 0.4, label = hexcodes),
+    vjust = 1, hjust = 0.5, colour = "white",
+    fontface = 3, size = 3
+  ) +
+  scale_x_discrete(position = "top") +
+  scale_fill_manual(values = palette) +
+  theme_void() +
+  theme(legend.position = "none")
+
+```

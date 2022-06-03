@@ -1,0 +1,72 @@
+<!-- "Badgers moved with an average speed of 0.9 km/hour." that's 0.25 m/s -->
+<!-- Badgers travelled, on average, 7.0 km per 24-hour peri-od (Table 1) -->
+<!-- Mean DMD during the nights when badgers returned to the same sett at the end of their activity period, did not differ when compared to nights when badgers changed setts -->
+<!-- In summer, when the abundance of earthworms reached its seasonal lowest level (see Kowalczyk et al. 2003b), badgers every night searched an area nearly two-fold larger than in spring, and over three times larger than in autumn (see Table 2). -->
+<!-- Badgers moved more than twice as fast after the emergence and before the return to their sett than during the peak of their activity period (ANOVA: F = 4.11, P < 0.0005). When watching badgers at setts, we observed that bad- gers spent very short time around the sett, and then, as recorded by radio- tracking, they moved away fast for as long as 1-2 km. They slowed down when they reached a feeding patch. -->
+<!-- The maximal speed of movement recorded for individual badgers varied from 2.5 to 7.1 km/hour, on average 4.7 ± 1.6 km/hour. -->
+<!-- https://bioone.org/journals/wildlife-biology/volume-12/issue-4/0909-6396(2006)12[385:DMATUB]2.0.CO;2/Daily-movement-and-territory-use-by-badgers-Meles-meles-in/10.2981/0909-6396(2006)12[385:DMATUB]2.0.CO;2.pdf -->
+kowalczyk_daily_2006
+max speed of 2 m/s, but average of 0.25 m/s
+7km travel in night == 3.5km forage movement distance?
+explore movements fast
+
+magowan_dead-reckoning_2022
+<!-- Badgers were predominantly nocturnal, emerging from the sett close to sunset (mean first emergence time=20:12) and returning close to sunrise (mean last sett return time=06:33) (Fig. 2). The time the badgers spent above ground, outside their sett, varied from 4 h 54 min to 10 h 22 min. -->
+<!-- https://link.springer.com/article/10.1186/s40317-022-00282-2#Sec9 -->
+active for 5 to 11 hours
+
+rosalino_activity_2005
+<!-- Badgers were mainly nocturnal, starting activity between 0:30h before and 2:00h after sunset (in 75% of the cases), and ending it between 2:00h before and 0:30h after sunrise (in 78% of the cases). They spent on average 8.26 hours (SE = 0.29, range: 0.3-11.78) active per day (winter: 8.48h, SE = 0.53; spring: 8.43h, SE = 0.44; sum-mer: 8.43h, SE = 0.35; autumn: 7.83h, SE = 0.81), with no inactive intervals in between (Fig. 2).  -->
+<!-- fig 1 and 2 of this paper are great example of the activity cycling idea -->
+<!-- On average badgers travelled a minimum of 4377 m (SE = 239, range: 0-9159) per daily activity period. -->
+<!-- The mean distance between setts used on consec- utive days was 294 m  -->
+<!-- https://doi.org/10.1515/mamm.2005.031 -->
+active for avg 8 hours
+min of 4.3 km per night so 2km distance forage destination
+setts on avg 294m apart
+
+loureiro_path_2007
+<!-- The total distance travelled by badgers in one night was estimated to vary from 1.69 to 9.16 km; -->
+<!-- https://doi.org/10.1007/s11284-006-0325-0 -->
+travel distance 1.7 to 9 km, so 0.5 to 4.5 km destination distance
+
+kelly_extra_2020
+
+
+### VULTURE
+
+garcia-jimenez_drivers_2018
+<!-- the maximum mean cumulative distance travelled was c. 42 km -->
+<!-- max of 4.5km for hourly distance, mean at mid day of 1.1 km, however max of terroirtiary birds was 3km -->
+<!-- near perfect 12 hour cycle -->
+<!-- females showed higher flight activity than males, performing maximum distances travelled per day of 14.31 ± 28.93 km, ..., in contrast with males which travelled mean maximum day distances of 5.07 ± 6.76 km  -->
+<!-- seasonality -->
+4.5 kph == 1.25 m/s, 1.1 kph == 0.3 m/s
+~ 7km max distance forage, with mean of ~2.5km
+
+hribsek_first_2021
+<!-- The maximum distance covered in a particular day was 122.4 km in 2012, and 80.3 km in 2013. The median daily distances varied across seasons (Table 3) with the largest values observed during the summer of 2013 but without statistically significant differences between years -->
+huge distances here, very different, think we'll avoid these because of the huge raster that would be needed
+
+margalida_spatial_2016
+<!-- Non-territorial adults recorded the highest mean daily movements at 46.1 ± 41.4 km, the maximum distance travelled by a bearded vulture in one day being 259.5 km. Territorial adults moved a mean of 23.8 ± 20.9km per day but with an average maximum distance reached from the initial point per day of 8.2 ± 12km -->
+<!-- Avg hourly dist. (km) between 0 and 70, most individual avgs were around 4 km/hour -->
+23 km a day ~ 2 kph == 0.5 m/s, but also could be around 1 m/s
+~ 8 km distance for foraging
+
+peshev_new_2021
+<!-- seasonality -->
+
+silva_seasonal_2017
+<!-- seasonality and daily cycles impact fix rates, key source of location data bias -->
+
+subedi_spatial_2020
+<!-- Mean hourly distances ranged from 2.3 +- 2.8 km for adults to 3.1 +- 4.5 km for immatures -->
+<!-- daily distances ranged from 17.6 +- 14.0 km in adults to 28.2 +- 23.7 km in immatures -->
+<!-- seasonality -->
+2.3 kph to 4.5 kph ~ 0.64 - 1.25 m/s
+again about 8-10 km travel out could be ok
+
+ <!-- field guides are a weaker fall back for some extra details: https://www.allaboutbirds.org/news/information-seekers-roosting-black-vultures -->
+ 
+### KING COBRA

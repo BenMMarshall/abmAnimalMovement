@@ -1,0 +1,9 @@
+---
+title: "Setting up R package with Cpp"
+author: "Benjamin Michael Marshall"
+date: "03/11/2021"
+output: html_document
+---
+
+https://ulriklyngs.com/post/2021/12/02/how-to-adapt-any-latex-template-for-use-with-r-markdown-in-four-steps/
+
