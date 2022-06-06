@@ -24,9 +24,9 @@
 % Define the versionDate and flogo commands
 \newcommand{\versionDate}{\footnotesize F1000Research \number \year - DRAFT ARTICLE}
 \newcommand{\flogo}{\includegraphics[height=12pt]{F1000header.png}}
-  
+
 % Section heading styles
-\usepackage[compact]{titlesec} 
+\usepackage[compact]{titlesec}
 
 \titleformat*{\section}{\large\usefont{OT1}{phv}{b}{n}\color{heading1}}
 \titleformat*{\subsection}{\large\usefont{OT1}{phv}{n}{n}\color{heading2}}
@@ -69,7 +69,7 @@
 % Page margins, headers and footers
 \pagestyle{fancy}
 \setlength\parindent{0in}
-%\setlength\parskip{0.1in}
+\setlength\parskip{0.1in}
 \setlength\headheight{16.5pt}
 \renewcommand{\footrulewidth}{1pt}
 \lhead{\textsc{\flogo}}
@@ -89,7 +89,7 @@
 \renewcommand\@maketitle{%
 \begin{minipage}{0.95\textwidth}
 \vskip 2em
-\let\footnote\thanks 
+\let\footnote\thanks
 {\fontsize{20}{22}\usefont{OT1}{phv}{b}{n}\color{titleColour} \@title \par \color{black} {\normalsize{\@titlenote}} }
 \vskip 1.5em
 {\@author \par}
@@ -101,12 +101,12 @@
 \renewcommand\Affilfont{\fontsize{10}{12}\usefont{OT1}{phv}{b}{n}}
 
 % Default figure position
-\makeatletter 
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
 %Default table position
-\makeatletter 
+\makeatletter
 \def\fps@table{htbp}
 \makeatother
 
