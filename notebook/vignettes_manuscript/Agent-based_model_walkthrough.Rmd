@@ -119,11 +119,11 @@ A new independently developed approach to simulating animal movement will provid
 
 ## Overview of the agent-based model
 
-The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
+The *abmAnimalMovement* package provides functionality to simulate animal movements via an agent-based model.
 We wrote the model using *C++* via *Rcpp* `r paste0("v.", packageVersion("Rcpp"))` package [@Eddelbuettel_seamless_2011; @Eddelbuettel_seamless_2013; @Eddelbuettel_extending_2018] to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages [@joo_recent_2022; @joo_navigating_2020].
 
 The model aims simulates animal locations over a given period of time at discrete time steps.
-At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations [Figure \@ref(fig:animatedDiagram)], and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
+At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations [Figure \@ref(fig:walkDiagram)], and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state; (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement [@Tang2010; @Nathan2008].
 
@@ -134,9 +134,14 @@ The resulting step length, combined with a turn angle describes the change in an
 We will largely define these based on the movement capacity of the animal over a minute.
 
 As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
-We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour.
+We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour [Figure \@ref(fig:transMatrixDiagram)].
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are considering the time steps to be a minute.
+
+``` {r transMatrixDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
+knitr::include_graphics(here::here("notebook", "ext_figures", "Tranistion Matrix Diagram.png"))
+
+```
 
 ```{r transMatrix, echo=FALSE, eval=TRUE}
 
@@ -153,26 +158,26 @@ We describe a number of cycles (or waves) that can be applied to the core transi
 We can define as many cycles as needed, and they impact the resting probability additively.
 
 When entering the resting state the animal will seek out a shelter site.
-In the abmAnimalMovement package, we can supply a number of shelter sites to simulate this need and create site fidelity.
+In the *abmAnimalMovement* package, we can supply a number of shelter sites to simulate this need and create site fidelity.
 As these shelter sites at as points of attraction for the animal for each rest, the animal occupies a consistent area, or something approximating a home range.
 Home ranges are mean to represent areas in which the animal can source all resources required for a given life stage.
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
 Using a point (or points) of attraction, is an approach that has reoccurred in movement and population ecology studies.
-As the abmAnimalMovement model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
+As the *abmAnimalMovement* model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
 
-``` {r animatedDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, fig.cap="An animated example of how the destination decision underlies the movement decisions and creates a random walk."}
-if (knitr:::is_latex_output()) {
-knitr::include_graphics(here::here("notebook", "ext_figures", "placeholder-150x150.png"))
-} else {
-knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram.gif"))
-}
+``` {r walkDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
+# if (knitr:::is_latex_output()) {
+knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram Static.png"))
+# } else {
+# knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram.gif"))
+# }
 
 ```
 
-In addition to the predefined attraction to shelter sites, the abmAnimalMovement package allows for a more dynamic attraction to areas of high resource quality.
+In addition to the predefined attraction to shelter sites, the *abmAnimalMovement* package allows for a more dynamic attraction to areas of high resource quality.
 As movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors [@Scharf2018]; or the habitat decisions may occur at scales much broader to movement [@Bastille-Rousseau2017].
 Therefore, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
-When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction [Figure \@ref(fig:animatedDiagram)].
+When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction [Figure \@ref(fig:walkDiagram)].
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move) options closer to the foraging destination.
 Therefore, foraging destination choice operates on a different time frame to the movement and allows movements through low-quality foraging areas.
 This presents a critical benefit of the simulation approach, as we define the internal state decision making process of the animal.
@@ -197,7 +202,7 @@ None of the created examples are meant to directly match previously collected da
 ## Required libraries
 
 First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
-Only the abmAnimalMovement package is required for running the core simulation.
+Only the *abmAnimalMovement* package is required for running the core simulation.
 
 ```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
 library(abmAnimalMovement)

@@ -134,9 +134,9 @@ For example, space use has been tied directly to body size connected via the ene
 
 The information gathered from animal movement studies is only as robust as the methods and analysis applied.
 In the past decade the volume of animal data has exploded (\protect\hyperlink{ref-joo_recent_2022}{6},\protect\hyperlink{ref-wild_internet_2022}{7}), and the infrastructure for collating that data has improved drastically (\protect\hyperlink{ref-kays_movebank_2022}{8}).
-There are stand out examples of novel methods {[}(\protect\hyperlink{ref-saunders_radio-tracking_2022}{9}); {]}, and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., (\protect\hyperlink{ref-studd_purrfect_2021}{5})).
+There are stand out examples of novel methods (\protect\hyperlink{ref-saunders_radio-tracking_2022}{9}), and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., (\protect\hyperlink{ref-studd_purrfect_2021}{5})).
 However, the on the whole analysis approaches to maximise the information extracted has arguably lagged behind the technological and data improvements (\protect\hyperlink{ref-joo_recent_2022}{6}).
-The bodily cost of attaching bio-telemetry devices (with examples from reptiles \protect\hyperlink{ref-Weatherhead2004}{10},mammals \protect\hyperlink{ref-robstad_impact_2021}{11},and birds \protect\hyperlink{ref-portugal_externally_2022}{12}), as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the values/impact of the data collected.
+The bodily cost of attaching bio-telemetry devices {[}with examples from reptiles (\protect\hyperlink{ref-Weatherhead2004}{10}); mammals (\protect\hyperlink{ref-robstad_impact_2021}{11}); and birds (\protect\hyperlink{ref-portugal_externally_2022}{12}){]}, as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the values/impact of the data collected.
 
 Maximise the value of data should include ensuring that results gained are robust and replicable.
 Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought (\protect\hyperlink{ref-clark_ocean_2020}{13}--\protect\hyperlink{ref-wang_irreproducible_2018}{16}).
@@ -155,7 +155,7 @@ A potential solution is virtual ecology: where synthetic data is simulated to co
 Exploration of analysis methods using simulations can yield useful insights even for widely used techniques (e.g., GLMMs (\protect\hyperlink{ref-debruine_understanding_2021}{23})).
 Such an approach has the potential to adequately recreate the complex emergent properties that could hamper analyses (\protect\hyperlink{ref-debruine_understanding_2021}{23}).
 The suite of tools for simulating aspects of ecological systems (\protect\hyperlink{ref-guerracastro_ssp_2021}{27}) is growing, and some are explicitly focusing on aiding study design.
-And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict (e.g., snakes \protect\hyperlink{ref-goldstein_integrating_2021}{28},tigers \protect\hyperlink{ref-Ahearn2001}{29}).
+And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict {[}e.g., snakes (\protect\hyperlink{ref-goldstein_integrating_2021}{28}); tigers (\protect\hyperlink{ref-Ahearn2001}{29}){]}.
 
 Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment (\protect\hyperlink{ref-theng_confronting_2022}{30}).
 There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort (\protect\hyperlink{ref-howe_distance_2017}{31}); (\protect\hyperlink{ref-cappelle_estimating_2021}{32})) and analyses (e.g., accounting for species interactions (\protect\hyperlink{ref-kellner_two-species_2022}{33}), or difficult to account for variation in populations (\protect\hyperlink{ref-milleret_estimating_2022}{34})).
@@ -192,11 +192,11 @@ A new independently developed approach to simulating animal movement will provid
 \hypertarget{overview-of-the-agent-based-model}{%
 \subsection{Overview of the agent-based model}\label{overview-of-the-agent-based-model}}
 
-The abmAnimalMovement package provides functionality to simulate animal movements via an agent-based model.
+The \emph{abmAnimalMovement} package provides functionality to simulate animal movements via an agent-based model.
 We wrote the model using \emph{C++} via \emph{Rcpp} v.1.0.8.3 package (\protect\hyperlink{ref-Eddelbuettel_seamless_2011}{44}--\protect\hyperlink{ref-Eddelbuettel_extending_2018}{46}) to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages (\protect\hyperlink{ref-joo_recent_2022}{6},\protect\hyperlink{ref-joo_navigating_2020}{47}).
 
 The model aims simulates animal locations over a given period of time at discrete time steps.
-At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations {[}Figure \ref{fig:animatedDiagram}{]}, and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see (\protect\hyperlink{ref-sridhar_geometry_2021}{2}) for an example of the latter).
+At each time step the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations {[}Figure \ref{fig:walkDiagram}{]}, and will chose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see (\protect\hyperlink{ref-sridhar_geometry_2021}{2}) for an example of the latter).
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state; (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement (\protect\hyperlink{ref-Tang2010}{40},\protect\hyperlink{ref-Nathan2008}{48}).
 
@@ -207,9 +207,18 @@ The resulting step length, combined with a turn angle describes the change in an
 We will largely define these based on the movement capacity of the animal over a minute.
 
 As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
-We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour.
+We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour {[}Figure \ref{fig:transMatrixDiagram}{]}.
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are considering the time steps to be a minute.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{../ext_figures/Tranistion Matrix Diagram} 
+
+}
+
+\caption{A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step.}\label{fig:transMatrixDiagram}
+\end{figure}
 
 \begin{verbatim}
 ##      [,1]  [,2]    [,3]
@@ -223,26 +232,26 @@ We describe a number of cycles (or waves) that can be applied to the core transi
 We can define as many cycles as needed, and they impact the resting probability additively.
 
 When entering the resting state the animal will seek out a shelter site.
-In the abmAnimalMovement package, we can supply a number of shelter sites to simulate this need and create site fidelity.
+In the \emph{abmAnimalMovement} package, we can supply a number of shelter sites to simulate this need and create site fidelity.
 As these shelter sites at as points of attraction for the animal for each rest, the animal occupies a consistent area, or something approximating a home range.
 Home ranges are mean to represent areas in which the animal can source all resources required for a given life stage.
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
 Using a point (or points) of attraction, is an approach that has reoccurred in movement and population ecology studies.
-As the abmAnimalMovement model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
+As the \emph{abmAnimalMovement} model can have multiple attraction (rest) sites supplied we can simulate home ranges with unequal and behavioural influenced space use.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.5in]{../ext_figures/placeholder-150x150} 
+{\centering \includegraphics[width=0.8\linewidth]{../ext_figures/Simulation Process Diagram Static} 
 
 }
 
-\caption{An animated example of how the destination decision underlies the movement decisions and creates a random walk.}\label{fig:animatedDiagram}
+\caption{A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step.}\label{fig:walkDiagram}
 \end{figure}
 
-In addition to the predefined attraction to shelter sites, the abmAnimalMovement package allows for a more dynamic attraction to areas of high resource quality.
+In addition to the predefined attraction to shelter sites, the \emph{abmAnimalMovement} package allows for a more dynamic attraction to areas of high resource quality.
 As movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors (\protect\hyperlink{ref-Scharf2018}{49}); or the habitat decisions may occur at scales much broader to movement (\protect\hyperlink{ref-Bastille-Rousseau2017}{1}).
 Therefore, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
-When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction {[}Figure \ref{fig:animatedDiagram}{]}.
+When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction {[}Figure \ref{fig:walkDiagram}{]}.
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move) options closer to the foraging destination.
 Therefore, foraging destination choice operates on a different time frame to the movement and allows movements through low-quality foraging areas.
 This presents a critical benefit of the simulation approach, as we define the internal state decision making process of the animal.
@@ -269,7 +278,7 @@ None of the created examples are meant to directly match previously collected da
 \subsection{Required libraries}\label{required-libraries}}
 
 First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
-Only the abmAnimalMovement package is required for running the core simulation.
+Only the \emph{abmAnimalMovement} package is required for running the core simulation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
