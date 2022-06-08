@@ -4,12 +4,12 @@
 \name{abmAnimalMovement-package}
 \alias{abmAnimalMovement}
 \alias{abmAnimalMovement-package}
-\title{abmAnimalMovement: What the Package Does (One Line, Title Case)}
+\title{abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-based Model}
 \description{
 What the package does (one paragraph).
 }
 \author{
-\strong{Maintainer}: Benjamin Marshall \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Benjamin Marshall \email{benjaminmichaelmarshall@gmail.com} (\href{https://orcid.org/0000-0001-9554-0605}{ORCID})
 
 }
 \keyword{internal}

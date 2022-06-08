@@ -115,7 +115,7 @@ cpp_get_values <- function(MATRIX, XLOCS, YLOCS) {
 
 #' Get maximum or minimum value
 #' @name cpp_max/cpp_min
-#' @param x A vector of doubles to the max/min found.
+#' @param x A vector of doubles to have the max/min found.
 #' @return The maximum or minimum value in the vector.
 NULL
 
@@ -160,15 +160,5 @@ cpp_sample_options <- function(W, SEED) {
 #'
 cpp_vonmises <- function(N, MU, KAPPA) {
     .Call('_abmAnimalMovement_cpp_vonmises', PACKAGE = 'abmAnimalMovement', N, MU, KAPPA)
-}
-
-#' Find max
-#' @name find_max
-#' @param vect a
-#' @return index of max
-NULL
-
-find_max <- function(vect) {
-    .Call('_abmAnimalMovement_find_max', PACKAGE = 'abmAnimalMovement', vect)
 }
 

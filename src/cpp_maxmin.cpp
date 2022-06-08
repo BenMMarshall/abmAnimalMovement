@@ -2,7 +2,7 @@
 
 //' Get maximum or minimum value
 //' @name cpp_max/cpp_min
-//' @param x A vector of doubles to the max/min found.
+//' @param x A vector of doubles to have the max/min found.
 //' @return The maximum or minimum value in the vector.
 
 // [[Rcpp::export]]

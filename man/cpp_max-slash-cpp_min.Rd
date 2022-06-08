@@ -4,7 +4,7 @@
 \alias{cpp_max/cpp_min}
 \title{Get maximum or minimum value}
 \arguments{
-\item{x}{A vector of doubles to the max/min found.}
+\item{x}{A vector of doubles to have the max/min found.}
 }
 \value{
 The maximum or minimum value in the vector.
