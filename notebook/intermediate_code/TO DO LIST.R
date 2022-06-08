@@ -1,15 +1,11 @@
 
 # TO DO -------------------------------------------------------------------
 
-## should replace purp123 with species names
 ## fix vulture turn angles? bias left or right>? very much optional
 
 ###### THERE IS A POSSIBLE ISSUE WITH THE FIRST SET OF OPTIONS step 0
 
 ## Maybe we need autocorrelated velocities???
-
-
-
 
 # NOTES -------------------------------------------------------------------
 

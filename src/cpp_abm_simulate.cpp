@@ -394,7 +394,7 @@ Rcpp::List cpp_abm_simulate(
       // an if to make sure the animal doesn't move too far from a shelter site
       // need the initial high timesteps to get there.
       // this could be swapped to maximise the step length if it is far from shelter/centre
-      if(behave_Locations[i] == 0 & currDist < (sSiteSize/rescale) ){
+      if( (behave_Locations[i] == 0) & (currDist < (sSiteSize/rescale)) ){
         step = Rcpp::rgamma(1, behave_k_step, behave_s_step)[0];
         step = step / rescale / 100;
       } else{

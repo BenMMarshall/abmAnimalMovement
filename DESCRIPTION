@@ -1,14 +1,14 @@
 Package: abmAnimalMovement
-Title: What the Package Does (One Line, Title Case)
+Title: An R Package for Simulating Animal Movement Using an Agent-based Model
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Benjamin",
            family = "Marshall",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "benjaminmichaelmarshall@gmail.com",
+           comment = c(ORCID = "0000-0001-9554-0605"))
 Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
