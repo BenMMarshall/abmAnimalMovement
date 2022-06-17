@@ -109,7 +109,7 @@ Please list all authors that played a significant role in writing the article. A
 \\
 \begin{abstract}
 
-Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model programmed in C++ via the Rcpp package, and do not require previous movement data as an input. The simulations include a number of key internal and external movement influecnes, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal aims to avoid. Navigation capacity is governed by the range the animal can dynamically chose a foraging location that it is subsequently attracted to. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are draw at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time frame to the mobility capacity allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
+Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model programmed in C++ via the Rcpp package, and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal aims to avoid. Navigation capacity is governed by the range the animal can dynamically chose a foraging location that it is subsequently attracted to. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are draw at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time frame to the mobility capacity allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
 
 \end{abstract}
 
@@ -135,30 +135,30 @@ For example, space use has been tied directly to body size connected via the ene
 The information gathered from animal movement studies is only as robust as the methods and analysis applied.
 In the past decade the volume of animal data has exploded (\protect\hyperlink{ref-joo_recent_2022}{6},\protect\hyperlink{ref-wild_internet_2022}{7}), and the infrastructure for collating that data has improved drastically (\protect\hyperlink{ref-kays_movebank_2022}{8}).
 There are stand out examples of novel methods (\protect\hyperlink{ref-saunders_radio-tracking_2022}{9}), and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., (\protect\hyperlink{ref-studd_purrfect_2021}{5})).
-However, the on the whole analysis approaches to maximise the information extracted has arguably lagged behind the technological and data improvements (\protect\hyperlink{ref-joo_recent_2022}{6}).
-The bodily cost of attaching bio-telemetry devices {[}with examples from reptiles (\protect\hyperlink{ref-Weatherhead2004}{10}); mammals (\protect\hyperlink{ref-robstad_impact_2021}{11}); and birds (\protect\hyperlink{ref-portugal_externally_2022}{12}){]}, as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the values/impact of the data collected.
+However, the on the whole analysis approaches to maximise the information extracted have arguably lagged behind the technological and data improvements (\protect\hyperlink{ref-joo_recent_2022}{6}).
+The bodily cost of attaching bio-telemetry devices {[}with examples from reptiles (\protect\hyperlink{ref-Weatherhead2004}{10}); mammals (\protect\hyperlink{ref-robstad_impact_2021}{11}); and birds (\protect\hyperlink{ref-portugal_externally_2022}{12}){]}, as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the value/impact of the data collected.
 
-Maximise the value of data should include ensuring that results gained are robust and replicable.
+Maximising the value of data should include ensuring that results gained are robust and replicable.
 Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought (\protect\hyperlink{ref-clark_ocean_2020}{13}--\protect\hyperlink{ref-wang_irreproducible_2018}{16}).
 Whereas lab studies can more feasibly be repeated (although such replications are far from cheap), movement studies conducted on free-ranging wild animals are difficult to repeat while satisfactorily meeting the conditions of the true replication (\protect\hyperlink{ref-fraser_role_2020}{17}).
-It is hard to justify placed bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
+It is hard to justify placing bio-telemetry devices on more animals to repeat a study, especially when they are of conservation concern.
 Studies tend to focus on larger, less vulnerable species (\protect\hyperlink{ref-crane_lots_2021}{18},\protect\hyperlink{ref-tam_quantifying_2021}{19}), but as the benefits of detailed movement data grow we can expect greater demand for tracking species of conservation concern (\protect\hyperlink{ref-Fraser2018}{3}).
 With the limited scope for repeating wild movement studies, and the desire to maximise study-to-benefit ratio for sensitive species, it is imperative that we maximise the quality of the initial studies.
 
 Expanding pre-study planning and developing better approaches to guide study design may provide a partial solution (\protect\hyperlink{ref-williams_optimizing_2020}{20}).
 Study scenarios where researchers have control over the environment, randomisation, and controls can satisfy the assumptions of many statistical approaches (\protect\hyperlink{ref-christie_simple_2019}{21}).
 Movement studies conducted in the wild are fraught with uncontrollable confounding variables and often further restricted by sample sizes limited by ethics, capture rates, and cost of bio-telemetry equipment.
-As the complexity of the research environment increases so must the analytical approach to account for the uncontrollable, but potentially extraneous to the question variables.
+As the complexity of the research environment increases so must the analytical approach to account for the uncontrollable --but potentially extraneous to the question-- variables.
 Testing these analysis approaches, and their limitations therefore becomes more difficult to asses \emph{a priori}.
 
 A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question (\protect\hyperlink{ref-gupta_reserve_2019}{22}).
 Exploration of analysis methods using simulations can yield useful insights even for widely used techniques (e.g., GLMMs (\protect\hyperlink{ref-debruine_understanding_2021}{23})).
 Such an approach has the potential to adequately recreate the complex emergent properties that could hamper analyses (\protect\hyperlink{ref-debruine_understanding_2021}{23}).
-The suite of tools for simulating aspects of ecological systems (\protect\hyperlink{ref-guerracastro_ssp_2021}{27}) is growing, and some are explicitly focusing on aiding study design.
+The suite of tools for simulating aspects of ecological systems (e.g., landscapes \protect\hyperlink{ref-Sciaini2018}{24},genetics \protect\hyperlink{ref-petr_slendr_2022}{25},conservation choices \protect\hyperlink{ref-gupta_reserve_2019}{22},ecological community comparisons \protect\hyperlink{ref-guerracastro_ssp_2021}{26},resource selection \protect\hyperlink{ref-street_solving_2021}{27}) is growing, and some are explicitly focusing on aiding study design.
 And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict {[}e.g., snakes (\protect\hyperlink{ref-goldstein_integrating_2021}{28}); tigers (\protect\hyperlink{ref-Ahearn2001}{29}){]}.
 
 Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment (\protect\hyperlink{ref-theng_confronting_2022}{30}).
-There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort (\protect\hyperlink{ref-howe_distance_2017}{31}); (\protect\hyperlink{ref-cappelle_estimating_2021}{32})) and analyses (e.g., accounting for species interactions (\protect\hyperlink{ref-kellner_two-species_2022}{33}), or difficult to account for variation in populations (\protect\hyperlink{ref-milleret_estimating_2022}{34})).
+There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort \protect\hyperlink{ref-howe_distance_2017}{31},\protect\hyperlink{ref-cappelle_estimating_2021}{32}) and analyses {[}e.g., accounting for species interactions (\protect\hyperlink{ref-kellner_two-species_2022}{33}), or difficult to account for variation in populations (\protect\hyperlink{ref-milleret_estimating_2022}{34}){]}.
 More recently explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, but leaving questions concerning on the findings generalisably when drastically different movement process are present (\protect\hyperlink{ref-theng_confronting_2022}{30}).
 Once validated with real-world data, simulated explorations of study design presents opportunities to understand the trade-offs between effort and precision (\protect\hyperlink{ref-cappelle_estimating_2021}{32}).
 But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes (\protect\hyperlink{ref-abolaffio_avoiding_2019}{35}).
@@ -183,7 +183,7 @@ There are a number of approaches for simulating animal movement including (but n
 
 Here we present an agent-based approach to supplement those existing simulations, which provides a unique combination of features.
 The agent-based approach is well suited to explore a combination of the complexities of animal movement, and the emergent properties.
-Our model requires fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
+Our model does not requires fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
 A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
 
 \hypertarget{methods}{%
@@ -298,7 +298,7 @@ Only the \emph{abmAnimalMovement} package is required for running the core simul
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.2.0 (\protect\hyperlink{ref-R-base}{50}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{51}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{54}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{55},\protect\hyperlink{ref-R-bookdown}{56}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{57},\protect\hyperlink{ref-R-tinytex}{58}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{59}--\protect\hyperlink{ref-R-knitr}{61}) packages to generate type-set outputs.
+We used \emph{R} v.4.1.1 (\protect\hyperlink{ref-R-base}{50}) via \emph{RStudio} v.2022.2.3.492 (\protect\hyperlink{ref-RStudioTeam2021}{51}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{54}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{55},\protect\hyperlink{ref-R-bookdown}{56}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{57},\protect\hyperlink{ref-R-tinytex}{58}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{59}--\protect\hyperlink{ref-R-knitr}{61}) packages to generate type-set outputs.
 We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{62}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{63},\protect\hyperlink{ref-reshape22007}{64}).
 We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{65},\protect\hyperlink{ref-ggplot22016}{66}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{67}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{68}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{69}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{70}).
@@ -823,15 +823,6 @@ The highlighted sheltering behaviour means that the king cobra made fewer shifts
 \caption{The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:mapsFigure}
 \end{figure}
 
-\begin{figure}
-
-{\centering \includegraphics{Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1} 
-
-}
-
-\caption{The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra) over the first month of time steps. Grey path shows the overall movement during that month, overlaid points indicate where the animal was in a given behavioural mode. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points, black squares show the dynamically selected foraging destinations. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:oneMonthMapFigure}
-\end{figure}
-
 \hypertarget{reviewing-behavioural-state-cycling}{%
 \subsection{Reviewing behavioural state cycling}\label{reviewing-behavioural-state-cycling}}
 
@@ -1046,17 +1037,17 @@ Writing -- Review \& Editing:
 \CSLLeftMargin{24. }
 \CSLRightInline{Sciaini M, Fritsch M, Scherer C, Simpkins CE. {NLMR} and landscapetools : {An} integrated environment for simulating and modifying neutral landscape models in {R}. Golding N, editor. Methods in Ecology and Evolution {[}Internet{]}. 2018 Nov;9(11):2240--8. Available from: \url{http://doi.wiley.com/10.1111/2041-210X.13076}}
 
-\leavevmode\vadjust pre{\hypertarget{ref-street_solving_2021}{}}%
-\CSLLeftMargin{25. }
-\CSLRightInline{Street GM, Potts JR, Börger L, Beasley JC, Demarais S, Fryxell JM, et al. Solving the sample size problem for resource selection functions. Methods in Ecology and Evolution {[}Internet{]}. 2021 Dec {[}cited 2022 May 25{]};12(12):2421--31. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.13701}}
-
 \leavevmode\vadjust pre{\hypertarget{ref-petr_slendr_2022}{}}%
-\CSLLeftMargin{26. }
+\CSLLeftMargin{25. }
 \CSLRightInline{Petr M, Haller BC, Ralph PL, Racimo F. Slendr: A framework for spatio-temporal population genomic simulations on geographic landscapes {[}Internet{]}. bioRxiv; 2022 {[}cited 2022 May 3{]}. Available from: \url{https://www.biorxiv.org/content/10.1101/2022.03.20.485041v1}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-guerracastro_ssp_2021}{}}%
-\CSLLeftMargin{27. }
+\CSLLeftMargin{26. }
 \CSLRightInline{Guerra‐Castro EJ, Cajas JC, Simões N, Cruz‐Motta JJ, Mascaró M. {SSP}: An {R} package to estimate sampling effort in studies of ecological communities. Ecography {[}Internet{]}. 2021 Apr {[}cited 2022 May 25{]};44(4):561--73. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/ecog.05284}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-street_solving_2021}{}}%
+\CSLLeftMargin{27. }
+\CSLRightInline{Street GM, Potts JR, Börger L, Beasley JC, Demarais S, Fryxell JM, et al. Solving the sample size problem for resource selection functions. Methods in Ecology and Evolution {[}Internet{]}. 2021 Dec {[}cited 2022 May 25{]};12(12):2421--31. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.13701}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-goldstein_integrating_2021}{}}%
 \CSLLeftMargin{28. }
