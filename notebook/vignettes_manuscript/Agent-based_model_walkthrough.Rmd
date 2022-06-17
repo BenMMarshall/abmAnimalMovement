@@ -38,8 +38,6 @@ knitr::opts_chunk$set(dev = "png",
 
 # Introduction {#main}
 
-## Rationale
-
 <!-- -   justify studying movement - conservation + core ecology questions -->
 
 As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
@@ -198,8 +196,89 @@ Simulating a more dynamic and messy array of movements can help test how far ass
 The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns.
 None of the created examples are meant to directly match previously collected data on the species movements --there are alternative methods built to fit and simulate movements from existing data-- instead the examples provide some biological context to demonstrate a range of simulation parametrisations.
+We split these examples into a more detailed walk-through, and two whose parametrisations are included in the supplementary materials.
 
-## Required libraries
+## Primary example - Badger
+
+### Ecology and Objectives
+
+<!-- shelter -->
+Badger occupy setts, in our example a single home/shelter site, that they routinely return to [@kowalczyk_daily_2006; @feore_habitat_1999].
+When not at the sett the badger forages, and the foraging distances are impacted by resource position and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
+The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
+
+<!-- destinations -->
+We can draw on studies such as @kowalczyk_daily_2006 and @rosalino_activity_2005 to roughly gauge the speed of badgers (i.e., step length per minute).
+How this speed differs between behaviours we more freely define, but use @kowalczyk_daily_2006 reported maximum speed to guide more direct movements (e.g., state 0 and 1).
+In particular @kowalczyk_daily_2006 mentioned the heightened speeds moving from and to the setts.
+We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory [@kelly_extra_2020] [Figure \@ref(fig:BADGERsettingMoveDesPlot)].
+
+<!-- movement -->
+We can draw on statements regarding maximum distance travelled in a night from papers such as @rosalino_activity_2005, @kowalczyk_daily_2006, and @loureiro_path_2007 to approximate how distance foraging locations could be from a sett.
+
+<!-- avoidance -->
+Badger movements are also impacted by their territoriality [@kelly_extra_2020; @feore_habitat_1999].
+
+<!-- cycles -->
+Badgers are nocturnal and are active for around 8 hours each night [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
+Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
+
+We can broadly summarise the badger ecology we want to parametrise as follows:
+
+1. Exhibits site fidelity via the use of two shelter sites
+
+2. Movement speed approximated by summary statistics from previous studies
+
+3. A 12 hour activity cycle, that shifts over the year
+
+## Secondary examples
+### Ecology and Objectives - Vulture
+Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction.
+Therefore, we set the movement resistance matrix entirely to 1, thereby replacing the values generated via the NMLR package before [Figure \@ref(fig:VULTURElayersFigure)].
+
+Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020].
+We can change arguments describing the step length distributions of behaviour to reflect this high movement capacity [Figure \@ref(fig:VULTUREsettingMoveDesPlot)].
+
+Similar to badgers vultures exhibit significant site fidelity, re-using roosting and nesting sites [@bracis_revisitation_2018].
+Whereas we randomly drew shelter locations for the badger, we can alternatively supply the simulation with predefined shelter sites (e.g., if shelter sites were known *a priori* discovered via the capture and tagged of animals).
+A shelter site is selected each time the animal enters the resting state, weighted by the values supplied via the shelter quality environmental layer.
+
+We can also illustrate how the underlying resource matrix can impact the movements of the animals.
+There are cases where carcass availability impacts vulture movements, creating starkly contrasting areas where vultures will and will not travel [@arrondo_invisible_2018].
+We can simulate a similar situation by dramatically reducing the foraging quality in an area.
+Again, we can modify the existing *NLMR* generated landscape [Figure \@ref(fig:VULTURElayersFigure)].
+
+Vultures were used as an example that day-night cycles can impact rates of location collection; how the the animals' activity cycle and the probability of collected data interact could be key consideration for some research questions [@silva_seasonal_2017]. 
+We provide vultures with a very similar cycle pattern to the badgers, one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
+But also we will increase the chances of transitioning between foraging and exploration, as the aerial exploration is more energy efficient. 
+Again similar to badgers we simulate a shift in seasons via an increase and decrease in activity over a longer period of time that has been demonstrated to impact vulture movements [@peshev_new_2021; @garcia-jimenez_drivers_2018; @hribsek_first_2021].
+
+### Ecology and Objectives - King Cobra - High resting variability
+
+Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges [@Marshall2018; @marshall_no_2020].
+These sites can also be larger, comprising burrow systems or rock complexes; therefore, we input a large shelter site size.
+It is worth noting that shelter sites are not all created equal, and the weighting is drawn from the underlying shelter site matrix.
+
+What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
+While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle [@dsouza_space_2021; @smith_native_2021; @marshall_no_2020; @Siers2018].
+The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
+Unlike the badger's secondary cycle the forage digestion cycle is stable throughout the year and operates on a much shorter time frame.
+However, we can add seasonality (albeit weaker due to king cobras occupying tropical regions) as a third cycle.
+
+In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
+King cobra movement can be limited by roads [@jones_how_2022; @Marshall2018b], where unless provided with crossing structures king cobras are vulnerable to vehicle hits.
+Here we modify our movement probability matrix (i.e., inverted movement resistance) to create a linear structure bisecting the environment with a movement probability of 0 [Figure \@ref(fig:KINGCOBRAlayersFigure)].
+We can also add a few avoidance points simulating human settlements where king cobras are at risk of persecution [@Marshall2018b; @Shankar2013].
+However, we will not make the avoidance very strong as king cobras will repeatedly enter settlement areas regardless of the risks.
+
+Finally, we modify the movement characteristics, reducing them dramatically from the vulture's, but with similar shape to the badger with greater variability (i.e., scale) [Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)]. 
+We will keep the destination parameters quite large as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020], and we want the possibility of destinations conflicting with the movement barrier [@Marshall2018b].
+
+Implementation in supplementary material.
+
+## Implementation
+
+### Required libraries
 
 First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
 Only the *abmAnimalMovement* package is required for running the core simulation.
@@ -263,7 +342,7 @@ We used the *raster* `r paste0("v.", packageVersion("raster"))` [@R-raster], *sp
 #              align = "lcc")
 ```
 
-## Setting a palette and seed
+### Setting a palette and seed
 
 To ensure that the simulation completed during this example is repeatable, we set a seed.
 For the sake of simplicity the year the examples was written --2022-- is used.
@@ -461,81 +540,7 @@ plot_landscapeLayersList <- function(targetList){
 
 ```
 
-### Badger - High site fidelity
-
-#### Ecology and Objectives
-
-<!-- shelter -->
-Badger occupy setts, in our example a single home/shelter site, that they routinely return to [@kowalczyk_daily_2006; @feore_habitat_1999].
-When not at the sett the badger forages, and the foraging distances are impacted by resource position and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
-The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
-
-<!-- destinations -->
-We can draw on studies such as @kowalczyk_daily_2006 and @rosalino_activity_2005 to roughly gauge the speed of badgers (i.e., step length per minute).
-How this speed differs between behaviours we more freely define, but use @kowalczyk_daily_2006 reported maximum speed to guide more direct movements (e.g., state 0 and 1).
-In particular @kowalczyk_daily_2006 mentioned the heightened speeds moving from and to the setts.
-We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory [@kelly_extra_2020] [Figure \@ref(fig:BADGERsettingMoveDesPlot)].
-
-<!-- movement -->
-We can draw on statements regarding maximum distance travelled in a night from papers such as @rosalino_activity_2005, @kowalczyk_daily_2006, and @loureiro_path_2007 to approximate how distance foraging locations could be from a sett.
-
-<!-- avoidance -->
-Badger movements are also impacted by their territoriality [@kelly_extra_2020; @feore_habitat_1999].
-
-<!-- cycles -->
-Badgers are nocturnal and are active for around 8 hours each night [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
-Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
-
-### Vulture - High movement variation
-
-#### Ecology and Objectives
-Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction.
-Therefore, we set the movement resistance matrix entirely to 1, thereby replacing the values generated via the NMLR package before [Figure \@ref(fig:VULTURElayersFigure)].
-
-Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020].
-We can change arguments describing the step length distributions of behaviour to reflect this high movement capacity [Figure \@ref(fig:VULTUREsettingMoveDesPlot)].
-
-Similar to badgers vultures exhibit significant site fidelity, re-using roosting and nesting sites [@bracis_revisitation_2018].
-Whereas we randomly drew shelter locations for the badger, we can alternatively supply the simulation with predefined shelter sites (e.g., if shelter sites were known *a priori* discovered via the capture and tagged of animals).
-A shelter site is selected each time the animal enters the resting state, weighted by the values supplied via the shelter quality environmental layer.
-
-We can also illustrate how the underlying resource matrix can impact the movements of the animals.
-There are cases where carcass availability impacts vulture movements, creating starkly contrasting areas where vultures will and will not travel [@arrondo_invisible_2018].
-We can simulate a similar situation by dramatically reducing the foraging quality in an area.
-Again, we can modify the existing *NLMR* generated landscape [Figure \@ref(fig:VULTURElayersFigure)].
-
-Vultures were used as an example that day-night cycles can impact rates of location collection; how the the animals' activity cycle and the probability of collected data interact could be key consideration for some research questions [@silva_seasonal_2017]. 
-We provide vultures with a very similar cycle pattern to the badgers, one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
-But also we will increase the chances of transitioning between foraging and exploration, as the aerial exploration is more energy efficient. 
-Again similar to badgers we simulate a shift in seasons via an increase and decrease in activity over a longer period of time that has been demonstrated to impact vulture movements [@peshev_new_2021; @garcia-jimenez_drivers_2018; @hribsek_first_2021].
-
-Implementation in supplementary material.
-
-### King Cobra - High resting variability
-
-#### Ecology and Objectives
-
-Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges [@Marshall2018; @marshall_no_2020].
-These sites can also be larger, comprising burrow systems or rock complexes; therefore, we input a large shelter site size.
-It is worth noting that shelter sites are not all created equal, and the weighting is drawn from the underlying shelter site matrix.
-
-What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
-While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle [@dsouza_space_2021; @smith_native_2021; @marshall_no_2020; @Siers2018].
-The agent-based model allows for two cycles to be input, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
-Unlike the badger's secondary cycle the forage digestion cycle is stable throughout the year and operates on a much shorter time frame.
-However, we can add seasonality (albeit weaker due to king cobras occupying tropical regions) as a third cycle.
-
-In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
-King cobra movement can be limited by roads [@jones_how_2022; @Marshall2018b], where unless provided with crossing structures king cobras are vulnerable to vehicle hits.
-Here we modify our movement probability matrix (i.e., inverted movement resistance) to create a linear structure bisecting the environment with a movement probability of 0 [Figure \@ref(fig:KINGCOBRAlayersFigure)].
-We can also add a few avoidance points simulating human settlements where king cobras are at risk of persecution [@Marshall2018b; @Shankar2013].
-However, we will not make the avoidance very strong as king cobras will repeatedly enter settlement areas regardless of the risks.
-
-Finally, we modify the movement characteristics, reducing them dramatically from the vulture's, but with similar shape to the badger with greater variability (i.e., scale) [Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)]. 
-We will keep the destination parameters quite large as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020], and we want the possibility of destinations conflicting with the movement barrier [@Marshall2018b].
-
-
-#### Implementation
+### Animal parameters
 
 <!-- shelter -->
 We parametrise shelter information in the following ways.
@@ -851,7 +856,7 @@ KINGCOBRA_avoidModifier <- 1
 
 ```
 
-<!-- Running the simulation -->
+### Running the simulation
 
 We need to initially define a start location for our animal.
 To introduce some more individual variation we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
@@ -1073,7 +1078,7 @@ for(species in vecSpecies){
 }
 ```
 
-#### Summary
+# Results
 
 Once ran we can review the movement characteristics of the three species.
 The simplest to examine is the movement speeds or step lengths.
