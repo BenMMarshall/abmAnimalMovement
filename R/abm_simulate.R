@@ -6,8 +6,7 @@
 #'   functions.
 #' @param start A numeric vector of length 2, including the x and y coordinates
 #'   of the start location.
-#' @param timesteps The number of time steps to be simulated, where each step is
-#'   equal to ------ ----.
+#' @param timesteps The number of time steps to be simulated.
 #' @param des_options The number of dynamically chosen destinations presented to
 #'   the animal during the foraging behaviour state.
 #' @param options The number of options the animal considers at each step.
@@ -44,9 +43,9 @@
 #'   step length for each behavioural state. A vector of length 3.
 #' @param s_step The scale parameters (\eqn{\theta}) for the gamma distribution
 #'   describing step length for each behavioural state. A vector of length 3.
-#' @param mu_angle The means (\eqn{\mu}) for the von Mises distribution used to
+#' @param mu_angle The means (\eqn{\mu}) for the Von Mises distribution used to
 #'   draw turn angles for each behavioural state. A vector of length 3.
-#' @param k_angle The concentrations (\eqn{\kappa}) for the von Mises
+#' @param k_angle The concentrations (\eqn{\kappa}) for the Von Mises
 #'   distribution used to draw turn angles for each behavioural state. A vector
 #'   of length 3.
 #' @param rescale_step2cell A value that describes the cell size of the
@@ -74,17 +73,30 @@
 #'   All cells should be between 0 and 1, where 1 are the easiest to move
 #'   through.
 #'
-#' @return A list with the following components: 1. The location dataframe
-#'   describing all locations the animal occupied, where each row is equal to a
-#'   timestep. Columns include: - step, the step as a integer; - x, the x
-#'   coordinate of the animal; - y, the y coordinate of the animal; 2. The
-#'   options dataframe describing All the options available to the animal over
-#'   the entire simulation duration. Columns include: - a - b - c 3. ONWARDS...
-#'   TESTING OUTPUTS Columns include: - a - b
+#' @return A list with the following components: 1. "locations" The dataframe
+#'   describing all realised locations the animal occupied, where each row is
+#'   equal to a timestep. Columns include: timestep, the timestep as a integer;
+#'   x, the x coordinate of the animal; y, the y coordinate of the animal; sl,
+#'   the step length between locations used during the simulation; sl_rescale
+#'   the rescale factor required to return step lengths back to the input scale;
+#'   ta, turning angle between locations in degrees; behave, the behaviroual
+#'   mode the animal was in at a given timestep; chosen, the location chosen out
+#'   of the number of options available; destination_x and destination_y the
+#'   point the animal was attracted to at that time (note exploratory behaviour
+#'   is not subject attraction). 2. The "options" dataframe describing All the
+#'   options available to the animal over the entire simulation duration, where
+#'   each row is equal to a timestep. Columns include: timestep, the timestep as
+#'   a integer; oall_x, and oall_y show the x and y coordinates of all the
+#'   options available to an animal at a timestep; oall_steplengths are the step
+#'   lengths from the current location compared to all the options. The "inputs"
+#'   return the arguments used to simulate the movement, split into a list
+#'   covering inputs_basic, inputs_destination, inputs_movement, inputs_cycle,
+#'   inputs_layerSeed. "others" captures all other outputs, mainly used
+#'   internally for debugging and checking.
 #'
-#' @details PROVIDE DETAILS THAT WOULD GUIDE INPUTS. The function automatically
-#'   generates a list of seeds required for the *sampling_options* based upon
-#'   any previous set R seeds set (*e.g.*, using set.seed).
+#' @details The function automatically generates a list of seeds required for
+#'   the *sampling_options* based upon any previous set R seeds set (*e.g.*,
+#'   using set.seed).
 #'
 #' @seealso [vonmises()] for further guidance on turn angle distribution
 #'   definition, [cycle_draw()] for further guidance on activity cycle

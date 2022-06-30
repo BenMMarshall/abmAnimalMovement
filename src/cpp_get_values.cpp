@@ -35,7 +35,7 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
 
     // Rcpp::Rcout << "Option: " << loc << "; " << "Cells: " << xOptIndex << ":" << yOptIndex << "\n";
 
-    // end function if animal leaves environmental data area
+    // if animal leaves environmental data area
     if( (xOptIndex > mcols) |
         (yOptIndex > mrows) |
         (xOptIndex < 0) |
@@ -43,7 +43,7 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
       // give a value of zero for exceeding environment so the chances of moving
       // are minimised
       OUTPUT_VALUES[loc] = 0;
-      Rcpp::Rcerr << "Exceeding background environmental limits\n";
+      Rcpp::Rcerr << "Animal considering exceeding environmental limits, 0 value returned instead\n";
     }
 
     // still using the numericMatrix Rcpp form here
