@@ -85,14 +85,14 @@
 #'   point the animal was attracted to at that time (note exploratory behaviour
 #'   is not subject attraction). 2. The "options" dataframe describing All the
 #'   options available to the animal over the entire simulation duration, where
-#'   each row is equal to a timestep. Columns include: timestep, the timestep as
-#'   a integer; oall_x, and oall_y show the x and y coordinates of all the
-#'   options available to an animal at a timestep; oall_steplengths are the step
-#'   lengths from the current location compared to all the options. The "inputs"
-#'   return the arguments used to simulate the movement, split into a list
-#'   covering inputs_basic, inputs_destination, inputs_movement, inputs_cycle,
-#'   inputs_layerSeed. "others" captures all other outputs, mainly used
-#'   internally for debugging and checking.
+#'   each row is equal to an option repeated for each timestep. Columns include:
+#'   timestep, the timestep as a integer; oall_x, and oall_y show the x and y
+#'   coordinates of all the options available to an animal at a timestep;
+#'   oall_steplengths are the step lengths from the current location compared to
+#'   all the options. The "inputs" return the arguments used to simulate the
+#'   movement, split into a list covering inputs_basic, inputs_destination,
+#'   inputs_movement, inputs_cycle, inputs_layerSeed. "others" captures all
+#'   other outputs, mainly used internally for debugging and checking.
 #'
 #' @details The function automatically generates a list of seeds required for
 #'   the *sampling_options* based upon any previous set R seeds set (*e.g.*,

@@ -32,4 +32,4 @@ devtools::install_github("BenMMarshall/abmAnimalMovement")
 
 ## Core simulation function
 
-The `abm_simulate()` function is the main purpose of the package. Guidance on how to parametrise the simulation can be found in accompanying documentation; however, a more detailed walk-through can be in the vignette/preprint *COMING SOON*. <!-- add link here when ready -->
+The `abm_simulate()` function is the main purpose of the package. Guidance on how to parametrise the simulation can be found in accompanying documentation; however, a more detailed walk-through can be found in the vignette/preprint *COMING SOON*. <!-- add link here when ready -->
