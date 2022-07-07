@@ -1,9 +1,9 @@
 ---
 title: "abmAnimalMovement: An R package for simulating animal movement using an agent-based model"
 author1: "Benjamin Michael Marshall*"
-author2: "a2"
+author2: "Alexander Bradley Duthie"
 affiliation1: "Biological and Environmental Sciences, Faculty of Natural Sciences, University of Stirling, Stirling, FK9 4LA, Scotland, UK"
-affiliation2: "afill2"
+affiliation2: "-"
 corresponding1: "benjaminmichaelmarshall@gmail.com"
 date: "`r Sys.Date()`"
 output:
@@ -29,6 +29,8 @@ editor_options:
     wrap: sentence
 abstract: Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model programmed in C++ via the Rcpp package, and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal aims to avoid. Navigation capacity is governed by the range the animal can dynamically chose a foraging location that it is subsequently attracted to. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are draw at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time frame to the mobility capacity allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
 keywords: Movement ecology, simulation, agent-based model, 
+header-includes: 
+  \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
 ---
 
 ```{r kintrOpts, eval=TRUE, include=FALSE}
@@ -353,54 +355,20 @@ We used the *raster* `r paste0("v.", packageVersion("raster"))` [@R-raster], *sp
 #              align = "lcc")
 ```
 
-### Setting a palette and seed
+### Generating environmental matrices
 
 To ensure that the simulation completed during this example is repeatable, we set a seed.
 For the sake of simplicity the year the examples was written --2022-- is used.
-We are also going to set a consistent palette for later plotting, in the form of a named vector.
 
 ```{r defineSeed, include=TRUE}
 seed <- 2022
 set.seed(seed)
 ```
 
-As we are about to run a simulation with three behavioural states --coded as 2, 1, and 0-- we will name three corresponding colours in the vector as such.
-We will also include three accent colour to help with the more complex plots.
-This way we can ensure a consistent colour coding for our behavioural states across multiple visualisations [Figure \@ref(fig:palettePreview)].
-<!-- should replace purp123 with species names -->
 ```{r definePalette, include=FALSE, eval=TRUE}
 palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
 names(palette) <- c("KING\nCOBRA", "VULTURE", "BADGER", "2", "1", "0")
 ```
-
-```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=2.5, fig.cap="Preview of the palette colours selected and stored for later use. Name assigned to the colour in bold, and the hex code in italics below."}
-
-data.frame(
-  names = names(palette),
-  hexcodes = palette
-) %>% 
-  ggplot() +
-  geom_col(
-    aes(x = names, y = 1, fill = names)
-  ) +
-  geom_text(
-    aes(x = names, y = 0.5, label = names),
-    vjust = 0.2, hjust = 0.5, colour = "white",
-    fontface = 2, size = 5, lineheight = 0.85
-  ) +
-  geom_text(
-    aes(x = names, y = 0.4, label = hexcodes),
-    vjust = 1, hjust = 0.5, colour = "white",
-    fontface = 3, size = 2
-  ) +
-  scale_x_discrete(position = "top") +
-  scale_fill_manual(values = palette) +
-  theme_void() +
-  theme(legend.position = "none")
-
-```
-
-### Generating environmental matrices
 
 Before starting to simulate animal movement we need to generate a landscape.
 The landscapes in this case will take the form of matrices, where each cell is describing the quality of foraging, shelter, and movement ease.
@@ -556,8 +524,8 @@ plot_landscapeLayersList <- function(targetList){
 <!-- shelter -->
 We parametrise shelter information in the following ways.
 
-For the sett, we draw a single set of coordinates (`shelterLocations`) from the shelter quality layer, and define the size of the shelter site as `r BADGER_shelterSize` m (`shelterSize`).
-Shelter site size describes the distance from a shelter site that the animal dramatically lowers its movements; `r BADGER_shelterSize` m allows for small movements near/within the sett during resting behaviour.
+For the sett, we draw a single set of coordinates (`shelterLocations`) from the shelter quality layer, and define the size of the shelter site as 8 m (`shelterSize`).
+Shelter site size describes the distance from a shelter site that the animal dramatically lowers its movements; 8 m allows for small movements near/within the sett during resting behaviour.
 
 ```{r BADGERsettingShelter, eval=TRUE}
 
@@ -596,7 +564,7 @@ KINGCOBRA_shelterSize <- 10
 
 ```
 
-During the simulation the badger will randomly select a sett to return to, weighted by the values supplied via the shelter quality environmental layer [Figure \@ref(BADGERlayersFigure)], each time it enters the resting behavioural state.
+During the simulation the badger will randomly select a sett to return to, weighted by the values supplied via the shelter quality environmental layer [Figure \@ref(fig:BADGERlayersFigure)], each time it enters the resting behavioural state.
 
 ```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the badger example: shelter quality, foraging resources, movement ease."}
 
@@ -1418,7 +1386,7 @@ abmMapPlot <- function(simResults,
 
 ```
 
-```{r mapsFigure, echo=FALSE, eval=FALSE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
+```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
@@ -1875,15 +1843,45 @@ This project was funded by the IAPETUS2 NERC DTP.
 # Acknowledgements
 
 # Author Contributions
-Conceptualization: 
-Software: 
-Supervision: 
-Visualization: 
-Writing – Original Draft:
-Writing – Review & Editing: 
+Conceptualization: BMM; 
+Software: BMM; 
+Supervision: ABD; 
+Visualization: BMM; 
+Writing – Original Draft: BMM; 
+Writing – Review & Editing: ABD.
+
+\beginsupplement
 
 # Supplementary Materials
 ## Simulation Inputs
+
+```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=2.5, fig.cap="Universal colour key. Name assigned to the colour in bold, and the hex code in italics below."}
+names(palette) <- c("KING\nCOBRA", "VULTURE", "BADGER", "State 2", "State 1", "State 0")
+data.frame(
+  names = factor(names(palette), levels = c(
+    "State 0", "State 1", "State 2", "BADGER", "VULTURE", "KING\nCOBRA")),
+  hexcodes = palette
+) %>% 
+  ggplot() +
+  geom_col(
+    aes(x = names, y = 1, fill = names)
+  ) +
+  geom_text(
+    aes(x = names, y = 0.5, label = names),
+    vjust = 0.2, hjust = 0.5, colour = "white",
+    fontface = 2, size = 5, lineheight = 0.85
+  ) +
+  geom_text(
+    aes(x = names, y = 0.4, label = hexcodes),
+    vjust = 1, hjust = 0.5, colour = "white",
+    fontface = 3, size = 2
+  ) +
+  scale_x_discrete(position = "top") +
+  scale_fill_manual(values = palette) +
+  theme_void() +
+  theme(legend.position = "none")
+
+```
 
 Values input to generate more vulture-like movement patterns.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
@@ -2006,7 +2004,7 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
 ```
 
 Values input to generate more king cobra-like movement patterns.
-```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingShelter','KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle, 'KINGCOBRAmoveMatrix')}
+```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingShelter','KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix')}
 ```
 
 ```{r KINGCOBRAsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths, and corresponding box plot for the king cobra example. The lower plot shows the distribution used to generate potential foraging desintations."}
