@@ -18,6 +18,8 @@
 //' @param nopt The number of options to be considered at each timestep
 //' @param shelter_locs_x A vector of shelter locations x coordinates.
 //' @param shelter_locs_y A vector of shelter locations y coordinates.
+//' @param sSiteSize A double dictating at what range the animal's movements
+//'   will dramatically drop simulating (near-)stationary behaviour.
 //' @param avoidPoints_x A vector of avoidance point x coordinates.
 //' @param avoidPoints_y A vector of avoidance point y coordinates.
 //' @param k_desRange Shape parameter describing the gamma distribution

@@ -1,19 +1,22 @@
 Package: abmAnimalMovement
 Title: An R Package for Simulating Animal Movement Using an Agent-based Model
 Version: 0.0.0.9000
+Date: 2022-07-08
 Authors@R: 
     person(given = "Benjamin",
            family = "Marshall",
            role = c("aut", "cre"),
            email = "benjaminmichaelmarshall@gmail.com",
-           comment = c(ORCID = "0000-0001-95 h54-0605"))
-Description: The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal..
+           comment = c(ORCID = "0000-0001-9554-0605"))
+Description: The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal.
 License: GPL (>= 3)
+URL: https://github.com/BenMMarshall/abmAnimalMovement
+BugReports: https://github.com/BenMMarshall/abmAnimalMovement/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
-LinkingTo: Rcpp, BH
-Imports: Rcpp, BH
+LinkingTo: Rcpp (>= 1.0.8.3), BH (>= 1.78.0.0)
+Imports: Rcpp
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown

@@ -13,7 +13,7 @@
 #' @param shelterLocations A dataframe including the x and y coordinates for all
 #'   shelter sites, that act as points of attraction during the resting
 #'   behavioural state.
-#' @param sSiteSize A value describing the shelter site size. This value
+#' @param shelterSize A value describing the shelter site size. This value
 #'   dictates at what point the animal's movements will dramatically drop
 #'   simulating (near-)stationary behaviour.
 #' @param avoidPoints A dataframe including the x and y coordinates that the

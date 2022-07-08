@@ -95,17 +95,15 @@
 
 \title{abmAnimalMovement: An R package for simulating animal movement using an agent-based model}
 \author[1]{Benjamin Michael Marshall*}
-\author[2]{Alexander Bradley Duthie}
+\author[1]{Alexander Bradley Duthie**}
 \affil[1]{Biological and Environmental Sciences, Faculty of Natural Sciences, University of Stirling, Stirling, FK9 4LA, Scotland, UK}
 
 \affil[*]{\href{mailto:benjaminmichaelmarshall@gmail.com}{\nolinkurl{benjaminmichaelmarshall@gmail.com}}}
+\affil[**]{\href{mailto:alexander.duthie@stir.ac.uk}{\nolinkurl{alexander.duthie@stir.ac.uk}}}
 
 \maketitle
 \thispagestyle{fancy}
 
-Please list all authors that played a significant role in writing the article. As a guide, authors should refer to the criteria for authorship that have been developed by The International Committee of Medical Journal Editors \href{http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html}{(ICMJE)}. Please provide full affiliation information (including full institutional address, ZIP code and e-mail address) for all authors, and identify who is/are the corresponding author(s).
-\\
-\\
 \begin{abstract}
 
 Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model programmed in C++ via the Rcpp package, and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal aims to avoid. Navigation capacity is governed by the range the animal can dynamically chose a foraging location that it is subsequently attracted to. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are draw at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time frame to the mobility capacity allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
@@ -114,7 +112,7 @@ Animal movement datasets are growing in number and depth, and researchers requir
 
 \section*{\color{f1ROrange}Keywords}
 
-Movement ecology, simulation, agent-based model,
+Movement ecology, agent-based, individual-based, simulation, behavioural states
 
 \clearpage
 \pagestyle{fancy}
@@ -132,7 +130,7 @@ The information gathered from animal movement studies is only as robust as the m
 In the past decade the volume of animal data has exploded (\protect\hyperlink{ref-joo_recent_2022}{6},\protect\hyperlink{ref-wild_internet_2022}{7}), and the infrastructure for collating that data has improved drastically (\protect\hyperlink{ref-kays_movebank_2022}{8}).
 There are stand out examples of novel methods (\protect\hyperlink{ref-saunders_radio-tracking_2022}{9}), and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., (\protect\hyperlink{ref-studd_purrfect_2021}{5})).
 However, the on the whole analysis approaches to maximise the information extracted have arguably lagged behind the technological and data improvements (\protect\hyperlink{ref-joo_recent_2022}{6}).
-The bodily cost of attaching bio-telemetry devices {[}with examples from reptiles (\protect\hyperlink{ref-Weatherhead2004}{10}); mammals (\protect\hyperlink{ref-robstad_impact_2021}{11}); and birds (\protect\hyperlink{ref-portugal_externally_2022}{12}){]}, as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the value/impact of the data collected.
+The bodily cost of attaching bio-telemetry devices (with examples from reptiles (\protect\hyperlink{ref-Weatherhead2004}{10}); mammals (\protect\hyperlink{ref-robstad_impact_2021}{11}); and birds (\protect\hyperlink{ref-portugal_externally_2022}{12})), as well as the possible conservation sensitivity of study animals, means we have an ethical duty to maximise the value/impact of the data collected.
 
 Maximising the value of data should include ensuring that results gained are robust and replicable.
 Meta-analyses have revealed that several textbook examples in ecology are not as universally replicable as once thought (\protect\hyperlink{ref-clark_ocean_2020}{13}--\protect\hyperlink{ref-wang_irreproducible_2018}{16}).
@@ -150,11 +148,11 @@ Testing these analysis approaches, and their limitations therefore becomes more 
 A potential solution is virtual ecology: where synthetic data is simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question (\protect\hyperlink{ref-gupta_reserve_2019}{22}).
 Exploration of analysis methods using simulations can yield useful insights even for widely used techniques (e.g., GLMMs (\protect\hyperlink{ref-debruine_understanding_2021}{23})).
 Such an approach has the potential to adequately recreate the complex emergent properties that could hamper analyses (\protect\hyperlink{ref-debruine_understanding_2021}{23}).
-The suite of tools for simulating aspects of ecological systems (e.g., landscapes \protect\hyperlink{ref-Sciaini2018}{24},genetics \protect\hyperlink{ref-petr_slendr_2022}{25},conservation choices \protect\hyperlink{ref-gupta_reserve_2019}{22},ecological community comparisons \protect\hyperlink{ref-guerracastro_ssp_2021}{26},resource selection \protect\hyperlink{ref-street_solving_2021}{27}) is growing, and some are explicitly focusing on aiding study design.
-And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict {[}e.g., snakes (\protect\hyperlink{ref-goldstein_integrating_2021}{28}); tigers (\protect\hyperlink{ref-Ahearn2001}{29}){]}.
+The suite of tools for simulating aspects of ecological systems (e.g., landscapes (\protect\hyperlink{ref-Sciaini2018}{24}), genetics (\protect\hyperlink{ref-petr_slendr_2022}{25}), conservation choices (\protect\hyperlink{ref-gupta_reserve_2019}{22}), ecological community comparisons (\protect\hyperlink{ref-guerracastro_ssp_2021}{26}), resource selection (\protect\hyperlink{ref-street_solving_2021}{27})) is growing, and some are explicitly focusing on aiding study design.
+And there are examples of simulation approaching being directly tied to applied issues like human-wildlife conflict (e.g., snakes (\protect\hyperlink{ref-goldstein_integrating_2021}{28}), tigers (\protect\hyperlink{ref-Ahearn2001}{29})).
 
 Population monitoring studies offer us a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment (\protect\hyperlink{ref-theng_confronting_2022}{30}).
-There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort \protect\hyperlink{ref-howe_distance_2017}{31},\protect\hyperlink{ref-cappelle_estimating_2021}{32}) and analyses {[}e.g., accounting for species interactions (\protect\hyperlink{ref-kellner_two-species_2022}{33}), or difficult to account for variation in populations (\protect\hyperlink{ref-milleret_estimating_2022}{34}){]}.
+There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort \protect\hyperlink{ref-howe_distance_2017}{31},\protect\hyperlink{ref-cappelle_estimating_2021}{32}) and analyses (e.g., accounting for species interactions (\protect\hyperlink{ref-kellner_two-species_2022}{33}), or difficult to account for variation in populations (\protect\hyperlink{ref-milleret_estimating_2022}{34})).
 More recently explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, but leaving questions concerning on the findings generalisably when drastically different movement process are present (\protect\hyperlink{ref-theng_confronting_2022}{30}).
 Once validated with real-world data, simulated explorations of study design presents opportunities to understand the trade-offs between effort and precision (\protect\hyperlink{ref-cappelle_estimating_2021}{32}).
 But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes (\protect\hyperlink{ref-abolaffio_avoiding_2019}{35}).
@@ -166,7 +164,7 @@ There are a number of approaches for simulating animal movement including (but n
 \def\labelenumi{\arabic{enumi}.}
 \item
   continuous movement processes, best exemplified by the \emph{ctmm} package (\protect\hyperlink{ref-Calabrese2016}{36}) and worked examples such as (\protect\hyperlink{ref-silva_autocorrelationinformed_2022}{37}) and (\protect\hyperlink{ref-theng_confronting_2022}{30}).
-  These methods rely on a mathematically defined movement process (such as Ornstein--Uhlenbeck foraging process (\protect\hyperlink{ref-Fleming2014}{38})).
+  These methods rely on a mathematically defined movement process (such as Ornstein--Uhlenbeck foraging process \protect\hyperlink{ref-Fleming2014}{38}).
   A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
 \item
   hidden markov models, best exemplified by the \texttt{simData} function from the \emph{moveHMM} package (\protect\hyperlink{ref-Michelot2016}{39}).
@@ -186,7 +184,7 @@ A new independently developed approach to simulating animal movement will provid
 \section{Methods}\label{methods}}
 
 \hypertarget{overview-of-the-agent-based-model}{%
-\subsection{Overview of the agent-based model}\label{overview-of-the-agent-based-model}}
+\subsection{Overview of the Agent-based Model}\label{overview-of-the-agent-based-model}}
 
 The \emph{abmAnimalMovement} package provides functionality to simulate animal movements via an agent-based model.
 We wrote the model using \emph{C++} via \emph{Rcpp} v.1.0.8.3 package (\protect\hyperlink{ref-Eddelbuettel_seamless_2011}{44}--\protect\hyperlink{ref-Eddelbuettel_extending_2018}{46}) to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages (\protect\hyperlink{ref-joo_recent_2022}{6},\protect\hyperlink{ref-joo_navigating_2020}{47}).
@@ -264,7 +262,7 @@ The interplay between shelter sites, foraging quality, and movement resistance s
 Simulating a more dynamic and messy array of movements can help test how far assumptions of uniform circular animal movement are useful.
 
 \hypertarget{generating-three-species}{%
-\subsection{Generating three species}\label{generating-three-species}}
+\subsection{Generating Three Species}\label{generating-three-species}}
 
 The best way to demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns.
@@ -272,7 +270,7 @@ None of the created examples are meant to directly match previously collected da
 We split these examples into a more detailed walk-through, and two whose parametrisations are included in the supplementary materials.
 
 \hypertarget{primary-example}{%
-\subsection{Primary example}\label{primary-example}}
+\subsection{Primary Example}\label{primary-example}}
 
 \hypertarget{ecology-and-objectives---badger}{%
 \subsubsection{Ecology and Objectives - Badger}\label{ecology-and-objectives---badger}}
@@ -307,7 +305,7 @@ We can broadly summarise the badger ecology we want to parametrise as follows:
 \end{enumerate}
 
 \hypertarget{secondary-examples}{%
-\subsection{Secondary examples}\label{secondary-examples}}
+\subsection{Secondary Examples}\label{secondary-examples}}
 
 We also provide example implementation of a vulture and king cobra -like movements, the exact values used can be found in the supplementary material.
 
@@ -340,8 +338,8 @@ We can broadly summarise the vulture ecology we want to parametrise as follows:
   A 8-12 hour activity cycle, that shifts over the year
 \end{enumerate}
 
-\hypertarget{ecology-and-objectives---king-cobra---high-resting-variability}{%
-\subsubsection{Ecology and Objectives - King Cobra - High resting variability}\label{ecology-and-objectives---king-cobra---high-resting-variability}}
+\hypertarget{ecology-and-objectives---king-cobra}{%
+\subsubsection{Ecology and Objectives - King Cobra}\label{ecology-and-objectives---king-cobra}}
 
 Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\protect\hyperlink{ref-Marshall2018}{64},\protect\hyperlink{ref-marshall_no_2020}{65}).
 These sites can also be larger, comprising burrow systems or rock complexes.
@@ -376,37 +374,38 @@ We can broadly summarise the king cobra ecology we want to parametrise as follow
 \subsection{Implementation}\label{implementation}}
 
 \hypertarget{required-libraries}{%
-\subsubsection{Required libraries}\label{required-libraries}}
+\subsubsection{Required Libraries}\label{required-libraries}}
 
 First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
 Only the \emph{abmAnimalMovement} package is required for running the core simulation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# core package}
 \FunctionTok{library}\NormalTok{(abmAnimalMovement)}
+\CommentTok{\# data manipulation}
 \FunctionTok{library}\NormalTok{(dplyr)}
 \FunctionTok{library}\NormalTok{(reshape2)}
-
+\CommentTok{\# visualisation}
 \FunctionTok{library}\NormalTok{(ggplot2)}
 \FunctionTok{library}\NormalTok{(ggforce)}
 \FunctionTok{library}\NormalTok{(ggtext)}
 \FunctionTok{library}\NormalTok{(ggridges)}
 \FunctionTok{library}\NormalTok{(patchwork)}
-
+\CommentTok{\# environmental matrix generation}
 \FunctionTok{library}\NormalTok{(raster)}
 \FunctionTok{library}\NormalTok{(NLMR)}
-\FunctionTok{library}\NormalTok{(landscapetools)}
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.2.0 (\protect\hyperlink{ref-R-base}{73}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{74}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{77}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{78},\protect\hyperlink{ref-R-bookdown}{79}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{80},\protect\hyperlink{ref-R-tinytex}{81}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{82}--\protect\hyperlink{ref-R-knitr}{84}) packages to generate type-set outputs.
+We used \emph{R} v.4.2.1 (\protect\hyperlink{ref-R-base}{73}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{74}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{77}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{78},\protect\hyperlink{ref-R-bookdown}{79}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{80},\protect\hyperlink{ref-R-tinytex}{81}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{82}--\protect\hyperlink{ref-R-knitr}{84}) packages to generate type-set outputs.
 We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{85}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{86},\protect\hyperlink{ref-reshape22007}{87}).
 We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{88},\protect\hyperlink{ref-ggplot22016}{89}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{90}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{91}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{92}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{93}).
-We used the \emph{raster} v.3.5.15 (\protect\hyperlink{ref-R-raster}{94}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{95}--\protect\hyperlink{ref-R-sp}{97}), \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{98},\protect\hyperlink{ref-R-NLMR}{99}), and \emph{landscapetools} v.0.5.0 packages (\protect\hyperlink{ref-landscapetools2018}{100},\protect\hyperlink{ref-R-landscapetools}{101}) for generating environmental matrices.
+We used the \emph{raster} v.3.5.15 (\protect\hyperlink{ref-R-raster}{94}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{95}--\protect\hyperlink{ref-R-sp}{97}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{98},\protect\hyperlink{ref-R-NLMR}{99}) for generating environmental matrices.
 
 \hypertarget{generating-environmental-matrices}{%
-\subsubsection{Generating environmental matrices}\label{generating-environmental-matrices}}
+\subsubsection{Generating Environmental Matrices}\label{generating-environmental-matrices}}
 
 To ensure that the simulation completed during this example is repeatable, we set a seed.
 For the sake of simplicity the year the examples was written --2022-- is used.
@@ -441,7 +440,7 @@ This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios {[}Figure \ref{fig:BADGERlayersFigure}{]}.
 
 \hypertarget{animal-parameters}{%
-\subsubsection{Animal parameters}\label{animal-parameters}}
+\subsubsection{Animal Parameters}\label{animal-parameters}}
 
 We parametrise shelter information in the following ways.
 
@@ -538,7 +537,7 @@ A more extreme implementation of the second cycle could introduce hibernation be
 \begin{Highlighting}[]
 \NormalTok{BADGER\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.40}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 
-\DocumentationTok{\#\# multiple cycle additions}
+\CommentTok{\# additional cycle}
 \NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
 
 \NormalTok{BADGER\_additional\_Cycles }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(c0)}
@@ -558,24 +557,19 @@ A more extreme implementation of the second cycle could introduce hibernation be
 \NormalTok{BADGER\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.005}
 \NormalTok{BADGER\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.005}
 \NormalTok{BADGER\_behaveMatrix[}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.01}
+\NormalTok{BADGER\_behaveMatrix}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##    [,1] [,2] [,3] [,4]
-## c0  0.2    0   24   96
-## c1  0.2    0 4380 8760
+##      [,1]  [,2]  [,3]
+## b0 0.9500 0.005 0.005
+## b1 0.0005 0.990 0.010
+## b2 0.0005 0.020 0.970
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{VULTURE\_movementMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{movement}
-\NormalTok{VULTURE\_movementMatrix[] }\OtherTok{\textless{}{-}} \DecValTok{1}
-\end{Highlighting}
-\end{Shaded}
-
 \hypertarget{running-the-simulation}{%
-\subsubsection{Running the simulation}\label{running-the-simulation}}
+\subsubsection{Running the Simulation}\label{running-the-simulation}}
 
 We need to initially define a start location for our animal.
 To introduce some more individual variation we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
@@ -607,8 +601,6 @@ We can then call all our settings we decided on previously describing badger beh
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{simSteps }\OtherTok{\textless{}{-}} \DecValTok{24}\SpecialCharTok{*}\DecValTok{60} \SpecialCharTok{*}\DecValTok{365}
-\NormalTok{des\_options }\OtherTok{\textless{}{-}} \DecValTok{10}
-\NormalTok{options }\OtherTok{\textless{}{-}} \DecValTok{12}
 
 \NormalTok{simRes }\OtherTok{\textless{}{-}} \FunctionTok{abm\_simulate}\NormalTok{(}\AttributeTok{start =}\NormalTok{ startLocation,}
                        \AttributeTok{timesteps =}\NormalTok{ simSteps,}
@@ -646,7 +638,7 @@ We can then call all our settings we decided on previously describing badger beh
 \section{Results}\label{results}}
 
 \hypertarget{output-format}{%
-\subsection{Output format}\label{output-format}}
+\subsection{Output Format}\label{output-format}}
 
 The simulation function (\texttt{abm\_simulate}) outputs a list containing: a dataframe of realised movements, a dataframe of options the animal had available, and a list of the inputs used to simulate the movement.
 The realised movement dataframe (\texttt{locations}) describes all realised locations the animal occupied, step length information, behavioural state, and current point of attraction, where each row is equal to a timestep.
@@ -656,7 +648,7 @@ Our example is minute by minute; changing the timestep would require a reparamet
 The \texttt{options} dataframe describes all the options available to the animal over the entire simulation duration, where each row is equal to an option repeated for each timestep.
 
 \hypertarget{outputs-review}{%
-\subsection{Outputs review}\label{outputs-review}}
+\subsection{Outputs Review}\label{outputs-review}}
 
 Once ran we can review the movement characteristics of the three species.
 The simplest to examine is the movement speeds or step lengths.
@@ -731,15 +723,15 @@ The king cobra cycles reveals an decrease in the number of days spent entirely s
 \caption{The percentage of time steps spent in state 0 - resting per day, and how it varies over the entire simulated year.}\label{fig:cycleSeasonalFigure}
 \end{figure}
 
-\hypertarget{discussion-conclusion}{%
-\section{Discussion / Conclusion}\label{discussion-conclusion}}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
 Animal movement datasets are complex and require a suite of analytical approaches to tackle satisfactorily.
 Efforts to develop new, and test existing analyses would be aided by access to a range of diverse datasets.
 While \emph{ideal} simulations often accompany new analysis methods --and provide superb validation for the method in question-- reaffirming the robustness and pushing those methods to new limits with a messier, more stochastic, simulation approach could greatly strength out confidence in results.
 The \emph{abmAnimalMovement} package provides an independent route to test new methods that does not use an underlying mathematical movement process.
 
-By including a range of features linked to movement and behaviour, the \emph{abmAnimalMovement} package can be implemented to investigate a suite of commonly asked of movement data --from habitat selection, to behaviour detection (for examples of common themes see (\protect\hyperlink{ref-joo_recent_2022}{6})).
+By including a range of features linked to movement and behaviour, the \emph{abmAnimalMovement} package can be implemented to investigate a suite of commonly asked of movement data --from habitat selection, to behaviour detection (for examples of common themes see \protect\hyperlink{ref-joo_recent_2022}{6}).
 While some of the features can appear simplistic, there remains ample flexibility to simulate a wide range of useful scenarios.
 For example, we conceptualise the three movement states as resting, exploring, and foraging.
 However, only several aspects are immutable: one state exhibits site fidelity (state 0), one state is free from all attraction (state 1), and one state is driven by an underlying environmental layer (state 2).
@@ -755,7 +747,7 @@ The simulated results could then be compared to the real data to gauge how diffe
 This approach could compliment current analysis methods, akin to sensitivity analysis.
 
 \hypertarget{future-directions}{%
-\subsection{Future directions}\label{future-directions}}
+\subsection{Future Directions}\label{future-directions}}
 
 The \emph{abmAnimalMovement} package provides adequate functionality to simulate a range of scenarios and movements.
 However, there are several aspects that will bear updating in future versions.
@@ -775,7 +767,7 @@ However, there are several aspects that will bear updating in future versions.
 \item
   Dynamic environment. All the environmental matrices are static, currently there is no system to update values during the simulation.
   This prevents shifts in the landscape such as seasonal variation in resources, or the development of trails.
-  Currently the closest solution is to run multiple simulations where the end location of simulation x\textsubscript{1} is the start location for x\textsubscript{2}, where x\textsubscript{2} is provided with a new season-appropriate resource layer.
+  Currently the closest solution is to run multiple simulations where the end location of simulation\textsubscript{1} is the start location for simulation\textsubscript{2}, where simulation\textsubscript{2} is provided with a new season-appropriate resource layer.
   This solution would be inadequate for trail development, as trail development would require a system within the simulation to update previously used cells for the animal at each time step.
 \end{enumerate}
 
@@ -801,12 +793,12 @@ This project was funded by the IAPETUS2 NERC DTP.
 \hypertarget{author-contributions}{%
 \section{Author Contributions}\label{author-contributions}}
 
-Conceptualization: BMM
-Software: BMM
-Supervision: ABD
-Visualization: BMM
-Writing -- Original Draft: BMM
-Writing -- Review \& Editing: ABD
+Conceptualization: BMM;
+Software: BMM;
+Supervision: ABD;
+Visualization: BMM;
+Writing -- Original Draft: BMM;
+Writing -- Review \& Editing: BMM, ABD.
 
 \setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
 
@@ -816,14 +808,20 @@ Writing -- Review \& Editing: ABD
 \hypertarget{simulation-inputs}{%
 \subsection{Simulation Inputs}\label{simulation-inputs}}
 
+\hypertarget{palette}{%
+\subsubsection{Palette}\label{palette}}
+
 \begin{figure}
 
 {\centering \includegraphics{Agent-based_model_walkthrough_files/figure-latex/palettePreview-1} 
 
 }
 
-\caption{Universal colour key. Name assigned to the colour in bold, and the hex code in italics below.}\label{fig:palettePreview}
+\caption{Universal colour key for behavioural states 0 - resting, 1 - foraging, 2 - exploring; and example species. Name assigned to the colour in bold, and the hex code in italics below.}\label{fig:palettePreview}
 \end{figure}
+
+\hypertarget{vulture-inputs}{%
+\subsubsection{Vulture Inputs}\label{vulture-inputs}}
 
 Values input to generate more vulture-like movement patterns.
 
@@ -892,6 +890,9 @@ Values input to generate more vulture-like movement patterns.
 \caption{The three resulting landscape layers to be fed into the simulation for the vulture example: shelter quality, foraging resources, movement ease.}\label{fig:VULTURElayersFigure}
 \end{figure}
 
+\hypertarget{king-cobra-inputs}{%
+\subsubsection{King Cobra Inputs}\label{king-cobra-inputs}}
+
 Values input to generate more king cobra-like movement patterns.
 
 \begin{Shaded}
@@ -915,35 +916,25 @@ Values input to generate more king cobra-like movement patterns.
 \NormalTok{KINGCOBRA\_destinationRange }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{, }\DecValTok{10}\NormalTok{)}
 \NormalTok{KINGCOBRA\_destinationDirection }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.01}\NormalTok{)}
 \NormalTok{KINGCOBRA\_destinationTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
-\NormalTok{KINGCOBRA\_destinationModifier }\OtherTok{\textless{}{-}} \DecValTok{2}
+\NormalTok{KINGCOBRA\_destinationModifier }\OtherTok{\textless{}{-}} \FloatTok{1.5}
 
 \NormalTok{KINGCOBRA\_rescale }\OtherTok{\textless{}{-}} \DecValTok{4}
 
 
-\NormalTok{KINGCOBRA\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.45}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
+\NormalTok{KINGCOBRA\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 
 \DocumentationTok{\#\# multiple cycle additions}
 \NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\DecValTok{4}\NormalTok{) }\CommentTok{\# digest}
-\NormalTok{c1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{ ) }\CommentTok{\# seasonal}
+\NormalTok{c1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{ ) }\CommentTok{\# seasonal}
 
 \NormalTok{KINGCOBRA\_additional\_Cycles }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(c0, c1)}
-\NormalTok{KINGCOBRA\_additional\_Cycles}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-##    [,1] [,2] [,3] [,4]
-## c0  0.2    0   24   96
-## c1  0.2    0 4380 8760
-\end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{KINGCOBRA\_movementMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{movement}
 
 \CommentTok{\# two strong intersections hampering movement}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.85}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.85}
+\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.95}
+\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.95}
 \NormalTok{KINGCOBRA\_movementMatrix[KINGCOBRA\_movementMatrix[] }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
 
 \NormalTok{KINGCOBRA\_avoidLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
@@ -973,6 +964,8 @@ Values input to generate more king cobra-like movement patterns.
 \caption{The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease.}\label{fig:KINGCOBRAlayersFigure}
 \end{figure}
 
+\clearpage
+
 \hypertarget{simulation-outputs}{%
 \subsection{Simulation Outputs}\label{simulation-outputs}}
 
@@ -997,6 +990,8 @@ The King Cobra example in particular highlights the prolonged near weekly restin
 
 \caption{The king cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots.}\label{fig:KINGCOBRAmoveCharFigure}
 \end{figure}
+
+\clearpage
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -1399,14 +1394,6 @@ The King Cobra example in particular highlights the prolonged near weekly restin
 \leavevmode\vadjust pre{\hypertarget{ref-R-NLMR}{}}%
 \CSLLeftMargin{99. }
 \CSLRightInline{Sciaini M, Fritsch M, Hesselbarth M, Simpkins C, Scherer C, Hanß S. NLMR: Simulating neutral landscape models {[}Internet{]}. 2021. Available from: \url{https://ropensci.github.io/NLMR/}}
-
-\leavevmode\vadjust pre{\hypertarget{ref-landscapetools2018}{}}%
-\CSLLeftMargin{100. }
-\CSLRightInline{Sciaini M, Fritsch M, Scherer C, Simpkins CE. NLMR and landscapetools: An integrated environment for simulating and modifying neutral landscape models in r. Methods in Ecololgy and Evolution {[}Internet{]}. 2018;00:1--9. Available from: \url{https://doi.org/10.1111/2041-210X.13076}}
-
-\leavevmode\vadjust pre{\hypertarget{ref-R-landscapetools}{}}%
-\CSLLeftMargin{101. }
-\CSLRightInline{Sciaini M, Fritsch M, Hesselbarth MHK, Nowosad J. Landscapetools: Landscape utility toolbox {[}Internet{]}. 2019. Available from: \url{https://ropensci.github.io/landscapetools/}}
 
 \end{CSLReferences}
 
