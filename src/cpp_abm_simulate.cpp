@@ -432,6 +432,7 @@ Rcpp::List cpp_abm_simulate(
     }
 
     move_Options = cpp_get_values(moveMatrix, x_Options, y_Options);
+    // Rcpp::Rcout << "Values extracted";
 
     /* here we need to adjust the movement objects so the animal prefers to head
      * towards the centre point.
@@ -482,6 +483,7 @@ Rcpp::List cpp_abm_simulate(
         } // switch end
       } // if end
     }// for m end
+    // Rcpp::Rcout << "Values modified";
 
     cumulative_dist = 0;
     // current distances from all avoidance points

@@ -438,6 +438,7 @@ Shelter quality is intermediate; we increased areas where cell values were great
 Thereby shelter sites are more likely to occur in the areas of higher foraging quality, but not in the core (i.e., \textless0.7), nor in the edge areas (\textless0.5).
 This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios {[}Figure \ref{fig:BADGERlayersFigure}{]}.
+To aid balancing we keep values between 0 and 1; any value can be used, but the simulation will interpret the values as relative weights (Note: The current implementation of \texttt{cpp\_get\_values} returns -99.9 weighting when presented with NA values and therefore serves as a lower limit to the matrix weighting values).
 
 \hypertarget{animal-parameters}{%
 \subsubsection{Animal Parameters}\label{animal-parameters}}
@@ -933,9 +934,8 @@ Values input to generate more king cobra-like movement patterns.
 \NormalTok{KINGCOBRA\_movementMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{movement}
 
 \CommentTok{\# two strong intersections hampering movement}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.95}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\SpecialCharTok{{-}} \FloatTok{0.95}
-\NormalTok{KINGCOBRA\_movementMatrix[KINGCOBRA\_movementMatrix[] }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{5}
+\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{5}
 
 \NormalTok{KINGCOBRA\_avoidLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
   \StringTok{"x"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{552}\NormalTok{, }\DecValTok{1232}\NormalTok{, }\DecValTok{1587}\NormalTok{),}
@@ -961,7 +961,7 @@ Values input to generate more king cobra-like movement patterns.
 
 }
 
-\caption{The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease.}\label{fig:KINGCOBRAlayersFigure}
+\caption{The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -5 weighting.}\label{fig:KINGCOBRAlayersFigure}
 \end{figure}
 
 \clearpage

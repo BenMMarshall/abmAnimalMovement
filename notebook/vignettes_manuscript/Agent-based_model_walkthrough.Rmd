@@ -392,8 +392,9 @@ Shelter quality is intermediate; we increased areas where cell values were great
 Thereby shelter sites are more likely to occur in the areas of higher foraging quality, but not in the core (i.e., <0.7), nor in the edge areas (<0.5).
 This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios [Figure \@ref(fig:BADGERlayersFigure)].
+To aid balancing we keep values between 0 and 1; any value can be used, but the simulation will interpret the values as relative weights (Note: The current implementation of `cpp_get_values` returns -99.9 weighting when presented with NA values and therefore serves as a lower limit to the matrix weighting values).
 
-```{r rfOptions, echo = FALSE, eval=TRUE}
+```{r rfOptions, echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, comment=FALSE}
 RandomFields::RFoptions(install="no")
 ```
 
@@ -640,7 +641,7 @@ KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 1.5
 
-KINGCOBRA_rescale <- 4
+KINGCOBRA_rescale <- 10
 
 ```
 
@@ -827,9 +828,8 @@ VULTURE_forageMatrix[VULTURE_forageMatrix[] < 0] <- 0
 KINGCOBRA_movementMatrix <- landscapeLayersList$movement
 
 # two strong intersections hampering movement
-KINGCOBRA_movementMatrix[1200:1240,1:2000] <- KINGCOBRA_movementMatrix[1200:1240,1:2000] - 0.95
-KINGCOBRA_movementMatrix[1:2000,850:890] <- KINGCOBRA_movementMatrix[1:2000,850:890] - 0.95
-KINGCOBRA_movementMatrix[KINGCOBRA_movementMatrix[] < 0] <- 0
+KINGCOBRA_movementMatrix[1200:1240,1:2000] <- KINGCOBRA_movementMatrix[1200:1240,1:2000] - 5
+KINGCOBRA_movementMatrix[1:2000,850:890] <- KINGCOBRA_movementMatrix[1:2000,850:890] - 5
 
 KINGCOBRA_avoidLocs <- data.frame(
   "x" = c(552, 1232, 1587),
@@ -2101,7 +2101,7 @@ suppressMessages(print(k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65)
 
 ```
 
-```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease."}
+```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -5 weighting."}
 
 KINGCOBRA_landscapeLayersList <- list(
   "shelter" = landscapeLayersList$shelter,

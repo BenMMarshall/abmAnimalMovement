@@ -81,19 +81,35 @@ int cpp_sample_options(std::vector<double> W, int SEED){
   double rnd_subrange, w_left;
   double curr_subrange;
   int curr_ix;
-  std::vector<int> sampled(1);
-  for (int el = 0; el < 1; el++) {
+  int ntake = 1; // specify the number of indexes we want returned
+  std::vector<int> sampled(ntake);
+  for (int el = 0; el < ntake; el++) {
 
     /* go down the tree by drawing a random number and
      checking if it falls in the left or right sub-ranges */
     curr_ix = 0;
     curr_subrange = tree_weights[0];
+
+    // Rcpp::Rcout << "tree_weights[0] " << tree_weights[0] << "\n";
+
     for (int lev = 0; lev < tree_levels; lev++) {
       rnd_subrange = std::uniform_real_distribution<double>(0, curr_subrange)(rng);
+
+      // Rcpp::Rcout << "rnd_subrange " << rnd_subrange << "\n";
+
       w_left = tree_weights[2 * curr_ix + 1];
+
+      // Rcpp::Rcout << "w_left " << w_left << "\n";
+
       curr_ix = 2 * curr_ix + 1 + (rnd_subrange >= w_left);
       curr_subrange = tree_weights[curr_ix];
+
+      // Rcpp::Rcout << "curr_subrange " << curr_subrange << "\n";
     }
+
+    // Rcpp::Rcout << "tree_levels " << tree_levels << "\n";
+    // Rcpp::Rcout << "curr_ix " << curr_ix << "\n";
+    // Rcpp::Rcout << "offset " << offset << "\n";
 
     /* finally, add element from this iteration */
     sampled[el] = curr_ix - offset;
@@ -102,11 +118,15 @@ int cpp_sample_options(std::vector<double> W, int SEED){
     tree_weights[curr_ix] = 0;
     for (int lev = 0; lev < tree_levels; lev++) {
       curr_ix = (curr_ix - 1) / 2;
-      tree_weights[curr_ix] =   tree_weights[2 * curr_ix + 1]
-      + tree_weights[2 * curr_ix + 2];
+      tree_weights[curr_ix] = tree_weights[2 * curr_ix + 1] +
+        tree_weights[2 * curr_ix + 2];
     }
   }
 
+  Rcpp::Rcout << "sampled " << sampled[0] << "\n";
+  if(sampled[0] > rnd_max){
+    Rcpp::stop("Chosen exceeds number of options");
+  }
   // std::cout << "sampled integers: [ ";
   // for (int a : sampled) std::cout << a << " ";
   // std::cout << "]" << std::endl;

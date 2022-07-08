@@ -14,3 +14,4 @@ plot_landscapeLayersList(
       "forage"  = simResultsList$KINGCOBRA$inputs$in_forageMatrix,
       "movement"  = simResultsList$KINGCOBRA$inputs$in_moveMatrix
        ))
+

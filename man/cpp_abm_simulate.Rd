@@ -18,17 +18,23 @@
 
 \item{shelter_locs_y}{A vector of shelter locations y coordinates.}
 
+\item{sSiteSize}{A double dictating at what range the animal's movements
+will dramatically drop simulating (near-)stationary behaviour.}
+
 \item{avoidPoints_x}{A vector of avoidance point x coordinates.}
 
 \item{avoidPoints_y}{A vector of avoidance point y coordinates.}
 
-\item{k_desRange}{Shape parameter describing the gamma distribution destinations can be draw from.}
+\item{k_desRange}{Shape parameter describing the gamma distribution
+destinations can be draw from.}
 
-\item{s_desRange}{Scale parameter describing the gamma distribution destinations can be draw from.}
+\item{s_desRange}{Scale parameter describing the gamma distribution
+destinations can be draw from.}
 
 \item{mu_desDir}{Mean of the turn angle destinations are drawn from.}
 
-\item{k_desDir}{Concentration of the turn angles destinations are drawn from.}
+\item{k_desDir}{Concentration of the turn angles destinations are drawn
+from.}
 
 \item{destinationTrans}{0 - no transformation applied to the distance to
 destination weighting, 1 - distance to destination weighing is
@@ -108,7 +114,7 @@ The C++ function that runs the agent based animal movement
 model.
 }
 \details{
-Requires cmath and headers for smaller C++ functions for draws. #'
+Requires cmath and headers for smaller C++ functions for draws.
 }
 \seealso{
 \code{\link[=abm_simulate]{abm_simulate()}} is the R function wrap with more in depth

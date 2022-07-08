@@ -6,7 +6,15 @@
 \alias{abmAnimalMovement-package}
 \title{abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-based Model}
 \description{
-What the package does (one paragraph).
+The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/BenMMarshall/abmAnimalMovement}
+  \item Report bugs at \url{https://github.com/BenMMarshall/abmAnimalMovement/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Benjamin Marshall \email{benjaminmichaelmarshall@gmail.com} (\href{https://orcid.org/0000-0001-9554-0605}{ORCID})

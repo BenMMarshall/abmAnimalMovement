@@ -35,8 +35,7 @@ abm_simulate(
 \item{start}{A numeric vector of length 2, including the x and y coordinates
 of the start location.}
 
-\item{timesteps}{The number of time steps to be simulated, where each step is
-equal to ------ ----.}
+\item{timesteps}{The number of time steps to be simulated.}
 
 \item{des_options}{The number of dynamically chosen destinations presented to
 the animal during the foraging behaviour state.}
@@ -46,6 +45,10 @@ the animal during the foraging behaviour state.}
 \item{shelterLocations}{A dataframe including the x and y coordinates for all
 shelter sites, that act as points of attraction during the resting
 behavioural state.}
+
+\item{shelterSize}{A value describing the shelter site size. This value
+dictates at what point the animal's movements will dramatically drop
+simulating (near-)stationary behaviour.}
 
 \item{avoidPoints}{A dataframe including the x and y coordinates that the
 animal will avoid.}
@@ -83,10 +86,10 @@ step length for each behavioural state. A vector of length 3.}
 \item{s_step}{The scale parameters (\eqn{\theta}) for the gamma distribution
 describing step length for each behavioural state. A vector of length 3.}
 
-\item{mu_angle}{The means (\eqn{\mu}) for the von Mises distribution used to
+\item{mu_angle}{The means (\eqn{\mu}) for the Von Mises distribution used to
 draw turn angles for each behavioural state. A vector of length 3.}
 
-\item{k_angle}{The concentrations (\eqn{\kappa}) for the von Mises
+\item{k_angle}{The concentrations (\eqn{\kappa}) for the Von Mises
 distribution used to draw turn angles for each behavioural state. A vector
 of length 3.}
 
@@ -110,29 +113,35 @@ for defining patterns that operate alongside circadian rhythm, e.g.,
 seasonal shifts.}
 
 \item{shelteringMatrix}{A matrix describing the sheltering quality of the
-landscape. All cells should be between 0 and 1, where 1 are the best
-shelter quality.}
+landscape. Higher values are the best shelter quality.}
 
 \item{foragingMatrix}{A matrix describing the foraging quality of the
-landscape. All cells should be between 0 and 1, where 1 are the best
-foraging areas.}
+landscape. Higher values are the best foraging areas.}
 
 \item{movementMatrix}{A matrix describing the movement ease of the landscape.
-All cells should be between 0 and 1, where 1 are the easiest to move
-through.}
-
-\item{sSiteSize}{A value describing the shelter site size. This value
-dictates at what point the animal's movements will dramatically drop
-simulating (near-)stationary behaviour.}
+Higher values are the easiest to move through.}
 }
 \value{
-A list with the following components: 1. The location dataframe
-describing all locations the animal occupied, where each row is equal to a
-timestep. Columns include: - step, the step as a integer; - x, the x
-coordinate of the animal; - y, the y coordinate of the animal; 2. The
-options dataframe describing All the options available to the animal over
-the entire simulation duration. Columns include: - a - b - c 3. ONWARDS...
-TESTING OUTPUTS Columns include: - a - b
+A list with the following components: 1. "locations" The dataframe
+describing all realised locations the animal occupied, where each row is
+equal to a timestep. Columns include: timestep, the timestep as a integer;
+x, the x coordinate of the animal; y, the y coordinate of the animal; sl,
+the step length between locations used during the simulation; sl_rescale
+the rescale factor required to return step lengths back to the input scale;
+ta, turning angle between locations in degrees; behave, the behaviroual
+mode the animal was in at a given timestep; chosen, the location chosen out
+of the number of options available; destination_x and destination_y the
+point the animal was attracted to at that time (note exploratory behaviour
+is not subject attraction). 2. The "options" dataframe describing All the
+options available to the animal over the entire simulation duration, where
+each row is equal to an option repeated for each timestep. Columns include:
+timestep, the timestep as a integer; oall_x, and oall_y show the x and y
+coordinates of all the options available to an animal at a timestep;
+oall_steplengths are the step lengths from the current location compared to
+all the options. The "inputs" return the arguments used to simulate the
+movement, split into a list covering inputs_basic, inputs_destination,
+inputs_movement, inputs_cycle, inputs_layerSeed. "others" captures all
+other outputs, mainly used internally for debugging and checking.
 }
 \description{
 An R function to arrange simulation parameters ready to be fed
@@ -141,9 +150,9 @@ to \emph{cpp_abm_simulate}, and also convert the list output of
 functions.
 }
 \details{
-PROVIDE DETAILS THAT WOULD GUIDE INPUTS. The function automatically
-generates a list of seeds required for the \emph{sampling_options} based upon
-any previous set R seeds set (\emph{e.g.}, using set.seed).
+The function automatically generates a list of seeds required for
+the \emph{sampling_options} based upon any previous set R seeds set (\emph{e.g.},
+using set.seed).
 }
 \seealso{
 \code{\link[=vonmises]{vonmises()}} for further guidance on turn angle distribution

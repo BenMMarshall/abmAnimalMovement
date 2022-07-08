@@ -64,14 +64,11 @@
 #'   for defining patterns that operate alongside circadian rhythm, e.g.,
 #'   seasonal shifts.
 #' @param shelteringMatrix A matrix describing the sheltering quality of the
-#'   landscape. All cells should be between 0 and 1, where 1 are the best
-#'   shelter quality.
+#'   landscape. Higher values are the best shelter quality.
 #' @param foragingMatrix A matrix describing the foraging quality of the
-#'   landscape. All cells should be between 0 and 1, where 1 are the best
-#'   foraging areas.
+#'   landscape. Higher values are the best foraging areas.
 #' @param movementMatrix A matrix describing the movement ease of the landscape.
-#'   All cells should be between 0 and 1, where 1 are the easiest to move
-#'   through.
+#'   Higher values are the easiest to move through.
 #'
 #' @return A list with the following components: 1. "locations" The dataframe
 #'   describing all realised locations the animal occupied, where each row is
@@ -232,12 +229,12 @@ abm_simulate <- function(start, timesteps,
   if(!is.matrix(shelteringMatrix) |
      !is.matrix(foragingMatrix) |
      !is.matrix(movementMatrix) |
-     !all(shelteringMatrix <= 1) |
-     !all(foragingMatrix <= 1) |
-     !all(movementMatrix <= 1) |
-     !all(shelteringMatrix >= 0) |
-     !all(foragingMatrix >= 0) |
-     !all(movementMatrix >= 0)
+     # !all(shelteringMatrix <= 1) |
+     # !all(foragingMatrix <= 1) |
+     # !all(movementMatrix <= 1) |
+     !all(shelteringMatrix >= -99) |
+     !all(foragingMatrix >= -99) |
+     !all(movementMatrix >= -99)
   ){
     stop("All the landscape layers (shelterMatrix, forageMatrix, moveMatrix)
        should be numeric matricies, with values between 0 and 1")

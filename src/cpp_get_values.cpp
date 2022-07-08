@@ -40,14 +40,14 @@ std::vector<double> cpp_get_values(Rcpp::NumericMatrix MATRIX,
         (yOptIndex > mrows) |
         (xOptIndex < 0) |
         (yOptIndex < 0) ){
-      // give a value of zero for exceeding environment so the chances of moving
-      // are minimised
-      OUTPUT_VALUES[loc] = 0;
-      Rcpp::Rcerr << "Animal considering exceeding environmental limits, 0 value returned instead\n";
+      // give a value of -99.9 for exceeding environment so the chances of moving
+      // are super near zero
+      OUTPUT_VALUES[loc] = -99.9;
+      Rcpp::Rcerr << "Animal considering exceeding environmental limits, -99.9 value returned instead\n";
+    } else {
+      // still using the numericMatrix Rcpp form here
+      OUTPUT_VALUES[loc] = MATRIX(xOptIndex, yOptIndex);
     }
-
-    // still using the numericMatrix Rcpp form here
-    OUTPUT_VALUES[loc] = MATRIX(xOptIndex, yOptIndex);
 
     // Rcpp::Rcout << "EnvVal: " << OUTPUT_VALUES[loc] << "\n";
 
