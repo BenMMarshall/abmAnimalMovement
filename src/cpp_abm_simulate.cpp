@@ -533,8 +533,15 @@ Rcpp::List cpp_abm_simulate(
     /* using the custom sample_options, we need to feed it a different seed each time,
      * but overall those seeds are derived from the set.seed() in R prior to running
      * (see the R companion/set-up function .Call) */
+
+    // for(int i = 0; i < nopt; i++){
+    //   Rcpp::Rcout << "move " << move_Options[i] << " ";
+    // }
+    // Rcpp::Rcout << "\n";
+
     chosen = cpp_sample_options(move_Options, seeds[i-1]);
     chosen_Options[i] = chosen;
+    // Rcpp::Rcout << "Chosen selected";
 
     // make sure to update the direction of travel each move
     last_angle = taOptions[chosen];

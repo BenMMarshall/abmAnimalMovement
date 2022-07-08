@@ -1,58 +1,6 @@
-library(abmAnimalMovement)
-get_seed <- function() {
-  sample.int(.Machine$integer.max, 1)
-}
-
-ndraws <- 10000
-W <- c(
-  1e-05,
-  1.11487,
-  -3.43936,
-  1.45606,
-  -3.3031,
-  1.14072,
-  1.23658,
-  -3.10818,
-  -2.24707,
-  -1.9031,
-  1.75243,
-  1.93727,
-  -1.86032)
-
-sampleOut <- NULL
-for(i in 1:ndraws){
-  # sampleOut[i] <- sample_options(c(2, -0.2, 5, 0.5, 0.05, -99.9), get_seed())
-  sampleOut[i] <- sample_options(W,
-    get_seed())
-}
-hist(sampleOut)
-
-data.frame(
-  "index" = as.character(1:length(W)-1),
-  "weight" = W) %>%
-  left_join(as.data.frame(table(sampleOut)) %>%
-              rename("index" = sampleOut) %>%
-              mutate(index = as.character(index))) %>%
-  mutate(Freq = ifelse(is.na(Freq), 0, Freq)) %>%
-  ggplot() +
-  geom_col(aes(x = index, y = Freq)) +
-  geom_text(aes(x = index, y = Freq, label = W))
-
-
-
-sampleOut <- NULL
-for(i in 1:ndraws){
-  # sampleOut[i] <- sample_options(c(2, -0.2, 5, 0.5, 0.05, -99.9), get_seed())
-  sampleOut[i] <- sample_options(seq(0.1,20,0.1),
-    get_seed())
-}
-hist(sampleOut)
-
-
-# Test sampling in situ ---------------------------------------------------
 
 # simSteps <- 24*60 *365
-simSteps <- 24*60 *60
+simSteps <- 24*60 *90
 des_options <- 10
 options <- 12
 
@@ -62,7 +10,7 @@ names(simResultsList) <- vecSpecies
 
 species <- "BADGER"
 species <- "VULTURE"
-species <- "KINGCOBRA"
+# species <- "KINGCOBRA"
 
 simResultsList[[species]] <- abm_simulate(
 
