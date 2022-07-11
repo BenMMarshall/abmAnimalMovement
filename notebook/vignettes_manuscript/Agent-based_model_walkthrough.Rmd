@@ -146,9 +146,9 @@ knitr::include_graphics(here::here("notebook", "ext_figures", "Tranistion Matrix
 
 ```{r transMatrix, echo=FALSE, eval=TRUE}
 
-b0 <- c(0.8, 0.001, 0.001) # rest
-b1 <- c(0.005, 0.96, 0.001) # explore/move
-b2 <- c(0.005, 0.001, 0.97) # forage
+b0 <- c(0.97, 0.01, 0.001) # rest
+b1 <- c(0.0002, 0.95, 0.0008) # explore/move
+b2 <- c(0.001, 0.00001, 0.99) # forage
 
 (Default_behaveMatrix <- rbind(b0, b1, b2))
 ```
@@ -552,19 +552,6 @@ VULTURE_shelterLocs <- data.frame(
 VULTURE_shelterSize <- 5
 
 ```
-```{r KINGCOBRAsettingShelter, eval=TRUE, echo=FALSE}
-
-sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 12,
-                                ext = extent(0.35, 0.65, 0.35, 0.65), 
-                                rowcol = TRUE)
-
-KINGCOBRA_shelterLocs <- data.frame(
-  "x" = sampledShelters[,2],
-  "y" = sampledShelters[,1])
-
-KINGCOBRA_shelterSize <- 10
-
-```
 
 During the simulation the badger will randomly select a sett to return to, weighted by the values supplied via the shelter quality environmental layer [Figure \@ref(fig:BADGERlayersFigure)], each time it enters the resting behavioural state.
 
@@ -763,48 +750,48 @@ A more extreme implementation of the second cycle could introduce hibernation be
 
 ```{r BADGERsettingCycle, eval=TRUE}
 
-BADGER_rest_Cycle <- c(0.2, 0, 24, 24)
+BADGER_rest_Cycle <- c(0.12, 0, 24, 24)
 
 # additional cycle
-c0 <- c(0.2, 0, 24* (365/2), 24* 365) # seasonal
+c0 <- c(0.075, 0, 24* (365/2), 24* 365) # seasonal
 
 BADGER_additional_Cycles <- rbind(c0)
 BADGER_additional_Cycles
 
 BADGER_behaveMatrix <- Default_behaveMatrix
-BADGER_behaveMatrix[1,1] <- 0.8
-BADGER_behaveMatrix[1,2] <- 0.005
-BADGER_behaveMatrix[1,3] <- 0.005
-BADGER_behaveMatrix[2,3] <- 0.01
 BADGER_behaveMatrix
 ```
 
 ```{r VULTUREsettingCycle, eval=TRUE, echo=FALSE}
 
-VULTURE_rest_Cycle <- c(0.4, 0.1, 24, 24)
+VULTURE_rest_Cycle <- c(0.1, 0, 24, 24)
 
-## multiple cycle additions
-c0 <- c(0.12, -0.05, 24* (365/2), 24* 365) # seasonal
+# additional cycle
+c0 <- c(0.025, 0, 24* (365/2), 24* 365) # seasonal
 
 VULTURE_additional_Cycles <- rbind(c0)
 
 VULTURE_behaveMatrix <- Default_behaveMatrix
-VULTURE_behaveMatrix[2,2] <- 0.990
-VULTURE_behaveMatrix[2,3] <- 0.0025
-VULTURE_behaveMatrix[3,2] <- 0.01
-VULTURE_behaveMatrix[1,1] <- 0.85
-VULTURE_behaveMatrix[1,2] <- 0.01
+VULTURE_behaveMatrix[2,3] <- 0.0002
+VULTURE_behaveMatrix[3,2] <- 0.000015
 
 ```
 ```{r KINGCOBRAsettingCycle, eval=TRUE, echo=FALSE}
 
-KINGCOBRA_rest_Cycle <- c(0, 0, 24, 24)
+KINGCOBRA_rest_Cycle <- c(0.14, 0, 24, 24)
 
-## multiple cycle additions
-c0 <- c(0.2, 0, 24, 24*4) # digest
-c1 <- c(0.1, 0, 24 * (365/2), 24* 365 ) # seasonal
+# multiple additional cycle
+c0 <- c(0.12, 0, 24, 24*4) # digest
+c1 <- c(0.05, 0, 24 * (365/2), 24* 365 ) # seasonal
 
 KINGCOBRA_additional_Cycles <- rbind(c0, c1)
+
+KINGCOBRA_behaveMatrix <- Default_behaveMatrix
+KINGCOBRA_behaveMatrix[1,1] <- 0.95
+KINGCOBRA_behaveMatrix[1,2] <- 0.005
+KINGCOBRA_behaveMatrix[3,1] <- 0.00025
+KINGCOBRA_behaveMatrix[3,2] <- 0.000001
+KINGCOBRA_behaveMatrix[3,3] <- 0.999
 
 ```
 
@@ -825,11 +812,33 @@ VULTURE_forageMatrix[VULTURE_forageMatrix[] < 0] <- 0
 ```
 ```{r KINGCOBRAmoveMatrix, eval=TRUE, echo=FALSE}
 
+KINGCOBRA_shelteringMatrix <- landscapeLayersList$shelter
+KINGCOBRA_forageMatrix <- landscapeLayersList$forage
 KINGCOBRA_movementMatrix <- landscapeLayersList$movement
 
 # two strong intersections hampering movement
-KINGCOBRA_movementMatrix[1200:1240,1:2000] <- KINGCOBRA_movementMatrix[1200:1240,1:2000] - 1
-KINGCOBRA_movementMatrix[1:2000,850:890] <- KINGCOBRA_movementMatrix[1:2000,850:890] - 1
+roadMin_x <- 1360
+roadMax_x <- roadMin_x + 40
+roadMin_y <- 660
+roadMax_y <- roadMin_y + 40
+
+KINGCOBRA_shelteringMatrix[roadMin_x:roadMax_x,1:2000] <-
+  KINGCOBRA_shelteringMatrix[roadMin_x:roadMax_x,1:2000] - 90
+KINGCOBRA_shelteringMatrix[1:2000,roadMin_y:roadMax_y] <-
+  KINGCOBRA_shelteringMatrix[1:2000,roadMin_y:roadMax_y] - 90
+KINGCOBRA_shelteringMatrix[!KINGCOBRA_shelteringMatrix >= -99.9] <- -99
+
+KINGCOBRA_forageMatrix[roadMin_x:roadMax_x,1:2000] <-
+  KINGCOBRA_forageMatrix[roadMin_x:roadMax_x,1:2000] - 90
+KINGCOBRA_forageMatrix[1:2000,roadMin_y:roadMax_y] <-
+  KINGCOBRA_forageMatrix[1:2000,roadMin_y:roadMax_y] - 90
+KINGCOBRA_forageMatrix[!KINGCOBRA_forageMatrix >= -99.9] <- -99
+
+KINGCOBRA_movementMatrix[roadMin_x:roadMax_x,1:2000] <-
+  KINGCOBRA_movementMatrix[roadMin_x:roadMax_x,1:2000] - 90
+KINGCOBRA_movementMatrix[1:2000,roadMin_y:roadMax_y] <-
+  KINGCOBRA_movementMatrix[1:2000,roadMin_y:roadMax_y] - 90
+KINGCOBRA_movementMatrix[!KINGCOBRA_movementMatrix >= -99.9] <- -99
 
 KINGCOBRA_avoidLocs <- data.frame(
   "x" = c(552, 1232, 1587),
@@ -837,6 +846,22 @@ KINGCOBRA_avoidLocs <- data.frame(
 
 KINGCOBRA_avoidTransformation <- 2
 KINGCOBRA_avoidModifier <- 1
+
+```
+
+```{r KINGCOBRAsettingShelter, eval=TRUE, echo=FALSE}
+roadMin_x/2000
+roadMax_y/2000
+
+sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 12,
+                                ext = extent(0.35, 0.65, 0.42, 0.65), 
+                                rowcol = TRUE)
+
+KINGCOBRA_shelterLocs <- data.frame(
+  "x" = sampledShelters[,2],
+  "y" = sampledShelters[,1])
+
+KINGCOBRA_shelterSize <- 10
 
 ```
 
@@ -1038,7 +1063,7 @@ for(species in vecSpecies){
     },
     
     shelteringMatrix = if(length(ls(pattern = paste0("^", species, ".*shelteringMatrix"))) > 0){
-      get(ls(pattern = paste0("^", sp, ".*shelteringMatrix")))
+      get(ls(pattern = paste0("^", species, ".*shelteringMatrix")))
     } else {
       # DEFAULT HERE
       landscapeLayersList$shelter
@@ -1666,7 +1691,7 @@ for(species in vecSpecies){
     ggplot2::geom_line(ggplot2::aes(x = i, y = behaveObs + 1.4), size = 0.5,
                        colour = "grey75") +
     ggplot2::geom_point(ggplot2::aes(x = i, y = behaveObs + 1.4,
-                                     colour = as.factor(behaveObs + 1.4)), size = 0.5) +
+                                     colour = as.factor(behaveObs + 1.4)), size = 0.25) +
     ggplot2::scale_y_continuous(breaks = c(seq(-0.5, 0.5, 0.5), 1.4, 2.4, 3.4),
                                 labels = c(seq(-0.5, 0.5, 0.5),
                                            "<span style='color:#302010'>0 - Shelter</span>",
@@ -1804,10 +1829,15 @@ For the untracked animals we may be limited to basic information of speed, activ
 In such data starved situations, the *abmAnimalMovement* package's low computational cost and minimal data requirements allows for a large number of alternative parametrisations to be explored.
 Via the explorations of different parametrisations researchers can help build a picture of the study and analysis methods best suited for their questions, with the opportunity to test those analyses on synthetic simulated data.
 
+In cases where data cannot be shared (e.g. due to concerns over species sensitivity) providing a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code [@Quintana2020].
+Providing data is a key component to ensuring computational reproducibility [@Gerstner2017], and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
+Additionally such synthetic datasets could be integrated into preregistration as a means of demonstrating the validity of an analysis plan.
+
 Producing a range of simulated datasets that cover alternate scenarios may present researchers opportunities to test real data against a null model.
 For example, researchers looking to investigate whether an animal was avoiding a certain landscape feature could calibrate a number of simulations covering a range of differing avoidance strengths.
 The simulated results could then be compared to the real data to gauge how different the real data was from simulations exhibiting zero avoidance (i.e., a null model scenario).
 This approach could compliment current analysis methods, akin to sensitivity analysis.
+
 
 ## Future Directions
 
@@ -2004,7 +2034,7 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
 ```
 ### King Cobra Inputs
 Values input to generate more king cobra-like movement patterns.
-```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingShelter','KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix')}
+```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix', 'KINGCOBRAsettingShelter')}
 ```
 
 ```{r KINGCOBRAsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths, and corresponding box plot for the king cobra example. The lower plot shows the distribution used to generate potential foraging desintations."}
@@ -2105,8 +2135,8 @@ suppressMessages(print(k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65)
 ```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -5 weighting."}
 
 KINGCOBRA_landscapeLayersList <- list(
-  "shelter" = landscapeLayersList$shelter,
-  "forage" = landscapeLayersList$forage,
+  "shelter" = KINGCOBRA_shelteringMatrix,
+  "forage" = KINGCOBRA_forageMatrix,
   "movement" = KINGCOBRA_movementMatrix)
 
 plot_landscapeLayersList(KINGCOBRA_landscapeLayersList) +

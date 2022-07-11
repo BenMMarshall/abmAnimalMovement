@@ -142,6 +142,7 @@ cpp_min <- function(x) {
 #'
 #' @param W A vector of weights.
 #' @param SEED The seed to be used for the sampling.
+#' @param rebalance.
 #' @details Requires a new seed for each run as a separate seed is set
 #'   internally every time the function runs.
 #' @return An integer corresponding to the chosen weight in the initially

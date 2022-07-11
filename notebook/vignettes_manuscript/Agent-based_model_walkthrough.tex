@@ -215,10 +215,10 @@ These probabilities can be kept very high to introduce autocorrelation in the be
 \end{figure}
 
 \begin{verbatim}
-##      [,1]  [,2]    [,3]
-## b0 0.9800 0.001 0.00001
-## b1 0.0005 0.990 0.02000
-## b2 0.0005 0.020 0.97000
+##      [,1]    [,2]   [,3]
+## b0 0.9700 0.01000 0.0010
+## b1 0.0002 0.95000 0.0008
+## b2 0.0010 0.00001 0.9900
 \end{verbatim}
 
 Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles; therefore, we want the transition matrix vary over time.
@@ -402,7 +402,7 @@ We used \emph{R} v.4.2.1 (\protect\hyperlink{ref-R-base}{73}) via \emph{RStudio}
 We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{85}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{86},\protect\hyperlink{ref-reshape22007}{87}).
 We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{88},\protect\hyperlink{ref-ggplot22016}{89}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{90}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{91}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{92}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{93}).
-We used the \emph{raster} v.3.5.15 (\protect\hyperlink{ref-R-raster}{94}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{95}--\protect\hyperlink{ref-R-sp}{97}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{98},\protect\hyperlink{ref-R-NLMR}{99}) for generating environmental matrices.
+We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{94}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{95}--\protect\hyperlink{ref-R-sp}{97}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{98},\protect\hyperlink{ref-R-NLMR}{99}) for generating environmental matrices.
 
 \hypertarget{generating-environmental-matrices}{%
 \subsubsection{Generating Environmental Matrices}\label{generating-environmental-matrices}}
@@ -536,10 +536,10 @@ A more extreme implementation of the second cycle could introduce hibernation be
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{BADGER\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.40}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
+\NormalTok{BADGER\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.12}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 
 \CommentTok{\# additional cycle}
-\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
+\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.075}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
 
 \NormalTok{BADGER\_additional\_Cycles }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(c0)}
 \NormalTok{BADGER\_additional\_Cycles}
@@ -547,26 +547,30 @@ A more extreme implementation of the second cycle could introduce hibernation be
 \end{Shaded}
 
 \begin{verbatim}
-##    [,1] [,2] [,3] [,4]
-## c0  0.2    0 4380 8760
+##     [,1] [,2] [,3] [,4]
+## c0 0.075    0 4380 8760
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{BADGER\_behaveMatrix }\OtherTok{\textless{}{-}}\NormalTok{ Default\_behaveMatrix}
-\NormalTok{BADGER\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.95}
-\NormalTok{BADGER\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.005}
-\NormalTok{BADGER\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.005}
-\NormalTok{BADGER\_behaveMatrix[}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.01}
 \NormalTok{BADGER\_behaveMatrix}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      [,1]  [,2]  [,3]
-## b0 0.9500 0.005 0.005
-## b1 0.0005 0.990 0.010
-## b2 0.0005 0.020 0.970
+##      [,1]    [,2]   [,3]
+## b0 0.9700 0.01000 0.0010
+## b1 0.0002 0.95000 0.0008
+## b2 0.0010 0.00001 0.9900
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.68
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.35
 \end{verbatim}
 
 \hypertarget{running-the-simulation}{%
@@ -742,6 +746,10 @@ For the untracked animals we may be limited to basic information of speed, activ
 In such data starved situations, the \emph{abmAnimalMovement} package's low computational cost and minimal data requirements allows for a large number of alternative parametrisations to be explored.
 Via the explorations of different parametrisations researchers can help build a picture of the study and analysis methods best suited for their questions, with the opportunity to test those analyses on synthetic simulated data.
 
+In cases where data cannot be shared (e.g.~due to concerns over species sensitivity) providing a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code (\protect\hyperlink{ref-Quintana2020}{100}).
+Providing data is a key component to ensuring computational reproducibility (\protect\hyperlink{ref-Gerstner2017}{101}), and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
+Additionally such synthetic datasets could be integrated into preregistration as a means of demonstrating the validity of an analysis plan.
+
 Producing a range of simulated datasets that cover alternate scenarios may present researchers opportunities to test real data against a null model.
 For example, researchers looking to investigate whether an animal was avoiding a certain landscape feature could calibrate a number of simulations covering a range of differing avoidance strengths.
 The simulated results could then be compared to the real data to gauge how different the real data was from simulations exhibiting zero avoidance (i.e., a null model scenario).
@@ -848,19 +856,16 @@ Values input to generate more vulture-like movement patterns.
 \NormalTok{VULTURE\_rescale }\OtherTok{\textless{}{-}} \DecValTok{20}
 
 
-\NormalTok{VULTURE\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.42}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
+\NormalTok{VULTURE\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 
-\DocumentationTok{\#\# multiple cycle additions}
-\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.12}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{0.05}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
+\CommentTok{\# additional cycle}
+\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
 
 \NormalTok{VULTURE\_additional\_Cycles }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(c0)}
 
 \NormalTok{VULTURE\_behaveMatrix }\OtherTok{\textless{}{-}}\NormalTok{ Default\_behaveMatrix}
-\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.990}
-\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.01}
-\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.05}
-\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.85}
-\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.01}
+\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.0002}
+\NormalTok{VULTURE\_behaveMatrix[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.000015}
 
 
 \NormalTok{VULTURE\_movementMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{movement}
@@ -898,17 +903,6 @@ Values input to generate more king cobra-like movement patterns.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sampledShelters }\OtherTok{\textless{}{-}} \FunctionTok{sampleRandom}\NormalTok{(}\FunctionTok{raster}\NormalTok{(landscapeLayersList}\SpecialCharTok{$}\NormalTok{shelter), }\DecValTok{12}\NormalTok{,}
-                                \AttributeTok{ext =} \FunctionTok{extent}\NormalTok{(}\FloatTok{0.35}\NormalTok{, }\FloatTok{0.65}\NormalTok{, }\FloatTok{0.35}\NormalTok{, }\FloatTok{0.65}\NormalTok{), }
-                                \AttributeTok{rowcol =} \ConstantTok{TRUE}\NormalTok{)}
-
-\NormalTok{KINGCOBRA\_shelterLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
-  \StringTok{"x"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{2}\NormalTok{],}
-  \StringTok{"y"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{1}\NormalTok{])}
-
-\NormalTok{KINGCOBRA\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{10}
-
-
 \NormalTok{KINGCOBRA\_k\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{30}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{20}\NormalTok{)}
 \NormalTok{KINGCOBRA\_s\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.75}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{1.75}\NormalTok{)}
 \NormalTok{KINGCOBRA\_mu\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
@@ -919,23 +913,52 @@ Values input to generate more king cobra-like movement patterns.
 \NormalTok{KINGCOBRA\_destinationTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
 \NormalTok{KINGCOBRA\_destinationModifier }\OtherTok{\textless{}{-}} \FloatTok{1.5}
 
-\NormalTok{KINGCOBRA\_rescale }\OtherTok{\textless{}{-}} \DecValTok{4}
+\NormalTok{KINGCOBRA\_rescale }\OtherTok{\textless{}{-}} \DecValTok{10}
 
 
-\NormalTok{KINGCOBRA\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
+\NormalTok{KINGCOBRA\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.14}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 
-\DocumentationTok{\#\# multiple cycle additions}
-\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\DecValTok{4}\NormalTok{) }\CommentTok{\# digest}
-\NormalTok{c1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{ ) }\CommentTok{\# seasonal}
+\CommentTok{\# multiple additional cycle}
+\NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.12}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\DecValTok{4}\NormalTok{) }\CommentTok{\# digest}
+\NormalTok{c1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.05}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{ ) }\CommentTok{\# seasonal}
 
 \NormalTok{KINGCOBRA\_additional\_Cycles }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(c0, c1)}
 
+\NormalTok{KINGCOBRA\_behaveMatrix }\OtherTok{\textless{}{-}}\NormalTok{ Default\_behaveMatrix}
+\NormalTok{KINGCOBRA\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.95}
+\NormalTok{KINGCOBRA\_behaveMatrix[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.005}
+\NormalTok{KINGCOBRA\_behaveMatrix[}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.00025}
+\NormalTok{KINGCOBRA\_behaveMatrix[}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.000001}
+\NormalTok{KINGCOBRA\_behaveMatrix[}\DecValTok{3}\NormalTok{,}\DecValTok{3}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.999}
 
+
+\NormalTok{KINGCOBRA\_shelteringMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{shelter}
+\NormalTok{KINGCOBRA\_forageMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{forage}
 \NormalTok{KINGCOBRA\_movementMatrix }\OtherTok{\textless{}{-}}\NormalTok{ landscapeLayersList}\SpecialCharTok{$}\NormalTok{movement}
 
 \CommentTok{\# two strong intersections hampering movement}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1200}\SpecialCharTok{:}\DecValTok{1240}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{5}
-\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\OtherTok{\textless{}{-}}\NormalTok{ KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,}\DecValTok{850}\SpecialCharTok{:}\DecValTok{890}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{5}
+\NormalTok{roadMin\_x }\OtherTok{\textless{}{-}} \DecValTok{1360}
+\NormalTok{roadMax\_x }\OtherTok{\textless{}{-}}\NormalTok{ roadMin\_x }\SpecialCharTok{+} \DecValTok{40}
+\NormalTok{roadMin\_y }\OtherTok{\textless{}{-}} \DecValTok{660}
+\NormalTok{roadMax\_y }\OtherTok{\textless{}{-}}\NormalTok{ roadMin\_y }\SpecialCharTok{+} \DecValTok{40}
+
+\NormalTok{KINGCOBRA\_shelteringMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_shelteringMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_shelteringMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_shelteringMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_shelteringMatrix[}\SpecialCharTok{!}\NormalTok{KINGCOBRA\_shelteringMatrix }\SpecialCharTok{\textgreater{}=} \SpecialCharTok{{-}}\FloatTok{99.9}\NormalTok{] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{99}
+
+\NormalTok{KINGCOBRA\_forageMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_forageMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_forageMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_forageMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_forageMatrix[}\SpecialCharTok{!}\NormalTok{KINGCOBRA\_forageMatrix }\SpecialCharTok{\textgreater{}=} \SpecialCharTok{{-}}\FloatTok{99.9}\NormalTok{] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{99}
+
+\NormalTok{KINGCOBRA\_movementMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_movementMatrix[roadMin\_x}\SpecialCharTok{:}\NormalTok{roadMax\_x,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\OtherTok{\textless{}{-}}
+\NormalTok{  KINGCOBRA\_movementMatrix[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2000}\NormalTok{,roadMin\_y}\SpecialCharTok{:}\NormalTok{roadMax\_y] }\SpecialCharTok{{-}} \DecValTok{90}
+\NormalTok{KINGCOBRA\_movementMatrix[}\SpecialCharTok{!}\NormalTok{KINGCOBRA\_movementMatrix }\SpecialCharTok{\textgreater{}=} \SpecialCharTok{{-}}\FloatTok{99.9}\NormalTok{] }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{99}
 
 \NormalTok{KINGCOBRA\_avoidLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
   \StringTok{"x"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{552}\NormalTok{, }\DecValTok{1232}\NormalTok{, }\DecValTok{1587}\NormalTok{),}
@@ -943,6 +966,36 @@ Values input to generate more king cobra-like movement patterns.
 
 \NormalTok{KINGCOBRA\_avoidTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
 \NormalTok{KINGCOBRA\_avoidModifier }\OtherTok{\textless{}{-}} \DecValTok{1}
+
+\NormalTok{roadMin\_x}\SpecialCharTok{/}\DecValTok{2000}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.68
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{roadMax\_y}\SpecialCharTok{/}\DecValTok{2000}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.35
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sampledShelters }\OtherTok{\textless{}{-}} \FunctionTok{sampleRandom}\NormalTok{(}\FunctionTok{raster}\NormalTok{(landscapeLayersList}\SpecialCharTok{$}\NormalTok{shelter), }\DecValTok{12}\NormalTok{,}
+                                \AttributeTok{ext =} \FunctionTok{extent}\NormalTok{(}\FloatTok{0.35}\NormalTok{, }\FloatTok{0.65}\NormalTok{, }\FloatTok{0.42}\NormalTok{, }\FloatTok{0.65}\NormalTok{), }
+                                \AttributeTok{rowcol =} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{KINGCOBRA\_shelterLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \StringTok{"x"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{2}\NormalTok{],}
+  \StringTok{"y"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{1}\NormalTok{])}
+
+\NormalTok{KINGCOBRA\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{10}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1394,6 +1447,14 @@ The King Cobra example in particular highlights the prolonged near weekly restin
 \leavevmode\vadjust pre{\hypertarget{ref-R-NLMR}{}}%
 \CSLLeftMargin{99. }
 \CSLRightInline{Sciaini M, Fritsch M, Hesselbarth M, Simpkins C, Scherer C, Hanß S. NLMR: Simulating neutral landscape models {[}Internet{]}. 2021. Available from: \url{https://ropensci.github.io/NLMR/}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Quintana2020}{}}%
+\CSLLeftMargin{100. }
+\CSLRightInline{Quintana DS. A synthetic dataset primer for the biobehavioural sciences to promote reproducibility and hypothesis generation. Zaidi M, Büchel C, Bishop DVM, editors. eLife {[}Internet{]}. 2020 Mar;9:e53275. Available from: \url{https://doi.org/10.7554/eLife.53275}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Gerstner2017}{}}%
+\CSLLeftMargin{101. }
+\CSLRightInline{Gerstner K, Moreno-Mateos D, Gurevitch J, Beckmann M, Kambach S, Jones HP, et al. Will your paper be used in a meta-analysis? Make the reach of your research broader and longer lasting. Methods in Ecology and Evolution {[}Internet{]}. 2017;8(6):777--84. Available from: \url{https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.12758}}
 
 \end{CSLReferences}
 

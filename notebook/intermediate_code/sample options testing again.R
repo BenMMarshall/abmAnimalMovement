@@ -1,3 +1,13 @@
+# b0 0.850 0.01 0.0010
+# b1 0.005 0.99 0.0025
+# b2 0.005 0.01 0.9700
+W <- c(0.0000000001, 0.1, 0.999)
+as.data.frame(table(sample(W, 10000,
+                           replace = TRUE,
+                           prob = W))) %>%
+  ggplot() +
+  geom_col(aes(x = Var1, y = Freq))
+
 
 ndraws <- 100000
 W <- c(

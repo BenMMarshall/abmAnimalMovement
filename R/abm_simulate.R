@@ -205,11 +205,11 @@ abm_simulate <- function(start, timesteps,
   ## behave_Tmat
   if(
     !is.matrix(behave_Tmat) | !is.numeric(behave_Tmat) |
-    !dim(behave_Tmat)[1] == 3 | !dim(behave_Tmat)[2] == 3 |
-    !all(behave_Tmat <= 1) | !all(behave_Tmat >= 0)
+    # !all(behave_Tmat <= 1) | !all(behave_Tmat >= 0) |
+    !dim(behave_Tmat)[1] == 3 | !dim(behave_Tmat)[2] == 3
   ){
     stop("The behavioural transition matrix (behave_Tmat) should be a 3x3
-         numeric matrix where all values are between 0 and 1")
+         numeric matrix")
   }
   ## rest_Cycle
   if(!is.vector(rest_Cycle) | !length(rest_Cycle) == 4 | !is.numeric(rest_Cycle)){
@@ -232,12 +232,12 @@ abm_simulate <- function(start, timesteps,
      # !all(shelteringMatrix <= 1) |
      # !all(foragingMatrix <= 1) |
      # !all(movementMatrix <= 1) |
-     !all(shelteringMatrix >= -99) |
-     !all(foragingMatrix >= -99) |
-     !all(movementMatrix >= -99)
+     !all(shelteringMatrix >= -99.9) |
+     !all(foragingMatrix >= -99.9) |
+     !all(movementMatrix >= -99.9)
   ){
     stop("All the landscape layers (shelterMatrix, forageMatrix, moveMatrix)
-       should be numeric matricies, with values between 0 and 1")
+       should be numeric matricies, with values between -99.9 and 1")
   }
   if(any(shelterLocations[,1] > nrow(shelteringMatrix)) |
      any(shelterLocations[,2] > ncol(shelteringMatrix)) |

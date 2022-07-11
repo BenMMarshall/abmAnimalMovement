@@ -14,6 +14,7 @@
 //'
 //' @param W A vector of weights.
 //' @param SEED The seed to be used for the sampling.
+//' @param rebalance.
 //' @details Requires a new seed for each run as a separate seed is set
 //'   internally every time the function runs.
 //' @return An integer corresponding to the chosen weight in the initially
@@ -147,7 +148,7 @@ int cpp_sample_options(std::vector<double> W, int SEED){
     for(int j = 0; j < n; j++){
       W[j] = 1;
     }
-  } else{
+  } else {
     for(int i = 0; i < n; i++){
       W[i] = ((W[i] - W_min) /
         (W_max - W_min));
