@@ -2132,7 +2132,7 @@ suppressMessages(print(k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65)
 
 ```
 
-```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -5 weighting."}
+```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -99 weighting."}
 
 KINGCOBRA_landscapeLayersList <- list(
   "shelter" = KINGCOBRA_shelteringMatrix,
