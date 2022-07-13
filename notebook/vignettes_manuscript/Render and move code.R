@@ -10,3 +10,4 @@ file.copy(from = here::here("notebook",
           to = here::here("vignettes", "Agent-based_model_walkthrough.pdf"),
           overwrite = TRUE)
 # file.remove(here("Agent-based_model_walkthrough.pdf"))
+
