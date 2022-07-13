@@ -277,12 +277,6 @@ abm_simulate <- function(start, timesteps,
   avoidPoints_xIN <- avoidPoints[,1]
   avoidPoints_yIN <- avoidPoints[,2]
 
-  # A function that gets a seed so the sampling function is fed something fresh
-  # each turn. More details in sample_options documentation
-  get_seed <- function() {
-    sample.int(.Machine$integer.max, 1)
-  }
-
   # how many additional cycles have been provided, and get that value ready for
   # C++
   if(is.null(additional_Cycles)){
@@ -335,10 +329,7 @@ abm_simulate <- function(start, timesteps,
 
     shelterMatrix = shelteringMatrix,
     forageMatrix = foragingMatrix,
-    moveMatrix = movementMatrix,
-    seeds = sapply(1:timesteps, function(x){
-      get_seed()
-    }) # make sure we have enough seeds for each time sample_options is used
+    moveMatrix = movementMatrix
   )
 
   # tidy up all objects parse via the
@@ -432,8 +423,7 @@ run_abm_simulate <- function(startx, starty,
 
                              shelterMatrix,
                              forageMatrix,
-                             moveMatrix,
-                             seeds){
+                             moveMatrix){
   .Call("_abmAnimalMovement_cpp_abm_simulate",
         startx, starty,
         timesteps,
@@ -473,7 +463,6 @@ run_abm_simulate <- function(startx, starty,
 
         shelterMatrix,
         forageMatrix,
-        moveMatrix,
-        seeds)
+        moveMatrix)
 }
 

@@ -5,8 +5,6 @@
 \title{cpp_sample_options}
 \arguments{
 \item{W}{A vector of weights.}
-
-\item{SEED}{The seed to be used for the sampling.}
 }
 \value{
 An integer corresponding to the chosen weight in the initially
@@ -14,12 +12,10 @@ provided vector. \strong{NOTE: indexing begins at 0 matching C++ convention}.
 }
 \description{
 The C++ sample function that takes a vector of weights and
-randomly returns an integer of the choice. Sampling solution based on:
-\href{https://stackoverflow.com/questions/57599509/c-random-non-repeated-integers-with-weights}{link}.
-With the of definition of pow2 coming from: \href{https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int}{link}.
-A solution for the setting the random seed from: \href{https://www.r-bloggers.com/2018/09/using-rs-set-seed-to-set-seeds-for-use-in-c-c-including-rcpp/}{link}.
+randomly returns an integer of the choice using the Rcpp version of
+sample().
 }
 \details{
-Requires a new seed for each run as a separate seed is set
-internally every time the function runs.
+Very simple wrapper to help handle std::vectors, and pre-normalise
+the values provided to avoid issues with negative numbers.
 }

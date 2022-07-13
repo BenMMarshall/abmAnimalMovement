@@ -15,3 +15,7 @@ plot_landscapeLayersList(
       "movement"  = simResultsList$KINGCOBRA$inputs$in_moveMatrix
        ))
 
+
+# ❯ checking files in ‘vignettes’ ... WARNING
+# Files in the 'vignettes' directory but no files in 'inst/doc':
+#   ‘Agent-based_model_walkthrough.pdf’
