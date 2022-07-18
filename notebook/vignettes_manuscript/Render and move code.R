@@ -11,3 +11,7 @@ file.copy(from = here::here("notebook",
           overwrite = TRUE)
 # file.remove(here("Agent-based_model_walkthrough.pdf"))
 
+tools::compactPDF(
+  here::here("vignettes", "Agent-based_model_walkthrough.pdf"),
+  gs_quality = "printer")
+

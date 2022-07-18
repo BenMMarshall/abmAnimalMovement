@@ -228,15 +228,21 @@ Rcpp::List cpp_abm_simulate(
   // INITIAL LOCATION SETTING --------------------------------------------------
   x_Locations[0] = startx;
   y_Locations[0] = starty;
-  x_OptionsAll[0] = startx;
-  y_OptionsAll[0] = starty;
-  step_OptionsAll[0] = 0;
   // intial destination
   des_x_Locations[0] = des_x;
   des_y_Locations[0] = des_y;
   //----------------------------------------------------------------------------
+  /*initial options are populated with start location as animal doesn't make an
+  initial choice, that way the option indexing matches the timestep value
+  within the loop */
+  for(int u = 0; u < nopt; u++){
+    x_OptionsAll[u] = startx;
+    y_OptionsAll[u] = starty;
+    step_OptionsAll[u] = 0;
+    stepAll[u] = 0;
+  }
 
-  for(int i = 1, a = 1; i < timesteps; i++){
+  for(int i = 1, a = nopt; i < timesteps; i++){
 
     /* working under the assumption that i == minute, but the cycle is defined in
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */

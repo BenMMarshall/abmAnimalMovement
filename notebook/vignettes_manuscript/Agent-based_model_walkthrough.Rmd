@@ -19,8 +19,6 @@ output:
     keep_tex: true
     highlight: monochrome
     dev: png
-vignette: |
-  %\VignetteIndexEntry{Agent-based_model_walkthrough} %\VignetteEngine{knitr::knitr} %\VignetteEncoding{UTF-8}
 link-citations: yes
 linkcolor: gray
 bibliography: [abmAnimalMovement_refs.bib, packages.bib]
@@ -846,8 +844,8 @@ KINGCOBRA_avoidModifier <- 1
 ```
 
 ```{r KINGCOBRAsettingShelter, eval=TRUE, echo=FALSE}
-roadMin_x/2000
-roadMax_y/2000
+# roadMin_x/2000
+# roadMax_y/2000
 
 sampledShelters <- sampleRandom(raster(landscapeLayersList$shelter), 12,
                                 ext = extent(0.35, 0.65, 0.42, 0.65), 
@@ -1315,10 +1313,11 @@ abmMapPlot <- function(simResults,
                        ggplot2::aes(x = x, y = y),
                        alpha = 0.15) +
     ggplot2::geom_point(data = realisedData,
-                        size = 0.65,
-                        ggplot2::aes(x = x, y = y, shape = as.factor(behave)),
+                        size = 0.1,
+                        pch = ".",
+                        ggplot2::aes(x = x, y = y),
                         alpha = 0.45,
-                        colour = "grey10") +
+                        colour = "#191919") +
     ## forage
     ggplot2::geom_point(data = realisedData,
                         ggplot2::aes(x = destination_x, y = destination_y),
@@ -1348,7 +1347,6 @@ abmMapPlot <- function(simResults,
                         size = 3, colour = "grey10",
                         alpha = 1) +
     scico::scale_colour_scico(palette = "buda") +
-    ggplot2::coord_fixed() +
     # coord_cartesian(xlim = range(realisedData$x), ylim = range(realisedData$y)) +
     ggplot2::theme_bw() +
     ggplot2::theme(aspect.ratio = 1,
@@ -1427,7 +1425,11 @@ for(species in vecSpecies){
     subtitle = paste0("Each cell = ",
                       simResultsList[[species]]$inputs$in_rescale, "m")
     ) +
-    ggplot2::theme(legend.position = "none",
+    ggplot2::coord_fixed(xlim = range(simRes$locations$destination_x)+c(-50, +50),
+                         ylim = range(simRes$locations$destination_y)+c(-50, +50),
+                         expand = TRUE) +
+    ggplot2::theme(aspect.ratio = 1,
+                   legend.position = "none",
                    text = element_text(colour = "#191919"),
                    line = element_line(colour = "#191919"),
                    plot.title = element_markdown(size = 8, face = 4,

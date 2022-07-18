@@ -438,10 +438,6 @@ This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios {[}Figure \ref{fig:BADGERlayersFigure}{]}.
 To aid balancing we keep values between 0 and 1; any value can be used, but the simulation will interpret the values as relative weights when the animal is making decisions (Note: The current implementation of \texttt{cpp\_get\_values} returns -99.9 weighting when presented with NA values and therefore serves as a lower limit to the matrix weighting values).
 
-\begin{verbatim}
-FALSE 'RandomFields' will use OMP
-\end{verbatim}
-
 \hypertarget{animal-parameters}{%
 \subsubsection{Animal Parameters}\label{animal-parameters}}
 
@@ -565,14 +561,6 @@ A more extreme implementation of the second cycle could introduce hibernation be
 ## b0 0.9700 0.01000 0.0010
 ## b1 0.0002 0.95000 0.0008
 ## b2 0.0010 0.00001 0.9900
-\end{verbatim}
-
-\begin{verbatim}
-## [1] 0.68
-\end{verbatim}
-
-\begin{verbatim}
-## [1] 0.35
 \end{verbatim}
 
 \hypertarget{running-the-simulation}{%
@@ -968,26 +956,9 @@ Values input to generate more king cobra-like movement patterns.
 \NormalTok{KINGCOBRA\_avoidTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
 \NormalTok{KINGCOBRA\_avoidModifier }\OtherTok{\textless{}{-}} \DecValTok{1}
 
-\NormalTok{roadMin\_x}\SpecialCharTok{/}\DecValTok{2000}
-\end{Highlighting}
-\end{Shaded}
+\CommentTok{\# roadMin\_x/2000}
+\CommentTok{\# roadMax\_y/2000}
 
-\begin{verbatim}
-## [1] 0.68
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{roadMax\_y}\SpecialCharTok{/}\DecValTok{2000}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.35
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{sampledShelters }\OtherTok{\textless{}{-}} \FunctionTok{sampleRandom}\NormalTok{(}\FunctionTok{raster}\NormalTok{(landscapeLayersList}\SpecialCharTok{$}\NormalTok{shelter), }\DecValTok{12}\NormalTok{,}
                                 \AttributeTok{ext =} \FunctionTok{extent}\NormalTok{(}\FloatTok{0.35}\NormalTok{, }\FloatTok{0.65}\NormalTok{, }\FloatTok{0.42}\NormalTok{, }\FloatTok{0.65}\NormalTok{), }
                                 \AttributeTok{rowcol =} \ConstantTok{TRUE}\NormalTok{)}
