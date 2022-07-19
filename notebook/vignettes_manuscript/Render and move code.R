@@ -13,5 +13,5 @@ file.copy(from = here::here("notebook",
 
 tools::compactPDF(
   here::here("vignettes", "Agent-based_model_walkthrough.pdf"),
-  gs_quality = "printer")
+  gs_quality = "ebook")
 
