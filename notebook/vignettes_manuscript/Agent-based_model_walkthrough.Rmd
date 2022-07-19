@@ -1,5 +1,5 @@
 ---
-title: "abmAnimalMovement: An R package for simulating animal movement using an agent-based model"
+title: "abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model"
 author1: "Benjamin Michael Marshall*"
 author2: "Alexander Bradley Duthie**"
 affiliation1: "Biological and Environmental Sciences, Faculty of Natural Sciences, University of Stirling, Stirling, FK9 4LA, Scotland, UK"

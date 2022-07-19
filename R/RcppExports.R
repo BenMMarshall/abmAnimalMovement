@@ -149,7 +149,7 @@ cpp_sample_options <- function(W) {
 
 #' @name cpp_vonmises
 #' @title cpp_vonmises
-#' @description A C++ conversion of the *rvm* function provided by the [CircStats package](https://cran.r-project.org/web/packages/CircStats/index.html).
+#' @description A C++ conversion of the *rvm* function provided by the [CircStats package](https://CRAN.R-project.org/package=CircStats).
 #' @param N of values to draw.
 #' @param MU The mean of the distribution (\eqn{\mu}).
 #' @param KAPPA The concentration of the distribution (\eqn{\kappa}).

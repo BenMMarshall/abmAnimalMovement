@@ -21,7 +21,7 @@ defined by \eqn{\mu} and \eqn{\kappa}.
 }
 \description{
 The R function counterpart to the C++ function \emph{cpp_vonmises}.
-The C++ function is based on the \emph{rvm} function from the \href{https://cran.r-project.org/web/packages/CircStats/index.html}{CircStats package}.
+The C++ function is based on the \emph{rvm} function from the \href{https://CRAN.R-project.org/package=CircStats}{CircStats package}.
 }
 \details{
 When \eqn{\mu} is zero the limits of the overall distribution will

@@ -4,7 +4,7 @@
 \name{abmAnimalMovement-package}
 \alias{abmAnimalMovement}
 \alias{abmAnimalMovement-package}
-\title{abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-based Model}
+\title{abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model}
 \description{
 The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal.
 }

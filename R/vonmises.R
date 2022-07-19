@@ -3,7 +3,7 @@
 #' @name vonmises
 #' @description The R function counterpart to the C++ function *cpp_vonmises*.
 #'   The C++ function is based on the *rvm* function from the [CircStats
-#'   package](https://cran.r-project.org/web/packages/CircStats/index.html).
+#'   package](https://CRAN.R-project.org/package=CircStats).
 #' @param N The number of values to draw.
 #' @param MU The mean (\eqn{\mu}) direction of the distribution to be draw from.
 #' @param KAPPA The concentration or shape parameter (\eqn{\kappa}). High value

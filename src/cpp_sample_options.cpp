@@ -20,7 +20,6 @@
 int cpp_sample_options(std::vector<double> W){
 
   int n = W.size();
-  double c_min = W[0];
 
   double W_min = W[0];
   W_min = cpp_min(W);
