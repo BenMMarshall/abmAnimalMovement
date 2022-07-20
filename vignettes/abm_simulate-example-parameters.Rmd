@@ -1,0 +1,168 @@
+---
+title: "abm_simulate example parameters"
+author: "Benjamin Michael Marshall*"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: yeti
+    highlight: rstudio
+  pdf_document:
+    highlight: rstudio
+vignette: >
+  %\VignetteIndexEntry{abm_simulate example parameters}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+This is a bare-bones vignette demonstrating an example set of parameters to use the abm_simulate function.
+A more complete explanation of the package, the parametrisation, and the outputs can be found at doi: , along with different example animal parametrisations. 
+
+```{r package, echo=TRUE, eval=TRUE}
+
+library(abmAnimalMovement)
+
+seed <- 2022
+set.seed(seed)
+
+```
+
+Unlike the more demonstration in the complete explanation, here we randomly generated landscape with no meaningful structure simply to show `abm_simulate()` operate and the structure of the inputs required.
+
+```{r envData, echo=TRUE, eval=TRUE}
+# generate a place holder set of environment matrices
+row <- 200; col <- 200;
+landscapeLayersList <- list(
+  "shelter" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col),
+  "forage" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col),
+  "movement" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col))
+
+```
+
+```{r parameterExample, echo=TRUE, eval=TRUE}
+
+BADGER_shelter <- landscapeLayersList$shelter
+BADGER_forage <- landscapeLayersList$forage
+BADGER_move <- landscapeLayersList$movement
+
+b0 <- c(0.97, 0.01, 0.001) # rest
+b1 <- c(0.0002, 0.95, 0.0008) # explore/move
+b2 <- c(0.001, 0.00001, 0.99) # forage
+
+BADGER_behaveMatrix <- rbind(b0, b1, b2)
+
+BADGER_shelterLocs <- data.frame(
+  "x" = c(124, 105),
+  "y" = c(93, 120))
+
+BADGER_shelterSize <- 8
+
+BADGER_k_step <- c(0.3*60, 1.25*60, 0.25*60)
+BADGER_s_step <- c(0.8, 0.25, 0.5)
+BADGER_mu_angle <- c(0, 0, 0)
+BADGER_k_angle <- c(0.6, 0.99, 0.6)
+
+BADGER_destinationRange <- c(3, 120)
+BADGER_destinationDirection <- c(0, 0.01)
+BADGER_destinationTransformation <- 2
+BADGER_destinationModifier <- 2
+
+BADGER_rescale <- 50
+
+BADGER_avoidLocs <- data.frame(
+  "x" = c(125, 150, 165),
+  "y" = c(98, 109, 120))
+
+BADGER_avoidTransformation <- 2
+BADGER_avoidModifier <- 4
+
+BADGER_rest_Cycle <- c(0.12, 0, 24, 24)
+
+# additional cycle
+c0 <- c(0.075, 0, 24* (365/2), 24* 365) # seasonal
+
+BADGER_additional_Cycles <- rbind(c0)
+
+startLocation <- sample(90:110, 2, replace = TRUE)
+
+simSteps <- 24*60 *31
+
+```
+
+```{r coreSimulate, echo=TRUE, eval=TRUE}
+
+simRes <- abm_simulate(start = startLocation,
+                       timesteps = simSteps,
+                       des_options = 10,
+                       options = 12,
+                       k_step = BADGER_k_step,
+                       s_step = BADGER_s_step,
+                       mu_angle = BADGER_mu_angle,
+                       k_angle = BADGER_k_angle,
+                       rescale_step2cell = BADGER_rescale,
+                       
+                       shelterLocations = BADGER_shelterLocs,
+                       shelterSize = BADGER_shelterSize,
+                       avoidPoints = BADGER_avoidLocs,
+                       
+                       destinationRange = BADGER_destinationRange,
+                       destinationDirection = BADGER_destinationDirection,
+                       destinationTransformation = BADGER_destinationTransformation,
+                       destinationModifier = BADGER_destinationModifier,
+                       avoidTransformation = BADGER_avoidTransformation,
+                       avoidModifier = BADGER_avoidModifier,
+                       
+                       behave_Tmat = BADGER_behaveMatrix,
+                       
+                       rest_Cycle = BADGER_rest_Cycle,
+                       additional_Cycles = BADGER_additional_Cycles,
+                       
+                       shelteringMatrix = BADGER_shelter,
+                       foragingMatrix = BADGER_forage,
+                       movementMatrix = BADGER_move)
+
+
+```
+
+The resulting outputs from `abm_simulate()` are split into three sections: `simRes$locations` contains the realised locations of the animal, `simRes$options` contains the options considered at each time step, `simRes$inputs` contains the input parameters used to run the simulations.
+The following plots provide a very basic mapping of the locations generated from the simulation.
+
+```{r mapOverallFigure, echo=TRUE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=6, fig.cap="The observed locations of the simulated species. The coloured lines show the observed location at each time step, with the colour depicting the current behavioural state (dark brown = shelter, middle orange = explore, light orange = forage)."}
+
+plot(simRes$locations$x,
+     simRes$locations$y,
+     type = "l", asp = 1,
+     ylab = "Y", xlab = "X")
+points(simRes$locations$x[simRes$locations$behave == 0],
+       simRes$locations$y[simRes$locations$behave == 0],
+       col = "#302010", cex = 0.2)
+points(simRes$locations$x[simRes$locations$behave == 1],
+       simRes$locations$y[simRes$locations$behave == 1],
+       col = "#965A1D", cex = 0.2)
+points(simRes$locations$x[simRes$locations$behave == 2],
+       simRes$locations$y[simRes$locations$behave == 2],
+       col = "#E87D13", cex = 0.2)
+
+```
+
+```{r mapForageFigure, echo=TRUE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=6, fig.cap="The observed locations of the simulated species. Grey lines show the observed location at each time step, with the locations when in the foraging behavioural state shown in light orange. The black squares show the dynamically selected foraging destinations the animal is attracted to."}
+
+plot(simRes$locations$x,
+     simRes$locations$y,
+     type = "l", asp = 1,
+     col = "#808080",
+     ylab = "Y", xlab = "X")
+points(simRes$locations$x[simRes$locations$behave == 2],
+       simRes$locations$y[simRes$locations$behave == 2],
+       col = "#E87D13", cex = 0.2)
+points(simRes$locations$destination_x,
+       simRes$locations$destination_y,
+       col = "#191919", cex = 0.5, pch = 15)
+
+```
+
+
+
+
+
+
+

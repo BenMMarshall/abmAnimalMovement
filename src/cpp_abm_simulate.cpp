@@ -140,7 +140,7 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> y_Options(nopt);
   std::vector<int> step_Options(nopt);
   std::vector<double> move_Options(nopt);
-  // needed for the chosing of option
+  // needed for the choosing of option
   int chosen;
   // store the choice at each step
   std::vector<int> chosen_Options(timesteps);
@@ -166,18 +166,18 @@ Rcpp::List cpp_abm_simulate(
   // BEHAVIOUR RELATED OBJECTS -------------------------------------------------
   // somewhere to store the behaviours at each step
   std::vector<int> behave_Locations(timesteps);
-  // and the behaviour related movement characterisitics
-  double behave_k_step;
-  double behave_s_step;
-  double behave_mu_angle;
-  double behave_k_angle;
+  // initial behaviour set to 0
+  behave_Locations[0] = 0;
+  // and the behaviour related movement characteristics for initial state
+  double behave_k_step = k_step[0];
+  double behave_s_step = s_step[0];
+  double behave_mu_angle = mu_angle[0];
+  double behave_k_angle = k_angle[0];
   // something that store the time adjusted behavioural shifts
   // and initialise them with the provided base values
   std::vector<double> b0_Options_Current = b0_Options;
   std::vector<double> b1_Options_Current = b1_Options;
   std::vector<double> b2_Options_Current = b2_Options;
-  // initial behaviour set to 0
-  behave_Locations[0] = 0;
   // a store for the modifiers that will change throughout the cycles
   double b0_dailyMod;
   double b0_addMod;

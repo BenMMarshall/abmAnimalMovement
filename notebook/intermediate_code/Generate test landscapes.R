@@ -1,4 +1,11 @@
 
+# remotes::install_version(
+#   "RandomFields",
+#   version = "3.3.14")
+#
+# devtools::install_github("ropensci/NLMR")
+
+
 library(abmAnimalMovement)
 
 # Noise only --------------------------------------------------------------

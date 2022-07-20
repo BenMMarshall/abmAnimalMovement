@@ -891,11 +891,11 @@ simRes <- abm_simulate(start = startLocation,
                        s_step = BADGER_s_step,
                        mu_angle = BADGER_mu_angle,
                        k_angle = BADGER_k_angle,
-                       rescale_step2cell = BADGER_rescale
+                       rescale_step2cell = BADGER_rescale,
                        
                        shelterLocations = BADGER_shelterLocs,
                        shelterSize = BADGER_shelterSize,
-                       avoidPoints = BADGER_avoid,
+                       avoidPoints = BADGER_avoidLocs,
                        
                        destinationRange = BADGER_destinationRange,
                        destinationDirection = BADGER_destinationDirection,
@@ -904,10 +904,10 @@ simRes <- abm_simulate(start = startLocation,
                        avoidTransformation = BADGER_avoidTransformation,
                        avoidModifier = BADGER_avoidModifier,
                        
-                       behave_Tmat = behaveMatTest,
+                       behave_Tmat = BADGER_behaveMatrix,
                        
-                       rest_Cycle = BADGER_restData,
-                       additional_Cycles = BADGER_cycleMat,
+                       rest_Cycle = BADGER_rest_Cycle,
+                       additional_Cycles = BADGER_additional_Cycles,
                        
                        shelteringMatrix = BADGER_shelter,
                        foragingMatrix = BADGER_forage,
@@ -1404,7 +1404,7 @@ abmMapPlot <- function(simResults,
 
 ```
 
-```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step, with the current behavioural state (circle = shelter, triangle = explore, square = forage). The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
+```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step. The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
