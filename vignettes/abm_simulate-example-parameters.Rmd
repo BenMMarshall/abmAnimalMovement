@@ -14,7 +14,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-This is a bare-bones vignette demonstrating an example set of parameters to use the abm_simulate function.
+This is a bare-bones vignette demonstrating an example set of parameters to use the `abm_simulate` function.
 A more complete explanation of the package, the parametrisation, and the outputs can be found at doi: , along with different example animal parametrisations. 
 
 ```{r package, echo=TRUE, eval=TRUE}

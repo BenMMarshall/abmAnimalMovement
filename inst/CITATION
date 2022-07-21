@@ -10,7 +10,6 @@ Model",
   volume   = 0,
   number   = 0,
   pages    = 0,
-  note     = "R package version 0.0.2.9000",
   url      = 0,
   textVersion = "Marshall B.M., Duthie A.B. (2022). abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model. F1000, 0 0, 0-0. DOI: 0."
 )

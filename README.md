@@ -4,6 +4,8 @@
 
 The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal.
 
+A more complete description of the package, alongside a demonstration can be found at DOI: TBC.
+
 --------------------------------------------------------------------------------
 
 ## Installation
@@ -32,4 +34,4 @@ devtools::install_github("BenMMarshall/abmAnimalMovement")
 
 ## Core simulation function
 
-The `abm_simulate()` function is the main purpose of the package. Guidance on how to parametrise the simulation can be found in accompanying documentation; however, a more detailed walk-through can be found in the vignette/preprint *COMING SOON*. <!-- add link here when ready -->
+The `abm_simulate()` function is the main purpose of the package. Guidance on how to parametrise the simulation can be found in accompanying documentation; however, a more detailed walk-through can be found in the preprint *COMING SOON*. <!-- add link here when ready -->
