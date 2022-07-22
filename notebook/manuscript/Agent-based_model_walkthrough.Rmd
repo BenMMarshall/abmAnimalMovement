@@ -134,7 +134,7 @@ The diagonal describes the probability of the animal remaining in the same behav
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are considering the time steps to be a minute.
 
 ``` {r transMatrixDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
-knitr::include_graphics(here::here("notebook", "ext_figures", "Tranistion Matrix Diagram.png"))
+knitr::include_graphics(here::here("notebook", "ext_figures", "Tranistion Matrix Diagram.tiff"))
 
 ```
 
@@ -148,9 +148,9 @@ b2 <- c(0.001, 0.00001, 0.99) # forage
 ```
 
 <!-- importance of diel activity See Riveria et al 2022 (paper with Asia Murphy) -->
-Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles; therefore, we want the transition matrix vary over time.
+Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles [@rivera_rethinking_2022]; therefore, we want the transition matrix vary over time.
 We describe a number of cycles (or waves) that can be applied to the core transition matrix impacting the probability of entering resting behaviour.
-We can define as many cycles as needed, and they impact the resting probability additively.
+We can define as many cycles as needed, and they impact the resting probability additively. 
 
 When entering the resting state the animal will seek out a shelter site.
 In the *abmAnimalMovement* package, we can supply a number of shelter sites to simulate this need and create site fidelity.
@@ -161,7 +161,7 @@ As the *abmAnimalMovement* model can have multiple attraction (rest) sites suppl
 
 ``` {r walkDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
 # if (knitr:::is_latex_output()) {
-knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram Static.png"))
+knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram Static.tiff"))
 # } else {
 # knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram.gif"))
 # }
@@ -283,12 +283,17 @@ We can broadly summarise the king cobra ecology we want to parametrise as follow
 
 3. A 8-12 hour activity cycle, with a approximately weekly forage-digest cycle, and weak seasonality
 
-## Implementation
+## Operation
 
-### Required Libraries
+The *abmAnimalMovement* package requires links to the *Rcpp* (>= 1.0.8.3) [@Eddelbuettel_seamless_2011; @Eddelbuettel_seamless_2013; @Eddelbuettel_extending_2018] and *BH* (>= 1.78.0.0) packages [@Eddelbuettel_BH_2021], and therefore requires a version of *R* >=3.5.0 [@R-base] (available from [www.r-project.org](https://www.r-project.org/)).
+Currently the *abmAnimalMovement* package can be installed from Github using `install_github` provided by the *devtools* package [@Wickham_devtools_2021].
 
-First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
-Only the *abmAnimalMovement* package is required for running the core simulation.
+A submission to the Comprehensive R Archive Network (CRAN) is under way, that will streamline installation and ensure compatibly with a wide range of platforms.
+
+## Implemenation
+
+While only the *abmAnimalMovement* package is required for running the core simulation, to generate, organise, and review the inputs and outputs of the simulation we make use of a number of *R* packages.
+An alternative simpler implementation with no dependencies is provided as a package vignette.
 
 ```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
 # core package
@@ -348,6 +353,7 @@ We used the *raster* `r paste0("v.", packageVersion("raster"))` [@R-raster], *sp
 #              caption = "R packages used to organise and visual inputs and outputs for the animal simulation.",
 #              align = "lcc")
 ```
+
 
 ### Generating Environmental Matrices
 
@@ -1866,34 +1872,9 @@ This prevents shifts in the landscape such as seasonal variation in resources, o
 Currently the closest solution is to run multiple simulations where the end location of simulation~1~ is the start location for simulation~2~, where simulation~2~ is provided with a new season-appropriate resource layer.
 This solution would be inadequate for trail development, as trail development would require a system within the simulation to update previously used cells for the animal at each time step.
 
-# Data and Software Availability
-The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
-The stable release is available from CRAN: TBC
-
-# Competing Interests
-No competing interests were disclosed.
-
-# Grant Information
-<!-- need to check the exact wording that is preferred  -->
-This project was funded by the IAPETUS2 NERC DTP.
-
-# Acknowledgements
-
-# Author Contributions
-Conceptualization: BMM; 
-Software: BMM; 
-Supervision: ABD; 
-Visualization: BMM; 
-Writing – Original Draft: BMM; 
-Writing – Review & Editing: BMM, ABD.
-
-\clearpage
-\beginsupplement
-
-# Supplementary Materials
-## Simulation Inputs
-### Palette
-```{r palettePreview, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=2.5, fig.cap="Universal colour key for behavioural states 0 - resting, 1 - foraging, 2 - exploring; and example species. Name assigned to the colour in bold, and the hex code in italics below."}
+## Use Cases
+### Simulation Inputs
+```{r palettePreview, echo=FALSE, eval=FALSE, fig.align='center', fig.width=7, fig.height=2.5, fig.cap="Universal colour key for behavioural states 0 - resting, 1 - foraging, 2 - exploring; and example species. Name assigned to the colour in bold, and the hex code in italics below."}
 names(palette) <- c("KING\nCOBRA", "VULTURE", "BADGER", "2", "1", "0")
 data.frame(
   names = factor(names(palette), levels = c(
@@ -1920,8 +1901,10 @@ data.frame(
   theme(legend.position = "none")
 
 ```
-### Vulture Inputs
-Values input to generate more vulture-like movement patterns.
+This section provides alternative parameterisations to better demonstrate the range of movement types and scenarios the *abmAnimalMovement* package can replicate.
+
+#### Vulture Inputs
+Values input to generate more vulture-like movement patterns, justified in the Methods section.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
 ```
 
@@ -2040,8 +2023,8 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
             colour = palette["0"])
 
 ```
-### King Cobra Inputs
-Values input to generate more king cobra-like movement patterns.
+#### King Cobra Inputs
+Values input to generate more king cobra-like movement patterns, justified in the Methods section.
 ```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix', 'KINGCOBRAsettingShelter')}
 ```
 
@@ -2161,11 +2144,9 @@ plot_landscapeLayersList(KINGCOBRA_landscapeLayersList) +
 
 ```
 
-\clearpage
+### Simulation Outputs
 
-## Simulation Outputs
-
-Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveDesPlot) describe the inputs for the vulture and king cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure).
+Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveDesPlot) describe the inputs for the vulture and king cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure) that display the realised movement characteristics.
 Figures \@ref(fig:BADGERmoveCharFigure), \@ref(fig:VULTUREmoveCharFigure), and \@ref(fig:KINGCOBRAmoveCharFigure) also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
 The king cobra example in particular highlights the prolonged near weekly resting periods.
 
@@ -2181,6 +2162,34 @@ moveCharPlotList[["KINGCOBRA"]]
 
 ```
 
-\clearpage
+# Data Availability
+
+All data underlying the results are generated as part of the article, no source data are required.
+Source code to reproduce the results and manuscript are available alongside the software.
+
+# Software Availability
+
+Archived version of the software at the time of submission is available on Zenodo: [REPO TITLE]. https://doi.org/ [_DOI_]. 
+
+The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
+
+The stable release is available from CRAN: TBC [CRAN submission under way].
+
+License: GPL (>= 3)
+
+# Competing Interests
+No competing interests were disclosed.
+
+# Grant Information
+
+BMM was funded by the Natural Environment Research Council (NERC) via the IAPETUS2 Doctoral Training Partnership.
+
+# Author Contributions
+Conceptualization: BMM; 
+Software: BMM; 
+Supervision: ABD; 
+Visualization: BMM; 
+Writing – Original Draft: BMM; 
+Writing – Review & Editing: BMM, ABD.
 
 # References

@@ -17,7 +17,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Benjamin Marshall \email{benjaminmichaelmarshall@gmail.com} (\href{https://orcid.org/0000-0001-9554-0605}{ORCID})
+\strong{Maintainer}: Benjamin Michael Marshall \email{benjaminmichaelmarshall@gmail.com} (\href{https://orcid.org/0000-0001-9554-0605}{ORCID})
+
+Authors:
+\itemize{
+  \item Alexander Bradley Duthie \email{alexander.duthie@stir.ac.uk} (\href{https://orcid.org/0000-0001-8343-4995}{ORCID})
+}
 
 }
 \keyword{internal}

@@ -11,46 +11,46 @@ rmarkdown::render(input = here::here("notebook",
 #           overwrite = TRUE)
 # file.remove(here("Agent-based_model_walkthrough.pdf"))
 
-pdftools::pdf_subset(here::here("notebook",
-                                "manuscript",
-                                "Agent-based_model_walkthrough.pdf"),
-                     pages = 18:25,
-                     output = here::here("notebook",
-                                         "manuscript",
-                                         "Extended Data - Supplementary Material.pdf"))
-
-pdftools::pdf_subset(here::here("notebook",
-                                "manuscript",
-                                "Agent-based_model_walkthrough.pdf"),
-                     pages = 1:17,
-                     output = here::here("notebook",
-                                         "manuscript",
-                                         "Agent-based_model_walkthrough FRONT.pdf"))
-pdftools::pdf_subset(here::here("notebook",
-                                "manuscript",
-                                "Agent-based_model_walkthrough.pdf"),
-                     pages = 26:31,
-                     output = here::here("notebook",
-                                         "manuscript",
-                                         "Agent-based_model_walkthrough BACK.pdf"))
-
-pdftools::pdf_combine(c(
-  here::here("notebook",
-             "manuscript",
-             "Agent-based_model_walkthrough FRONT.pdf"),
-  here::here("notebook",
-             "manuscript",
-             "Agent-based_model_walkthrough BACK.pdf")),
-  output = here::here("notebook",
-                      "manuscript",
-                      "Agent-based_model_walkthrough FULL.pdf"))
-
-file.remove(here::here("notebook",
-                       "manuscript",
-                       "Agent-based_model_walkthrough FRONT.pdf"))
-file.remove(here::here("notebook",
-                       "manuscript",
-                       "Agent-based_model_walkthrough BACK.pdf"))
+# pdftools::pdf_subset(here::here("notebook",
+#                                 "manuscript",
+#                                 "Agent-based_model_walkthrough.pdf"),
+#                      pages = 18:25,
+#                      output = here::here("notebook",
+#                                          "manuscript",
+#                                          "Extended Data - Supplementary Material.pdf"))
+#
+# pdftools::pdf_subset(here::here("notebook",
+#                                 "manuscript",
+#                                 "Agent-based_model_walkthrough.pdf"),
+#                      pages = 1:17,
+#                      output = here::here("notebook",
+#                                          "manuscript",
+#                                          "Agent-based_model_walkthrough FRONT.pdf"))
+# pdftools::pdf_subset(here::here("notebook",
+#                                 "manuscript",
+#                                 "Agent-based_model_walkthrough.pdf"),
+#                      pages = 26:31,
+#                      output = here::here("notebook",
+#                                          "manuscript",
+#                                          "Agent-based_model_walkthrough BACK.pdf"))
+#
+# pdftools::pdf_combine(c(
+#   here::here("notebook",
+#              "manuscript",
+#              "Agent-based_model_walkthrough FRONT.pdf"),
+#   here::here("notebook",
+#              "manuscript",
+#              "Agent-based_model_walkthrough BACK.pdf")),
+#   output = here::here("notebook",
+#                       "manuscript",
+#                       "Agent-based_model_walkthrough FULL.pdf"))
+#
+# file.remove(here::here("notebook",
+#                        "manuscript",
+#                        "Agent-based_model_walkthrough FRONT.pdf"))
+# file.remove(here::here("notebook",
+#                        "manuscript",
+#                        "Agent-based_model_walkthrough BACK.pdf"))
 
 #### REMOVE THE FOLLOWING FROM THE TEX FILE
 

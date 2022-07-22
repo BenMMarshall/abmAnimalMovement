@@ -1,13 +1,13 @@
 ---
 title: "abm_simulate example parameters"
-author: "Benjamin Michael Marshall*"
+author: "Benjamin Michael Marshall"
 date: "`r Sys.Date()`"
 output: 
   html_document:
     theme: yeti
-    highlight: rstudio
+    highlight: monochrome
   pdf_document:
-    highlight: rstudio
+    highlight: monochrome
 vignette: >
   %\VignetteIndexEntry{abm_simulate example parameters}
   %\VignetteEncoding{UTF-8}

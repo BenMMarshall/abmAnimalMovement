@@ -221,7 +221,7 @@ These probabilities can be kept very high to introduce autocorrelation in the be
 ## b2 0.0010 0.00001 0.9900
 \end{verbatim}
 
-Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles; therefore, we want the transition matrix vary over time.
+Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles (\protect\hyperlink{ref-rivera_rethinking_2022}{56}); therefore, we want the transition matrix vary over time.
 We describe a number of cycles (or waves) that can be applied to the core transition matrix impacting the probability of entering resting behaviour.
 We can define as many cycles as needed, and they impact the resting probability additively.
 
@@ -242,7 +242,7 @@ As the \emph{abmAnimalMovement} model can have multiple attraction (rest) sites 
 \end{figure}
 
 In addition to the predefined attraction to shelter sites, the \emph{abmAnimalMovement} package allows for a more dynamic attraction to areas of high resource quality.
-As movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors (\protect\hyperlink{ref-Scharf2018}{56}); or the habitat decisions may occur at scales much broader than observed movement (\protect\hyperlink{ref-Bastille-Rousseau2017}{1}).
+As movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors (\protect\hyperlink{ref-Scharf2018}{57}); or the habitat decisions may occur at scales much broader than observed movement (\protect\hyperlink{ref-Bastille-Rousseau2017}{1}).
 Therefore, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
 When entering foraging mode, the animal randomly selects (but weighted towards areas of higher quality) foraging destinations as a point of attraction {[}Figure \ref{fig:walkDiagram}{]}.
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move) options closer to the foraging destination.
@@ -275,20 +275,20 @@ We show one example via more detailed walk-through, and the other example parame
 \subsubsection{Ecology and Objectives - Badger}\label{ecology-and-objectives---badger}}
 
 Our primary example is based on a badger.
-Badger occupy setts, in our example a two home/shelter sites, that they routinely return to (\protect\hyperlink{ref-kowalczyk_daily_2006}{57},\protect\hyperlink{ref-feore_habitat_1999}{58}).
+Badger occupy setts, in our example a two home/shelter sites, that they routinely return to (\protect\hyperlink{ref-kowalczyk_daily_2006}{58},\protect\hyperlink{ref-feore_habitat_1999}{59}).
 When not at the sett the badger forages, and the foraging distances are impacted by resource position and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
 
-We can draw on studies such as (\protect\hyperlink{ref-kowalczyk_daily_2006}{57}) and (\protect\hyperlink{ref-rosalino_activity_2005}{59}) to roughly gauge the speed of badgers (i.e., step length per minute).
-How this speed differs between behaviours we more freely define, but use (\protect\hyperlink{ref-kowalczyk_daily_2006}{57}) reported maximum speed to guide more direct movements (e.g., state 0 - sheltering and state 1 - exploring).
-In particular (\protect\hyperlink{ref-kowalczyk_daily_2006}{57}) mentioned the heightened speeds moving from and to the setts.
-We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory (\protect\hyperlink{ref-kelly_extra_2020}{60}).
-We can draw on statements regarding maximum distance travelled in a night from papers such as (\protect\hyperlink{ref-rosalino_activity_2005}{59}), (\protect\hyperlink{ref-kowalczyk_daily_2006}{57}), and (\protect\hyperlink{ref-loureiro_path_2007}{61}) to approximate how distance foraging locations could be from a sett.
+We can draw on studies such as (\protect\hyperlink{ref-kowalczyk_daily_2006}{58}) and (\protect\hyperlink{ref-rosalino_activity_2005}{60}) to roughly gauge the speed of badgers (i.e., step length per minute).
+How this speed differs between behaviours we more freely define, but use (\protect\hyperlink{ref-kowalczyk_daily_2006}{58}) reported maximum speed to guide more direct movements (e.g., state 0 - sheltering and state 1 - exploring).
+In particular (\protect\hyperlink{ref-kowalczyk_daily_2006}{58}) mentioned the heightened speeds moving from and to the setts.
+We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory (\protect\hyperlink{ref-kelly_extra_2020}{61}).
+We can draw on statements regarding maximum distance travelled in a night from papers such as (\protect\hyperlink{ref-rosalino_activity_2005}{60}), (\protect\hyperlink{ref-kowalczyk_daily_2006}{58}), and (\protect\hyperlink{ref-loureiro_path_2007}{62}) to approximate how distance foraging locations could be from a sett.
 While also confirming the nocturnal activity cycle for the badger.
-For the example, we will consider badgers as fully nocturnal, and with active periods lasting for around 8 hours each night (\protect\hyperlink{ref-rosalino_activity_2005}{59},\protect\hyperlink{ref-magowan_dead-reckoning_2022}{62}).
+For the example, we will consider badgers as fully nocturnal, and with active periods lasting for around 8 hours each night (\protect\hyperlink{ref-rosalino_activity_2005}{60},\protect\hyperlink{ref-magowan_dead-reckoning_2022}{63}).
 The 8 hour active periods are not consistent throughout the year.
-Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources (\protect\hyperlink{ref-rosalino_activity_2005}{59},\protect\hyperlink{ref-magowan_dead-reckoning_2022}{62}).
-Badger movements are also impacted by their territoriality, avoiding areas occupied by other badger groups, but also displaying occasional extra-territorial movements (\protect\hyperlink{ref-feore_habitat_1999}{58},\protect\hyperlink{ref-kelly_extra_2020}{60}).
+Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources (\protect\hyperlink{ref-rosalino_activity_2005}{60},\protect\hyperlink{ref-magowan_dead-reckoning_2022}{63}).
+Badger movements are also impacted by their territoriality, avoiding areas occupied by other badger groups, but also displaying occasional extra-territorial movements (\protect\hyperlink{ref-feore_habitat_1999}{59},\protect\hyperlink{ref-kelly_extra_2020}{61}).
 This suggests a general but not complete avoidance of areas.
 
 We can broadly summarise the badger ecology we want to parametrise as follows:
@@ -312,18 +312,18 @@ We also provide example implementation of a vulture and king cobra -like movemen
 \subsubsection{Ecology and Objectives - Vulture}\label{ecology-and-objectives---vulture}}
 
 Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction {[}Figure \ref{fig:VULTURElayersFigure}{]}.
-Vultures can also move greater distances more rapidly (\protect\hyperlink{ref-hribsek_first_2021}{63}), resulting in a more variable and distribution of step lengths (\protect\hyperlink{ref-garcia-jimenez_drivers_2018}{64}--\protect\hyperlink{ref-subedi_spatial_2020}{66}) {[}Figure \ref{fig:VULTUREsettingMoveDesPlot}{]}.
+Vultures can also move greater distances more rapidly (\protect\hyperlink{ref-hribsek_first_2021}{64}), resulting in a more variable and distribution of step lengths (\protect\hyperlink{ref-garcia-jimenez_drivers_2018}{65}--\protect\hyperlink{ref-subedi_spatial_2020}{67}) {[}Figure \ref{fig:VULTUREsettingMoveDesPlot}{]}.
 
-Similar to badgers vultures exhibit significant site fidelity, re-using roosting and nesting sites (\protect\hyperlink{ref-bracis_revisitation_2018}{67}).
+Similar to badgers vultures exhibit significant site fidelity, re-using roosting and nesting sites (\protect\hyperlink{ref-bracis_revisitation_2018}{68}).
 Such shelter sites could be predefined; for example, if shelter sites were known \emph{a priori} discovered via the capture and tagged of animals, which in the case of birds is more likely.
 
 Vultures also offer an opportunity to demonstrate how the underlying resource availability impact the movements of animals.
 In the case of vultures, their moments have been seen to follow carcass, creating starkly contrasting areas where vultures will and will not travel (\protect\hyperlink{ref-arrondo_invisible_2018}{9}) {[}Figure \ref{fig:VULTURElayersFigure}{]}.
 
 Vultures have a very similar cycle pattern to the badgers (just inverted), one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
-The importance of simulating such cycles is made clear by vultures studies demonstrating that day-night cycles can impact rates of location collection (\protect\hyperlink{ref-silva_seasonal_2017}{68}).
+The importance of simulating such cycles is made clear by vultures studies demonstrating that day-night cycles can impact rates of location collection (\protect\hyperlink{ref-silva_seasonal_2017}{69}).
 How the the animals' activity cycle and the probability of collected data interact could be key consideration for some research questions.
-Again similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year (\protect\hyperlink{ref-hribsek_first_2021}{63},\protect\hyperlink{ref-garcia-jimenez_drivers_2018}{64},\protect\hyperlink{ref-peshev_new_2021}{69}).
+Again similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year (\protect\hyperlink{ref-hribsek_first_2021}{64},\protect\hyperlink{ref-garcia-jimenez_drivers_2018}{65},\protect\hyperlink{ref-peshev_new_2021}{70}).
 
 We can broadly summarise the vulture ecology we want to parametrise as follows:
 
@@ -340,22 +340,22 @@ We can broadly summarise the vulture ecology we want to parametrise as follows:
 \hypertarget{ecology-and-objectives---king-cobra}{%
 \subsubsection{Ecology and Objectives - King Cobra}\label{ecology-and-objectives---king-cobra}}
 
-Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\protect\hyperlink{ref-Marshall2018}{70},\protect\hyperlink{ref-marshall_no_2020}{71}).
+Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\protect\hyperlink{ref-Marshall2018}{71},\protect\hyperlink{ref-marshall_no_2020}{72}).
 These sites can also be larger, comprising burrow systems or rock complexes.
 
 What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
-While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle (\protect\hyperlink{ref-marshall_no_2020}{71}--\protect\hyperlink{ref-Siers2018}{74}).
+While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle (\protect\hyperlink{ref-marshall_no_2020}{72}--\protect\hyperlink{ref-Siers2018}{75}).
 We can conceptualise this pattern as two additive cycles, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
 Seasonality also impacts king cobra activity.
 As king cobras occupy tropical regions, the seasonality they experience is not as pronounced as the badger or vulture examples.
 Overall king cobras have three activity cycles acting on three different scales.
 
 In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
-King cobra movement can be limited by roads (\protect\hyperlink{ref-jones_how_2022}{75},\protect\hyperlink{ref-Marshall2018b}{76}), where unless provided with crossing structures king cobras are vulnerable to vehicle hits {[}Figure \ref{fig:KINGCOBRAlayersFigure}{]}.
-In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements (\protect\hyperlink{ref-Marshall2018b}{76},\protect\hyperlink{ref-Shankar2013}{77}).
+King cobra movement can be limited by roads (\protect\hyperlink{ref-jones_how_2022}{76},\protect\hyperlink{ref-Marshall2018b}{77}), where unless provided with crossing structures king cobras are vulnerable to vehicle hits {[}Figure \ref{fig:KINGCOBRAlayersFigure}{]}.
+In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements (\protect\hyperlink{ref-Marshall2018b}{77},\protect\hyperlink{ref-Shankar2013}{78}).
 Despite the risks, avoidance of such areas appears weak.
 
-Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability {[}Figure \ref{fig:KINGCOBRAsettingMoveDesPlot}{]} as king cobras are known to range over large areas (\protect\hyperlink{ref-Marshall2018}{70},\protect\hyperlink{ref-marshall_no_2020}{71},\protect\hyperlink{ref-Silva2018}{78}).
+Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability {[}Figure \ref{fig:KINGCOBRAsettingMoveDesPlot}{]} as king cobras are known to range over large areas (\protect\hyperlink{ref-Marshall2018}{71},\protect\hyperlink{ref-marshall_no_2020}{72},\protect\hyperlink{ref-Silva2018}{79}).
 
 We can broadly summarise the king cobra ecology we want to parametrise as follows:
 
@@ -369,14 +369,19 @@ We can broadly summarise the king cobra ecology we want to parametrise as follow
   A 8-12 hour activity cycle, with a approximately weekly forage-digest cycle, and weak seasonality
 \end{enumerate}
 
-\hypertarget{implementation}{%
-\subsection{Implementation}\label{implementation}}
+\hypertarget{operation}{%
+\subsection{Operation}\label{operation}}
 
-\hypertarget{required-libraries}{%
-\subsubsection{Required Libraries}\label{required-libraries}}
+The \emph{abmAnimalMovement} package requires links to the \emph{Rcpp} (\textgreater= 1.0.8.3) (\protect\hyperlink{ref-Eddelbuettel_seamless_2011}{51}--\protect\hyperlink{ref-Eddelbuettel_extending_2018}{53}) and \emph{BH} (\textgreater= 1.78.0.0) packages (\protect\hyperlink{ref-Eddelbuettel_BH_2021}{80}), and therefore requires a version of \emph{R} \textgreater=3.5.0 (\protect\hyperlink{ref-R-base}{81}) (available from \href{https://www.r-project.org/}{www.r-project.org}).
+Currently the \emph{abmAnimalMovement} package can be installed from Github using \texttt{install\_github} provided by the \emph{devtools} package (\protect\hyperlink{ref-Wickham_devtools_2021}{82}).
 
-First step is to load some libraries that will help us organise and visualise the inputs and outputs of the simulation.
-Only the \emph{abmAnimalMovement} package is required for running the core simulation.
+A submission to the Comprehensive R Archive Network (CRAN) is under way, that will streamline installation and ensure compatibly with a wide range of platforms.
+
+\hypertarget{implemenation}{%
+\subsection{Implemenation}\label{implemenation}}
+
+While only the \emph{abmAnimalMovement} package is required for running the core simulation, to generate, organise, and review the inputs and outputs of the simulation we make use of a number of \emph{R} packages.
+An alternative simpler implementation with no dependencies is provided as a package vignette.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -397,11 +402,11 @@ Only the \emph{abmAnimalMovement} package is required for running the core simul
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.2.0 (\protect\hyperlink{ref-R-base}{79}) via \emph{RStudio} v.2022.2.3.492 (\protect\hyperlink{ref-RStudioTeam2021}{80}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{83}), \emph{bookdown} v.0.27 (\protect\hyperlink{ref-bookdown2016}{84},\protect\hyperlink{ref-R-bookdown}{85}), \emph{tinytex} v.0.40 (\protect\hyperlink{ref-tinytex2019}{86},\protect\hyperlink{ref-R-tinytex}{87}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{88}--\protect\hyperlink{ref-R-knitr}{90}) packages to generate type-set outputs.
-We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{91}) to help with relative file path definition.
-We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{92},\protect\hyperlink{ref-reshape22007}{93}).
-We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{94},\protect\hyperlink{ref-ggplot22016}{95}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{96}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{97}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{98}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{99}).
-We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{100}), \emph{sp} v.1.5.0 (\protect\hyperlink{ref-sp2013}{101}--\protect\hyperlink{ref-R-sp}{103}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{104},\protect\hyperlink{ref-R-NLMR}{105}) for generating environmental matrices.
+We used \emph{R} v.4.2.0 (\protect\hyperlink{ref-R-base}{81}) via \emph{RStudio} v.2022.2.3.492 (\protect\hyperlink{ref-RStudioTeam2021}{83}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{86}), \emph{bookdown} v.0.27 (\protect\hyperlink{ref-bookdown2016}{87},\protect\hyperlink{ref-R-bookdown}{88}), \emph{tinytex} v.0.40 (\protect\hyperlink{ref-tinytex2019}{89},\protect\hyperlink{ref-R-tinytex}{90}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{91}--\protect\hyperlink{ref-R-knitr}{93}) packages to generate type-set outputs.
+We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{94}) to help with relative file path definition.
+We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{95},\protect\hyperlink{ref-reshape22007}{96}).
+We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{97},\protect\hyperlink{ref-ggplot22016}{98}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{99}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{100}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{101}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{102}).
+We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{103}), \emph{sp} v.1.5.0 (\protect\hyperlink{ref-sp2013}{104}--\protect\hyperlink{ref-R-sp}{106}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{107},\protect\hyperlink{ref-R-NLMR}{108}) for generating environmental matrices.
 
 \hypertarget{generating-environmental-matrices}{%
 \subsubsection{Generating Environmental Matrices}\label{generating-environmental-matrices}}
@@ -437,6 +442,10 @@ Thereby shelter sites are more likely to occur in the areas of higher foraging q
 This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios {[}Figure \ref{fig:BADGERlayersFigure}{]}.
 To aid balancing we keep values between 0 and 1; any value can be used, but the simulation will interpret the values as relative weights when the animal is making decisions (Note: The current implementation of \texttt{cpp\_get\_values} returns -99.9 weighting when presented with NA values and therefore serves as a lower limit to the matrix weighting values).
+
+\begin{verbatim}
+FALSE 'RandomFields' will use OMP
+\end{verbatim}
 
 \hypertarget{animal-parameters}{%
 \subsubsection{Animal Parameters}\label{animal-parameters}}
@@ -735,8 +744,8 @@ For the untracked animals we may be limited to basic information of speed, activ
 In such data starved situations, the \emph{abmAnimalMovement} package's low computational cost and minimal data requirements allows for a large number of alternative parametrisations to be explored.
 Via the explorations of different parametrisations researchers can help build a picture of the study and analysis methods best suited for their questions, with the opportunity to test those analyses on synthetic simulated data.
 
-In cases where data cannot be shared (e.g.~due to concerns over species sensitivity) providing a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code (\protect\hyperlink{ref-Quintana2020}{106}).
-Providing data is a key component to ensuring computational reproducibility (\protect\hyperlink{ref-Gerstner2017}{107}), and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
+In cases where data cannot be shared (e.g.~due to concerns over species sensitivity) providing a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code (\protect\hyperlink{ref-Quintana2020}{109}).
+Providing data is a key component to ensuring computational reproducibility (\protect\hyperlink{ref-Gerstner2017}{110}), and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
 Additionally such synthetic datasets could be integrated into preregistration as a means of demonstrating the validity of an analysis plan prior to undertaking a study.
 
 Producing a range of simulated datasets that cover alternate scenarios may present researchers opportunities to test real data against a null model.
@@ -769,60 +778,18 @@ However, there are several aspects that will bear updating in future versions.
   This solution would be inadequate for trail development, as trail development would require a system within the simulation to update previously used cells for the animal at each time step.
 \end{enumerate}
 
-\hypertarget{data-and-software-availability}{%
-\section{Data and Software Availability}\label{data-and-software-availability}}
-
-The development version of the package can be found at \href{https://github.com/BenMMarshall/abmAnimalMovement}{BenMMarshall/abmAnimalMovement}.
-The stable release is available from CRAN: TBC
-
-\hypertarget{competing-interests}{%
-\section{Competing Interests}\label{competing-interests}}
-
-No competing interests were disclosed.
-
-\hypertarget{grant-information}{%
-\section{Grant Information}\label{grant-information}}
-
-This project was funded by the IAPETUS2 NERC DTP.
-
-\hypertarget{acknowledgements}{%
-\section{Acknowledgements}\label{acknowledgements}}
-
-\hypertarget{author-contributions}{%
-\section{Author Contributions}\label{author-contributions}}
-
-Conceptualization: BMM;
-Software: BMM;
-Supervision: ABD;
-Visualization: BMM;
-Writing -- Original Draft: BMM;
-Writing -- Review \& Editing: BMM, ABD.
-
-\clearpage
-\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}
-
-\hypertarget{supplementary-materials}{%
-\section{Supplementary Materials}\label{supplementary-materials}}
+\hypertarget{use-cases}{%
+\subsection{Use Cases}\label{use-cases}}
 
 \hypertarget{simulation-inputs}{%
-\subsection{Simulation Inputs}\label{simulation-inputs}}
+\subsubsection{Simulation Inputs}\label{simulation-inputs}}
 
-\hypertarget{palette}{%
-\subsubsection{Palette}\label{palette}}
-
-\begin{figure}
-
-{\centering \includegraphics{Agent-based_model_walkthrough_files/figure-latex/palettePreview-1} 
-
-}
-
-\caption{Universal colour key for behavioural states 0 - resting, 1 - foraging, 2 - exploring; and example species. Name assigned to the colour in bold, and the hex code in italics below.}\label{fig:palettePreview}
-\end{figure}
+This section provides alternative parameterisations to better demonstrate the range of movement types and scenarios the \emph{abmAnimalMovement} package can replicate.
 
 \hypertarget{vulture-inputs}{%
-\subsubsection{Vulture Inputs}\label{vulture-inputs}}
+\paragraph{Vulture Inputs}\label{vulture-inputs}}
 
-Values input to generate more vulture-like movement patterns.
+Values input to generate more vulture-like movement patterns, justified in the Methods section.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -887,9 +854,9 @@ Values input to generate more vulture-like movement patterns.
 \end{figure}
 
 \hypertarget{king-cobra-inputs}{%
-\subsubsection{King Cobra Inputs}\label{king-cobra-inputs}}
+\paragraph{King Cobra Inputs}\label{king-cobra-inputs}}
 
-Values input to generate more king cobra-like movement patterns.
+Values input to generate more king cobra-like movement patterns, justified in the Methods section.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -990,12 +957,10 @@ Values input to generate more king cobra-like movement patterns.
 \caption{The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -99 weighting.}\label{fig:KINGCOBRAlayersFigure}
 \end{figure}
 
-\clearpage
-
 \hypertarget{simulation-outputs}{%
-\subsection{Simulation Outputs}\label{simulation-outputs}}
+\subsubsection{Simulation Outputs}\label{simulation-outputs}}
 
-Figures \ref{fig:VULTUREsettingMoveDesPlot} and \ref{fig:KINGCOBRAsettingMoveDesPlot} describe the inputs for the vulture and king cobra example respectively, and are comparable to figures \ref{fig:VULTUREmoveCharFigure} and \ref{fig:KINGCOBRAmoveCharFigure}.
+Figures \ref{fig:VULTUREsettingMoveDesPlot} and \ref{fig:KINGCOBRAsettingMoveDesPlot} describe the inputs for the vulture and king cobra example respectively, and are comparable to figures \ref{fig:VULTUREmoveCharFigure} and \ref{fig:KINGCOBRAmoveCharFigure} that display the realised movement characteristics.
 Figures \ref{fig:BADGERmoveCharFigure}, \ref{fig:VULTUREmoveCharFigure}, and \ref{fig:KINGCOBRAmoveCharFigure} also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
 The king cobra example in particular highlights the prolonged near weekly resting periods.
 
@@ -1017,7 +982,42 @@ The king cobra example in particular highlights the prolonged near weekly restin
 \caption{The king cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots.}\label{fig:KINGCOBRAmoveCharFigure}
 \end{figure}
 
-\clearpage
+\hypertarget{data-availability}{%
+\section{Data Availability}\label{data-availability}}
+
+All data underlying the results are generated as part of the article, no source data are required.
+Source code to reproduce the results and manuscript are available alongside the software.
+
+\hypertarget{software-availability}{%
+\section{Software Availability}\label{software-availability}}
+
+Archived version of the software at the time of submission is available on Zenodo: {[}REPO TITLE{]}. \url{https://doi.org/} {[}\emph{DOI}{]}.
+
+The development version of the package can be found at \href{https://github.com/BenMMarshall/abmAnimalMovement}{BenMMarshall/abmAnimalMovement}.
+
+The stable release is available from CRAN: TBC {[}CRAN submission under way{]}.
+
+License: GPL (\textgreater= 3)
+
+\hypertarget{competing-interests}{%
+\section{Competing Interests}\label{competing-interests}}
+
+No competing interests were disclosed.
+
+\hypertarget{grant-information}{%
+\section{Grant Information}\label{grant-information}}
+
+BMM was funded by the Natural Environment Research Council (NERC) via the IAPETUS2 Doctoral Training Partnership.
+
+\hypertarget{author-contributions}{%
+\section{Author Contributions}\label{author-contributions}}
+
+Conceptualization: BMM;
+Software: BMM;
+Supervision: ABD;
+Visualization: BMM;
+Writing -- Original Draft: BMM;
+Writing -- Review \& Editing: BMM, ABD.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -1245,212 +1245,224 @@ The king cobra example in particular highlights the prolonged near weekly restin
 \CSLLeftMargin{55. }
 \CSLRightInline{Nathan R, Getz WM, Revilla E, Holyoak M, Kadmon R, Saltz D, et al. A movement ecology paradigm for unifying organismal movement research. Proceedings of the National Academy of Sciences {[}Internet{]}. 2008;105(49):19052--9. Available from: \url{http://www.pnas.org/content/105/49/19052.abstract}}
 
-\leavevmode\vadjust pre{\hypertarget{ref-Scharf2018}{}}%
+\leavevmode\vadjust pre{\hypertarget{ref-rivera_rethinking_2022}{}}%
 \CSLLeftMargin{56. }
+\CSLRightInline{Rivera K, Fidino M, Farris ZJ, Magle SB, Murphy A, Gerber BD. Rethinking habitat occupancy modeling and the role of diel activity in an anthropogenic world. The American Naturalist {[}Internet{]}. 2022 May {[}cited 2022 May 6{]}; Available from: \url{https://www.journals.uchicago.edu/doi/10.1086/720714}}
+
+\leavevmode\vadjust pre{\hypertarget{ref-Scharf2018}{}}%
+\CSLLeftMargin{57. }
 \CSLRightInline{Scharf AK, Belant JL, Beyer DE, Wikelski M, Safi K. Habitat suitability does not capture the essence of animal-defined corridors. Movement Ecology {[}Internet{]}. 2018;6(1):18. Available from: \url{https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-018-0136-2}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-kowalczyk_daily_2006}{}}%
-\CSLLeftMargin{57. }
+\CSLLeftMargin{58. }
 \CSLRightInline{Kowalczyk R, Zalewski A, Bogumiła J. Daily movement and territory use by badgers {Meles} meles in {Białowieża} {Primeval} {Forest}, {Poland}. Wildlife Biology {[}Internet{]}. 2006 Dec {[}cited 2022 May 26{]};12(4):385--91. Available from: \url{http://www.bioone.org/doi/abs/10.2981/0909-6396\%282006\%2912\%5B385\%3ADMATUB\%5D2.0.CO\%3B2}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-feore_habitat_1999}{}}%
-\CSLLeftMargin{58. }
+\CSLLeftMargin{59. }
 \CSLRightInline{Feore S, Montgomery WI. Habitat effects on the spatial ecology of the {European} badger (\emph{{Meles} meles}). Journal of Zoology {[}Internet{]}. 1999 Apr {[}cited 2022 May 26{]};247(4):537--49. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/j.1469-7998.1999.tb01015.x}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-rosalino_activity_2005}{}}%
-\CSLLeftMargin{59. }
+\CSLLeftMargin{60. }
 \CSLRightInline{Rosalino LM, Macdonald DW, Santos-Reis M. Activity rhythms, movements and patterns of sett use by badgers, {Meles} meles, in a {Mediterranean} woodland. Mammalia {[}Internet{]}. 2005 Jan {[}cited 2022 May 26{]};69(3-4). Available from: \url{https://www.degruyter.com/document/doi/10.1515/mamm.2005.031/html}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-kelly_extra_2020}{}}%
-\CSLLeftMargin{60. }
+\CSLLeftMargin{61. }
 \CSLRightInline{Kelly DJ, Gaughran A, Mullen E, MacWhite T, Maher P, Good M, et al. Extra {Territorial} {Excursions} by {European} badgers are not limited by age, sex or season. Scientific Reports {[}Internet{]}. 2020 Dec {[}cited 2022 May 25{]};10(1):9665. Available from: \url{http://www.nature.com/articles/s41598-020-66809-w}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-loureiro_path_2007}{}}%
-\CSLLeftMargin{61. }
+\CSLLeftMargin{62. }
 \CSLRightInline{Loureiro F, Rosalino LM, Macdonald DW, Santos-Reis M. Path tortuosity of {Eurasian} badgers ({Meles} meles) in a heterogeneous {Mediterranean} landscape. Ecological Research {[}Internet{]}. 2007 Aug {[}cited 2022 May 26{]};22(5):837--44. Available from: \url{http://doi.wiley.com/10.1007/s11284-006-0325-0}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-magowan_dead-reckoning_2022}{}}%
-\CSLLeftMargin{62. }
+\CSLLeftMargin{63. }
 \CSLRightInline{Magowan EA, Maguire IE, Smith S, Redpath S, Marks NJ, Wilson RP, et al. Dead-reckoning elucidates fine-scale habitat use by {European} badgers {Meles} meles. Animal Biotelemetry {[}Internet{]}. 2022 Dec {[}cited 2022 May 26{]};10(1):10. Available from: \url{https://animalbiotelemetry.biomedcentral.com/articles/10.1186/s40317-022-00282-2}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-hribsek_first_2021}{}}%
-\CSLLeftMargin{63. }
+\CSLLeftMargin{64. }
 \CSLRightInline{Hribsek I, Plecas M, Skoric S, Marinkovic S. First description of movement and ranging behavior of the {Griffon} vulture ({Gyps} fulvus) from {Serbia} using {GPS} satellite tracking. Archives of Biological Sciences {[}Internet{]}. 2021 {[}cited 2022 May 25{]};73(2):185--95. Available from: \url{http://www.doiserbia.nb.rs/Article.aspx?ID=0354-46642100013H}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-garcia-jimenez_drivers_2018}{}}%
-\CSLLeftMargin{64. }
+\CSLLeftMargin{65. }
 \CSLRightInline{García-Jiménez R, Pérez-García JM, Margalida A. Drivers of daily movement patterns affecting an endangered vulture flight activity. BMC Ecology {[}Internet{]}. 2018 Dec {[}cited 2022 May 25{]};18(1):39. Available from: \url{https://bmcecol.biomedcentral.com/articles/10.1186/s12898-018-0195-7}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-margalida_spatial_2016}{}}%
-\CSLLeftMargin{65. }
+\CSLLeftMargin{66. }
 \CSLRightInline{Margalida A, Pérez-García JM, Afonso I, Moreno-Opo R. Spatial and temporal movements in {Pyrenean} bearded vultures ({Gypaetus} barbatus): {Integrating} movement ecology into conservation practice. Scientific Reports {[}Internet{]}. 2016 Dec {[}cited 2022 May 25{]};6(1):35746. Available from: \url{http://www.nature.com/articles/srep35746}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-subedi_spatial_2020}{}}%
-\CSLLeftMargin{66. }
+\CSLLeftMargin{67. }
 \CSLRightInline{Subedi TR, Pérez‐García JM, Sah SAM, Gurung S, Baral HS, Poudyal LP, et al. Spatial and temporal movement of the {Bearded} {Vulture} using {GPS} telemetry in the {Himalayas} of {Nepal}. Ibis {[}Internet{]}. 2020 Apr {[}cited 2022 May 25{]};162(2):563--71. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/ibi.12799}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-bracis_revisitation_2018}{}}%
-\CSLLeftMargin{67. }
+\CSLLeftMargin{68. }
 \CSLRightInline{Bracis C, Bildstein KL, Mueller T. Revisitation analysis uncovers spatio-temporal patterns in animal movement data. Ecography {[}Internet{]}. 2018; Available from: \url{http://dx.doi.org/10.1111/ecog.03618}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-silva_seasonal_2017}{}}%
-\CSLLeftMargin{68. }
+\CSLLeftMargin{69. }
 \CSLRightInline{Silva R, Afán I, Gil JA, Bustamante J. Seasonal and circadian biases in bird tracking with solar {GPS}-tags. Margalida A, editor. PLOS ONE {[}Internet{]}. 2017 Oct {[}cited 2022 May 25{]};12(10):e0185344. Available from: \url{https://dx.plos.org/10.1371/journal.pone.0185344}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-peshev_new_2021}{}}%
-\CSLLeftMargin{69. }
+\CSLLeftMargin{70. }
 \CSLRightInline{Peshev H, Grozdanov A, Kmetova--Biro E, Ivanov I, Stoyanov G, Tsiakiris R, et al. New insight into spatial ecology of {Griffon} {Vulture} ({Gyps} fulvus) on the {Balkans} provides opportunity for focusing conservation actions for a threatened social scavenger. Biodiversity Data Journal {[}Internet{]}. 2021 Aug {[}cited 2022 May 25{]};9:e71100. Available from: \url{https://bdj.pensoft.net/article/71100/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Marshall2018}{}}%
-\CSLLeftMargin{70. }
+\CSLLeftMargin{71. }
 \CSLRightInline{Marshall BM, Strine CT, Jones MD, Artchawakom T, Silva I, Suwanwaree P, et al. Space fit for a king: Spatial ecology of king cobras ({Ophiophagus} hannah) in {Sakaerat} {Biosphere} {Reserve}, {Northeastern} {Thailand}. Amphibia-Reptilia {[}Internet{]}. 2019 Mar;40(2):163--78. Available from: \url{http://booksandjournals.brillonline.com/content/journals/10.1163/15685381-18000008}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-marshall_no_2020}{}}%
-\CSLLeftMargin{71. }
+\CSLLeftMargin{72. }
 \CSLRightInline{Marshall BM, Crane M, Silva I, Strine CT, Jones MD, Hodges CW, et al. No room to roam: {King} {Cobras} reduce movement in agriculture. Movement Ecology {[}Internet{]}. 2020 Dec {[}cited 2020 Aug 4{]};8(1):33. Available from: \url{https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-020-00219-5}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-dsouza_space_2021}{}}%
-\CSLLeftMargin{72. }
+\CSLLeftMargin{73. }
 \CSLRightInline{D'souza A, Gale GA, Marshall BM, Khamcha D, Waengsothorn S, Strine CT. Space use and activity of {Boiga} cyanea -- {A} major songbird nest predator in a seasonal tropical forest in {Thailand}. Global Ecology and Conservation {[}Internet{]}. 2021 Dec {[}cited 2021 Oct 27{]};32:e01875. Available from: \url{https://linkinghub.elsevier.com/retrieve/pii/S235198942100425X}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-smith_native_2021}{}}%
-\CSLLeftMargin{73. }
+\CSLLeftMargin{74. }
 \CSLRightInline{Smith SN, Jones MD, Marshall BM, Waengsothorn S, Gale GA, Strine CT. Native {Burmese} pythons exhibit site fidelity and preference for aquatic habitats in an agricultural mosaic. Scientific Reports {[}Internet{]}. 2021 Dec {[}cited 2021 Mar 29{]};11(1):7014. Available from: \url{http://www.nature.com/articles/s41598-021-86640-1}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Siers2018}{}}%
-\CSLLeftMargin{74. }
+\CSLLeftMargin{75. }
 \CSLRightInline{Siers SR, Yackel Adams AA, Reed RN. Behavioral differences following ingestion of large meals and consequences for management of a harmful invasive snake: {A} field experiment. Ecology and Evolution {[}Internet{]}. 2018 Oct;8(20):10075--93. Available from: \url{http://doi.wiley.com/10.1002/ece3.4480}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-jones_how_2022}{}}%
-\CSLLeftMargin{75. }
+\CSLLeftMargin{76. }
 \CSLRightInline{Jones MD, Marshall BM, Smith SN, Crane M, Silva I, Artchawakom T, et al. How do {King} {Cobras} move across a major highway? {Unintentional} wildlife crossing structures may facilitate movement. Ecology and Evolution {[}Internet{]}. 2022 Mar {[}cited 2022 Mar 21{]};12(3). Available from: \url{https://onlinelibrary.wiley.com/doi/10.1002/ece3.8691}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Marshall2018b}{}}%
-\CSLLeftMargin{76. }
+\CSLLeftMargin{77. }
 \CSLRightInline{Marshall BM, Strine CT, Jones MD, Theodorou A, Amber E, Waengsothorn S, et al. Hits {Close} to {Home}: {Repeated} {Persecution} of {King} {Cobras} ({Ophiophagus} hannah) in {Northeastern} {Thailand}. Tropical Conservation Science {[}Internet{]}. 2018 Jan;11:194008291881840. Available from: \url{http://journals.sagepub.com/doi/10.1177/1940082918818401}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Shankar2013}{}}%
-\CSLLeftMargin{77. }
+\CSLLeftMargin{78. }
 \CSLRightInline{Shankar PG, Ganesh SR, Whitaker R, Prashanth P. King {Cobra} {Ophiophagus} hannah ({Cantor}, 1836) encounters in human-modified rainforests of the {Western} {Ghats}, {India}. Hamadryad. 2013;36(2):62--8. }
 
 \leavevmode\vadjust pre{\hypertarget{ref-Silva2018}{}}%
-\CSLLeftMargin{78. }
+\CSLLeftMargin{79. }
 \CSLRightInline{Silva I, Crane M, Suwanwaree P, Strine C, Goode M. Using dynamic {Brownian} {Bridge} {Movement} {Models} to identify home range size and movement patterns in king cobras. Munderloh UG, editor. PLOS ONE {[}Internet{]}. 2018 Sep;13(9):e0203449. Available from: \url{http://dx.plos.org/10.1371/journal.pone.0203449}}
 
+\leavevmode\vadjust pre{\hypertarget{ref-Eddelbuettel_BH_2021}{}}%
+\CSLLeftMargin{80. }
+\CSLRightInline{Eddelbuettel D, Emerson JW, Kane MJ. BH: Boost c++ header files {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=BH}}
+
 \leavevmode\vadjust pre{\hypertarget{ref-R-base}{}}%
-\CSLLeftMargin{79. }
+\CSLLeftMargin{81. }
 \CSLRightInline{R Core Team. R: A language and environment for statistical computing {[}Internet{]}. Vienna, Austria: R Foundation for Statistical Computing; 2021. Available from: \url{https://www.R-project.org/}}
 
+\leavevmode\vadjust pre{\hypertarget{ref-Wickham_devtools_2021}{}}%
+\CSLLeftMargin{82. }
+\CSLRightInline{Wickham H, Hester J, Chang W, Bryan J. Devtools: Tools to make developing r packages easier {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=devtools}}
+
 \leavevmode\vadjust pre{\hypertarget{ref-RStudioTeam2021}{}}%
-\CSLLeftMargin{80. }
+\CSLLeftMargin{83. }
 \CSLRightInline{RStudio Team. RStudio: Integrated development environment for r {[}Internet{]}. Boston, MA: RStudio, PBC; 2021. Available from: \url{http://www.rstudio.com/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-rmarkdown}{}}%
-\CSLLeftMargin{81. }
+\CSLLeftMargin{84. }
 \CSLRightInline{Allaire J, Xie Y, McPherson J, Luraschi J, Ushey K, Atkins A, et al. Rmarkdown: Dynamic documents for r {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=rmarkdown}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-rmarkdown2018}{}}%
-\CSLLeftMargin{82. }
+\CSLLeftMargin{85. }
 \CSLRightInline{Xie Y, Allaire JJ, Grolemund G. R markdown: The definitive guide {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2018. Available from: \url{https://bookdown.org/yihui/rmarkdown}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-rmarkdown2020}{}}%
-\CSLLeftMargin{83. }
+\CSLLeftMargin{86. }
 \CSLRightInline{Xie Y, Dervieux C, Riederer E. R markdown cookbook {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2020. Available from: \url{https://bookdown.org/yihui/rmarkdown-cookbook}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-bookdown2016}{}}%
-\CSLLeftMargin{84. }
+\CSLLeftMargin{87. }
 \CSLRightInline{Xie Y. Bookdown: Authoring books and technical documents with {R} markdown {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2016. Available from: \url{https://bookdown.org/yihui/bookdown}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-bookdown}{}}%
-\CSLLeftMargin{85. }
+\CSLLeftMargin{88. }
 \CSLRightInline{Xie Y. Bookdown: Authoring books and technical documents with r markdown {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=bookdown}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-tinytex2019}{}}%
-\CSLLeftMargin{86. }
+\CSLLeftMargin{89. }
 \CSLRightInline{Xie Y. TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX live. TUGboat {[}Internet{]}. 2019;(1):30--2. Available from: \url{https://tug.org/TUGboat/Contents/contents40-1.html}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-tinytex}{}}%
-\CSLLeftMargin{87. }
+\CSLLeftMargin{90. }
 \CSLRightInline{Xie Y. Tinytex: Helper functions to install and maintain TeX live, and compile LaTeX documents {[}Internet{]}. 2022. Available from: \url{https://github.com/rstudio/tinytex}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-knitr2015}{}}%
-\CSLLeftMargin{88. }
+\CSLLeftMargin{91. }
 \CSLRightInline{Xie Y. Dynamic documents with {R} and knitr {[}Internet{]}. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC; 2015. Available from: \url{https://yihui.org/knitr/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-knitr2014}{}}%
-\CSLLeftMargin{89. }
+\CSLLeftMargin{92. }
 \CSLRightInline{Xie Y. Knitr: A comprehensive tool for reproducible research in {R}. In: Stodden V, Leisch F, Peng RD, editors. Implementing reproducible computational research {[}Internet{]}. Chapman; Hall/CRC; 2014. Available from: \url{http://www.crcpress.com/product/isbn/9781466561595}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-knitr}{}}%
-\CSLLeftMargin{90. }
+\CSLLeftMargin{93. }
 \CSLRightInline{Xie Y. Knitr: A general-purpose package for dynamic report generation in r {[}Internet{]}. 2022. Available from: \url{https://yihui.org/knitr/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-here}{}}%
-\CSLLeftMargin{91. }
+\CSLLeftMargin{94. }
 \CSLRightInline{Müller K. Here: A simpler way to find your files {[}Internet{]}. 2020. Available from: \url{https://CRAN.R-project.org/package=here}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-dplyr}{}}%
-\CSLLeftMargin{92. }
+\CSLLeftMargin{95. }
 \CSLRightInline{Wickham H, François R, Henry L, Müller K. Dplyr: A grammar of data manipulation {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=dplyr}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-reshape22007}{}}%
-\CSLLeftMargin{93. }
+\CSLLeftMargin{96. }
 \CSLRightInline{Wickham H. Reshaping data with the {reshape} package. Journal of Statistical Software {[}Internet{]}. 2007;21(12):1--20. Available from: \url{http://www.jstatsoft.org/v21/i12/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-ggplot2}{}}%
-\CSLLeftMargin{94. }
+\CSLLeftMargin{97. }
 \CSLRightInline{Wickham H, Chang W, Henry L, Pedersen TL, Takahashi K, Wilke C, et al. ggplot2: Create elegant data visualisations using the grammar of graphics {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=ggplot2}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-ggplot22016}{}}%
-\CSLLeftMargin{95. }
+\CSLLeftMargin{98. }
 \CSLRightInline{Wickham H. ggplot2: Elegant graphics for data analysis {[}Internet{]}. Springer-Verlag New York; 2016. Available from: \url{https://ggplot2.tidyverse.org}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-ggridges}{}}%
-\CSLLeftMargin{96. }
+\CSLLeftMargin{99. }
 \CSLRightInline{Wilke CO. Ggridges: Ridgeline plots in ggplot2 {[}Internet{]}. 2021. Available from: \url{https://wilkelab.org/ggridges/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-ggtext}{}}%
-\CSLLeftMargin{97. }
+\CSLLeftMargin{100. }
 \CSLRightInline{Wilke CO. Ggtext: Improved text rendering support for ggplot2 {[}Internet{]}. 2020. Available from: \url{https://wilkelab.org/ggtext/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-ggforce}{}}%
-\CSLLeftMargin{98. }
+\CSLLeftMargin{101. }
 \CSLRightInline{Pedersen TL. Ggforce: Accelerating ggplot2 {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=ggforce}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-patchwork}{}}%
-\CSLLeftMargin{99. }
+\CSLLeftMargin{102. }
 \CSLRightInline{Pedersen TL. Patchwork: The composer of plots {[}Internet{]}. 2020. Available from: \url{https://CRAN.R-project.org/package=patchwork}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-raster}{}}%
-\CSLLeftMargin{100. }
+\CSLLeftMargin{103. }
 \CSLRightInline{Hijmans RJ. Raster: Geographic data analysis and modeling {[}Internet{]}. 2022. Available from: \url{https://rspatial.org/raster}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-sp2013}{}}%
-\CSLLeftMargin{101. }
+\CSLLeftMargin{104. }
 \CSLRightInline{Bivand RS, Pebesma E, Gomez-Rubio V. Applied spatial data analysis with {R}, second edition {[}Internet{]}. Springer, NY; 2013. Available from: \url{https://asdar-book.org/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-sp2005}{}}%
-\CSLLeftMargin{102. }
+\CSLLeftMargin{105. }
 \CSLRightInline{Pebesma EJ, Bivand RS. Classes and methods for spatial data in {R}. R News {[}Internet{]}. 2005;5(2):9--13. Available from: \url{https://CRAN.R-project.org/doc/Rnews/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-sp}{}}%
-\CSLLeftMargin{103. }
+\CSLLeftMargin{106. }
 \CSLRightInline{Pebesma E, Bivand R. Sp: Classes and methods for spatial data {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=sp}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-NLMR2018}{}}%
-\CSLLeftMargin{104. }
+\CSLLeftMargin{107. }
 \CSLRightInline{Sciaini M, Fritsch M, Scherer C, Simpkins CE. NLMR and landscapetools: An integrated environment for simulating and modifying neutral landscape models in r. Methods in Ecololgy and Evolution {[}Internet{]}. 2018;00:1--9. Available from: \url{https://doi.org/10.1111/2041-210X.13076}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-R-NLMR}{}}%
-\CSLLeftMargin{105. }
+\CSLLeftMargin{108. }
 \CSLRightInline{Sciaini M, Fritsch M, Hesselbarth M, Simpkins C, Scherer C, Hanß S. NLMR: Simulating neutral landscape models {[}Internet{]}. 2021. Available from: \url{https://ropensci.github.io/NLMR/}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Quintana2020}{}}%
-\CSLLeftMargin{106. }
+\CSLLeftMargin{109. }
 \CSLRightInline{Quintana DS. A synthetic dataset primer for the biobehavioural sciences to promote reproducibility and hypothesis generation. Zaidi M, Büchel C, Bishop DVM, editors. eLife {[}Internet{]}. 2020 Mar;9:e53275. Available from: \url{https://doi.org/10.7554/eLife.53275}}
 
 \leavevmode\vadjust pre{\hypertarget{ref-Gerstner2017}{}}%
-\CSLLeftMargin{107. }
+\CSLLeftMargin{110. }
 \CSLRightInline{Gerstner K, Moreno-Mateos D, Gurevitch J, Beckmann M, Kambach S, Jones HP, et al. Will your paper be used in a meta-analysis? Make the reach of your research broader and longer lasting. Methods in Ecology and Evolution {[}Internet{]}. 2017;8(6):777--84. Available from: \url{https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.12758}}
 
 \end{CSLReferences}
