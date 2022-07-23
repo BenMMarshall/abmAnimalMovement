@@ -402,11 +402,11 @@ An alternative simpler implementation with no dependencies is provided as a pack
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.2.0 (\protect\hyperlink{ref-R-base}{81}) via \emph{RStudio} v.2022.2.3.492 (\protect\hyperlink{ref-RStudioTeam2021}{83}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{86}), \emph{bookdown} v.0.27 (\protect\hyperlink{ref-bookdown2016}{87},\protect\hyperlink{ref-R-bookdown}{88}), \emph{tinytex} v.0.40 (\protect\hyperlink{ref-tinytex2019}{89},\protect\hyperlink{ref-R-tinytex}{90}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{91}--\protect\hyperlink{ref-R-knitr}{93}) packages to generate type-set outputs.
+We used \emph{R} v.4.2.1 (\protect\hyperlink{ref-R-base}{81}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{83}), and made use \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{86}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{87},\protect\hyperlink{ref-R-bookdown}{88}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{89},\protect\hyperlink{ref-R-tinytex}{90}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{91}--\protect\hyperlink{ref-R-knitr}{93}) packages to generate type-set outputs.
 We the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{94}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{95},\protect\hyperlink{ref-reshape22007}{96}).
 We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{97},\protect\hyperlink{ref-ggplot22016}{98}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{99}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{100}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{101}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{102}).
-We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{103}), \emph{sp} v.1.5.0 (\protect\hyperlink{ref-sp2013}{104}--\protect\hyperlink{ref-R-sp}{106}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{107},\protect\hyperlink{ref-R-NLMR}{108}) for generating environmental matrices.
+We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{103}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{104}--\protect\hyperlink{ref-R-sp}{106}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{107},\protect\hyperlink{ref-R-NLMR}{108}) for generating environmental matrices.
 
 \hypertarget{generating-environmental-matrices}{%
 \subsubsection{Generating Environmental Matrices}\label{generating-environmental-matrices}}
@@ -442,10 +442,6 @@ Thereby shelter sites are more likely to occur in the areas of higher foraging q
 This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios {[}Figure \ref{fig:BADGERlayersFigure}{]}.
 To aid balancing we keep values between 0 and 1; any value can be used, but the simulation will interpret the values as relative weights when the animal is making decisions (Note: The current implementation of \texttt{cpp\_get\_values} returns -99.9 weighting when presented with NA values and therefore serves as a lower limit to the matrix weighting values).
-
-\begin{verbatim}
-FALSE 'RandomFields' will use OMP
-\end{verbatim}
 
 \hypertarget{animal-parameters}{%
 \subsubsection{Animal Parameters}\label{animal-parameters}}
@@ -1018,6 +1014,8 @@ Supervision: ABD;
 Visualization: BMM;
 Writing -- Original Draft: BMM;
 Writing -- Review \& Editing: BMM, ABD.
+
+\clearpage
 
 \hypertarget{references}{%
 \section*{References}\label{references}}

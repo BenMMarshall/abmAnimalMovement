@@ -1500,14 +1500,14 @@ for(species in vecSpecies){
     
     tempBehPlot <- ggplot2::ggplot() +
       ggplot2::geom_path(data = realisedData,
-                         size = 0.5,
+                         size = 0.25,
                          ggplot2::aes(x = x, y = y),
                          alpha = 0.45) +
       ggplot2::geom_point(data = realisedData %>% 
                             mutate(behBinary = behave == beh) %>% 
                             filter(behBinary),
-                          size = 0.1,
-                          pch = ".",
+                          size = 0.01,
+                          # pch = ".",
                           ggplot2::aes(x = x, y = y,
                                        colour = behBinary),
                           alpha = 0.45) +
@@ -1689,7 +1689,7 @@ for(species in vecSpecies){
     plotData %>% 
     ggplot2::ggplot() +
     ggplot2::geom_hline(yintercept = seq(-1,1,0.5), linetype = 2,
-                        colour = "grey85") +
+                        colour = "grey85", size = 0.25) +
     ggplot2::geom_path(ggplot2::aes(x = i, y = behaveRest, group = cycle),
                        colour = ifelse(
                          species == "BADGER", "#4F0E99", ifelse(species == "VULTURE",
@@ -2169,7 +2169,7 @@ Source code to reproduce the results and manuscript are available alongside the 
 
 # Software Availability
 
-Archived version of the software at the time of submission is available on Zenodo: [REPO TITLE]. https://doi.org/ [_DOI_]. 
+Archived version of the software at the time of submission is available on Zenodo: [REPO TITLE]. https://doi.org/ [_DOI_].
 
 The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
 
@@ -2191,5 +2191,7 @@ Supervision: ABD;
 Visualization: BMM; 
 Writing – Original Draft: BMM; 
 Writing – Review & Editing: BMM, ABD.
+
+\clearpage
 
 # References
