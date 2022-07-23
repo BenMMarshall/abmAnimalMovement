@@ -2144,6 +2144,8 @@ plot_landscapeLayersList(KINGCOBRA_landscapeLayersList) +
 
 ```
 
+\clearpage
+
 ### Simulation Outputs
 
 Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveDesPlot) describe the inputs for the vulture and king cobra example respectively, and are comparable to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure) that display the realised movement characteristics.
@@ -2161,6 +2163,8 @@ moveCharPlotList[["VULTURE"]]
 moveCharPlotList[["KINGCOBRA"]]
 
 ```
+
+\clearpage
 
 # Data Availability
 
