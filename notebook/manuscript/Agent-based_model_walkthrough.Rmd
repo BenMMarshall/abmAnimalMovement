@@ -42,7 +42,7 @@ header-includes:
 As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
 Developing mitigation strategies is aided by a strong understanding of animals lives and needs.
 How animals move offers a window into their decisions making process [@Bastille-Rousseau2017; @sridhar_geometry_2021], as well as how they prioritise resources [@prange_influences_2004; @christy_experimental_2017; @vogt_suitability_2018], avoid threats [@loveridge_landscape_2017], and react to anthropogenic modification of the environment [@Tucker2018; @tucker_large_2019; @arrondo_invisible_2018].
-Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018] because of the insights they provide on habitat and space requirements, but also because they offer avenues to explore fundamental questions☺ about ecology.
+Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018] because of the insights they provide on habitat and space requirements, but also because they offer avenues to explore fundamental questions about ecology.
 For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020], and movement has provided incredible insights into behaviour [@studd_purrfect_2021].
 
 <!-- -   therefore we need studies to be more ethical and cost effective -->
@@ -166,7 +166,7 @@ Home ranges are meant to represent areas in which the animal can source all reso
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
 As the *abmAnimalMovement* model can have multiple attraction (rest) sites supplied, we can simulate home ranges with unequal and behaviourally influenced space use.
 
-``` {r walkDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
+``` {r walkDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5.5, fig.height=5.5, out.width="85%", fig.cap="A diagram showing the simulated animal's decision processes operating at two different time frames. A - the time frame of the destination choice, B - the time frame of movements at each time step."}
 # if (knitr:::is_latex_output()) {
 knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Process Diagram Static.tiff"))
 # } else {
@@ -503,13 +503,13 @@ BADGER_shelterSize <- 8
 ```
 
 ```{r VULTUREsettingShelter, eval=TRUE, echo=FALSE}
+
 # predefined shelter sites
 VULTURE_shelterLocs <- data.frame(
   "x" = c(1024, 1005, 1115),
   "y" = c(1193, 1070, 882))
 # shelter site radius to reduce movements
 VULTURE_shelterSize <- 5
-
 ```
 
 ```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the badger example: shelter quality, foraging resources, movement ease."}
@@ -571,6 +571,7 @@ BADGER_rescale <- 5
 ```
 
 ```{r VULTUREsettingMoveDes, eval=TRUE, echo=FALSE}
+
 # parameters defining Gamma (step length) and Von Mises (turn angle) for each
 # behaviour state
 # Gamma shape
@@ -581,6 +582,7 @@ VULTURE_s_step <- c(40, 1.2, 1)
 VULTURE_mu_angle <- c(0, 0, 0)
 # Von Mises concentration
 VULTURE_k_angle <- c(0.6, 0.99, 0.6)
+
 # parameters defining Gamma (shape and scale) and Von Mises (mean and
 # concentration) for foraging destination options
 VULTURE_destinationRange <- c(50, 120)
@@ -588,11 +590,12 @@ VULTURE_destinationDirection <- c(0, 0.01)
 # the transformation (2 = squared) and strength of attraction to destinations
 VULTURE_destinationTransformation <- 2
 VULTURE_destinationModifier <- 2
+
 # each cell of the environmental matrix is 20x20
 VULTURE_rescale <- 20
-
 ```
 ```{r KINGCOBRAsettingMoveDes, eval=TRUE, echo=FALSE}
+
 # parameters defining Gamma (step length) and Von Mises (turn angle) for each
 # behaviour state
 # Gamma shape
@@ -603,6 +606,7 @@ KINGCOBRA_s_step <- c(0.75, 1.2, 1.75)
 KINGCOBRA_mu_angle <- c(0, 0, 0)
 # Von Mises concentration
 KINGCOBRA_k_angle <- c(0.6, 0.99, 0.6)
+
 # parameters defining Gamma (shape and scale) and Von Mises (mean and
 # concentration) for foraging destination options
 KINGCOBRA_destinationRange <- c(50, 10)
@@ -610,9 +614,9 @@ KINGCOBRA_destinationDirection <- c(0, 0.01)
 # the transformation (2 = squared) and strength of attraction to destinations
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 1.5
+
 # each cell of the environmental matrix is 10x10
 KINGCOBRA_rescale <- 10
-
 ```
 
 ```{r BADGERsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the badger simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the badger simulation. The lower plot shows the distribution used to generate potential foraging desintations."}
@@ -720,7 +724,6 @@ BADGER_avoidLocs <- data.frame(
 
 BADGER_avoidTransformation <- 2
 BADGER_avoidModifier <- 4
-
 ```
 
 <!-- cycles -->
@@ -755,24 +758,27 @@ BADGER_behaveMatrix
 ```
 
 ```{r VULTUREsettingCycle, eval=TRUE, echo=FALSE}
+
 # the diel resting/active cycle: amplitude, midline, offset, frequency
 VULTURE_rest_Cycle <- c(0.1, 0, 24, 24)
 # additional cycles as a dataframe: amplitude, midline, offset, frequency
 c0 <- c(0.025, 0, 24* (365/2), 24* 365) # seasonal
 VULTURE_additional_Cycles <- rbind(c0)
+
 # select modifications to the default behavioural transition matrix
 VULTURE_behaveMatrix <- Default_behaveMatrix
 VULTURE_behaveMatrix[2,3] <- 0.0002
 VULTURE_behaveMatrix[3,2] <- 0.000015
-
 ```
 ```{r KINGCOBRAsettingCycle, eval=TRUE, echo=FALSE}
+
 # the diel resting/active cycle: amplitude, midline, offset, frequency
 KINGCOBRA_rest_Cycle <- c(0.14, 0, 24, 24)
 # additional cycles as a dataframe: amplitude, midline, offset, frequency
 c0 <- c(0.12, 0, 24, 24*4) # digestion
 c1 <- c(0.05, 0, 24 * (365/2), 24* 365 ) # seasonal
 KINGCOBRA_additional_Cycles <- rbind(c0, c1)
+
 # select modifications to the default behavioural transition matrix
 KINGCOBRA_behaveMatrix <- Default_behaveMatrix
 KINGCOBRA_behaveMatrix[1,1] <- 0.95
@@ -780,21 +786,23 @@ KINGCOBRA_behaveMatrix[1,2] <- 0.005
 KINGCOBRA_behaveMatrix[3,1] <- 0.00025
 KINGCOBRA_behaveMatrix[3,2] <- 0.000001
 KINGCOBRA_behaveMatrix[3,3] <- 0.999
-
 ```
 
 <!-- matrix modifications for other species -->
 
 ```{r VULTUREmovematrix, eval=TRUE, echo=FALSE}
+
 # maximising movement ease by changing the default movement matrix
 VULTURE_movementMatrix <- landscapeLayersList$movement
 VULTURE_movementMatrix[] <- 1
 ```
 ```{r VULTUREforagematrix, eval=TRUE, echo=FALSE}
+
 # reducing foraging quality in the West of the landscape
 VULTURE_forageMatrix <- landscapeLayersList$forage
 VULTURE_forageMatrix[1:950,1:2000] <- VULTURE_forageMatrix[1:950,1:2000] - 0.6
 VULTURE_forageMatrix[VULTURE_forageMatrix[] < 0] <- 0
+
 # place holder avoidance location
 VULTURE_avoidLocs <- data.frame(
   "x" = c(1000),
@@ -802,9 +810,9 @@ VULTURE_avoidLocs <- data.frame(
 # vulture has zero avoidance of the place holder point
 VULTURE_avoidTransformation <- 0
 VULTURE_avoidModifier <- 0
-
 ```
 ```{r KINGCOBRAmoveMatrix, eval=TRUE, echo=FALSE}
+
 # extracting the default matrices ready for changes
 KINGCOBRA_shelteringMatrix <- landscapeLayersList$shelter
 KINGCOBRA_forageMatrix <- landscapeLayersList$forage
@@ -814,6 +822,7 @@ roadMin_x <- 1360
 roadMax_x <- roadMin_x + 40
 roadMin_y <- 660
 roadMax_y <- roadMin_y + 40
+
 # applying the change, dramatically reducing the weighting for all matrices
 KINGCOBRA_shelteringMatrix[roadMin_x:roadMax_x,1:2000] <-
   KINGCOBRA_shelteringMatrix[roadMin_x:roadMax_x,1:2000] - 90
@@ -840,10 +849,10 @@ KINGCOBRA_avoidLocs <- data.frame(
 # and specifying a weak avoidance of the points 
 KINGCOBRA_avoidTransformation <- 2
 KINGCOBRA_avoidModifier <- 1
-
 ```
 
 ```{r KINGCOBRAsettingShelter, eval=TRUE, echo=FALSE}
+
 # after the matrices have been altered, drawing 12 shelter sites based on shelter quality
 sampledShelters <- sampleRandom(raster(KINGCOBRA_shelteringMatrix), 12,
                                 ext = extent(0.35, 0.65, 0.42, 0.65), 
@@ -854,7 +863,6 @@ KINGCOBRA_shelterLocs <- data.frame(
   "y" = sampledShelters[,1])
 # specifying a larger shelter site radius
 KINGCOBRA_shelterSize <- 10
-
 ```
 
 ### Running the Simulation
@@ -1747,8 +1755,8 @@ for(species in vecSpecies){
                    axis.title.y = ggplot2::element_text(angle = 0,
                                                         face = 2,
                                                         hjust = 1,
-                                                        vjust = 0.25,
-                                                        margin = margin(0,10,0,10)),
+                                                        vjust = 1,
+                                                        margin = margin(10,10,0,10)),
                    plot.title = element_markdown(size = 12, face = 2),
                    plot.title.position = "plot",
                    axis.text = element_text(size = 5),
@@ -1770,7 +1778,7 @@ for(species in vecSpecies){
                            "<span style='color:#7D26D4'>B - Vulture</span>",
                            "<span style='color:#AD6DED'>C - King Cobra</span>")
                   )) +
-    ggforce::facet_zoom(xlim = c(0, 4)) +
+    ggforce::facet_zoom(xlim = c(0, 4), zoom.size = 1.25) +
     ggplot2::scale_x_continuous(breaks = zoom_breaks)
   
   cyclePlotList[[species]] <- tempPlot
@@ -1987,12 +1995,12 @@ data.frame(
 Largely the vulture parametrisation matches the badger.
 We specified a number of predefined resting/shelter sites, assuming that bird bio-tagging is more likely to occur at known site (i.e., nests or roosts).
 The shelter site size is smaller than the badger sett, so is only 5 m.
-Step length parameters are all larger and more variable, along with destination ranges [\@ref(fig:VULTUREsettingMoveDesPlot)].
+Step length parameters are all larger and more variable, along with destination ranges [Figure \@ref(fig:VULTUREsettingMoveDesPlot)].
 We set a larger rescale value also to ensure the vulture has a larger landscape to operate across.
 The rest cycle is broadly similar, with a 12 hour diel cycle and gentle seasonality.
 We make two small modifications to the transition matrix allows for more frequent switches between foraging and exploring.
 We also alter two of the environmental matrices.
-We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area [\@ref(fig:VULTURElayersFigure)].
+We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area [Figure \@ref(fig:VULTURElayersFigure)].
 Finally, we specify that the vulture will not be avoiding any locations, we still require inputs for the simulation, but we can provide zeroes to negate the effect.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
 ```
@@ -2115,14 +2123,14 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
 
 #### King Cobra Inputs
 
-Compared to the vulture, the king cobra movements are smaller, but king cobras can still occupy large areas [\@ref(fig:KINGCOBRAsettingMoveDesPlot)].
+Compared to the vulture, the king cobra movements are smaller, but king cobras can still occupy large areas [Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)].
 We provide a rescale value of 10 m to provide a large enough landscape to capture a potentially large range.
 The activity cycle provides an opportunity to demonstrate three additive cycles.
 The diel cycle is largely similar to the other examples, but we also define an approximately weekly cycle to cover the forage-digestion cycle as well as weak seasonal cycle.
 Combined the three cycles create an activity pattern quite different from either the badger or vulture.
 To balance the three cycles and their influence on the behaviour transitions, we make some minor adjustments to the underlying behavioural transition matrix. 
 As mentioned in the ecology and justifications, we want to simulate a barrier limiting movement.
-We construct this by altering the values in the environmental matrices, minimising the weighting in cells following two perpendicular lines [\@ref(fig:KINGCOBRAlayersFigure)].
+We construct this by altering the values in the environmental matrices, minimising the weighting in cells following two perpendicular lines [Figure \@ref(fig:KINGCOBRAlayersFigure)].
 We also provide a set of avoidance locations and a relatively weak avoidance weighting coefficient.
 Finally, we can set the shelter sites.
 We draw 12 sites randomly based on shelter site quality, and limit the area that they can be draw from to ensure they are not on the far side of the barrier.
