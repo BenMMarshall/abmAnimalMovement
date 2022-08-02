@@ -1,10 +1,12 @@
 # abmAnimalMovement
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6951937.svg)](https://doi.org/10.5281/zenodo.6951937)
+
 --------------------------------------------------------------------------------
 
 The *abmAnimalMovement* simulates animal movement use a discrete time agent-based model, programmed in C++ via the Rcpp package. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal.
 
-A more complete description of the package, alongside a demonstration can be found at DOI: TBC.
+A more complete description of the package, alongside a demonstration can be found at DOI: TBC. Or a draft version of that manuscript within the package Github [here](https://github.com/BenMMarshall/abmAnimalMovement/blob/main/notebook/manuscript/Agent-based_model_walkthrough.pdf).
 
 --------------------------------------------------------------------------------
 

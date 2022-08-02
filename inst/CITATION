@@ -2,8 +2,7 @@ citHeader("To cite abmAnimalMovement in publications use:")
 
 citEntry(
   entry    = "Article",
-  title    = "abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based
-Model",
+  title    = "abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model",
   author   = "Benjamin Michael Marshall and Alexander Bradley Duthie",
   journal  = "F1000",
   year     = 2022,

@@ -4,6 +4,10 @@ rmarkdown::render(input = here::here("notebook",
                                      "Agent-based_model_walkthrough.Rmd"),
                   output_format = "bookdown::pdf_document2")
 
+# For in-development packages
+cffr::cff_write()
+
+
 # file.copy(from = here::here("notebook",
 #                             "manuscript",
 #                             "Agent-based_model_walkthrough.pdf"),

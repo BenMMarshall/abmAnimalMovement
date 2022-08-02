@@ -2284,7 +2284,7 @@ Source code to reproduce the results and manuscript are available alongside the 
 
 # Software Availability
 
-Archived version of the software at the time of submission is available on Zenodo: [REPO TITLE]. https://doi.org/ [_DOI_].
+Archived versions of the software are available on Zenodo: BenMMarshall/abmAnimalMovement. https://doi.org/10.5281/zenodo.6951937.
 
 The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
 
