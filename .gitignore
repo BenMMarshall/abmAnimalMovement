@@ -9,7 +9,7 @@
 .Ruserdata
 /output/
 /inst/figures/
-/notes/
+/notebook/notes/
 
 # Example code in package build process
 *-Ex.R
