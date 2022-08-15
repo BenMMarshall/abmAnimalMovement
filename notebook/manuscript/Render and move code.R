@@ -5,7 +5,8 @@ rmarkdown::render(input = here::here("notebook",
                   output_format = "bookdown::pdf_document2")
 
 # For in-development packages
-cffr::cff_write()
+# cffr::cff_write()
+cffr::cff_gha_update()
 
 
 # file.copy(from = here::here("notebook",

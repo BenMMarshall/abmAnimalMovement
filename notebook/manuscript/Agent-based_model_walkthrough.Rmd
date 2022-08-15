@@ -2301,13 +2301,15 @@ moveCharPlotList[["KINGCOBRA"]]
 # Data availability
 
 All data underlying the results are generated as part of the article, no source data are required.
-The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model https://doi.org/10.5281/zenodo.6992496.
-Source code to reproduce the results and manuscript are available alongside the software, archived at: https://doi.org/10.5281/zenodo.6951938.
+
+The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: "Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model" https://doi.org/10.5281/zenodo.6992496.
+
+Source code to reproduce the results and manuscript are available alongside the software, archived at: https://doi.org/10.5281/zenodo.6951937.
 The parameters used to generate the examples are within: `notebook/manuscript/Agent-based_model_walkthrough.Rmd`.
 
 # Software availability
 
-Archived versions of the software are available on Zenodo: BenMMarshall/abmAnimalMovement https://doi.org/10.5281/zenodo.6951937.
+Archived versions of the software are available on Zenodo: "BenMMarshall/abmAnimalMovement" https://doi.org/10.5281/zenodo.6951937.
 
 The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
 

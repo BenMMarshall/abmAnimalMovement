@@ -106,7 +106,7 @@
 
 \begin{abstract}
 
-Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model programmed in C++ via the Rcpp package, and does not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal aims to avoid. Navigation capacity is defined by the range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are draw at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
+Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model and does not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal avoids. Navigation capacity is defined by the range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are drawn at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
 
 \end{abstract}
 
@@ -164,7 +164,7 @@ There are a number of approaches for simulating animal movement including (but n
 \def\labelenumi{\arabic{enumi}.}
 \item
   continuous movement processes, best exemplified by the \emph{ctmm} package (\protect\hyperlink{ref-Calabrese2016}{43}) and worked examples such as (\protect\hyperlink{ref-silva_autocorrelationinformed_2022}{44}) and (\protect\hyperlink{ref-theng_confronting_2022}{37}).
-  These methods rely on a mathematically defined movement process (such as Ornstein--Uhlenbeck foraging process \protect\hyperlink{ref-Fleming2014}{45}).
+  These methods rely on a mathematically defined movement process (such as Ornstein-Uhlenbeck foraging process \protect\hyperlink{ref-Fleming2014}{45}).
   A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
 \item
   hidden markov models, best exemplified by the \texttt{simData} function from the \emph{moveHMM} package (\protect\hyperlink{ref-Michelot2016}{46}).
@@ -185,7 +185,7 @@ A new independently developed approach to simulating animal movement will provid
 \section{Methods}\label{methods}}
 
 \hypertarget{overview-of-the-agent-based-model}{%
-\subsection{Overview of the Agent-based Model}\label{overview-of-the-agent-based-model}}
+\subsection{Overview of the agent-based model}\label{overview-of-the-agent-based-model}}
 
 The \emph{abmAnimalMovement} package provides the functionality to simulate animal movements via an agent-based model.
 We wrote the model using \emph{C++} via the \emph{Rcpp} v.1.0.8.3 package (\protect\hyperlink{ref-Eddelbuettel_seamless_2011}{51}--\protect\hyperlink{ref-Eddelbuettel_extending_2018}{53}) to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages (\protect\hyperlink{ref-joo_recent_2022}{13},\protect\hyperlink{ref-joo_navigating_2020}{54})).
@@ -264,18 +264,20 @@ The interplay between shelter sites, foraging quality, and movement resistance s
 Simulating a more dynamic and messy array of movements can help test how far assumptions of uniform circular animal movement are practical.
 
 \hypertarget{generating-three-species}{%
-\subsection{Generating Three Species}\label{generating-three-species}}
+\subsection{Generating three species}\label{generating-three-species}}
 
 To demonstrate the variation that movement ecology methods needs to wrangle, as well as the scope of movements the agent-based model can recreate, we provide three example species.
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns.
-None of the created examples are meant to directly match previously collected data on the species movements. There are alternative methods built to fit and simulate movements from existing data. Instead, the examples provide some biological context to demonstrate a range of simulation parametrisations.
+Unlike alternative methods that are built to fit and simulate movements from existing data, our examples are based on summary statistics from previous published results.
+The choice of using species specific examples is intended to provide some biological context while demonstrating a range of simulation parametrisations.
+Therefore, we are only interested in whether the simulated data returns the intended traits we are attempting to simulate for each example species (e.g., avoidance, site fidelity, expected step lengths).
 We show one example via a more detailed walk-through (badger), and the other example parametrisations are included as uses cases at the end of the manuscript (vulture, king cobra).
 
 \hypertarget{primary-example}{%
-\subsection{Primary Example}\label{primary-example}}
+\subsection{Primary example}\label{primary-example}}
 
 \hypertarget{ecology-and-objectives---badger}{%
-\subsubsection{Ecology and Objectives - Badger}\label{ecology-and-objectives---badger}}
+\subsubsection{Ecology and objectives - badger}\label{ecology-and-objectives---badger}}
 
 Our primary example is based on a badger.
 Badger occupy setts, in our example a two home/shelter sites, to where they routinely return (\protect\hyperlink{ref-kowalczyk_daily_2006}{58},\protect\hyperlink{ref-feore_habitat_1999}{59}).
@@ -338,14 +340,14 @@ An alternative simpler implementation with no dependencies is provided as a pack
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.2.1 (\protect\hyperlink{ref-R-base}{65}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{67}), and used \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-rmarkdown2020}{70}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{71},\protect\hyperlink{ref-R-bookdown}{72}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{73},\protect\hyperlink{ref-R-tinytex}{74}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{75}--\protect\hyperlink{ref-R-knitr}{77}) packages to generate type-set outputs.
+We used \emph{R} v.4.2.1 (\protect\hyperlink{ref-R-base}{65}) via \emph{RStudio} v.2022.2.2.485 (\protect\hyperlink{ref-RStudioTeam2021}{67}), and used \emph{rmarkdown} v.2.14 (\protect\hyperlink{ref-R-rmarkdown}{68}--\protect\hyperlink{ref-rmarkdown2020}{70}), \emph{bookdown} v.0.26 (\protect\hyperlink{ref-bookdown2016}{71},\protect\hyperlink{ref-R-bookdown}{72}), \emph{tinytex} v.0.39 (\protect\hyperlink{ref-tinytex2019}{73},\protect\hyperlink{ref-R-tinytex}{74}), and \emph{knitr} v.1.39 (\protect\hyperlink{ref-knitr2015}{75}--\protect\hyperlink{ref-R-knitr}{77}) packages to generate type-set outputs.
 We used the \emph{here} v.1.0.1 package (\protect\hyperlink{ref-R-here}{78}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.0.9 and \emph{reshape2} v.1.4.4 packages for data manipulation (\protect\hyperlink{ref-R-dplyr}{79},\protect\hyperlink{ref-reshape22007}{80}).
 We used \emph{ggplot2} v.3.3.6 for creating figures (\protect\hyperlink{ref-R-ggplot2}{81},\protect\hyperlink{ref-ggplot22016}{82}), with the expansions: \emph{ggridges} v.0.5.3 (\protect\hyperlink{ref-R-ggridges}{83}), \emph{ggtext} v.0.1.1 (\protect\hyperlink{ref-R-ggtext}{84}), \emph{ggforce} v.0.3.3 (\protect\hyperlink{ref-R-ggforce}{85}), and \emph{patchwork} v.1.1.1 (\protect\hyperlink{ref-R-patchwork}{86}).
 We used the \emph{raster} v.3.5.21 (\protect\hyperlink{ref-R-raster}{87}), \emph{sp} v.1.4.7 (\protect\hyperlink{ref-sp2013}{88}--\protect\hyperlink{ref-R-sp}{90}), and \emph{NLMR} v.1.1 (\protect\hyperlink{ref-NLMR2018}{91},\protect\hyperlink{ref-R-NLMR}{92}) for generating environmental matrices.
 
 \hypertarget{generating-environmental-matrices}{%
-\subsubsection{Generating Environmental Matrices}\label{generating-environmental-matrices}}
+\subsubsection{Generating environmental matrices}\label{generating-environmental-matrices}}
 
 To ensure that the simulation completed during this example is repeatable, we set a seed.
 For the sake of simplicity, the year the examples was written (2022) is used.
@@ -382,9 +384,10 @@ To aid balancing, we keep values between 0 and 1; any numeric value can be used,
 Once generated will supply the core simulation function (\texttt{abm\_simulate}) with each of these layers via the \texttt{shelteringMatrix}, \texttt{foragingMatrix}, and \texttt{movementMatrix} arguments.
 
 \hypertarget{animal-parameters}{%
-\subsubsection{Animal Parameters}\label{animal-parameters}}
+\subsubsection{Animal parameters}\label{animal-parameters}}
 
-We predefine a suite of parameters describing the movement and behaviour characteristics of the animal, storing them as object we can later input into the \texttt{abm\_simulate} function.
+We predefine a suite of parameters describing the movement and behaviour characteristics of the animal based on summary statistics and general statements from previous research.
+We store the parameters as objects we can later input into the \texttt{abm\_simulate} function.
 We complete this process for three species; the badger values are displayed below, whereas the values for vulture and king cobra examples are provided at the end of the manuscript.
 
 We parametrise shelter information in the following ways.
@@ -534,7 +537,7 @@ We also pull forward the behaviour transition matrix we showed during the overvi
 \end{verbatim}
 
 \hypertarget{running-the-simulation}{%
-\subsubsection{Running the Simulation}\label{running-the-simulation}}
+\subsubsection{Running the simulation}\label{running-the-simulation}}
 
 We need to initially define a start location for our animal.
 To introduce some more individual variation, we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
@@ -627,7 +630,7 @@ We can then call all our settings describing badger behaviour and movement setti
 \section{Results}\label{results}}
 
 \hypertarget{output-format}{%
-\subsection{Output Format}\label{output-format}}
+\subsection{Output format}\label{output-format}}
 
 The simulation function (\texttt{abm\_simulate}) outputs a list containing: (1) a dataframe of realised movements, (2) a dataframe of options the animal had available, and (3) a list of the inputs used to simulate the movement.
 The realised movement dataframe (\texttt{locations}) describes all realised locations the animal occupied, step length information, behavioural state, and current point of attraction, where each row is equal to a time step.
@@ -637,7 +640,7 @@ Our example is minute by minute; changing the time step would require a reparame
 The \texttt{options} dataframe describes all the options available to the animal over the entire simulation duration, where each row is equal to an option repeated for each time step.
 
 \hypertarget{outputs-review}{%
-\subsection{Outputs Review}\label{outputs-review}}
+\subsection{Outputs review}\label{outputs-review}}
 
 Once simulated, we can review the movement characteristics of the three species.
 The simplest to examine is the movement speeds or step lengths.
@@ -739,7 +742,7 @@ The simulated results could then be compared to the real data to gauge how diffe
 This approach could complement current analysis methods, akin to sensitivity analysis.
 
 \hypertarget{future-directions}{%
-\subsection{Future Directions}\label{future-directions}}
+\subsection{Future directions}\label{future-directions}}
 
 The \emph{abmAnimalMovement} package provides adequate functionality to simulate a range of scenarios and movements.
 However, there are several aspects that will bear updating in future versions.
@@ -764,13 +767,13 @@ However, there are several aspects that will bear updating in future versions.
 \end{enumerate}
 
 \hypertarget{use-cases}{%
-\subsection{Use Cases}\label{use-cases}}
+\subsection{Use cases}\label{use-cases}}
 
 This section provides alternative parametrisations for the secondary examples to better demonstrate the range of movement types and scenarios the \emph{abmAnimalMovement} package can replicate.
 We provide example implementations of vulture and king cobra -like movement.
 
 \hypertarget{ecology-and-objectives---vulture}{%
-\subsubsection{Ecology and Objectives - Vulture}\label{ecology-and-objectives---vulture}}
+\subsubsection{Ecology and objectives - vulture}\label{ecology-and-objectives---vulture}}
 
 Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction {[}Figure \ref{fig:VULTURElayersFigure}{]}.
 Vultures can also move greater distances more rapidly (\protect\hyperlink{ref-hribsek_first_2021}{95}), resulting in a more variable and distribution of step lengths (\protect\hyperlink{ref-garcia-jimenez_drivers_2018}{96}--\protect\hyperlink{ref-subedi_spatial_2020}{98}) {[}Figure \ref{fig:VULTUREsettingMoveDesPlot}{]}.
@@ -799,7 +802,7 @@ We can broadly summarise the vulture ecology we want to parametrise as follows:
 \end{enumerate}
 
 \hypertarget{ecology-and-objectives---king-cobra}{%
-\subsubsection{Ecology and Objectives - King Cobra}\label{ecology-and-objectives---king-cobra}}
+\subsubsection{Ecology and objectives - king cobra}\label{ecology-and-objectives---king-cobra}}
 
 Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\protect\hyperlink{ref-Marshall2018}{102},\protect\hyperlink{ref-marshall_no_2020}{103}).
 These sites can also be larger, comprising burrow systems or rock complexes.
@@ -831,10 +834,10 @@ We can broadly summarise the king cobra ecology we want to parametrise as follow
 \end{enumerate}
 
 \hypertarget{simulation-inputs}{%
-\subsubsection{Simulation Inputs}\label{simulation-inputs}}
+\subsubsection{Simulation inputs}\label{simulation-inputs}}
 
 \hypertarget{vulture-inputs}{%
-\paragraph{Vulture Inputs}\label{vulture-inputs}}
+\paragraph{Vulture inputs}\label{vulture-inputs}}
 
 Largely the vulture parametrisation matches the badger.
 We specified a number of predefined resting/shelter sites, assuming that bird bio-tagging is more likely to occur at known site (i.e., nests or roosts).
@@ -927,7 +930,7 @@ Finally, we specify that the vulture will not be avoiding any locations, we stil
 \end{figure}
 
 \hypertarget{king-cobra-inputs}{%
-\paragraph{King Cobra Inputs}\label{king-cobra-inputs}}
+\paragraph{King cobra inputs}\label{king-cobra-inputs}}
 
 Compared to the vulture, the king cobra movements are smaller, but king cobras can still occupy large areas {[}Figure \ref{fig:KINGCOBRAsettingMoveDesPlot}{]}.
 We provide a rescale value of 10 m to provide a large enough landscape to capture a potentially large range.
@@ -1052,7 +1055,7 @@ We use a larger shelter site size, as king cobras are known to occupy large rock
 \clearpage
 
 \hypertarget{simulation-outputs}{%
-\subsubsection{Simulation Outputs}\label{simulation-outputs}}
+\subsubsection{Simulation outputs}\label{simulation-outputs}}
 
 Figures \ref{fig:VULTUREsettingMoveDesPlot} and \ref{fig:KINGCOBRAsettingMoveDesPlot} describe the inputs for the vulture and king cobra example respectively, and can be compared to figures \ref{fig:VULTUREmoveCharFigure} and \ref{fig:KINGCOBRAmoveCharFigure} that display the realised movements.
 Figures \ref{fig:VULTUREmoveCharFigure}, and \ref{fig:KINGCOBRAmoveCharFigure} also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
@@ -1079,15 +1082,19 @@ The king cobra example in particular highlights the prolonged near weekly restin
 \clearpage
 
 \hypertarget{data-availability}{%
-\section{Data Availability}\label{data-availability}}
+\section{Data availability}\label{data-availability}}
 
 All data underlying the results are generated as part of the article, no source data are required.
-Source code to reproduce the results and manuscript are available alongside the software.
+
+The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: ``Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model'' \url{https://doi.org/10.5281/zenodo.6992496}.
+
+Source code to reproduce the results and manuscript are available alongside the software, archived at: \url{https://doi.org/10.5281/zenodo.6951937}.
+The parameters used to generate the examples are within: \texttt{notebook/manuscript/Agent-based\_model\_walkthrough.Rmd}.
 
 \hypertarget{software-availability}{%
-\section{Software Availability}\label{software-availability}}
+\section{Software availability}\label{software-availability}}
 
-Archived versions of the software are available on Zenodo: BenMMarshall/abmAnimalMovement. \url{https://doi.org/10.5281/zenodo.6951937}.
+Archived versions of the software are available on Zenodo: ``BenMMarshall/abmAnimalMovement'' \url{https://doi.org/10.5281/zenodo.6951937}.
 
 The development version of the package can be found at \href{https://github.com/BenMMarshall/abmAnimalMovement}{BenMMarshall/abmAnimalMovement}.
 
@@ -1096,24 +1103,24 @@ The stable release is available from CRAN: TBC {[}CRAN submission under way{]}.
 License: GPL (\textgreater= 3)
 
 \hypertarget{competing-interests}{%
-\section{Competing Interests}\label{competing-interests}}
+\section{Competing interests}\label{competing-interests}}
 
 No competing interests were disclosed.
 
 \hypertarget{grant-information}{%
-\section{Grant Information}\label{grant-information}}
+\section{Grant information}\label{grant-information}}
 
 BMM was funded by the Natural Environment Research Council (NERC) via the IAPETUS2 Doctoral Training Partnership.
 
 \hypertarget{author-contributions}{%
-\section{Author Contributions}\label{author-contributions}}
+\section{Author contributions}\label{author-contributions}}
 
 Conceptualization: BMM;
 Software: BMM;
 Supervision: ABD;
 Visualization: BMM;
-Writing -- Original Draft: BMM;
-Writing -- Review \& Editing: BMM, ABD.
+Writing - Original Draft: BMM;
+Writing - Review \& Editing: BMM, ABD.
 
 \clearpage
 
