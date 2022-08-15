@@ -8,7 +8,6 @@ rmarkdown::render(input = here::here("notebook",
 # cffr::cff_write()
 cffr::cff_gha_update()
 
-
 # file.copy(from = here::here("notebook",
 #                             "manuscript",
 #                             "Agent-based_model_walkthrough.pdf"),
