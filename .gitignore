@@ -10,6 +10,7 @@
 /output/
 /inst/figures/
 /notebook/notes/
+/notebook/manuscript/eg_simdata/
 
 # Example code in package build process
 *-Ex.R
