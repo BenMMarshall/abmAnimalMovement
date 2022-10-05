@@ -98,7 +98,7 @@ There are a number of approaches for simulating animal movement including (but n
 These methods rely on a mathematically defined movement process [such as Ornstein-Uhlenbeck foraging process @Fleming2014].
 A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
 
-2. hidden markov models, best exemplified by the `simData` function from the *moveHMM* package [@Michelot2016].
+2. hidden markov models, exemplified by the `simData` function from the *moveHMM* package [@Michelot2016].
 Their biggest contribution to simulating animal movement is the inclusion of state switching (i.e., different behaviours).
 They are best used in conjunction with existing movement data for parametric bootstrapping to explore estimator uncertainty [@Michelot2016]. 
 
@@ -186,7 +186,7 @@ The two time frames also allow exploration of assumptions connecting observed mo
 
 At all times, the subsequent locations of the animal are impacted by a movement resistance matrix.
 Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
-For example, rivers or hard barriers within a landscape could present very high movement resistance and a animal would aim to avoid traversing them.
+For example, rivers or hard barriers within a landscape could present very high movement resistance and an animal would aim to avoid traversing them.
 Alternatively areas of lower movement resistance could aid movement, and potentially form movement corridors.
 The movement matrix has values that describe the weighting of movement probability (lower values indicating a lower probability of entering a cell).
 Whereas the resource environmental layer and shelter locations interact with destination/goal decisions, the movement resistance affects the step-by-step movement decisions.
@@ -880,8 +880,8 @@ startLocation <- sample(900:1100, 2, replace = TRUE)
 
 We finally have some parameters that describe the scope and intensity of the simulation.
 The length of the simulation is provided via the `timesteps` argument; in our examples we are operating under the assumption that one time step is equal to one minute.
-Equally `timesteps` can be tough as the number of movement choices simulated.
-We also need to specify how many options will be draw and considered by the animal at each time step.
+Equally `timesteps` can be thought as the number of movement choices simulated.
+We also need to specify how many options will be drawn and considered by the animal at each time step.
 The `options` argument is where this is input.
 Similarly `des_options` is where we specify the number of dynamically selected foraging attraction/destinations to choose from when it enters the foraging behaviour mode (state 1).
 
@@ -1144,7 +1144,7 @@ saveRDS(simResultsList,
 
 The simulation function (`abm_simulate`) outputs a list containing: (1) a dataframe of realised movements, (2) a dataframe of options the animal had available, and (3) a list of the inputs used to simulate the movement.
 The realised movement dataframe (`locations`) describes all realised locations the animal occupied, step length information, behavioural state, and current point of attraction, where each row is equal to a time step.
-Note the simulation is scale agnostic, so each row can represent a different time step.
+Note the simulation is scale agnostic, so each row can represent a different time step to the example.
 Other than the lack of timestamps and location error, the format largely mirrors a typical movement dataset.
 Our example is minute by minute; changing the time step would require a reparametrisation of step length and behavioural transition probabilities. 
 The `options` dataframe describes all the options available to the animal over the entire simulation duration, where each row is equal to an option repeated for each time step.
@@ -1674,7 +1674,7 @@ wrap_plots(speciesMapPlotList[["BADGER"]],
 <!-- Reviewing behavioural state cycling -->
 The activity cycles and the timing of behavioural shifts is a key component in the simulations.
 We can examine that the predefined cycles result in expected patterns.
-A year of data makes observing all but the broadest cycles difficult to visualise, so in Figure \@ref(fig:cycleFigure) we can look at several months of data as well as the daily cycle.
+A year of data makes observing all but the broadest cycles difficult, so in Figure \@ref(fig:cycleFigure) we can look at several months of data as well as the daily cycle.
 Badger and vulture daily cycles are largely the same [Figure \@ref(fig:cycleFigure)a & b], with a consistent daily activity cycle differing only slightly in the time spent active and balance between shifts from sheltering to foraging and exploring.
 Some of the differences are a result of the different behavioural transition matrix provided to simulated the two species, where both had different baseline probabilities of shifting between behavioural states.
 By contrast, the king cobra example demonstrates the interaction between the daily and weekly cycles [Figure \@ref(fig:cycleFigure)].
@@ -2022,7 +2022,7 @@ The rest cycle is broadly similar, with a 12 hour diel cycle and gentle seasonal
 We make two small modifications to the transition matrix allows for more frequent switches between foraging and exploring.
 We also alter two of the environmental matrices.
 We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area [Figure \@ref(fig:VULTURElayersFigure)].
-Finally, we specify that the vulture will not be avoiding any locations, we still require inputs for the simulation, but we can provide zeroes to negate the effect.
+Finally, we specify that the vulture will not be avoiding any locations; we still require inputs for the simulation, but we can provide zeroes to negate the effect.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
 ```
 
