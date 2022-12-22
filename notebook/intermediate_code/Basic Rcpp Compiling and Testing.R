@@ -105,7 +105,15 @@ simRes <- abm_simulate(start = c(900,1000),
                        foragingMatrix = landscapeLayersList$forage,
                        movementMatrix = landscapeLayersList$movement) # just using a place holder layer for testing
 
-simRes$inputs$in_rescale
+simRes$destinations
+# sum(simRes$others$destinations_list$des_desBehave)
+# data.frame(
+#   simRes$others$destinations_list$des_desOptsstep,
+#   simRes$others$destinations_list$des_desOptsx,
+#   simRes$others$destinations_list$des_desOptsy,
+#   simRes$others$destinations_list$des_desBehave
+# ) %>%
+#   filter(simRes.others.destinations_list.des_desBehave==0)
 
 ##### Quick plot testing ##### ------------------------------
 

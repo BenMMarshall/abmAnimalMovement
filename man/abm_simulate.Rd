@@ -138,10 +138,14 @@ each row is equal to an option repeated for each timestep. Columns include:
 timestep, the timestep as a integer; oall_x, and oall_y show the x and y
 coordinates of all the options available to an animal at a timestep;
 oall_steplengths are the step lengths from the current location compared to
-all the options. The "inputs" return the arguments used to simulate the
+all the options. 3. The "inputs" return the arguments used to simulate the
 movement, split into a list covering inputs_basic, inputs_destination,
-inputs_movement, inputs_cycle, inputs_layerSeed. "others" captures all
-other outputs, mainly used internally for debugging and checking.
+inputs_movement, inputs_cycle, inputs_layerSeed. 4. "destinations" that
+collects the choices available to the animal each time it shifts into a new
+behavioural state. Columns include the timestep the choice was made at, and
+the destinations x and y locations, and the behave the animal was moving
+into. "others" captures all other outputs, mainly used internally for
+debugging and checking.
 }
 \description{
 An R function to arrange simulation parameters ready to be fed

@@ -149,6 +149,11 @@ Rcpp::List cpp_abm_simulate(
   std::vector<double> y_OptionsAll(nopt*timesteps);
   std::vector<int> step_OptionsAll(nopt*timesteps);
   std::vector<double> stepAll(nopt*timesteps);
+  // the destination stores for the output including all destination, they will but much longer than needed
+  std::vector<double> x_DesOptionsAll(nopt*timesteps);
+  std::vector<double> y_DesOptionsAll(nopt*timesteps);
+  std::vector<int> step_DesOptionsAll(nopt*timesteps);
+  std::vector<int> behave_DesOptionsAll(nopt*timesteps);
   //----------------------------------------------------------------------------
 
   // REALISED/CHOSEN MOVEMENT OBJECTS ------------------------------------------
@@ -233,8 +238,8 @@ Rcpp::List cpp_abm_simulate(
   des_y_Locations[0] = des_y;
   //----------------------------------------------------------------------------
   /*initial options are populated with start location as animal doesn't make an
-  initial choice, that way the option indexing matches the timestep value
-  within the loop */
+   initial choice, that way the option indexing matches the timestep value
+   within the loop */
   for(int u = 0; u < nopt; u++){
     x_OptionsAll[u] = startx;
     y_OptionsAll[u] = starty;
@@ -242,7 +247,7 @@ Rcpp::List cpp_abm_simulate(
     stepAll[u] = 0;
   }
 
-  for(int i = 1, a = nopt; i < timesteps; i++){
+  for(int i = 1, a = nopt, desi = 0; i < timesteps; i++){
 
     /* working under the assumption that i == minute, but the cycle is defined in
      hours AKA 12 hour cycle offset to be crepusclar, we need to convert i AKA minute to hours */
@@ -259,65 +264,65 @@ Rcpp::List cpp_abm_simulate(
 
         b0_addMod = cpp_cycle_draw(
           i*1.0 / 60, // make i a double and convert it to hours.
-                       // i == 1 min so 1/60 i == hour
+          // i == 1 min so 1/60 i == hour
           add_Cycle_A[cyc],
-          add_Cycle_M[cyc],
-          add_Cycle_PHI[cyc] / add_Cycle_TAU[cyc], // make sure PHI is kept ~ to
-                                                    // TAU so no drift
-          add_Cycle_TAU[cyc]);
+                     add_Cycle_M[cyc],
+                                add_Cycle_PHI[cyc] / add_Cycle_TAU[cyc], // make sure PHI is kept ~ to
+                                                                  // TAU so no drift
+                                                                  add_Cycle_TAU[cyc]);
         // we then update the resting chance modifier with the second cycle output
         b0_dailyMod = b0_dailyMod + b0_addMod;
       }
 
     } // end of if
 
-      /* switch to use a given set of transition probabilities that change
-       depending on the previous behavioural state*/
+    /* switch to use a given set of transition probabilities that change
+     depending on the previous behavioural state*/
     switch(behave_Locations[i-1]){
-      case 0:
-        // this will update the behaviour shift prob depending on the time of day
-        b0_Options_Current[0] = b0_Options[0] + b0_dailyMod;
-        // draw from the updated behaviour probs to get the next behavioural state
-        behave_Locations[i] = cpp_sample_options(b0_Options_Current);
-        break;
-      case 1:
-        b1_Options_Current[0] = b1_Options[0] + b0_dailyMod;
-        behave_Locations[i] = cpp_sample_options(b1_Options_Current);
-        break;
-      case 2:
-        b2_Options_Current[0] = b2_Options[0] + b0_dailyMod;
-        behave_Locations[i] = cpp_sample_options(b2_Options_Current);
-        break;
-      } // end of switch
+    case 0:
+      // this will update the behaviour shift prob depending on the time of day
+      b0_Options_Current[0] = b0_Options[0] + b0_dailyMod;
+      // draw from the updated behaviour probs to get the next behavioural state
+      behave_Locations[i] = cpp_sample_options(b0_Options_Current);
+      break;
+    case 1:
+      b1_Options_Current[0] = b1_Options[0] + b0_dailyMod;
+      behave_Locations[i] = cpp_sample_options(b1_Options_Current);
+      break;
+    case 2:
+      b2_Options_Current[0] = b2_Options[0] + b0_dailyMod;
+      behave_Locations[i] = cpp_sample_options(b2_Options_Current);
+      break;
+    } // end of switch
 
-      /* assigning the step and angle parameters
-       depending on the behaviour */
-      switch(behave_Locations[i]){
-        case 0:
-          behave_k_step = k_step[0];
-          behave_s_step = s_step[0];
-          behave_mu_angle = mu_angle[0];
-          behave_k_angle = k_angle[0];
-          // change the matrix used for choosing destination
-          desMatrix = shelterMatrix;
-          break;
-        case 1:
-          behave_k_step = k_step[1];
-          behave_s_step = s_step[1];
-          behave_mu_angle = mu_angle[1];
-          behave_k_angle = k_angle[1];
-          // replaced with the moveMatrix but it doesn't actually impact anything
-          desMatrix = moveMatrix;
-          break;
-        case 2:
-          behave_k_step = k_step[2];
-          behave_s_step = s_step[2];
-          behave_mu_angle = mu_angle[2];
-          behave_k_angle = k_angle[2];
-          // change the matrix used for choosing destination
-          desMatrix = forageMatrix;
-          break;
-      }
+    /* assigning the step and angle parameters
+     depending on the behaviour */
+    switch(behave_Locations[i]){
+    case 0:
+      behave_k_step = k_step[0];
+      behave_s_step = s_step[0];
+      behave_mu_angle = mu_angle[0];
+      behave_k_angle = k_angle[0];
+      // change the matrix used for choosing destination
+      desMatrix = shelterMatrix;
+      break;
+    case 1:
+      behave_k_step = k_step[1];
+      behave_s_step = s_step[1];
+      behave_mu_angle = mu_angle[1];
+      behave_k_angle = k_angle[1];
+      // replaced with the moveMatrix but it doesn't actually impact anything
+      desMatrix = moveMatrix;
+      break;
+    case 2:
+      behave_k_step = k_step[2];
+      behave_s_step = s_step[2];
+      behave_mu_angle = mu_angle[2];
+      behave_k_angle = k_angle[2];
+      // change the matrix used for choosing destination
+      desMatrix = forageMatrix;
+      break;
+    }
 
     // choosing between a number of possible predefined destinations
     // new destination should be chosen if behaviour changes or after a
@@ -329,44 +334,57 @@ Rcpp::List cpp_abm_simulate(
       // desMatrix updated at each behaviour switch above
       // switch to update possible destination / point of attraction
       switch(behave_Locations[i]){
-        case 0:
+      case 0:
 
-          des_Options = cpp_get_values(desMatrix, shelter_locs_x, shelter_locs_y);
-          chosenDes = cpp_sample_options(des_Options);
+        des_Options = cpp_get_values(desMatrix, shelter_locs_x, shelter_locs_y);
+        chosenDes = cpp_sample_options(des_Options);
 
-          des_x = shelter_locs_x[chosenDes];
-          des_y = shelter_locs_y[chosenDes];
+        des_x = shelter_locs_x[chosenDes];
+        des_y = shelter_locs_y[chosenDes];
+
+        for(int shelopt = 0; shelopt < shel_ndes; shelopt++, desi++){
+          // iterates to next one for following allocation of the destinations chosen from
+          x_DesOptionsAll[desi] = shelter_locs_x[shelopt];
+          y_DesOptionsAll[desi] = shelter_locs_y[shelopt];
+          step_DesOptionsAll[desi] = i;
+          behave_DesOptionsAll[desi] = behave_Locations[i];
+        }
 
         break;
-        case 1:
-          // we can update the destination here, but explore doesn't have a
-          // destination weighting so this has no effect
-          des_x = shelter_locs_x[0];
-          des_y = shelter_locs_y[0];
+      case 1:
+        // we can update the destination here, but explore doesn't have a
+        // destination weighting so this has no effect
+        des_x = shelter_locs_x[0];
+        des_y = shelter_locs_y[0];
         break;
-        case 2:
+      case 2:
 
-          for(int dopt = 0; dopt < ndes; dopt++){
+        for(int dopt = 0; dopt < ndes; dopt++, desi++){
 
-            step = Rcpp::rgamma(1, k_desRange, s_desRange)[0];
-            step = step / rescale;
-            vmdraw = cpp_vonmises(1, mu_desDir, k_desDir)[0];
-            angle = vmdraw * 180/M_PI;
-            angle = last_angle + angle;
-            x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;
-            y_forageOptions[dopt] = y_Locations[i-1] + sin(angle) * step;
+          step = Rcpp::rgamma(1, k_desRange, s_desRange)[0];
+          step = step / rescale;
+          vmdraw = cpp_vonmises(1, mu_desDir, k_desDir)[0];
+          angle = vmdraw * 180/M_PI;
+          angle = last_angle + angle;
+          x_forageOptions[dopt] = x_Locations[i-1] + cos(angle) * step;
+          y_forageOptions[dopt] = y_Locations[i-1] + sin(angle) * step;
 
-          }
+          x_DesOptionsAll[desi] = x_forageOptions[dopt];
+          y_DesOptionsAll[desi] = y_forageOptions[dopt];
+          behave_DesOptionsAll[desi] = behave_Locations[i];
+          step_DesOptionsAll[desi] = i;
+        }
 
-          des_forageOptions = cpp_get_values(desMatrix, x_forageOptions, y_forageOptions);
+        des_forageOptions = cpp_get_values(desMatrix, x_forageOptions, y_forageOptions);
 
-          chosenDes = cpp_sample_options(des_forageOptions);
-          des_x = x_forageOptions[chosenDes];
-          des_y = y_forageOptions[chosenDes];
+        chosenDes = cpp_sample_options(des_forageOptions);
+        des_x = x_forageOptions[chosenDes];
+        des_y = y_forageOptions[chosenDes];
 
         break;
       }
     }
+
 
     // store the destination for output
     des_x_Locations[i] = des_x;
@@ -474,15 +492,15 @@ Rcpp::List cpp_abm_simulate(
       } else {
         // and use the different ways of balancing the influence of the destination
         switch(destinationTrans){
-          case 0:
-            move_Options[m] = move_Options[m] + destinationMod * weights_toDes[m];
-            break;
-          case 1:
-            move_Options[m] = move_Options[m] + destinationMod * std::sqrt(weights_toDes[m]);
-            break;
-          case 2:
-            move_Options[m] = move_Options[m] + destinationMod * std::pow(weights_toDes[m], 2);
-            break;
+        case 0:
+          move_Options[m] = move_Options[m] + destinationMod * weights_toDes[m];
+          break;
+        case 1:
+          move_Options[m] = move_Options[m] + destinationMod * std::sqrt(weights_toDes[m]);
+          break;
+        case 2:
+          move_Options[m] = move_Options[m] + destinationMod * std::pow(weights_toDes[m], 2);
+          break;
         } // switch end
       } // if end
     }// for m end
@@ -521,16 +539,16 @@ Rcpp::List cpp_abm_simulate(
 
       // and use the different ways of balancing the influence of avoidance
       switch(avoidTrans){
-        case 0:
-          move_Options[m] = move_Options[m] + avoidMod * weights_toDes[m];
-          break;
-        case 1:
-          move_Options[m] = move_Options[m] + avoidMod * std::sqrt(weights_toDes[m]);
-          break;
-        case 2:
-          move_Options[m] = move_Options[m] + avoidMod * std::pow(weights_toDes[m], 2);
-          break;
-        } // switch end
+      case 0:
+        move_Options[m] = move_Options[m] + avoidMod * weights_toDes[m];
+        break;
+      case 1:
+        move_Options[m] = move_Options[m] + avoidMod * std::sqrt(weights_toDes[m]);
+        break;
+      case 2:
+        move_Options[m] = move_Options[m] + avoidMod * std::pow(weights_toDes[m], 2);
+        break;
+      } // switch end
     }
 
     // for(int i = 0; i < nopt; i++){
@@ -580,7 +598,7 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("in_destinationMod") = destinationMod,
     Rcpp::Named("in_avoidTrans") = avoidTrans,
     Rcpp::Named("in_avoidMod") = avoidMod
-    );
+  );
 
   Rcpp::List INPUT_movement = Rcpp::List::create(
     Rcpp::Named("in_k_step") = k_step,
@@ -612,7 +630,6 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("in_moveMatrix") = moveMatrix
   );
 
-
   Rcpp::List OUTPUT = Rcpp::List::create(
     // output the location data
     Rcpp::Named("loc_x") = x_Locations,
@@ -632,11 +649,18 @@ Rcpp::List cpp_abm_simulate(
     Rcpp::Named("oall_y") = y_OptionsAll,
     Rcpp::Named("oall_step") = step_OptionsAll,
     Rcpp::Named("oall_stepLengths") = stepAll,
+    // output for all dynamic desintations and the chosen shelters
+    Rcpp::Named("destinations_list") = Rcpp::List::create(
+      Rcpp::Named("des_desOptsx") = x_DesOptionsAll,
+      Rcpp::Named("des_desOptsy") = y_DesOptionsAll,
+      Rcpp::Named("des_desBehave") = behave_DesOptionsAll,
+      Rcpp::Named("des_desOptsstep") = step_DesOptionsAll
+    ),
     // output for the last options just to check
-    Rcpp::Named("opt_x_forOpts") = x_forageOptions,
-    Rcpp::Named("opt_y_forOpts") = y_forageOptions,
-    Rcpp::Named("opt_des_forOpts") = des_forageOptions,
-    Rcpp::Named("opt_chosen_forOpts") = chosenDes,
+    // Rcpp::Named("opt_x_forOpts") = x_forageOptions,
+    // Rcpp::Named("opt_y_forOpts") = y_forageOptions,
+    // Rcpp::Named("opt_des_forOpts") = des_forageOptions,
+    // Rcpp::Named("opt_chosen_forOpts") = chosenDes,
     // bring in all the input lists together
     Rcpp::Named("inputs_list") = Rcpp::List::create(
       Rcpp::Named("inputs_basic") = INPUT_basic,

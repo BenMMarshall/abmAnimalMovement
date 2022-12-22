@@ -86,10 +86,14 @@
 #'   timestep, the timestep as a integer; oall_x, and oall_y show the x and y
 #'   coordinates of all the options available to an animal at a timestep;
 #'   oall_steplengths are the step lengths from the current location compared to
-#'   all the options. The "inputs" return the arguments used to simulate the
+#'   all the options. 3. The "inputs" return the arguments used to simulate the
 #'   movement, split into a list covering inputs_basic, inputs_destination,
-#'   inputs_movement, inputs_cycle, inputs_layerSeed. "others" captures all
-#'   other outputs, mainly used internally for debugging and checking.
+#'   inputs_movement, inputs_cycle, inputs_layerSeed. 4. "destinations" that
+#'   collects the choices available to the animal each time it shifts into a new
+#'   behavioural state. Columns include the timestep the choice was made at, and
+#'   the destinations x and y locations, and the behave the animal was moving
+#'   into. "others" captures all other outputs, mainly used internally for
+#'   debugging and checking.
 #'
 #' @details The function automatically generates a list of seeds required for
 #'   the *sampling_options* based upon any previous set R seeds set (*e.g.*,
@@ -148,6 +152,12 @@ abm_simulate <- function(start, timesteps,
   if(!options%%1==0 | !length(options)==1){
     stop("Number of movement options (options) should be a single integer")
   }
+
+  ## options
+  if(options < des_options){
+    stop("Number of movement options (options) should be larger or equal to number of destination options (des_options)")
+  }
+
   ## shelterLocations
   if(!is.data.frame(shelterLocations) | !ncol(shelterLocations) == 2){
     stop("Shelter location input (shelterLocations) is not a data.frame with two columns")
@@ -361,6 +371,16 @@ abm_simulate <- function(start, timesteps,
     y = res$oall_y,
     sl = res$oall_stepLengths)
 
+  destinations <- data.frame(
+    timestep = res$destinations_list$des_desOptsstep,
+    destinations_x = res$destinations_list$des_desOptsx,
+    destinations_y = res$destinations_list$des_desOptsy,
+    destination_behave = res$destinations_list$des_desBehave
+  )
+  # because we are using a larger than needed vector allocation in the C++ code,
+  # we can clean this up by dropping the rows without timesteps
+  destinations <- destinations[!destinations$timestep == 0,]
+
   inputs <- c(
     res$inputs_list$inputs_basic,
     res$inputs_list$inputs_destination,
@@ -371,6 +391,7 @@ abm_simulate <- function(start, timesteps,
 
   OUTPUTS[["locations"]] <- locations
   OUTPUTS[["options"]] <- options
+  OUTPUTS[["destinations"]] <- destinations
   OUTPUTS[["others"]] <-
     res[!grepl("loc|oall|input", names(res))]
   OUTPUTS[["inputs"]] <- inputs
