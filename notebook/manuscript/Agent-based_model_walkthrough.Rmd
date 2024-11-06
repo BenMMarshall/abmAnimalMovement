@@ -24,7 +24,7 @@ csl: f1000research.csl
 editor_options: 
   markdown: 
     wrap: sentence
-abstract: Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model and does not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal avoids. Navigation capacity is defined by the range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are drawn at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
+abstract: Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal avoids. Navigation capacity is defined as the maximum range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are drawn at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
 keywords: Movement ecology, agent-based, individual-based, simulation, behavioural states
 header-includes: 
   \newcommand{\beginsupplement}{\setcounter{table}{0}  \renewcommand{\thetable}{S\arabic{table}} \setcounter{figure}{0} \renewcommand{\thefigure}{S\arabic{figure}}}
@@ -41,14 +41,14 @@ header-includes:
 
 As the biodiversity crisis deepens, we are in constant need of new refined methods of mitigating human impacts on animals.
 Developing mitigation strategies is aided by a strong understanding of animals lives and needs.
-How animals move offers a window into their decisions making process [@Bastille-Rousseau2017; @sridhar_geometry_2021], as well as how they prioritise resources [@prange_influences_2004; @christy_experimental_2017; @vogt_suitability_2018], avoid threats [@loveridge_landscape_2017], and react to anthropogenic modification of the environment [@Tucker2018; @tucker_large_2019; @arrondo_invisible_2018].
+How animals' move offers a window into their decision-making process [@Bastille-Rousseau2017; @sridhar_geometry_2021], as well as how they prioritise resources [@prange_influences_2004; @christy_experimental_2017; @vogt_suitability_2018], avoid threats [@loveridge_landscape_2017], and react to anthropogenic modification of the environment [@Tucker2018; @tucker_large_2019; @arrondo_invisible_2018].
 Examinations of animal movement are frequently integrated into conservation plans [@Fraser2018] because of the insights they provide on habitat and space requirements, but also because they offer avenues to explore fundamental questions about ecology.
 For example, space use has been tied directly to body size connected via the energy requirements for animals <!-- likely need a little more detail --> [@noonan_effects_2020], and movement has provided incredible insights into behaviour [@studd_purrfect_2021].
 
 <!-- -   therefore we need studies to be more ethical and cost effective -->
 <!-- - key in conservation -- webb et al on ethics animal stuff? -->
 
-The information gathered from animal movement studies is only as robust as the methods and analysis applied.
+The information gathered from animal movement studies is only as robust as the methods and analyses applied.
 In the past decade, the volume of animal data has exploded [@joo_recent_2022; @wild_internet_2022], and the infrastructure for collating these data has improved drastically [@kays_movebank_2022].
 There are stand out examples of novel methods [@saunders_radio-tracking_2022], and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., @studd_purrfect_2021).
 However, on the whole, analysis approaches to maximise the information extracted have arguably lagged behind the technological and data improvements [@joo_recent_2022].
@@ -84,7 +84,7 @@ There are also examples of simulation approaches being directly tied to applied 
 
 Population monitoring studies offer a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment [@theng_confronting_2022].
 There are examples of simulated datasets being used to validate field protocols [e.g., camera trap effort @howe_distance_2017; @cappelle_estimating_2021] and analyses (e.g., accounting for species interactions [@kellner_two-species_2022], or difficult to account for variation in populations [@milleret_estimating_2022]).
-More recently, explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, while also prompting deeper questions concerning the findings generalisably to drastically different movement processes [@theng_confronting_2022].
+More recently, explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, while also prompting deeper questions concerning the findings' generalisably to drastically different movement processes [@theng_confronting_2022].
 Once validated with real-world data, simulated explorations of study design presents opportunities to understand the trade-offs between effort and precision [@cappelle_estimating_2021].
 But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes [@abolaffio_avoiding_2019].
 
@@ -108,7 +108,7 @@ Previous examples of agent-based movement models have targeted specific key comp
 
 Here we present an agent-based approach to supplement those existing simulations, which provides a unique combination of features.
 The agent-based approach is suited to explore a combination of the complexities of animal movement, and the emergent properties.
-Our model does not requires fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
+Our model does not require fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
 A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
 
 # Methods
@@ -119,7 +119,7 @@ The *abmAnimalMovement* package provides the functionality to simulate animal mo
 We wrote the model using *C++* via the *Rcpp* `r paste0("v.", packageVersion("Rcpp"))` package [@Eddelbuettel_seamless_2011; @Eddelbuettel_seamless_2013; @Eddelbuettel_extending_2018] to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages [@joo_recent_2022; @joo_navigating_2020]).
 
 The model simulates animal locations over a given period of time at discrete time steps.
-At each time step, the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations [Figure \@ref(fig:walkDiagram)], and will choose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
+At each time step, the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations (Figure \@ref(fig:walkDiagram)), and will choose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see @sridhar_geometry_2021 for an example of the latter).
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement [@Tang2010; @Nathan2008].
 
@@ -130,7 +130,7 @@ The resulting step length, combined with a turn angle describes the change in an
 We will largely define these based on the movement capacity of the animal over a minute.
 
 As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
-We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour [Figure \@ref(fig:transMatrixDiagram)], where each value describes the probability of the animal transitioning from the current behaviour (row: b0, b1, b2), to the behaviour for the next time step (columns: b0, b1, b2).
+We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \@ref(fig:transMatrixDiagram)), where each value describes the probability of the animal transitioning from the current behaviour (row: b0, b1, b2), to the behaviour for the next time step (columns: b0, b1, b2).
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are modelling time steps as one minute.
 
@@ -153,10 +153,10 @@ Default_behaveMatrix
 ```
 
 <!-- importance of diel activity See Riveria et al 2022 (paper with Asia Murphy) -->
-Animals behaviour is frequently expressed via cycles, such as day/night or diel cycles [@rivera_rethinking_2022]; therefore, we want the transition matrix to vary over time.
+Animals' behaviour is frequently expressed via cycles, such as day/night or diel cycles [@rivera_rethinking_2022]; therefore, we want the transition matrix to vary over time.
 We describe a number of cycles (or waves) that can be applied to the core transition matrix impacting the probability of entering resting behaviour.
 For example, a diel cycle can be expressed via a Sine wave with a frequency of 12 hours and an amplitude of 0.1.
-At each time step we draw a value from the wave, and by added that weighting (from -0.05 to 0.05) to the transition probability of entering resting state (row 1, column 1 of the matrix); therefore, the probability of resting will increase and decrease following the Sine wave approximately a 12 hour activity pattern.
+At each time step we draw a value from the wave, and add that weighting (from -0.05 to 0.05) to the transition probability of entering resting state (row 1, column 1 of the matrix); therefore, the probability of resting will increase and decrease following the Sine wave at a approximately 12 hour activity pattern.
 We can define as many cycles as needed, and they impact the resting probability additively.
 
 When entering the resting state the animal will seek out a shelter site.
@@ -178,7 +178,7 @@ knitr::include_graphics(here::here("notebook", "ext_figures", "Simulation Proces
 In addition to the predefined attraction to shelter sites, the *abmAnimalMovement* package allows for a more dynamic attraction to areas of high resource quality.
 Movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors [@Scharf2018]; or the habitat decisions may occur at scales different to observed movement [@Bastille-Rousseau2017].
 Therefore, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
-When entering foraging mode, the animal randomly selects foraging destinations as a point of attraction (but weighted towards areas of higher quality) [Figure \@ref(fig:walkDiagram)].
+When entering foraging mode, the animal randomly selects foraging destinations as a point of attraction (but weighted towards areas of higher quality) (Figure \@ref(fig:walkDiagram)).
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move to) options closer to the foraging destination.
 Therefore, foraging destination choice operates on a different time frame to the movement and allows movements through low-quality foraging areas.
 This presents a critical benefit of the simulation approach, as we define the internal state decision making process of the animal.
@@ -187,7 +187,7 @@ The two time frames also allow exploration of assumptions connecting observed mo
 At all times, the subsequent locations of the animal are impacted by a movement resistance matrix.
 Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
 For example, rivers or hard barriers within a landscape could present very high movement resistance and an animal would aim to avoid traversing them.
-Alternatively areas of lower movement resistance could aid movement, and potentially form movement corridors.
+Alternatively, areas of lower movement resistance could aid movement, and potentially form movement corridors.
 The movement matrix has values that describe the weighting of movement probability (lower values indicating a lower probability of entering a cell).
 Whereas the resource environmental layer and shelter locations interact with destination/goal decisions, the movement resistance affects the step-by-step movement decisions.
 
@@ -209,7 +209,7 @@ We show one example via a more detailed walk-through (badger), and the other exa
 
 Our primary example is based on a badger.
 <!-- shelter -->
-Badger occupy setts, in our example a two home/shelter sites, to where they routinely return [@kowalczyk_daily_2006; @feore_habitat_1999].
+Badgers occupy setts, in our example two home/shelter sites, to where they routinely return [@kowalczyk_daily_2006; @feore_habitat_1999].
 When not at the sett, the badger forages, and the foraging distances are impacted by resource position and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
 
@@ -219,11 +219,11 @@ How this speed differs between behaviours is more difficult to estimate from exi
 In particular @kowalczyk_daily_2006 mentioned the heightened speeds moving from and to the setts.
 We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory [@kelly_extra_2020].
 <!-- movement -->
-We can draw on statements regarding maximum distance travelled in a night from papers such as @rosalino_activity_2005, @kowalczyk_daily_2006, and @loureiro_path_2007 to approximate how distance foraging locations could be from a sett, While also confirming the nocturnal activity cycle for the badger.
+We can draw on statements regarding maximum distance travelled in a night from papers such as @rosalino_activity_2005, @kowalczyk_daily_2006, and @loureiro_path_2007 to approximate how distant foraging locations could be from a sett, while also confirming the nocturnal activity cycle for the badger.
 <!-- cycles -->
 For the example, we will consider badgers as fully nocturnal, and with active periods lasting for around 8 hours each night [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
 The 8 hour active periods are not consistent throughout the year.
-Badger occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
+Badgers occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources [@magowan_dead-reckoning_2022; @rosalino_activity_2005].
 <!-- avoidance -->
 Badger movements are also impacted by their territoriality, avoiding areas occupied by other badger groups, but also displaying occasional extra-territorial movements [@kelly_extra_2020; @feore_habitat_1999].
 This suggests a general, but not complete avoidance of areas occupied by other badger groups.
@@ -286,7 +286,7 @@ packages <- c(
 # ), 'packages.bib')
 ```
 
-We used *R* `r paste0("v.", version$major, ".", version$minor)` [@R-base] via *RStudio* v.`r rstudioapi::versionInfo()$version` [@RStudioTeam2021], and used *rmarkdown* `r paste0("v.", packageVersion("rmarkdown"))` [@R-rmarkdown; @rmarkdown2018; @rmarkdown2020], *bookdown* `r paste0("v.", packageVersion("bookdown"))` [@bookdown2016; @R-bookdown], *tinytex* `r paste0("v.", packageVersion("tinytex"))` [@tinytex2019; @R-tinytex], and *knitr* `r paste0("v.", packageVersion("knitr"))` [@knitr2015; @knitr2014; @R-knitr] packages to generate type-set outputs.
+We used *R* `r paste0("v.", version$major, ".", version$minor)` [@R-base] via *RStudio* v.2024.9.0.375 [@RStudioTeam2021], and used *rmarkdown* `r paste0("v.", packageVersion("rmarkdown"))` [@R-rmarkdown; @rmarkdown2018; @rmarkdown2020], *bookdown* `r paste0("v.", packageVersion("bookdown"))` [@bookdown2016; @R-bookdown], *tinytex* `r paste0("v.", packageVersion("tinytex"))` [@tinytex2019; @R-tinytex], and *knitr* `r paste0("v.", packageVersion("knitr"))` [@knitr2015; @knitr2014; @R-knitr] packages to generate type-set outputs.
 We used the *here* `r paste0("v.", packageVersion("here"))` package [@R-here] to help with relative file path definition.
 We used the *dplyr* `r paste0("v.", packageVersion("dplyr"))` and *reshape2* `r paste0("v.", packageVersion("reshape2"))` packages for data manipulation [@R-dplyr; @reshape22007].
 We used *ggplot2* `r paste0("v.", packageVersion("ggplot2"))` for creating figures [@R-ggplot2; @ggplot22016], with the expansions: *ggridges* `r paste0("v.", packageVersion("ggridges"))` [@R-ggridges], *ggtext* `r paste0("v.", packageVersion("ggtext"))` [@R-ggtext], *ggforce* `r paste0("v.", packageVersion("ggforce"))` [@R-ggforce], and *patchwork* `r paste0("v.", packageVersion("patchwork"))` [@R-patchwork].
@@ -311,7 +311,7 @@ We used the *raster* `r paste0("v.", packageVersion("raster"))` [@R-raster], *sp
 ### Generating environmental matrices
 
 To ensure that the simulation completed during this example is repeatable, we set a seed.
-For the sake of simplicity, the year the examples was written (2022) is used.
+For the sake of simplicity, the year the examples were written (2022) is used.
 
 ```{r defineSeed, include=TRUE}
 seed <- 2022
@@ -323,16 +323,16 @@ palette <- c("#AD6DED", "#7D26D4", "#4F0E99", "#E87D13", "#965A1D", "#302010")
 names(palette) <- c("KING\nCOBRA", "VULTURE", "BADGER", "2", "1", "0")
 ```
 
-Before starting to simulate animal movement, we need to generate a landscape.
+Before starting to simulate animal movement, we needed to generate a landscape.
 The landscapes in this case will take the form of matrices, where each cell is describing the quality of foraging, shelter, and movement ease.
 The highest quality locations/cells are coded as 1, with quality decreasing as the values range down to 0.
 The 1 to 0 quality values in each cell are later used to help the animal to choose how and where it moves throughout the landscape.
 Depending on the behavioural state, the weighing of which matrix/layer used will change (e.g., when in a resting behavioural state the shelter site quality layer is used).
 
-For most applications, a landscape would be known *a priori*, but for this demonstration and testing of methods we will use a selection of random generated landscape matrices [Figure \@ref(fig:BADGERlayersFigure)], using the *NLMR* package (neutral landscape models).
+For most applications, a landscape would be known *a priori*, but for this demonstration and testing of methods we use a selection of randomly generated landscape matrices (Figure \@ref(fig:BADGERlayersFigure)), using the *NLMR* package (neutral landscape models).
 
 We used a Gaussian field with an autocorrelation range of 40, a magnitude of variation across the landscape of 5, a magnitude of variation in the scale of autocorrelation range of 0.2, and a mean of 0.5.
-For foraging, we build on the Gaussian field already produced, allocating all values lower than 0.4 as 0 (i.e., no value for foraging), then normalising the remaining values between 0 and 1.
+For foraging, we built on the Gaussian field already produced, allocating all values lower than 0.4 as 0 (i.e., no value for foraging), then normalising the remaining values between 0 and 1.
 
 For a baseline movement resistance layer, we take the original Gaussian field and increase areas greater than 0.6 by 0.5 to allow areas of high resource quality to be easily accessible.
 We also greatly increase the movement ease in "edge" habitat (+1), where values fall between 0.6 and 0.3.
@@ -342,10 +342,10 @@ The resulting environment is one with easily traversable edge areas, surrounding
 Shelter quality is intermediate; we increased weighting by +1 in areas where cell values were greater than 0.5 and lower than 0.7.
 Thereby shelter sites are more likely to occur in the areas of higher foraging quality, but not in the core (i.e., >0.7), nor in the edge areas (<0.5).
 This provides some balance between accessibility and proximity to resources.
-The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios [Figure \@ref(fig:BADGERlayersFigure)].
+The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios (Figure \@ref(fig:BADGERlayersFigure)).
 To aid balancing, we keep values between 0 and 1; any numeric value can be used, but the simulation will interpret the values as relative weights when the animal is making decisions (Note: The current implementation of `cpp_get_values` that extracts values from the matrices during the simulation returns -99.9 weighting when presented with NA values; therefore, -99.9 serves as a lower limit to the matrix weighting values).
 
-Once generated will supply the core simulation function (`abm_simulate`) with each of these layers via the `shelteringMatrix`, `foragingMatrix`, and `movementMatrix` arguments.
+Once generated we supply the core simulation function (`abm_simulate`) with each of these layers via the `shelteringMatrix`, `foragingMatrix`, and `movementMatrix` arguments.
 
 ```{r rfOptions, echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, comment=FALSE}
 RandomFields::RFoptions(install="no")
@@ -484,7 +484,7 @@ We complete this process for three species; the badger values are displayed belo
 We parametrise shelter information in the following ways. 
 For the sett, we draw a two sets of coordinates from the shelter quality layer.
 During the simulation the badger will randomly select a sett to return to each time it enters the resting behavioural state.
-The choice of which sett to return to is weighted by the values supplied via the shelter quality environmental layer [Figure \@ref(fig:BADGERlayersFigure)].
+The choice of which sett to return to is weighted by the values supplied via the shelter quality environmental layer (Figure \@ref(fig:BADGERlayersFigure)).
 The coordinate data frame is provided to the core simulation function's `shelterLocations` argument.
 
 The `shelterSize` argument describes the radius around the shelter locations within which the animal exhibits near stationary behaviour.
@@ -534,22 +534,22 @@ plot_landscapeLayersList(landscapeLayersList) +
 <!-- movement -->
 Badger movement is set via the definition of three pairs of Gamma and Von Misses distributions.
 Each behavioural state is provided with a Gamma distribution to describe the step lengths between locations, and a Von Mises to describe the turn angles. 
-When combined these two distributions provide the animal with a number of locations to choose from at each time step [Figure \@ref(fig:walkDiagram)].
+When combined, these two distributions provide the animal with a number of locations to choose from at each time step (Figure \@ref(fig:walkDiagram)).
 As we have three behavioural states, each movement parameter takes the form of a vector of length three.
 The step lengths require predefined shape (k) and scale ($\theta$) parameters to describe the Gamma distributions, and we provide these to the simulate function via the `k_step` and `s_step` arguments.
-For the turn angles we require the mean ($\mu$) and concentration ($\kappa$) to defined the Von Mises distributions, and provide these via the `mu_angle` and `k_angle` arguments.
+For the turn angles we require the mean ($\mu$) and concentration ($\kappa$) to define the Von Mises distributions, and provide these via the `mu_angle` and `k_angle` arguments.
 
 <!-- destination -->
 The perceptual range, in other words, where the badger decides to forage is set in a similar fashion.
-Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle which those locations can fall [Figure \@ref(fig:BADGERsettingMoveDesPlot)].
+Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall (Figure \@ref(fig:BADGERsettingMoveDesPlot)).
 
 We can also alter the strength of attraction to the foraging destinations.
 At each time step, the animal is offered a number of location options to move to next time step.
 The simulation calculates the distance between all options and the destination (i.e., a foraging location or shelter site), then normalises the distances between 0 and 1.
-The normalises values serve as weighting to increase the chances the animal will move towards its destination. 
+The normalised values serve as weighting to increase the chances the animal will move towards its destination. 
 We modify the weighting with the `destinationTransformation` and `destinationModifier` arguments.
 The `destinationTransformation` allows for weightings to be transformed (where 0 = no transformation, 1 = weights are square-rooted, 2 = weights are squared).
-Values supplied `destinationModifier` applies a linear multiplicative effect to all the weightings.
+Values supplied to `destinationModifier` apply a linear multiplicative effect to all the weightings.
 When these weightings increase in value the animal will exhibit a stronger attraction and choose more direct movements to its current destination.
 
 We also store a value ready for the `rescale_step2cell` argument.
@@ -622,7 +622,7 @@ KINGCOBRA_destinationModifier <- 1.5
 KINGCOBRA_rescale <- 10
 ```
 
-```{r BADGERsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the badger simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the badger simulation. The lower plot shows the distribution used to generate potential foraging desintations."}
+```{r BADGERsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the badger simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the badger simulation. The lower plot shows the distribution used to generate potential foraging destinations."}
 
 n <- 1000
 
@@ -738,10 +738,10 @@ We set the amplitude to 0.12 and midline as 0, meaning the probability of restin
 Our badger example requires a 24 hour cycle where the probability of resting will peak and nadir, hence offset and frequency are set to 24 hours.
 When combined with the base transition probability to rest, the above parametrisation creates a scenario of approximately 8 hour periods of activity every 24 hours. 
 
-To add a seasonal cycle we will use `additional_Cycles`.
+To add a seasonal cycle we use `additional_Cycles`.
 We predefine a data frame where each row contains four elements describing the amplitude, midline, offset, and frequency.
 Whereas our diel activity is defined by a 24 hour cycle, a seasonal cycle is 365 days and we shift the peak half a year (offset = 365/2).
-The seasonal wave will increase the probability of resting behaviour during a portion of the year, while not also overwhelming a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year) as we have set a lower amplitude for the seasonal cycle (0.075).
+The seasonal wave increases the probability of resting behaviour during a portion of the year, while not also overwhelming a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year) as we have set a lower amplitude for the seasonal cycle (0.075).
 A more extreme implementation of the second cycle could introduce hibernation behaviour.
 
 We also pull forward the behaviour transition matrix we showed during the overview, and rename it so all simulation input objects have the `BADGER_` prefix.
@@ -871,7 +871,7 @@ KINGCOBRA_shelterSize <- 10
 ### Running the simulation
 
 We need to initially define a start location for our animal.
-To introduce some more individual variation, we can randomly vary this starting location, but we will restrict the start locations to be proximal to the centre of the environment.
+To introduce some more individual variation, we can randomly vary this starting location, but we restrict the start locations to be proximal to the centre of the environment.
 For the simulation, we need a vector of length 2, where the first value is the x location, the second is y.
 
 ```{r defineStart, include=TRUE, eval=TRUE}
@@ -880,7 +880,7 @@ startLocation <- sample(900:1100, 2, replace = TRUE)
 
 We finally have some parameters that describe the scope and intensity of the simulation.
 The length of the simulation is provided via the `timesteps` argument; in our examples we are operating under the assumption that one time step is equal to one minute.
-Equally `timesteps` can be thought as the number of movement choices simulated.
+Equally `timesteps` can be thought of as the number of movement choices simulated.
 We also need to specify how many options will be drawn and considered by the animal at each time step.
 The `options` argument is where this is input.
 Similarly `des_options` is where we specify the number of dynamically selected foraging attraction/destinations to choose from when it enters the foraging behaviour mode (state 1).
@@ -913,26 +913,26 @@ simRes <- abm_simulate(
   #  a numeric vector of length two that contains the mean and concentration values
   #  that describe the Von Mises distribution for potential foraging destinations
   destinationDirection = BADGER_destinationDirection,
-  # a value to chose the type of transformation applied to the animal's
+  # a value to choose the type of transformation applied to the animal's
   # attraction to a chosen destination
   destinationTransformation = BADGER_destinationTransformation,
   # a value modifying the animal's attraction to a chosen destination
   destinationModifier = BADGER_destinationModifier,
   # a value to chose the type of transformation applied to the animal's
-  # avoidance to a avoidance locations
+  # avoidance to avoidance locations
   avoidTransformation = BADGER_avoidTransformation,
   # a value modifying the animal's avoidance of avoidance locations
   avoidModifier = BADGER_avoidModifier,
-  # a vector of three numbers describing the three behavioural state's Gamma
+  # a vector of three numbers describing the three behavioural states' Gamma
   # distributions' shape parameter for step lengths
   k_step = BADGER_k_step,
-  # a vector of three numbers describing the three behavioural state's Gamma
+  # a vector of three numbers describing the three behavioural states' Gamma
   # distributions' scale parameter for step lengths
   s_step = BADGER_s_step,
-  # a vector of three numbers describing the three behavioural state's Von Mises
+  # a vector of three numbers describing the three behavioural states' Von Mises
   # distributions' mean parameter for turn angles
   mu_angle = BADGER_mu_angle,
-  # a vector of three numbers describing the three behavioural state's Von Mises
+  # a vector of three numbers describing the three behavioural states' Von Mises
   # distributions' concentration parameter for turn angles
   k_angle = BADGER_k_angle,
   # a numeric value to specify the size of the environmental matrices cells
@@ -1315,7 +1315,7 @@ for(species in vecSpecies){
 
 ```
 
-```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The badger example's simulated/observed turn angles and step lengths. Step lengths are scaled to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The badger example's simulated/observed turn angles and step lengths. Step lengths are scaled to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["BADGER"]]
 
@@ -1323,11 +1323,11 @@ moveCharPlotList[["BADGER"]]
 
 We can compare the simulation's inputs displayed in Figure \@ref(fig:BADGERsettingMoveDesPlot) to the simulated/observed outputs displayed in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
 The turn angles are more variable, as the destination decisions and attraction to locations heavily influence the distribution overriding the initial parametrisation of the Von Mises distribution.
-Figure \@ref(fig:VULTUREsettingMoveDesPlot) and Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot) in the uses cases section show the outputs for vulture and king cobra simulations.
+Figure \@ref(fig:VULTUREsettingMoveDesPlot) and Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot) in the use cases section show the outputs for vulture and king cobra simulations.
 
 <!-- Mapping movements -->
 We can review how the movements appear in space.
-With the badger example, the impact of the avoidance points is clearly visible [Figure \@ref(fig:mapsFigure)a], whereas the lack of or weaker avoidance in vulture [Figure \@ref(fig:mapsFigure)b] and king cobra [Figure \@ref(fig:mapsFigure)c] makes the avoidance less influential.
+With the badger example, the impact of the avoidance points is clearly visible [(Figure \@ref(fig:mapsFigure)a), whereas the lack of or weaker avoidance in vulture [(Figure \@ref(fig:mapsFigure)b) and king cobra (Figure \@ref(fig:mapsFigure)c) makes the avoidance less influential.
 The vulture's movements and chosen foraging locations are largely to the east, demonstrating the impact of the underlying foraging quality environmental layer.
 The king cobra plot shows the impact of a near impermeable barrier truncating the southward movements.
 
@@ -1675,9 +1675,9 @@ wrap_plots(speciesMapPlotList[["BADGER"]],
 The activity cycles and the timing of behavioural shifts is a key component in the simulations.
 We can examine that the predefined cycles result in expected patterns.
 A year of data makes observing all but the broadest cycles difficult, so in Figure \@ref(fig:cycleFigure) we can look at several months of data as well as the daily cycle.
-Badger and vulture daily cycles are largely the same [Figure \@ref(fig:cycleFigure)a & b], with a consistent daily activity cycle differing only slightly in the time spent active and balance between shifts from sheltering to foraging and exploring.
+Badger and vulture daily cycles are largely the same (Figure \@ref(fig:cycleFigure)a & b), with a consistent daily activity cycle differing only slightly in the time spent active and balance between shifts from sheltering to foraging and exploring.
 Some of the differences are a result of the different behavioural transition matrix provided to simulated the two species, where both had different baseline probabilities of shifting between behavioural states.
-By contrast, the king cobra example demonstrates the interaction between the daily and weekly cycles [Figure \@ref(fig:cycleFigure)].
+By contrast, the king cobra example demonstrates the interaction between the daily and weekly cycles (Figure \@ref(fig:cycleFigure)).
 We can see intermittently extended sheltering periods, punctuated by short exploratory or foraging bouts.
 
 ```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=8.5, fig.cap="The observered (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. Note that the input waves acting on the simulated animal in conjunction with the beahvioural transition matrix."}
@@ -1811,9 +1811,9 @@ patchwork::wrap_plots(cyclePlotList, ncol = 1)
 ```
 
 At the daily and monthly scale, we cannot see the impact of the broad scale seasonal cycles.
-Instead we can look at the percentage of time steps per day the animal was in sheltering behaviour [Figure \@ref(fig:cycleSeasonalFigure)].
-Again the Badger and Vulture sheltering rates are similar, differing in intensity, but with both demonstrating a seasonal decrease in the middle of the simulation.
-The king cobra cycles reveal decrease in the number of days spent entirely sheltering and an overall impression that the seasonal cycle is less influential (as it is only one of three activity cycles).
+Instead we can look at the percentage of time steps per day the animal was in sheltering behaviour (Figure \@ref(fig:cycleSeasonalFigure)).
+Again the badger and vulture sheltering rates are similar, differing in intensity, but with both demonstrating a seasonal decrease in the middle of the simulation.
+The king cobra cycles reveal a decrease in the number of days spent entirely sheltering and an overall impression that the seasonal cycle is less influential (as it is only one of three activity cycles).
 
 ```{r cycleSeasonalFigure, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.align='center', fig.width=6, fig.height=4, fig.cap="The percentage of time steps spent in state 0 - resting per day, and how it varies over the entire simulated year."}
 
@@ -1883,7 +1883,7 @@ allSimLocations %>%
 
 Animal movement datasets are complex and require a suite of analytical approaches to tackle satisfactorily.
 Efforts to develop new, and test existing, analyses would be aided by access to a range of diverse datasets.
-While *ideal* simulations often accompany new analysis methods and provide superb validation for the method in question, reaffirming the method's robustness and pushing them to new limits with a messier, more stochastic, simulation approach could greatly strength our confidence in results.
+While *ideal* simulations often accompany new analysis methods and provide superb validation for the method in question, reaffirming the method's robustness and pushing them to new limits with a messier, more stochastic, simulation approach could greatly strengthen our confidence in results.
 The *abmAnimalMovement* package provides an independent route to test new methods that covers a range of interacting movement features, not necessarily directly tied to a single analytical method.
 
 By including a range of features linked to movement and behaviour, the *abmAnimalMovement* package can be implemented to investigate a suite of questions commonly asked of movement data --from habitat selection, to behaviour detection [for examples of common themes see @joo_recent_2022].
@@ -1911,10 +1911,10 @@ This approach could complement current analysis methods, akin to sensitivity ana
 The *abmAnimalMovement* package provides adequate functionality to simulate a range of scenarios and movements.
 However, there are several aspects that will bear updating in future versions.
 
-1. Dynamic state 0. While state 0 and the steady state of the attraction locations is key to simulating range stability (i.e., home range), there maybe scenarios where this stability is not desired.
-For example, simulating dispersal behaviour of juvenile or sub-adult animals there may be a desire to have shelter site dynamically chosen for a time.
+1. Dynamic state 0. While state 0 and the steady state of the attraction locations is key to simulating range stability (i.e., home range), there may be scenarios where this stability is not desired.
+For example, when simulating dispersal behaviour of juvenile or sub-adult animals there may be a desire to have shelter site dynamically chosen for a time.
 Currently such behaviour could be simulated, but it would require the dispersal to occur immediately, and the dispersal destination to be predefined (i.e., the sites for state 0 attraction).
-Therefore, in the current state the package may be limited in its ability to help predict possible dispersal destination, but potentially capable of informing dispersal routes.
+Therefore, in the current state the package may be limited in its ability to help predict possible dispersal destinations, but potentially capable of informing dispersal routes.
 
 2. Autocorrelated speed. We may need to improve the autocorrelation of the animal's speed.
 Currently the speeds are non-independent based on the behavioural mode of the animal.
@@ -1933,19 +1933,19 @@ We provide example implementations of vulture and king cobra -like movement.
 
 ### Ecology and objectives - vulture
 
-Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction [Figure \@ref(fig:VULTURElayersFigure)]. 
-Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020] [Figure \@ref(fig:VULTUREsettingMoveDesPlot)].
+Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction (Figure \@ref(fig:VULTURElayersFigure)). 
+Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020] (Figure \@ref(fig:VULTUREsettingMoveDesPlot)).
 
-Similar to badgers vultures exhibit significant site fidelity, re-using roosting and nesting sites [@bracis_revisitation_2018].
-Such shelter sites could be predefined; for example, if shelter sites were known *a priori* discovered via the capture and tagged of animals, which in the case of birds is more likely.
+Similar to badgers, vultures exhibit significant site fidelity, re-using roosting and nesting sites [@bracis_revisitation_2018].
+Such shelter sites could be predefined; for example, if shelter sites were known *a priori* discovered via the capture and tagging of animals, which in the case of birds is more likely.
 
-Vultures also offer an opportunity to demonstrate how the underlying resource availability impact the movements of animals.
-In the case of vultures, their moments have been seen to follow carcass, creating starkly contrasting areas where vultures will and will not travel [@arrondo_invisible_2018] [Figure \@ref(fig:VULTURElayersFigure)].
+Vultures also offer an opportunity to demonstrate how the underlying resource availability impacts the movements of animals.
+In the case of vultures, their moments have been seen to follow carcasses, creating starkly contrasting areas where vultures will and will not travel [@arrondo_invisible_2018] (Figure \@ref(fig:VULTURElayersFigure)).
 
 Vultures have a very similar cycle pattern to the badgers (just inverted), one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
 The importance of simulating such cycles is made clear by vultures studies demonstrating that day-night cycles can impact rates of location collection [@silva_seasonal_2017].
-How the the animals' activity cycle and the probability of collected data interact could be key consideration for some research questions.
-Again similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year [@peshev_new_2021; @garcia-jimenez_drivers_2018; @hribsek_first_2021].
+How the the animals' activity cycle and the probability of collected data interact could be a key consideration for some research questions.
+Again, similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year [@peshev_new_2021; @garcia-jimenez_drivers_2018; @hribsek_first_2021].
 
 We can broadly summarise the vulture ecology we want to parametrise as follows:
 
@@ -1958,7 +1958,7 @@ We can broadly summarise the vulture ecology we want to parametrise as follows:
 ### Ecology and objectives - king cobra
 
 Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges [@Marshall2018; @marshall_no_2020].
-These sites can also be larger, comprising burrow systems or rock complexes.
+These sites can also be larger, comprising of burrow systems or rock complexes.
 
 What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
 While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle [@dsouza_space_2021; @smith_native_2021; @marshall_no_2020; @Siers2018].
@@ -1968,11 +1968,11 @@ As king cobras occupy tropical regions, the seasonality they experience is not a
 Overall king cobras have three activity cycles acting on three different scales. 
 
 In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
-King cobra movement can be limited by roads [@jones_how_2022; @Marshall2018b], where unless provided with crossing structures king cobras are vulnerable to vehicle hits [Figure \@ref(fig:KINGCOBRAlayersFigure)].
+King cobra movement can be limited by roads [@jones_how_2022; @Marshall2018b], where unless provided with crossing structures king cobras are vulnerable to vehicle hits (Figure \@ref(fig:KINGCOBRAlayersFigure)).
 In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements [@Marshall2018b; @Shankar2013].
 Despite the risks, avoidance of such areas appears weak.
 
-Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability [Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)] as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020].
+Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability (Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)) as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020].
 
 We can broadly summarise the king cobra ecology we want to parametrise as follows:
 
@@ -2016,12 +2016,12 @@ data.frame(
 Largely the vulture parametrisation matches the badger.
 We specified a number of predefined resting/shelter sites, assuming that bird bio-tagging is more likely to occur at known site (i.e., nests or roosts).
 The shelter site size is smaller than the badger sett, so is only 5 m.
-Step length parameters are all larger and more variable, along with destination ranges [Figure \@ref(fig:VULTUREsettingMoveDesPlot)].
+Step length parameters are all larger and more variable, along with destination ranges (Figure \@ref(fig:VULTUREsettingMoveDesPlot)).
 We set a larger rescale value also to ensure the vulture has a larger landscape to operate across.
 The rest cycle is broadly similar, with a 12 hour diel cycle and gentle seasonality.
-We make two small modifications to the transition matrix allows for more frequent switches between foraging and exploring.
+We made two small modifications to the transition matrix allowing for more frequent switches between foraging and exploring.
 We also alter two of the environmental matrices.
-We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area [Figure \@ref(fig:VULTURElayersFigure)].
+We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area (Figure \@ref(fig:VULTURElayersFigure)).
 Finally, we specify that the vulture will not be avoiding any locations; we still require inputs for the simulation, but we can provide zeroes to negate the effect.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
 ```
@@ -2150,11 +2150,11 @@ The activity cycle provides an opportunity to demonstrate three additive cycles.
 The diel cycle is largely similar to the other examples, but we also define an approximately weekly cycle to cover the forage-digestion cycle as well as weak seasonal cycle.
 Combined the three cycles create an activity pattern quite different from either the badger or vulture.
 To balance the three cycles and their influence on the behaviour transitions, we make some minor adjustments to the underlying behavioural transition matrix. 
-As mentioned in the ecology and justifications, we want to simulate a barrier limiting movement.
+As mentioned in the ecology and objectives, we want to simulate a barrier limiting movement.
 We construct this by altering the values in the environmental matrices, minimising the weighting in cells following two perpendicular lines [Figure \@ref(fig:KINGCOBRAlayersFigure)].
 We also provide a set of avoidance locations and a relatively weak avoidance weighting coefficient.
 Finally, we can set the shelter sites.
-We draw 12 sites randomly based on shelter site quality, and limit the area that they can be draw from to ensure they are not on the far side of the barrier.
+We draw 12 sites randomly based on shelter site quality, and limit the area that they can be drawn from to ensure they are not on the far side of the barrier.
 We use a larger shelter site size, as king cobras are known to occupy large rock complexes at times.
 
 ```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix', 'KINGCOBRAsettingShelter')}
@@ -2284,13 +2284,13 @@ Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveD
 Figures \@ref(fig:VULTUREmoveCharFigure), and \@ref(fig:KINGCOBRAmoveCharFigure) also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
 The king cobra example in particular highlights the prolonged near weekly resting periods.
 
-```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The vulture example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The vulture example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["VULTURE"]]
 
 ```
 
-```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The king cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie chart show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The king cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["KINGCOBRA"]]
 
@@ -2304,11 +2304,11 @@ All data underlying the results are generated as part of the article, no source 
 
 The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: "Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model" https://doi.org/10.5281/zenodo.6992496. Files include:
 
-- BADGER_locations.csv: A csv file that contains the realised locations of the example badger simulation, where each row is equal to a timestep. Columns include: timestep, the timestep as a integer; x, the x coordinate of the animal; y, the y coordinate of the animal; sl, the step length between locations used during the simulation; sl_rescale the rescale factor required to return step lengths back to the input scale; ta, turning angle between locations in degrees; behave, the behavioural mode the animal was in at a given timestep; chosen, the location chosen out of the number of options available; destination_x and destination_y the point the animal was attracted to at that time (note exploratory behaviour is not subject attraction).
+- BADGER_locations.csv: A csv file that contains the realised locations of the example badger simulation, where each row is equal to a timestep. Columns include: timestep, the timestep as an integer; x, the x coordinate of the animal; y, the y coordinate of the animal; sl, the step length between locations used during the simulation; sl_rescale the rescale factor required to return step lengths back to the input scale; ta, turning angle between locations in degrees; behave, the behavioural mode the animal was in at a given timestep; chosen, the location chosen out of the number of options available; destination_x and destination_y the point the animal was attracted to at that time (note exploratory behaviour is not subject attraction).
 
 - BADGER_options.csv: A csv file that contains the options available to the example badger simulation over the entire simulation duration, where each row is equal to an option repeated for each timestep. Columns include: timestep, the timestep as an integer; oall_x, and oall_y show the x and y coordinates of all the options available to an animal at a timestep; oall_steplengths are the step lengths from the current location compared to all the options.
 
-- completelist.RDS: This RDS file contains a list object of length three, where the full simulation outputs from each three example is stored. Each species slot contains the “locations” dataframe (see description of locations.csv), the "options" dataframe (see description of options.csv), and a nested list containing all the "inputs" used to generate the simulated results (split into subsections: inputs_basic that contains inputs linked to simulation duration and intensity, inputs_destination that contains inputs linked to destination and attraction aspects, inputs_movement that contains inputs linked to movement capacity and behavioural switching, inputs_cycle that contains inputs linked to activity cycling, inputs_layerSeed that contains the environmental matrices and seed). A fourth object is return called "others" that captures all other outputs, mainly used internally for debugging and checking.
+- completelist.RDS: This RDS file contains a list object of length three, where the full simulation outputs from each three examples are stored. Each species slot contains the “locations” dataframe (see description of locations.csv), the "options" dataframe (see description of options.csv), and a nested list containing all the "inputs" used to generate the simulated results (split into subsections: inputs_basic that contains inputs linked to simulation duration and intensity, inputs_destination that contains inputs linked to destination and attraction aspects, inputs_movement that contains inputs linked to movement capacity and behavioural switching, inputs_cycle that contains inputs linked to activity cycling, inputs_layerSeed that contains the environmental matrices and seed). A fourth object is returned called "others" that captures all other outputs, mainly used internally for debugging and checking.
 
 - KINGCOBRA_locations.csv: A csv file that contains the realised locations of the example king cobra simulation, where each row is equal to a timestep. The file structure follows the same as the BADGER_options.csv file.
 KINGCOBRA_options.csv: A csv file that contains the options available to the example king cobra simulation over the entire simulation duration, where each row is equal to an option repeated for each timestep. The file structure follows the same as the BADGER_options.csv file.
