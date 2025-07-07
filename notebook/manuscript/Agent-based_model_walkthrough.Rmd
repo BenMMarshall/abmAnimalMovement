@@ -241,8 +241,6 @@ We can broadly summarise the badger ecology we want to parametrise as follows:
 The *abmAnimalMovement* package requires links to the *Rcpp* (>= 1.0.8.3) [@Eddelbuettel_seamless_2011; @Eddelbuettel_seamless_2013; @Eddelbuettel_extending_2018] and *BH* (>= 1.78.0.0) packages [@Eddelbuettel_BH_2021], and therefore requires a version of *R* >=3.5.0 [@R-base] (available from [www.r-project.org](https://www.r-project.org/)).
 Currently the *abmAnimalMovement* package can be installed from Github using `install_github` provided by the *devtools* package [@Wickham_devtools_2021].
 
-A submission to the Comprehensive R Archive Network (CRAN) is under way, which will streamline installation and ensure compatibly with a wide range of platforms.
-
 ## Implemenation
 
 While only the *abmAnimalMovement* package is required for running core simulations (`abm_simulate` function), to generate, organise, and review the inputs and outputs of simulations, we make use of a number of *R* packages.
@@ -278,7 +276,7 @@ packages <- c(
   "sp",
   "raster",
   "NLMR"
-  )
+)
 
 # automatically create a bib database for R packages, beware as the citations for NLMR and landscapetools have latex incompatible characters
 # knitr::write_bib(c(
@@ -347,23 +345,23 @@ To aid balancing, we keep values between 0 and 1; any numeric value can be used,
 
 Once generated we supply the core simulation function (`abm_simulate`) with each of these layers via the `shelteringMatrix`, `foragingMatrix`, and `movementMatrix` arguments.
 
-```{r rfOptions, echo = FALSE, eval=TRUE, warning=FALSE, message=FALSE, comment=FALSE}
+```{r rfOptions, echo = FALSE, eval=FALSE, warning=FALSE, message=FALSE, comment=FALSE}
 RandomFields::RFoptions(install="no")
 ```
 
-```{r landscapeLayers, echo=FALSE, warning=FALSE, message=FALSE, comment=FALSE, eval=TRUE, error=FALSE, results=FALSE}
+```{r landscapeLayers, echo=FALSE, warning=FALSE, message=FALSE, comment=FALSE, eval=FALSE, error=FALSE, results=FALSE}
 
 row = 2000; col = 2000
 
 gf1 <- suppressMessages(NLMR::nlm_gaussianfield(ncol = col,
-                               nrow = row,
-                               resolution = 1,
-                               autocorr_range = 40,
-                               mag_var = 5,
-                               nug = 0.2,
-                               mean = 0.5,
-                               user_seed = seed,
-                               rescale = TRUE))
+                                                nrow = row,
+                                                resolution = 1,
+                                                autocorr_range = 40,
+                                                mag_var = 5,
+                                                nug = 0.2,
+                                                mean = 0.5,
+                                                user_seed = seed,
+                                                rescale = TRUE))
 
 forageQual <- gf1
 
@@ -402,6 +400,13 @@ landscapeLayersList <- list(
                       nrow = row,
                       ncol = col))
 
+```
+
+```{r landscapeLayersEgData, echo=FALSE, warning=FALSE, message=FALSE, comment=FALSE, eval=TRUE, error=FALSE, results=FALSE}
+landscapeLayersList <- readRDS(here::here("notebook",
+                                          "manuscript",
+                                          "eg_simdata",
+                                          paste0("eg_landscapedata_completelist.RDS")))
 ```
 
 ```{r plotMatrixFunction, eval=TRUE, echo=FALSE}
@@ -541,7 +546,7 @@ For the turn angles we require the mean ($\mu$) and concentration ($\kappa$) to 
 
 <!-- destination -->
 The perceptual range, in other words, where the badger decides to forage is set in a similar fashion.
-Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall (Figure \@ref(fig:BADGERsettingMoveDesPlot)).
+Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall (Figure \@ref(fig:BADGERmoveCharFigure)).
 
 We can also alter the strength of attraction to the foraging destinations.
 At each time step, the animal is offered a number of location options to move to next time step.
@@ -620,96 +625,6 @@ KINGCOBRA_destinationModifier <- 1.5
 
 # each cell of the environmental matrix is 10x10
 KINGCOBRA_rescale <- 10
-```
-
-```{r BADGERsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the badger simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the badger simulation. The lower plot shows the distribution used to generate potential foraging destinations."}
-
-n <- 1000
-
-b_stepPlot <- data.frame(
-  "var" = factor(c(
-    rep("<span style='color:#302010'>0 - Shelter</span>", n),
-    rep("<span style='color:#965A1D'>1 - Explore</span>", n),
-    rep("<span style='color:#E87D13'>2 - Forage</span>", n)),
-    levels = c("<span style='color:#302010'>0 - Shelter</span>",
-               "<span style='color:#965A1D'>1 - Explore</span>",
-               "<span style='color:#E87D13'>2 - Forage</span>")),
-  "value" =
-    c(rgamma(n, shape = BADGER_k_step[1], scale = BADGER_s_step[1]),
-      rgamma(n, shape = BADGER_k_step[2], scale = BADGER_s_step[2]),
-      rgamma(n, shape = BADGER_k_step[3], scale = BADGER_s_step[3]))) %>% 
-  ggplot() +
-  geom_density_ridges(aes(x = value, y = var, fill = var),
-                      alpha = 0.5, colour = NA) +
-  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
-               width = 0.12, position = position_nudge(y = -0.1),
-               alpha = 0.25) +
-  scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
-  scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  labs(x = "Step length (m)", y = "Density",
-       fill = "", colour = "") +
-  theme_bw() +
-  theme(
-    text = element_text(colour = "#191919"),
-    line = element_line(colour = "#191919"),
-    axis.title = element_text(angle = 0,
-                              face = 2,
-                              size = 10,
-                              hjust = 1),
-    axis.title.y = element_text(angle = 0,
-                                face = 2,
-                                hjust = 1),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    strip.background = element_blank(),
-    strip.text = element_text(size = 12, face = 4,
-                              hjust = 0),
-    title = element_text(size = 12, face = 4,
-                         hjust = 0),
-    legend.title = element_text(size = 8),
-    legend.position = c(0.9, 0.9),
-    legend.key.height = unit(4, "mm"),
-    legend.text = element_markdown(face = 4),
-    axis.line = element_line(size = 0.5)) +
-  guides(colour = guide_legend(override.aes = list(colour = NA)),
-         fill = guide_legend(override.aes = list(alpha = 1)))
-
-b_destPlot <- data.frame(
-  "var" = rep("Destination range", n),
-  "value" = rgamma(n, shape = BADGER_destinationRange[1],
-                   scale = BADGER_destinationRange[2])) %>% 
-  ggplot() +
-  geom_density(aes(x = value), alpha = 0.5,
-               colour = NA, fill = palette["2"]) +
-  geom_boxplot(aes(x = value, y = -0.0001), width = 0.0001,
-               colour = palette["2"], fill = palette["2"], alpha = 0.25) +
-  labs(x = "Destination range (m)", y = "") +
-  theme_bw() +
-  theme(legend.position = "none",
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        axis.line = element_line(size = 0.5))
-
-suppressMessages(print(b_stepPlot / b_destPlot + plot_layout(heights = c(1,0.65))))
-
 ```
 
 <!-- avoidance -->
@@ -885,9 +800,9 @@ We also need to specify how many options will be drawn and considered by the ani
 The `options` argument is where this is input.
 Similarly `des_options` is where we specify the number of dynamically selected foraging attraction/destinations to choose from when it enters the foraging behaviour mode (state 1).
 
-We can then call all our settings describing badger behaviour and movement settings we stored as objects previously, and run the simulation using `abm_simulate`.
+We can then call all our settings describing badger behaviour and movement settings we stored as objects previously, and run the simulation using `abm_simulate` (Table \@ref(tab:arguementTable)).
 
-``` {r runSimulationsSHOW, include=TRUE, eval=FALSE}
+``` {r runSimulationsSHOW, include=FALSE, eval=FALSE}
 simSteps <- 24*60 *365
 
 simRes <- abm_simulate(
@@ -940,13 +855,13 @@ simRes <- abm_simulate(
   # a 3x3 numeric matrix describing the transition probabilities between the
   # three behavioural states
   behave_Tmat = BADGER_behaveMatrix,
-  # A vector length 4 for amplitude, midline, offset and frequency to define the
+  # a vector length 4 for amplitude, midline, offset and frequency to define the
   # resting/active cycle
   rest_Cycle = BADGER_rest_Cycle,
-  # A data.frame 4 columns wide for amplitude, midline, offset and frequency to
+  # a data.frame 4 columns wide for amplitude, midline, offset and frequency to
   # define any additional activity cycles, where each row is another cycle
   additional_Cycles = BADGER_additional_Cycles,
-  # Three arguments for the three matrices describing the landscape the
+  # three arguments for the three matrices describing the landscape the
   # simulated animal occupies
   shelteringMatrix = BADGER_shelter,
   foragingMatrix = BADGER_forage,
@@ -954,7 +869,7 @@ simRes <- abm_simulate(
 
 ```
 
-``` {r runSimulationsRUN, include=FALSE, eval=TRUE, message=FALSE}
+``` {r runSimulationsRUN, include=FALSE, eval=FALSE, message=FALSE}
 simSteps <- 24*60 *365
 des_options <- 10
 options <- 12
@@ -1138,6 +1053,30 @@ saveRDS(simResultsList,
 
 ```
 
+```{r runSimulationsEgData, echo=FALSE, warning=FALSE, message=FALSE, comment=FALSE, eval=TRUE, error=FALSE, results=FALSE}
+simSteps <- 24*60 *365
+des_options <- 10
+options <- 12
+
+vecSpecies <- c("BADGER", "VULTURE", "KINGCOBRA")
+simResultsList <- readRDS(here::here("notebook",
+                                     "manuscript",
+                                     "eg_simdata",
+                                     paste0("eg_simdata_completelist.RDS")))
+
+arguementTable <- read.csv(file = here::here("notebook",
+                           "manuscript",
+                           "eg_simdata", "argument_table.csv"))
+```
+
+```{r arguementTable, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::kable(arguementTable, booktabs = TRUE, caption = "Arguments fed into main \\texttt{abm\\_simulate} function. Arguements are the terms used in teh function, the inputs are the R objects created during this example, the descriptions provide a brief overview of what the arguement is configuring.") %>% 
+  kableExtra::kable_styling(full_width = FALSE, bootstrap_options = "striped", font_size = 10, position = "center") %>%
+  kableExtra::column_spec(1, width = "11em") %>% 
+  kableExtra::column_spec(2, width = "16em") %>% 
+  kableExtra::column_spec(3, width = "22em")
+```
+
 # Results
 
 ## Output format
@@ -1157,11 +1096,47 @@ During the simulation parametrisation we provided rescale values for the size of
 The simulated movement will return the scaled values, so to plot something comparable to the input values, we must rescale the simulated step lengths.
 
 ```{r moveCharFigureGen, echo=FALSE, eval=TRUE, warning=FALSE}
-
-moveCharPlotList <- vector("list", length = 3)
+n <- 1000
+moveCharPlotList <- vector("list", length = length(vecSpecies))
 names(moveCharPlotList) <- vecSpecies
 for(species in vecSpecies){
   # species <- "BADGER"
+  
+  if(species == "BADGER"){
+    k_step <- BADGER_k_step
+    s_step <- BADGER_s_step
+    destinationRange <- BADGER_destinationRange
+  } else if(species == "VULTURE"){
+    k_step <- VULTURE_k_step
+    s_step <- VULTURE_s_step
+    destinationRange <- VULTURE_destinationRange
+  } else if(species == "KINGCOBRA"){
+    k_step <- KINGCOBRA_k_step
+    s_step <- KINGCOBRA_s_step
+    destinationRange <- KINGCOBRA_destinationRange
+  }
+  
+  paraStepData <- data.frame(
+    "var" = factor(c(
+      rep("<span style='color:#302010'>0 - Shelter</span>", n),
+      rep("<span style='color:#965A1D'>1 - Explore</span>", n),
+      rep("<span style='color:#E87D13'>2 - Forage</span>", n)),
+      levels = c("<span style='color:#302010'>0 - Shelter</span>",
+                 "<span style='color:#965A1D'>1 - Explore</span>",
+                 "<span style='color:#E87D13'>2 - Forage</span>")),
+    behave = c(rep(0, n),
+               rep(1, n),
+               rep(2, n)),
+    "value" =
+      c(rgamma(n, shape = k_step[1], scale = s_step[1]),
+        rgamma(n, shape = k_step[2], scale = s_step[2]),
+        rgamma(n, shape = k_step[3], scale = s_step[3])))
+  
+  paraDestData <- data.frame(
+    "var" = rep("Destination range", n),
+    "value" = rgamma(n, shape = destinationRange[1],
+                     scale = destinationRange[2]))
+  
   simRes <- simResultsList[[species]]
   
   stepData <- simRes$locations %>%
@@ -1189,6 +1164,8 @@ for(species in vecSpecies){
   names(behavePlotList) <- as.character(0:2)
   for(beh in 0:2){
     # beh <- 2
+    # if(beh == 0){
+    
     zeroPlot <- ggplot(stepTextData %>% 
                          ungroup() %>% 
                          filter(behave == beh) %>% 
@@ -1204,24 +1181,35 @@ for(species in vecSpecies){
                   filter(behave == beh),
                 aes(x = -Inf, y = -Inf, label = text),
                 hjust = 0.5, vjust = 0.5, fontface = 3,
-                size = 3) +
-      coord_polar(theta = "y") +
+                size = 2.75) +
+      coord_polar(theta = "y", clip = "off") +
       scale_fill_manual(
-        values = c("Stationary" = "grey75", palette[names(palette) == beh])) +
+        values = c("Stationary" = palette[names(palette) == beh][[1]], "grey75")) +
       theme_void() +
       theme(legend.position = "none",
             text = element_text(colour = "#191919"),
             line = element_line(colour = "#191919"),
+            plot.background = element_blank(),
             axis.line = element_blank(),
             panel.grid = element_blank())
     
-    stepPlot <- stepData %>%
-      filter(sl >= simRes$inputs$in_sSiteSize,
-             behave == beh) %>%
+    #   stepData <- stepData %>%
+    #     filter(sl >= simRes$inputs$in_sSiteSize)
+    # }
+    
+    
+    stepPlot <- stepData %>% 
+      filter(behave == beh) %>% 
       ggplot() +
       geom_density(aes(x = sl),
                    fill = palette[names(palette) == beh],
-                   colour = NA) +
+                   colour = NA, alpha = 0.65) +
+      geom_density(data = paraStepData %>% 
+                     filter(behave == beh),
+                   aes(x = value),
+                   fill = NA,
+                   colour = palette[names(palette) == beh], alpha = 0.5,
+                   size = 1.15) +
       scale_fill_manual(values = palette[c("0", "1", "2")]) +
       theme_bw() +
       theme(legend.position = "none",
@@ -1236,6 +1224,7 @@ for(species in vecSpecies){
                                         hjust = 1),
             axis.text.y = element_blank(),
             axis.ticks.y = element_blank(),
+            plot.background = element_blank(),
             panel.border = element_blank(),
             panel.grid = element_blank(),
             strip.background = element_blank(),
@@ -1272,6 +1261,7 @@ for(species in vecSpecies){
             axis.title.y = element_text(angle = 0,
                                         face = 2,
                                         hjust = 1),
+            plot.background = element_blank(),
             panel.border = element_blank(),
             panel.grid = element_line(size = 0.25,
                                       colour = "grey85"),
@@ -1300,8 +1290,38 @@ for(species in vecSpecies){
     behaveLevelCombo <- patchwork::wrap_plots(list(taPlot,
                                                    stepPlot +
                                                      inset_element(zeroPlot,
-                                                                   0.6, 0.4, 1, 1,
+                                                                   0.5, 0.4, 1.1, 1.1,
                                                                    clip = FALSE, align_to = "plot")), nrow = 1)
+    
+    b_destPlot <- paraDestData %>% 
+      ggplot() +
+      geom_density(aes(x = value), alpha = 0.5,
+                   colour = NA, fill = "grey15") +
+      # geom_boxplot(aes(x = value, y = -0.0001), width = 0.0001,
+      #              colour = palette["2"], fill = palette["2"], alpha = 0.25) +
+      labs(x = "Destination range (m)", y = "") +
+      theme_bw() +
+      theme(legend.position = "none",
+            text = element_text(colour = "#191919"),
+            line = element_line(colour = "#191919"),
+            axis.title = element_text(angle = 0,
+                                      face = 2,
+                                      size = 10,
+                                      hjust = 1),
+            axis.title.y = element_text(angle = 0,
+                                        face = 2,
+                                        hjust = 1),
+            axis.text.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            panel.border = element_blank(),
+            panel.grid = element_blank(),
+            strip.background = element_blank(),
+            strip.text = element_text(size = 12, face = 4,
+                                      hjust = 0),
+            title = element_text(size = 12, face = 4,
+                                 hjust = 0),
+            axis.line = element_line(size = 0.5))
+    
     
     behavePlotList[[as.character(beh)]] <- behaveLevelCombo
     
@@ -1310,24 +1330,26 @@ for(species in vecSpecies){
   speciesLevelCombo <- behavePlotList[["0"]] / behavePlotList[["1"]] / behavePlotList[["2"]] +
     plot_layout(ncol = 1)
   
-  moveCharPlotList[[species]] <- speciesLevelCombo
+  # suppressMessages(print(speciesLevelCombo / b_destPlot + plot_layout(heights = c(1,1,1,2))))
+  
+  moveCharPlotList[[species]] <- speciesLevelCombo / b_destPlot + plot_layout(heights = c(1,1,1,2))
 }
 
 ```
 
-```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The badger example's simulated/observed turn angles and step lengths. Step lengths are scaled to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r BADGERmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The distribution of step lengths used during the badger simulation example. Parametrising distributions are shown as solid areas using the same shape and scale parameters used as input into the simulation function. The lower plot shows the distribution used to generate potential foraging destinations. The realised resulting simulated step lengths (scaled to the input units) are shown by the solid lines. The realised resulting turn angles are shown in left hand sub-plots. Inset pie charts show the number of step lengths that were below the shelter site size. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["BADGER"]]
 
 ```
 
-We can compare the simulation's inputs displayed in Figure \@ref(fig:BADGERsettingMoveDesPlot) to the simulated/observed outputs displayed in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
+We can compare the simulation's inputs displayed in to the simulated/observed outputs displayed in Figure \@ref(fig:BADGERmoveCharFigure) and see that they largely agree as expected.
 The turn angles are more variable, as the destination decisions and attraction to locations heavily influence the distribution overriding the initial parametrisation of the Von Mises distribution.
-Figure \@ref(fig:VULTUREsettingMoveDesPlot) and Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot) in the use cases section show the outputs for vulture and king cobra simulations.
+Figure \@ref(fig:VULTUREmoveCharFigure) and Figure \@ref(fig:KINGCOBRAmoveCharFigure) in the use cases section show the outputs for vulture and king cobra simulations.
 
 <!-- Mapping movements -->
 We can review how the movements appear in space.
-With the badger example, the impact of the avoidance points is clearly visible [(Figure \@ref(fig:mapsFigure)a), whereas the lack of or weaker avoidance in vulture [(Figure \@ref(fig:mapsFigure)b) and king cobra (Figure \@ref(fig:mapsFigure)c) makes the avoidance less influential.
+With the badger example, the impact of the avoidance points is clearly visible (Figure \@ref(fig:mapsFigure)a), whereas the lack of or weaker avoidance in vulture (Figure \@ref(fig:mapsFigure)b) and king cobra (Figure \@ref(fig:mapsFigure)c) makes the avoidance less influential.
 The vulture's movements and chosen foraging locations are largely to the east, demonstrating the impact of the underlying foraging quality environmental layer.
 The king cobra plot shows the impact of a near impermeable barrier truncating the southward movements.
 
@@ -1337,34 +1359,34 @@ abmMapPlot <- function(simResults,
                        timeLimits = NA,
                        plotOptions = TRUE
 ){
-
+  
   palette <- c("#AD6DED", "#7D26D4", "#E87D13", "#965A1D", "#302010")
   names(palette) <- c("purp1", "purp2", "2", "1", "0")
-
+  
   realisedData <- simResults$locations
   optionData <- simResults$options
-
+  
   if(!is.na(timeLimits[1]) & !is.na(timeLimits[2])){
     realisedData <- realisedData[realisedData$timestep > timeLimits[1] &
                                    realisedData$timestep < timeLimits[2],]
     optionData <- optionData[optionData$timestep > timeLimits[1] &
                                optionData$timestep < timeLimits[2],]
   }
-
+  
   realisedData$behave[realisedData$behave == 0] <- "0 - Shelter"
   realisedData$behave[realisedData$behave == 1] <- "1 - Explore"
   realisedData$behave[realisedData$behave == 2] <- "2 - Forage"
-
+  
   shelterLocations <- data.frame(
     "x" = simResults$inputs$in_shelter_locs_x,
     "y" = simResults$inputs$in_shelter_locs_y
   )
-
+  
   avoidance <- data.frame(
     "x" = simResults$inputs$in_avoidPoints_x,
     "y" = simResults$inputs$in_avoidPoints_y
   )
-
+  
   outPlot <- ggplot2::ggplot() +
     ggplot2::geom_path(data = realisedData,
                        ggplot2::aes(x = x, y = y),
@@ -1432,7 +1454,7 @@ abmMapPlot <- function(simResults,
                                                   label.hjust = 0,
                                                   label.position = "right")) +
     ggplot2::labs(x = "X", y = "Y", shape = "Behaviour", fill = "Environmental\nquality")
-
+  
   if(plotOptions){
     outPlot <- outPlot +
       ggplot2::geom_point(data = optionData,
@@ -1440,7 +1462,7 @@ abmMapPlot <- function(simResults,
                           size = 0.35,
                           alpha = 0.05, colour = palette["purp1"])
   }
-
+  
   # if(!is.null(avoidance)){
   #   outPlot <- outPlot +
   # ## avoidance
@@ -1455,7 +1477,7 @@ abmMapPlot <- function(simResults,
   #                     size = 3, colour = "grey10",
   #                     alpha = 1)
   # }
-
+  
   return(outPlot)
 }
 
@@ -1576,10 +1598,10 @@ for(species in vecSpecies){
                           size = 3, colour = "grey10",
                           alpha = 1) +
       scale_colour_manual(values = c(ifelse(beh == "0 - Shelter", 
-                                                      unname(palette["0"]),
-                                                      ifelse(beh == "1 - Explore",
-                                                             unname(palette["1"]),
-                                                             unname(palette["2"]))),
+                                            unname(palette["0"]),
+                                            ifelse(beh == "1 - Explore",
+                                                   unname(palette["1"]),
+                                                   unname(palette["2"]))),
                                      "grey75")
       ) +
       ggplot2::coord_fixed(xlim = range(realisedData$destination_x)+c(-50, +50),
@@ -1731,7 +1753,7 @@ for(species in vecSpecies){
       seq(0, 4, 1)
     }
   }
-
+  
   plotData <- cycleData %>%
     mutate(i = i/60/24) %>%
     filter(i < 31*3) %>% 
@@ -1934,7 +1956,7 @@ We provide example implementations of vulture and king cobra -like movement.
 ### Ecology and objectives - vulture
 
 Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction (Figure \@ref(fig:VULTURElayersFigure)). 
-Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020] (Figure \@ref(fig:VULTUREsettingMoveDesPlot)).
+Vultures can also move greater distances more rapidly [@hribsek_first_2021], resulting in a more variable and distribution of step lengths [@garcia-jimenez_drivers_2018; @margalida_spatial_2016; @subedi_spatial_2020] (Figure \@ref(fig:VULTUREmoveCharFigure)).
 
 Similar to badgers, vultures exhibit significant site fidelity, re-using roosting and nesting sites [@bracis_revisitation_2018].
 Such shelter sites could be predefined; for example, if shelter sites were known *a priori* discovered via the capture and tagging of animals, which in the case of birds is more likely.
@@ -1972,7 +1994,7 @@ King cobra movement can be limited by roads [@jones_how_2022; @Marshall2018b], w
 In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements [@Marshall2018b; @Shankar2013].
 Despite the risks, avoidance of such areas appears weak.
 
-Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability (Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)) as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020].
+Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability (Figure \@ref(fig:KINGCOBRAmoveCharFigure)) as king cobras are known to range over large areas [@Silva2018; @Marshall2018; @marshall_no_2020].
 
 We can broadly summarise the king cobra ecology we want to parametrise as follows:
 
@@ -2016,7 +2038,7 @@ data.frame(
 Largely the vulture parametrisation matches the badger.
 We specified a number of predefined resting/shelter sites, assuming that bird bio-tagging is more likely to occur at known site (i.e., nests or roosts).
 The shelter site size is smaller than the badger sett, so is only 5 m.
-Step length parameters are all larger and more variable, along with destination ranges (Figure \@ref(fig:VULTUREsettingMoveDesPlot)).
+Step length parameters are all larger and more variable, along with destination ranges (Figure \@ref(fig:VULTUREmoveCharFigure)).
 We set a larger rescale value also to ensure the vulture has a larger landscape to operate across.
 The rest cycle is broadly similar, with a 12 hour diel cycle and gentle seasonality.
 We made two small modifications to the transition matrix allowing for more frequent switches between foraging and exploring.
@@ -2024,101 +2046,6 @@ We also alter two of the environmental matrices.
 We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area (Figure \@ref(fig:VULTURElayersFigure)).
 Finally, we specify that the vulture will not be avoiding any locations; we still require inputs for the simulation, but we can provide zeroes to negate the effect.
 ```{r VULTUREsettingsAll, ref.label=c('VULTUREsettingShelter','VULTUREsettingMoveDes','VULTUREsettingCycle','VULTUREmovematrix','VULTUREforagematrix')}
-```
-
-```{r VULTUREsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the vulture simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the vulture simulation. The lower plot shows the distribution used to generate potential foraging desintations."}
-
-n <- 1000
-
-v_stepPlot <- data.frame(
-  "var" = factor(c(
-    rep("<span style='color:#302010'>0 - Shelter</span>", n),
-    rep("<span style='color:#965A1D'>1 - Explore</span>", n),
-    rep("<span style='color:#E87D13'>2 - Forage</span>", n)),
-    levels = c("<span style='color:#302010'>0 - Shelter</span>",
-               "<span style='color:#965A1D'>1 - Explore</span>",
-               "<span style='color:#E87D13'>2 - Forage</span>")),
-  "value" =
-    c(rgamma(n, shape = VULTURE_k_step[1], scale = VULTURE_s_step[1]),
-      rgamma(n, shape = VULTURE_k_step[2], scale = VULTURE_s_step[2]),
-      rgamma(n, shape = VULTURE_k_step[3], scale = VULTURE_s_step[3])),
-  "boxPost" = c(
-    rep(-0.1, n),
-    rep(-0.2, n),
-    rep(-0.3, n)
-  )) %>% 
-  ggplot() +
-  geom_density_ridges(aes(x = value, y = var, fill = var),
-                      alpha = 0.5, colour = NA) +
-  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
-               width = 0.12, position = position_nudge(y = -0.1),
-               alpha = 0.25) +
-  scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
-  scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  labs(x = "Step length (m)", y = "Density",
-       fill = "", colour = "") +
-  theme_bw() +
-  theme(
-    text = element_text(colour = "#191919"),
-    line = element_line(colour = "#191919"),
-    axis.title = element_text(angle = 0,
-                              face = 2,
-                              size = 10,
-                              hjust = 1),
-    axis.title.y = element_text(angle = 0,
-                                face = 2,
-                                hjust = 1),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    strip.background = element_blank(),
-    strip.text = element_text(size = 12, face = 4,
-                              hjust = 0),
-    title = element_text(size = 12, face = 4,
-                         hjust = 0),
-    legend.title = element_text(size = 8),
-    legend.position = c(0.9, 0.9),
-    legend.key.height = unit(4, "mm"),
-    legend.text = element_markdown(face = 4),
-    axis.line = element_line(size = 0.5)) +
-  guides(colour = guide_legend(override.aes = list(colour = NA)),
-         fill = guide_legend(override.aes = list(alpha = 1)))
-
-v_destPlot <- data.frame(
-  "var" = rep("Destination range", n),
-  "value" = rgamma(n, shape = VULTURE_destinationRange[1],
-                   scale = VULTURE_destinationRange[2])) %>% 
-  ggplot() +
-  geom_density(aes(x = value), alpha = 0.5,
-               colour = NA, fill = palette["2"]) +
-  geom_boxplot(aes(x = value, y = -0.0001), width = 0.0001,
-               colour = palette["2"], fill = palette["2"], alpha = 0.25) +
-  labs(x = "Destination range (m)", y = "") +
-  theme_bw() +
-  theme(legend.position = "none",
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        axis.line = element_line(size = 0.5))
-
-suppressMessages(print(v_stepPlot / v_destPlot + plot_layout(heights = c(1,0.65))))
-
 ```
 
 ```{r VULTURElayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the vulture example: shelter quality, foraging resources, movement ease."}
@@ -2144,115 +2071,20 @@ plot_landscapeLayersList(VULTURE_landscapeLayersList) +
 
 #### King cobra inputs
 
-Compared to the vulture, the king cobra movements are smaller, but king cobras can still occupy large areas [Figure \@ref(fig:KINGCOBRAsettingMoveDesPlot)].
+Compared to the vulture, the king cobra movements are smaller, but king cobras can still occupy large areas (Figure \@ref(fig:KINGCOBRAmoveCharFigure)).
 We provide a rescale value of 10 m to provide a large enough landscape to capture a potentially large range.
 The activity cycle provides an opportunity to demonstrate three additive cycles.
 The diel cycle is largely similar to the other examples, but we also define an approximately weekly cycle to cover the forage-digestion cycle as well as weak seasonal cycle.
 Combined the three cycles create an activity pattern quite different from either the badger or vulture.
 To balance the three cycles and their influence on the behaviour transitions, we make some minor adjustments to the underlying behavioural transition matrix. 
 As mentioned in the ecology and objectives, we want to simulate a barrier limiting movement.
-We construct this by altering the values in the environmental matrices, minimising the weighting in cells following two perpendicular lines [Figure \@ref(fig:KINGCOBRAlayersFigure)].
+We construct this by altering the values in the environmental matrices, minimising the weighting in cells following two perpendicular lines (Figure \@ref(fig:KINGCOBRAlayersFigure)).
 We also provide a set of avoidance locations and a relatively weak avoidance weighting coefficient.
 Finally, we can set the shelter sites.
 We draw 12 sites randomly based on shelter site quality, and limit the area that they can be drawn from to ensure they are not on the far side of the barrier.
 We use a larger shelter site size, as king cobras are known to occupy large rock complexes at times.
 
 ```{r KINGCOBRAsettingsAll, ref.label=c('KINGCOBRAsettingMoveDes', 'KINGCOBRAsettingCycle', 'KINGCOBRAmoveMatrix', 'KINGCOBRAsettingShelter')}
-```
-
-```{r KINGCOBRAsettingMoveDesPlot, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=4, fig.cap="The distribution of step lengths used during the king cobra simulation example. The distribution displayed is generated from the same shape and scale parameters that will be input into the simulation function for the king cobra simulation. The lower plot shows the distribution used to generate potential foraging desintations."}
-
-n <- 1000
-
-k_stepPlot <- data.frame(
-  "var" = factor(c(
-    rep("<span style='color:#302010'>0 - Shelter</span>", n),
-    rep("<span style='color:#965A1D'>1 - Explore</span>", n),
-    rep("<span style='color:#E87D13'>2 - Forage</span>", n)),
-    levels = c("<span style='color:#302010'>0 - Shelter</span>",
-               "<span style='color:#965A1D'>1 - Explore</span>",
-               "<span style='color:#E87D13'>2 - Forage</span>")),
-  "value" =
-    c(rgamma(n, shape = KINGCOBRA_k_step[1], scale = KINGCOBRA_s_step[1]),
-      rgamma(n, shape = KINGCOBRA_k_step[2], scale = KINGCOBRA_s_step[2]),
-      rgamma(n, shape = KINGCOBRA_k_step[3], scale = KINGCOBRA_s_step[3])),
-  "boxPost" = c(
-    rep(-0.1, n),
-    rep(-0.2, n),
-    rep(-0.3, n)
-  )) %>% 
-  ggplot() +
-  geom_density_ridges(aes(x = value, y = var, fill = var),
-                      alpha = 0.5, colour = NA) +
-  geom_boxplot(aes(x = value, y = var, colour = var, fill = var),
-               width = 0.12, position = position_nudge(y = -0.1),
-               alpha = 0.25) +
-  scale_fill_manual(values = unname(palette[c("0", "1", "2")][])) +
-  scale_colour_manual(values = unname(palette[c("0", "1", "2")][])) +
-  labs(x = "Step length (m)", y = "Density",
-       fill = "", colour = "") +
-  theme_bw() +
-  theme(
-    text = element_text(colour = "#191919"),
-    line = element_line(colour = "#191919"),
-    axis.title = element_text(angle = 0,
-                              face = 2,
-                              size = 10,
-                              hjust = 1),
-    axis.title.y = element_text(angle = 0,
-                                face = 2,
-                                hjust = 1),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    strip.background = element_blank(),
-    strip.text = element_text(size = 12, face = 4,
-                              hjust = 0),
-    title = element_text(size = 12, face = 4,
-                         hjust = 0),
-    legend.title = element_text(size = 8),
-    legend.position = c(0.9, 0.9),
-    legend.key.height = unit(4, "mm"),
-    legend.text = element_markdown(face = 4),
-    axis.line = element_line(size = 0.5)) +
-  guides(colour = guide_legend(override.aes = list(colour = NA)),
-         fill = guide_legend(override.aes = list(alpha = 1)))
-
-k_destPlot <- data.frame(
-  "var" = rep("Destination range", n),
-  "value" = rgamma(n, shape = KINGCOBRA_destinationRange[1],
-                   scale = KINGCOBRA_destinationRange[2])) %>% 
-  ggplot() +
-  geom_density(aes(x = value), alpha = 0.5,
-               colour = NA, fill = palette["2"]) +
-  geom_boxplot(aes(x = value, y = -0.001), width = 0.001,
-               colour = palette["2"], fill = palette["2"], alpha = 0.25) +
-  labs(x = "Destination range (m)", y = "") +
-  theme_bw() +
-  theme(legend.position = "none",
-        text = element_text(colour = "#191919"),
-        line = element_line(colour = "#191919"),
-        axis.title = element_text(angle = 0,
-                                  face = 2,
-                                  size = 10,
-                                  hjust = 1),
-        axis.title.y = element_text(angle = 0,
-                                    face = 2,
-                                    hjust = 1),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        panel.border = element_blank(),
-        panel.grid = element_blank(),
-        strip.background = element_blank(),
-        strip.text = element_text(size = 12, face = 4,
-                                  hjust = 0),
-        title = element_text(size = 12, face = 4,
-                             hjust = 0),
-        axis.line = element_line(size = 0.5))
-
-suppressMessages(print(k_stepPlot / k_destPlot + plot_layout(heights = c(1,0.65))))
-
 ```
 
 ```{r KINGCOBRAlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the king cobra example: shelter quality, foraging resources, movement ease. Movement ease is blocked by bars of -99 weighting."}
@@ -2280,23 +2112,55 @@ plot_landscapeLayersList(KINGCOBRA_landscapeLayersList) +
 
 ### Simulation outputs
 
-Figures \@ref(fig:VULTUREsettingMoveDesPlot) and \@ref(fig:KINGCOBRAsettingMoveDesPlot) describe the inputs for the vulture and king cobra example respectively, and can be compared to figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure) that display the realised movements.
+Figures \@ref(fig:VULTUREmoveCharFigure) and \@ref(fig:KINGCOBRAmoveCharFigure) describe the inputs for the vulture and king cobra example respectively, and can be compared to the realised movements.
 Figures \@ref(fig:VULTUREmoveCharFigure), and \@ref(fig:KINGCOBRAmoveCharFigure) also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
 The king cobra example in particular highlights the prolonged near weekly resting periods.
 
-```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The vulture example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r VULTUREmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The distribution of step lengths used during the vulture simulation example. Parametrising distributions are shown as solid areas using the same shape and scale parameters used as input into the simulation function. The lower plot shows the distribution used to generate potential foraging destinations. The realised resulting simulated step lengths (scaled to the input units) are shown by the solid lines. The realised resulting turn angles are shown in left hand sub-plots. Inset pie charts show the number of step lengths that were below the shelter site size. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["VULTURE"]]
 
 ```
 
-```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The king cobra example's observed turn angles and step lengths resulting from the simulation. Step lengths are scaled back to the input units. Inset pie charts show the number of step lengths that were below the shelter site size; the sub-shelter site step lengths are excluded from the density plot. Note that x axis is not consistent between the three plots."}
+```{r KINGCOBRAmoveCharFigure, echo=FALSE, eval=TRUE, warning=FALSE, fig.align='center', fig.width=7, fig.height=7, fig.cap="The distribution of step lengths used during the king cobra simulation example. Parametrising distributions are shown as solid areas using the same shape and scale parameters used as input into the simulation function. The lower plot shows the distribution used to generate potential foraging destinations. The realised resulting simulated step lengths (scaled to the input units) are shown by the solid lines. The realised resulting turn angles are shown in left hand sub-plots. Inset pie charts show the number of step lengths that were below the shelter site size. Note that x axis is not consistent between the three plots."}
 
 moveCharPlotList[["KINGCOBRA"]]
 
 ```
 
 \clearpage
+
+```{r saveData, echo=FALSE, eval=FALSE}
+
+for(species in vecSpecies){
+  write.csv(simResultsList[[species]],
+            file = here::here("notebook",
+                              "manuscript",
+                              "eg_simdata",
+                              paste0("eg_simdata", species, ".csv")),
+            row.names = FALSE)
+}
+
+saveRDS(simResultsList,
+        file = here::here("notebook",
+                          "manuscript",
+                          "eg_simdata",
+                          paste0("eg_simdata_completelist.RDS")),
+        compress = TRUE)
+
+saveRDS(landscapeLayersList,
+        file = here::here("notebook",
+                          "manuscript",
+                          "eg_simdata",
+                          paste0("eg_landscapedata_completelist.RDS")),
+        compress = TRUE)
+
+# testrds <- readRDS(here::here("notebook",
+#                               "manuscript",
+#                               "eg_simdata",
+#                               paste0("eg_landscapedata_completelist.RDS")))
+
+```
 
 # Data availability
 
@@ -2317,6 +2181,7 @@ KINGCOBRA_options.csv: A csv file that contains the options available to the exa
 VULTURE_options.csv: A csv file that contains the options available to the example vulture simulation over the entire simulation duration, where each row is equal to an option repeated for each timestep. The file structure follows the same as the BADGER_locations.csv file.
 
 Source code to reproduce the results and manuscript are available alongside the software, archived at: https://doi.org/10.5281/zenodo.6951937.
+
 The parameters used to generate the examples are within: `notebook/manuscript/Agent-based_model_walkthrough.Rmd`.
 
 # Software availability
@@ -2324,8 +2189,6 @@ The parameters used to generate the examples are within: `notebook/manuscript/Ag
 Archived versions of the software are available on Zenodo: "BenMMarshall/abmAnimalMovement" https://doi.org/10.5281/zenodo.6951937.
 
 The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
-
-The stable release is available from CRAN: TBC [CRAN submission under way].
 
 License: GPL (>= 3)
 
