@@ -49,8 +49,8 @@ For example, space use has been tied directly to body size connected via the ene
 <!-- - key in conservation -- webb et al on ethics animal stuff? -->
 
 The information gathered from animal movement studies is only as robust as the methods and analyses applied.
-In the past decade, the volume of animal data has exploded [@joo_recent_2022; @wild_internet_2022], and the infrastructure for collating these data has improved drastically [@kays_movebank_2022].
-There are stand out examples of novel methods [@saunders_radio-tracking_2022], and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., @studd_purrfect_2021).
+In the past decade, the volume of animal movement data has increased [@joo_recent_2022; @wild_internet_2022], and the infrastructure for collating these data has improved drastically [@kays_movebank_2022].
+There are stand out examples of novel methods [@saunders_radio-tracking_2022], and exceptionally detailed insights into animal behaviour using new bio-logging technology [@studd_purrfect_2021].
 However, on the whole, analysis approaches to maximise the information extracted have arguably lagged behind the technological and data improvements [@joo_recent_2022].
 The bodily cost of attaching bio-telemetry devices (with examples from reptiles [@Weatherhead2004]; mammals [@robstad_impact_2021]; and birds [@portugal_externally_2022]), as well as the possible conservation sensitivity of study animals, means researchers have an ethical duty to maximise the value/impact of the data collected.
 
@@ -96,6 +96,7 @@ There are a number of approaches for simulating animal movement including (but n
 
 1. continuous movement processes, best exemplified by the *ctmm* package [@Calabrese2016] and worked examples such as @silva_autocorrelationinformed_2022 and @theng_confronting_2022.
 These methods rely on a mathematically defined movement process [such as Ornstein-Uhlenbeck foraging process @Fleming2014].
+The *abmR* package shows how Ornstein-Uhlenbeck scales up to simulate large animal movements [@gochanour_span_2023].
 A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
 
 2. hidden markov models, exemplified by the `simData` function from the *moveHMM* package [@Michelot2016].
@@ -123,14 +124,15 @@ At each time step, the agent (i.e., simulated animal) is presented with a range 
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement [@Tang2010; @Nathan2008].
 
-The animal has three behavioural states, broadly defined here as state 0 - sheltering (or resting), state 1 - exploring, and state 2 - foraging.
-Each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between subsequent chosen locations, whereas resting behaviour is largely defined by stationary or very low discrete movements after returning to a shelter site.
+The animal has three behavioural states, broadly defined here as state 0 - resting (or sheltering), state 1 - exploring, and state 2 - foraging.
+In the resting state the animal chooses a known shelter location to head towards; in the exploration state the animal randomly moves within the landscape guided only by the movement resistance of the landscape; in the foraging state the animal chooses a foraging location and moves towards it.
+Additionally, each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between subsequent chosen locations, whereas resting behaviour is largely defined by stationary or very low discrete movements after returning to a shelter site.
 The movement characteristics are defined by two distributions: a Gamma distribution that step lengths are drawn from, and a Von-Mises that turn angles are drawn from.
 The resulting step length, combined with a turn angle describes the change in animal location between each time step (as selected from a given number of options).
 We will largely define these based on the movement capacity of the animal over a minute.
 
 As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
-We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \@ref(fig:transMatrixDiagram)), where each value describes the probability of the animal transitioning from the current behaviour (row: b0, b1, b2), to the behaviour for the next time step (columns: b0, b1, b2).
+We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \@ref(fig:transMatrixDiagram)), where each value describes the probability of the animal transitioning from the current behaviour (row: b0 - resting, b1 - exploring, b2 - foraging), to the behaviour for the next time step (columns: b0, b1, b2).
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are modelling time steps as one minute.
 
@@ -247,20 +249,16 @@ While only the *abmAnimalMovement* package is required for running core simulati
 An alternative simpler implementation with no dependencies is provided as a package vignette.
 
 ```{r libraries, include=TRUE, warning=FALSE, message=FALSE}
-# core package
-library(abmAnimalMovement)
-# data manipulation
-library(dplyr)
-library(reshape2)
-# visualisation
-library(ggplot2)
-library(ggforce)
-library(ggtext)
-library(ggridges)
-library(patchwork)
-# environmental matrix generation
-library(raster)
-library(NLMR)
+library(abmAnimalMovement) # core package
+library(dplyr) # data manipulation
+library(reshape2) # data manipulation
+library(ggplot2) # visualisation
+library(ggforce) # visualisation
+library(ggtext) # visualisation
+library(ggridges) # visualisation
+library(patchwork) # visualisation
+library(raster) # environmental matrix generation
+library(NLMR) # environmental matrix generation
 ```
 
 ```{r packageBibGen, include=FALSE}
@@ -516,11 +514,11 @@ BADGER_shelterSize <- 8
 VULTURE_shelterLocs <- data.frame(
   "x" = c(1024, 1005, 1115),
   "y" = c(1193, 1070, 882))
-# shelter site radius to reduce movements
-VULTURE_shelterSize <- 5
+
+VULTURE_shelterSize <- 5 # shelter site radius to reduce movements
 ```
 
-```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be fed into the simulation for the badger example: shelter quality, foraging resources, movement ease."}
+```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be input into the simulation for the badger example: shelter quality, foraging resources, movement ease. The points marked with "S" indicate the generated shelter sites randomly sampled from the underlying shelter quality matrix. X and Y axes cell numbers; in the case of the badger example cell is 5 m by 5 m."}
 
 plot_landscapeLayersList(landscapeLayersList) +
   geom_point(data = cbind(BADGER_shelterLocs,
@@ -545,8 +543,8 @@ The step lengths require predefined shape (k) and scale ($\theta$) parameters to
 For the turn angles we require the mean ($\mu$) and concentration ($\kappa$) to define the Von Mises distributions, and provide these via the `mu_angle` and `k_angle` arguments.
 
 <!-- destination -->
-The perceptual range, in other words, where the badger decides to forage is set in a similar fashion.
-Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall (Figure \@ref(fig:BADGERmoveCharFigure)).
+The perceptual range (implemented here as destination range), is how far the the badger can "see" when deciding where to forage is set in a similar fashion.
+Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall in relation to the previous direction of movement (Figure \@ref(fig:BADGERmoveCharFigure)).
 
 We can also alter the strength of attraction to the foraging destinations.
 At each time step, the animal is offered a number of location options to move to next time step.
@@ -582,14 +580,10 @@ BADGER_rescale <- 5
 
 # parameters defining Gamma (step length) and Von Mises (turn angle) for each
 # behaviour state
-# Gamma shape
-VULTURE_k_step <- c(2, 2.2*60, 1.5*60)
-# Gamma scale
-VULTURE_s_step <- c(40, 1.2, 1)
-# Von Mises mean
-VULTURE_mu_angle <- c(0, 0, 0)
-# Von Mises concentration
-VULTURE_k_angle <- c(0.6, 0.99, 0.6)
+VULTURE_k_step <- c(2, 2.2*60, 1.5*60) # Gamma shape
+VULTURE_s_step <- c(40, 1.2, 1) # Gamma scale
+VULTURE_mu_angle <- c(0, 0, 0) # Von Mises mean
+VULTURE_k_angle <- c(0.6, 0.99, 0.6) # Von Mises concentration
 
 # parameters defining Gamma (shape and scale) and Von Mises (mean and
 # concentration) for foraging destination options
@@ -599,21 +593,16 @@ VULTURE_destinationDirection <- c(0, 0.01)
 VULTURE_destinationTransformation <- 2
 VULTURE_destinationModifier <- 2
 
-# each cell of the environmental matrix is 20x20
-VULTURE_rescale <- 20
+VULTURE_rescale <- 20 # each cell of the environmental matrix is 20x20
 ```
 ```{r KINGCOBRAsettingMoveDes, eval=TRUE, echo=FALSE}
 
 # parameters defining Gamma (step length) and Von Mises (turn angle) for each
 # behaviour state
-# Gamma shape
-KINGCOBRA_k_step <- c(30, 40, 20)
-# Gamma scale
-KINGCOBRA_s_step <- c(0.75, 1.2, 1.75)
-# Von Mises mean
-KINGCOBRA_mu_angle <- c(0, 0, 0)
-# Von Mises concentration
-KINGCOBRA_k_angle <- c(0.6, 0.99, 0.6)
+KINGCOBRA_k_step <- c(30, 40, 20) # Gamma shape
+KINGCOBRA_s_step <- c(0.75, 1.2, 1.75) # Gamma scale
+KINGCOBRA_mu_angle <- c(0, 0, 0) # Von Mises mean
+KINGCOBRA_k_angle <- c(0.6, 0.99, 0.6) # Von Mises concentration
 
 # parameters defining Gamma (shape and scale) and Von Mises (mean and
 # concentration) for foraging destination options
@@ -623,8 +612,7 @@ KINGCOBRA_destinationDirection <- c(0, 0.01)
 KINGCOBRA_destinationTransformation <- 2
 KINGCOBRA_destinationModifier <- 1.5
 
-# each cell of the environmental matrix is 10x10
-KINGCOBRA_rescale <- 10
+KINGCOBRA_rescale <- 10 # each cell of the environmental matrix is 10x10
 ```
 
 <!-- avoidance -->
@@ -779,8 +767,7 @@ sampledShelters <- sampleRandom(raster(KINGCOBRA_shelteringMatrix), 12,
 KINGCOBRA_shelterLocs <- data.frame(
   "x" = sampledShelters[,2],
   "y" = sampledShelters[,1])
-# specifying a larger shelter site radius
-KINGCOBRA_shelterSize <- 10
+KINGCOBRA_shelterSize <- 10 # specifying a larger shelter site radius
 ```
 
 ### Running the simulation
@@ -1702,7 +1689,7 @@ Some of the differences are a result of the different behavioural transition mat
 By contrast, the king cobra example demonstrates the interaction between the daily and weekly cycles (Figure \@ref(fig:cycleFigure)).
 We can see intermittently extended sheltering periods, punctuated by short exploratory or foraging bouts.
 
-```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=8.5, fig.cap="The observered (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. Note that the input waves acting on the simulated animal in conjunction with the beahvioural transition matrix."}
+```{r cycleFigure, echo=FALSE, eval=TRUE, fig.align='center', fig.width=7, fig.height=8.5, fig.cap="The resulting simulated (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. That the input rest probability waves are additively combined with the underlying behavioural transition matrix of each species."}
 
 cyclePlotList <- vector("list", length = 3)
 names(cyclePlotList) <- vecSpecies
@@ -1912,6 +1899,7 @@ By including a range of features linked to movement and behaviour, the *abmAnima
 While some of the features can appear simplistic, there remains ample flexibility to simulate a wide range of useful scenarios.
 For example, we conceptualise the three movement states as sheltering, exploring, and foraging.
 However, only several aspects are immutable: one state exhibits site fidelity (state 0), one state is free from all attraction (state 1), and one state is driven by an underlying environmental layer (state 2).
+As such the *abmAnimalMovement* package would need considerable extension to be useful for migratory species, especially those travelling long distances into mutually exclusive areas.
 
 The *abmAnimalMovement* package has an advantage over data-driven simulation methods in scenarios where data are scarce, as much of the animal world is untracked [@crane_lots_2021; @joo_recent_2022].
 For the untracked animals, we may be limited to basic information of speed, activity, and resources, or such information may even need to be inferred from ecologically similar species.
