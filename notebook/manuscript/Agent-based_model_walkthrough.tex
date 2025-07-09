@@ -116,7 +116,7 @@
 
 \begin{abstract}
 
-Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., rest, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal avoids. Navigation capacity is defined as the maximum range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are drawn at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
+Animal movement datasets are growing in number and depth, and researchers require a growing number of analytical approaches to adequately answer questions using movement datasets. As the complexity of questions and analyses increase, deciding on the best approach both in terms of study design and analysis can become more difficult. A potential solution is to simulate an array of synthetic datasets under varying study designs and simulation parametrisations to gain insight into the impact of analysis choice(s) in different contexts. The abmAnimalMovement R package provides the means of simulating animal movement for this purpose. The abmAnimalMovement simulations use a discrete time agent-based model and do not require previous movement data as an input. The simulations include a number of key internal and external movement influences, as well as parameters for navigation and mobility capacity of the animal. Internal influences include three predefined behavioural states (e.g., shelter, explore, forage) and any number of activity cycles (e.g., diel, seasonal). External influences are implemented via matrices describing landscape characteristics (e.g., shelter quality, foraging resources, movement ease), and predefined points describing shelter sites and points the animal avoids. Navigation capacity is defined as the maximum range the animal can dynamically choose a foraging location to which it is subsequently attracted. Mobility capacity is implemented by user defined distributions, from which step length and turn angles are drawn at each time step, governing the possible subsequent locations of the animal. Critically, the navigation capacity (the choice of destination) operates on a different time scale to the mobility capacity, allowing the internal state of the animal to differ from the observed movements. When combined with other emergent properties, such as site fidelity generated via repeated shelter site use, the simulations offer opportunities to test whether movement analyses can accurately recover hidden mechanisms, states, and drivers.
 
 \end{abstract}
 
@@ -136,8 +136,8 @@ Examinations of animal movement are frequently integrated into conservation plan
 For example, space use has been tied directly to body size connected via the energy requirements for animals (\citeproc{ref-noonan_effects_2020}{11}), and movement has provided incredible insights into behaviour (\citeproc{ref-studd_purrfect_2021}{12}).
 
 The information gathered from animal movement studies is only as robust as the methods and analyses applied.
-In the past decade, the volume of animal data has exploded (\citeproc{ref-joo_recent_2022}{13},\citeproc{ref-wild_internet_2022}{14}), and the infrastructure for collating these data has improved drastically (\citeproc{ref-kays_movebank_2022}{15}).
-There are stand out examples of novel methods (\citeproc{ref-saunders_radio-tracking_2022}{16}), and exceptionally detailed insights into animal behaviour using new bio-logging technology (e.g., (\citeproc{ref-studd_purrfect_2021}{12})).
+In the past decade, the volume of animal movement data has increased (\citeproc{ref-joo_recent_2022}{13},\citeproc{ref-wild_internet_2022}{14}), and the infrastructure for collating these data has improved drastically (\citeproc{ref-kays_movebank_2022}{15}).
+There are stand out examples of novel methods (\citeproc{ref-saunders_radio-tracking_2022}{16}), and exceptionally detailed insights into animal behaviour using new bio-logging technology (\citeproc{ref-studd_purrfect_2021}{12}).
 However, on the whole, analysis approaches to maximise the information extracted have arguably lagged behind the technological and data improvements (\citeproc{ref-joo_recent_2022}{13}).
 The bodily cost of attaching bio-telemetry devices (with examples from reptiles (\citeproc{ref-Weatherhead2004}{17}); mammals (\citeproc{ref-robstad_impact_2021}{18}); and birds (\citeproc{ref-portugal_externally_2022}{19})), as well as the possible conservation sensitivity of study animals, means researchers have an ethical duty to maximise the value/impact of the data collected.
 
@@ -155,16 +155,16 @@ As the complexity of the research environment increases, so must the analytical 
 Testing these analysis approaches, and their limitations therefore becomes more difficult to asses \emph{a priori}.
 
 A potential solution is virtual ecology: where synthetic data are simulated to cover a range of possible scenarios allowing researchers to explore different study approaches/designs with the aim of identifying the best for a given question (\citeproc{ref-gupta_reserve_2019}{29}).
-Exploration of analysis methods using simulations can yield useful insights even for broadly understood techniques (e.g., GLMMs (\citeproc{ref-debruine_understanding_2021}{30})).
+Exploration of analysis methods using simulations can yield useful insights even for broadly understood techniques (e.g., GLMMs \citeproc{ref-debruine_understanding_2021}{30}).
 Such an approach has the potential to adequately recreate the complex emergent properties that could hamper analyses (\citeproc{ref-debruine_understanding_2021}{30}).
-The suite of tools for simulating aspects of ecological systems (e.g., landscapes (\citeproc{ref-Sciaini2018}{31}), genetics (\citeproc{ref-petr_slendr_2022}{32}), conservation choices (\citeproc{ref-gupta_reserve_2019}{29}), ecological community comparisons (\citeproc{ref-guerracastro_ssp_2021}{33}), resource selection (\citeproc{ref-street_solving_2021}{34})) is growing, and some are explicitly focusing on aiding study design.
-There are also examples of simulation approaches being directly tied to applied issues like human-wildlife conflict (e.g., snakes (\citeproc{ref-goldstein_integrating_2021}{35}), tigers (\citeproc{ref-Ahearn2001}{36})).
+The suite of tools for simulating aspects of ecological systems (e.g., landscapes (\citeproc{ref-Sciaini2018}{31}), genetics (\citeproc{ref-petr_slendr_2022}{32}), conservation choices (\citeproc{ref-gupta_reserve_2019}{29}), ecological community comparisons (\citeproc{ref-guerracastro_ssp_2021}{33}), resource selection (\citeproc{ref-street_solving_2021}{34}), home range size (\citeproc{ref-Silva_movedesign_2023}{35},\citeproc{ref-ines_silva_2023_7963190}{36})) is growing, and some are explicitly focusing on aiding study design.
+There are also examples of simulation approaches being directly tied to applied issues like human-wildlife conflict (e.g., snakes (\citeproc{ref-goldstein_integrating_2021}{37}), tigers (\citeproc{ref-Ahearn2001}{38})).
 
-Population monitoring studies offer a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment (\citeproc{ref-theng_confronting_2022}{37}).
-There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort \citeproc{ref-howe_distance_2017}{38},\citeproc{ref-cappelle_estimating_2021}{39}) and analyses (e.g., accounting for species interactions (\citeproc{ref-kellner_two-species_2022}{40}), or difficult to account for variation in populations (\citeproc{ref-milleret_estimating_2022}{41})).
-More recently, explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, while also prompting deeper questions concerning the findings' generalisably to drastically different movement processes (\citeproc{ref-theng_confronting_2022}{37}).
-Once validated with real-world data, simulated explorations of study design presents opportunities to understand the trade-offs between effort and precision (\citeproc{ref-cappelle_estimating_2021}{39}).
-But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes (\citeproc{ref-abolaffio_avoiding_2019}{42}).
+Population monitoring studies offer a great example of a mature relationship between simulated data, study design, and applied research, implemented in a complex study environment (\citeproc{ref-theng_confronting_2022}{39}).
+There are examples of simulated datasets being used to validate field protocols (e.g., camera trap effort \citeproc{ref-howe_distance_2017}{40},\citeproc{ref-cappelle_estimating_2021}{41}) and analyses (e.g., accounting for species interactions (\citeproc{ref-kellner_two-species_2022}{42}), or difficult to account for variation in populations (\citeproc{ref-milleret_estimating_2022}{43})).
+More recently, explicitly simulating animal movement processes rather than the population distribution has helped validate spatially-explicit capture recapture methods, while also prompting deeper questions concerning the findings' generalisably to drastically different movement processes (\citeproc{ref-theng_confronting_2022}{39}).
+Once validated with real-world data, simulated explorations of study design presents opportunities to understand the trade-offs between effort and precision (\citeproc{ref-cappelle_estimating_2021}{41}).
+But similarly, disagreements on the implementation of surveying methods have led to further explorations of how we conceptualise and simulate animal processes (\citeproc{ref-abolaffio_avoiding_2019}{44}).
 
 As illustrated by the SECR example, different simulation approaches and different analyses accounting for different additional complexities offer different suggestions on the optimal study design.
 There are a number of approaches for simulating animal movement including (but not limited to):
@@ -172,44 +172,47 @@ There are a number of approaches for simulating animal movement including (but n
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  continuous movement processes, best exemplified by the \emph{ctmm} package (\citeproc{ref-Calabrese2016}{43}) and worked examples such as (\citeproc{ref-silva_autocorrelationinformed_2022}{44}) and (\citeproc{ref-theng_confronting_2022}{37}).
-  These methods rely on a mathematically defined movement process (such as Ornstein-Uhlenbeck foraging process \citeproc{ref-Fleming2014}{45}).
+  continuous movement processes, best exemplified by the \emph{ctmm} package (\citeproc{ref-Calabrese2016}{45}) and worked examples such as (\citeproc{ref-silva_autocorrelationinformed_2022}{46}) and (\citeproc{ref-theng_confronting_2022}{39}).
+  These methods rely on a mathematically defined movement process (such as Ornstein-Uhlenbeck foraging process \citeproc{ref-Fleming2014}{47}).
+  The \emph{abmR} package shows how Ornstein-Uhlenbeck scales up to simulate large animal movements (\citeproc{ref-gochanour_span_2023}{48}).
   A key aspect of animal movement they simulate is correlated speeds and central tendency (i.e., home range).
 \item
-  hidden markov models, exemplified by the \texttt{simData} function from the \emph{moveHMM} package (\citeproc{ref-Michelot2016}{46}).
+  hidden markov models, exemplified by the \texttt{simData} function from the \emph{moveHMM} package (\citeproc{ref-Michelot2016}{49}).
   Their biggest contribution to simulating animal movement is the inclusion of state switching (i.e., different behaviours).
-  They are best used in conjunction with existing movement data for parametric bootstrapping to explore estimator uncertainty (\citeproc{ref-Michelot2016}{46}).
+  They are best used in conjunction with existing movement data for parametric bootstrapping to explore estimator uncertainty (\citeproc{ref-Michelot2016}{49}).
 \item
-  agent-based approach, is a bottom-up approach where simulations of an agent (e.g., an animal) are based upon a number of rules (\citeproc{ref-Tang2010}{47}), and through repeatedly following those rules a complex output emerges.
+  agent-based approach, is a bottom-up approach where simulations of an agent (e.g., an animal) are based upon a number of rules (\citeproc{ref-Tang2010}{50}), and through repeatedly following those rules a complex output emerges.
   In the model we present here, this output represent the movement pathways in a landscape.
-  Previous examples of agent-based movement models have targeted specific key components of animal movements such as movement heavily constrained by landscape features (\citeproc{ref-quaglietta_simriv_2019}{48}), simulating memory/home range (\citeproc{ref-VanMoorter2009}{49}), or migratory behaviour (\citeproc{ref-bennett_modelling_2006}{50}).
+  Previous examples of agent-based movement models have targeted specific key components of animal movements such as movement heavily constrained by landscape features (\citeproc{ref-quaglietta_simriv_2019}{51}), simulating memory/home range (\citeproc{ref-VanMoorter2009}{52}), or migratory behaviour (\citeproc{ref-bennett_modelling_2006}{53}).
 \end{enumerate}
 
 Here we present an agent-based approach to supplement those existing simulations, which provides a unique combination of features.
 The agent-based approach is suited to explore a combination of the complexities of animal movement, and the emergent properties.
 Our model does not require fitting to prior movement data, allows for multiple predefined points of attraction/avoidance, multiple-levels of activity cycling, three behavioural states, and multiple spatial environmental covariates.
 A new independently developed approach to simulating animal movement will provide a additional routes to test the robustness of movement analyses.
+The simulation is primarily set-up to create a foundation for exploring whether different habitat selection analyses result in the same/similar conclusions (more thoroughly explored, using the example simulated species here, in \citeproc{ref-marshall_habitat_2024}{54},\citeproc{ref-marshall_multiverse_2024}{55}).
 
 \section{Methods}\label{methods}
 
 \subsection{Overview of the agent-based model}\label{overview-of-the-agent-based-model}
 
 The \emph{abmAnimalMovement} package provides the functionality to simulate animal movements via an agent-based model.
-We wrote the model using \emph{C++} via the \emph{Rcpp} v.1.0.13.1 package (\citeproc{ref-Eddelbuettel_seamless_2011}{51}--\citeproc{ref-Eddelbuettel_extending_2018}{53}) to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages (\citeproc{ref-joo_recent_2022}{13},\citeproc{ref-joo_navigating_2020}{54})).
+We wrote the model using \emph{C++} via the \emph{Rcpp} v.1.0.13.1 package (\citeproc{ref-Eddelbuettel_seamless_2011}{56}--\citeproc{ref-Eddelbuettel_extending_2018}{58}) to ensure it runs efficiently while allowing for easier manipulation of model inputs and outputs via R (R is the most used analysis tool in movement ecology with numerous supporting packages (\citeproc{ref-joo_recent_2022}{13},\citeproc{ref-joo_navigating_2020}{59})).
 
 The model simulates animal locations over a given period of time at discrete time steps.
 At each time step, the agent (i.e., simulated animal) is presented with a range of movement options in the form of new locations (Figure \ref{fig:walkDiagram}), and will choose from amongst these (i.e., sum-based model as opposed to facing a series of sequential binary decisions, see (\citeproc{ref-sridhar_geometry_2021}{2}) for an example of the latter).
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
-By simulating these drivers of animal movement, we hope to capture aspects of the internal state (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement (\citeproc{ref-Tang2010}{47},\citeproc{ref-Nathan2008}{55}).
+By simulating these drivers of animal movement, we hope to capture aspects of the internal state (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement (\citeproc{ref-Tang2010}{50},\citeproc{ref-Nathan2008}{60}).
 
 The animal has three behavioural states, broadly defined here as state 0 - sheltering (or resting), state 1 - exploring, and state 2 - foraging.
-Each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between subsequent chosen locations, whereas resting behaviour is largely defined by stationary or very low discrete movements after returning to a shelter site.
+In the sheltering state the animal chooses a known shelter location to head towards; in the exploration state the animal randomly moves within the landscape guided only by the movement resistance of the landscape; in the foraging state the animal chooses a foraging location and moves towards it.
+Additionally, each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between subsequent chosen locations, whereas sheltering behaviour is largely defined by stationary or very low discrete movements after returning to a shelter site.
 The movement characteristics are defined by two distributions: a Gamma distribution that step lengths are drawn from, and a Von-Mises that turn angles are drawn from.
 The resulting step length, combined with a turn angle describes the change in animal location between each time step (as selected from a given number of options).
-We will largely define these based on the movement capacity of the animal over a minute.
+Here, we define these based on the movement capacity of the animal over a minute; however, there is no fixed underlying time frame for the simulation itself.
 
 As the simulation will be running with three behavioural states, we need to define how likely an animal is to switch between the behaviours.
-We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \ref{fig:transMatrixDiagram}), where each value describes the probability of the animal transitioning from the current behaviour (row: b0, b1, b2), to the behaviour for the next time step (columns: b0, b1, b2).
+We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \ref{fig:transMatrixDiagram}), where each value describes the probability of the animal transitioning from the current behaviour (row: b0 - sheltering, b1 - exploring, b2 - foraging), to the behaviour for the next time step (columns: b0, b1, b2).
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept very high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are modelling time steps as one minute.
 
@@ -229,16 +232,16 @@ These probabilities can be kept very high to introduce autocorrelation in the be
 ## b2 0.0010 0.00001 0.9900
 \end{verbatim}
 
-Animals' behaviour is frequently expressed via cycles, such as day/night or diel cycles (\citeproc{ref-rivera_rethinking_2022}{56}); therefore, we want the transition matrix to vary over time.
-We describe a number of cycles (or waves) that can be applied to the core transition matrix impacting the probability of entering resting behaviour.
+Animals' behaviour is frequently expressed via cycles, such as day/night or diel cycles (\citeproc{ref-rivera_rethinking_2022}{61}); therefore, we want the transition matrix to vary over time.
+We describe a number of cycles (or waves) that can be applied to the core transition matrix impacting the probability of entering sheltering behaviour.
 For example, a diel cycle can be expressed via a Sine wave with a frequency of 12 hours and an amplitude of 0.1.
-At each time step we draw a value from the wave, and add that weighting (from -0.05 to 0.05) to the transition probability of entering resting state (row 1, column 1 of the matrix); therefore, the probability of resting will increase and decrease following the Sine wave at a approximately 12 hour activity pattern.
-We can define as many cycles as needed, and they impact the resting probability additively.
+At each time step we draw a value from the wave, and add that weighting (from -0.05 to 0.05) to the transition probability of entering sheltering state (row 1, column 1 of the matrix); therefore, the probability of sheltering will increase and decrease following the Sine wave at a approximately 12 hour activity pattern.
+We can define as many cycles as needed, with varying frequencies, and they impact the sheltering probability additively.
 
-When entering the resting state the animal will seek out a shelter site.
+When entering the sheltering behavioural state the animal will seek out a shelter site.
 In the \emph{abmAnimalMovement} package, we can supply a number of shelter sites to simulate this need and create site fidelity.
-As these shelter sites act as points of attraction for the animal for each rest, the animal occupies a consistent area, or something approximating a home range.
-Home ranges are meant to represent areas in which the animal can source all resources required for a given life stage (\citeproc{ref-silva_autocorrelationinformed_2022}{44}).
+As these shelter sites act as points of attraction for the animal, the animal occupies a consistent area, or something approximating a home range.
+Home ranges are meant to represent areas in which the animal can source all resources required for a given life stage (\citeproc{ref-silva_autocorrelationinformed_2022}{46}).
 The predefined and steady state of these shelter sites provides the stability we look for in a home range, as well as a means of predefining a level of site fidelity.
 As the \emph{abmAnimalMovement} model can have multiple attraction (rest) sites supplied, we can simulate home ranges with unequal and behaviourally influenced space use.
 
@@ -252,13 +255,13 @@ As the \emph{abmAnimalMovement} model can have multiple attraction (rest) sites 
 \end{figure}
 
 In addition to the predefined attraction to shelter sites, the \emph{abmAnimalMovement} package allows for a more dynamic attraction to areas of high resource quality.
-Movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors (\citeproc{ref-Scharf2018}{57}); or the habitat decisions may occur at scales different to observed movement (\citeproc{ref-Bastille-Rousseau2017}{1}).
+Movements cannot be directly translated to animal preference; for example, habitat preference may miss key movement corridors (\citeproc{ref-Scharf2018}{62}); or the habitat decisions may occur at scales different to observed movement (\citeproc{ref-Bastille-Rousseau2017}{1}).
 Therefore, the simulation required a mechanism that somewhat detaches the preference/choice for observed movements.
-When entering foraging mode, the animal randomly selects foraging destinations as a point of attraction (but weighted towards areas of higher quality) (Figure \ref{fig:walkDiagram}).
+When entering the foraging behavioural state, the animal randomly selects foraging destinations as a point of attraction (weighted towards areas of higher quality) (Figure \ref{fig:walkDiagram}).
 This attraction impacts the movement choices made at each time step, with the animal more likely to choose (and therefore move to) options closer to the foraging destination.
 Therefore, foraging destination choice operates on a different time frame to the movement and allows movements through low-quality foraging areas.
 This presents a critical benefit of the simulation approach, as we define the internal state decision making process of the animal.
-The two time frames also allow exploration of assumptions connecting observed movement choices to choices grounded in resource use, and whether downstream analyses can accurately recover a hidden decision making process.
+The two time frames also allow exploration of assumptions connecting simulated movement choices to choices grounded in resource use, and whether downstream analyses can accurately recover a hidden decision making process.
 
 At all times, the subsequent locations of the animal are impacted by a movement resistance matrix.
 Differing values represent different environmental conditions that could change how easily/likely an animal is to use that area to move towards a destination.
@@ -276,7 +279,7 @@ To demonstrate the variation that movement ecology methods needs to wrangle, as 
 The examples cover a range of movement capacities, site fidelity, and resting/sheltering patterns.
 Unlike alternative methods that are built to fit and simulate movements from existing data, our examples are loosely based on summary statistics from previous published results (cited below in each species section).
 The choice of using species specific examples is intended to provide some biological context while demonstrating a range of simulation parametrisations.
-Therefore, we are only interested in whether the simulated data returns the intended traits we are attempting to simulate for each example species (e.g., avoidance, site fidelity, expected step lengths).
+Therefore, we are only interested in whether the simulated data returns the intended broad traits we are attempting to simulate for each example species (e.g., avoidance, site fidelity, expected step lengths).
 We show one example via a more detailed walk-through (badger), and the other example parametrisations are included as uses cases at the end of the manuscript (vulture, king cobra).
 
 \subsection{Primary example}\label{primary-example}
@@ -284,19 +287,19 @@ We show one example via a more detailed walk-through (badger), and the other exa
 \subsubsection{Ecology and objectives - badger}\label{ecology-and-objectives---badger}
 
 Our primary example is based on a badger.
-Badgers occupy setts, in our example two home/shelter sites, to where they routinely return (\citeproc{ref-kowalczyk_daily_2006}{58},\citeproc{ref-feore_habitat_1999}{59}).
+Badgers occupy setts, in our example two home/shelter sites, to where they routinely return (\citeproc{ref-kowalczyk_daily_2006}{63},\citeproc{ref-feore_habitat_1999}{64}).
 When not at the sett, the badger forages, and the foraging distances are impacted by resource position and movement capacity of the badger (i.e., how far can a badger feasibly travel for food from the sett).
 The badger therefore expresses very high site fidelity, a range dictated by the spatial positioning of resources, and is subject to the movement resistance of the terrestrial environment.
 
-We can draw on studies such as (\citeproc{ref-kowalczyk_daily_2006}{58}) and (\citeproc{ref-rosalino_activity_2005}{60}) to roughly gauge the speed of badgers (i.e., step length per minute).
-How this speed differs between behaviours is more difficult to estimate from existing literature, but we can use (\citeproc{ref-kowalczyk_daily_2006}{58}) reported maximum speed to guide more direct movements (e.g., state 0 - sheltering and state 1 - exploring).
-In particular (\citeproc{ref-kowalczyk_daily_2006}{58}) mentioned the heightened speeds moving from and to the setts.
-We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory (\citeproc{ref-kelly_extra_2020}{61}).
-We can draw on statements regarding maximum distance travelled in a night from papers such as (\citeproc{ref-rosalino_activity_2005}{60}), (\citeproc{ref-kowalczyk_daily_2006}{58}), and (\citeproc{ref-loureiro_path_2007}{62}) to approximate how distant foraging locations could be from a sett, while also confirming the nocturnal activity cycle for the badger.
-For the example, we will consider badgers as fully nocturnal, and with active periods lasting for around 8 hours each night (\citeproc{ref-rosalino_activity_2005}{60},\citeproc{ref-magowan_dead-reckoning_2022}{63}).
+We can draw on studies such as (\citeproc{ref-kowalczyk_daily_2006}{63}) and (\citeproc{ref-rosalino_activity_2005}{65}) to roughly gauge the speed of badgers (i.e., step length per minute).
+How this speed differs between behaviours is more difficult to estimate from existing literature, but we can use (\citeproc{ref-kowalczyk_daily_2006}{63}) reported maximum speed to guide more direct movements (e.g., state 0 - sheltering and state 1 - exploring).
+In particular (\citeproc{ref-kowalczyk_daily_2006}{63}) mentioned the heightened speeds moving from and to the setts.
+We also want to allow the exploratory (state 1) movements to be great enough to occasionally exceed the normal home range or territory (\citeproc{ref-kelly_extra_2020}{66}).
+We can draw on statements regarding maximum distance travelled in a night from papers such as (\citeproc{ref-rosalino_activity_2005}{65}), (\citeproc{ref-kowalczyk_daily_2006}{63}), and (\citeproc{ref-loureiro_path_2007}{67}) to approximate how distant foraging locations could be from a sett, while also confirming the nocturnal activity cycle for the badger.
+For the example, we will consider badgers as fully nocturnal, and with active periods lasting for around 8 hours each night (\citeproc{ref-rosalino_activity_2005}{65},\citeproc{ref-magowan_dead-reckoning_2022}{68}).
 The 8 hour active periods are not consistent throughout the year.
-Badgers occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources (\citeproc{ref-rosalino_activity_2005}{60},\citeproc{ref-magowan_dead-reckoning_2022}{63}).
-Badger movements are also impacted by their territoriality, avoiding areas occupied by other badger groups, but also displaying occasional extra-territorial movements (\citeproc{ref-feore_habitat_1999}{59},\citeproc{ref-kelly_extra_2020}{61}).
+Badgers occupying temperate areas are impacted by seasonal shifts that modify daylight hours and available resources (\citeproc{ref-rosalino_activity_2005}{65},\citeproc{ref-magowan_dead-reckoning_2022}{68}).
+Badger movements are also impacted by their territoriality, avoiding areas occupied by other badger groups, but also displaying occasional extra-territorial movements (\citeproc{ref-feore_habitat_1999}{64},\citeproc{ref-kelly_extra_2020}{66}).
 This suggests a general, but not complete avoidance of areas occupied by other badger groups.
 
 We can broadly summarise the badger ecology we want to parametrise as follows:
@@ -304,17 +307,17 @@ We can broadly summarise the badger ecology we want to parametrise as follows:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Exhibits site fidelity via the use of two shelter sites (\citeproc{ref-kowalczyk_daily_2006}{58},\citeproc{ref-feore_habitat_1999}{59})
+  Exhibits site fidelity via the use of two shelter sites (\citeproc{ref-kowalczyk_daily_2006}{63},\citeproc{ref-feore_habitat_1999}{64})
 \item
-  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-kowalczyk_daily_2006}{58},\citeproc{ref-rosalino_activity_2005}{60}), while constrained by terrestrial environment and territoriality (\citeproc{ref-feore_habitat_1999}{59},\citeproc{ref-kelly_extra_2020}{61})
+  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-kowalczyk_daily_2006}{63},\citeproc{ref-rosalino_activity_2005}{65}), while constrained by terrestrial environment and territoriality (\citeproc{ref-feore_habitat_1999}{64},\citeproc{ref-kelly_extra_2020}{66})
 \item
-  An 8-12 hour activity cycle, that shifts over the year (\citeproc{ref-rosalino_activity_2005}{60},\citeproc{ref-magowan_dead-reckoning_2022}{63})
+  An 8-12 hour activity cycle, that shifts over the year (\citeproc{ref-rosalino_activity_2005}{65},\citeproc{ref-magowan_dead-reckoning_2022}{68})
 \end{enumerate}
 
 \subsection{Operation}\label{operation}
 
-The \emph{abmAnimalMovement} package requires links to the \emph{Rcpp} (\textgreater= 1.0.8.3) (\citeproc{ref-Eddelbuettel_seamless_2011}{51}--\citeproc{ref-Eddelbuettel_extending_2018}{53}) and \emph{BH} (\textgreater= 1.78.0.0) packages (\citeproc{ref-Eddelbuettel_BH_2021}{64}), and therefore requires a version of \emph{R} \textgreater=3.5.0 (\citeproc{ref-R-base}{65}) (available from \href{https://www.r-project.org/}{www.r-project.org}).
-Currently the \emph{abmAnimalMovement} package can be installed from Github using \texttt{install\_github} provided by the \emph{devtools} package (\citeproc{ref-Wickham_devtools_2021}{66}).
+The \emph{abmAnimalMovement} package requires links to the \emph{Rcpp} (\textgreater= 1.0.8.3) (\citeproc{ref-Eddelbuettel_seamless_2011}{56}--\citeproc{ref-Eddelbuettel_extending_2018}{58}) and \emph{BH} (\textgreater= 1.78.0.0) packages (\citeproc{ref-Eddelbuettel_BH_2021}{69}), and therefore requires a version of \emph{R} \textgreater=3.5.0 (\citeproc{ref-R-base}{70}) (available from \href{https://www.r-project.org/}{www.r-project.org}).
+Currently the \emph{abmAnimalMovement} package can be installed from Github using \texttt{install\_github} provided by the \emph{devtools} package (\citeproc{ref-Wickham_devtools_2021}{71}).
 
 \subsection{Implemenation}\label{implemenation}
 
@@ -323,28 +326,24 @@ An alternative simpler implementation with no dependencies is provided as a pack
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# core package}
-\FunctionTok{library}\NormalTok{(abmAnimalMovement)}
-\CommentTok{\# data manipulation}
-\FunctionTok{library}\NormalTok{(dplyr)}
-\FunctionTok{library}\NormalTok{(reshape2)}
-\CommentTok{\# visualisation}
-\FunctionTok{library}\NormalTok{(ggplot2)}
-\FunctionTok{library}\NormalTok{(ggforce)}
-\FunctionTok{library}\NormalTok{(ggtext)}
-\FunctionTok{library}\NormalTok{(ggridges)}
-\FunctionTok{library}\NormalTok{(patchwork)}
-\CommentTok{\# environmental matrix generation}
-\FunctionTok{library}\NormalTok{(raster)}
-\FunctionTok{library}\NormalTok{(NLMR)}
+\FunctionTok{library}\NormalTok{(abmAnimalMovement) }\CommentTok{\# core package}
+\FunctionTok{library}\NormalTok{(dplyr) }\CommentTok{\# data manipulation}
+\FunctionTok{library}\NormalTok{(reshape2) }\CommentTok{\# data manipulation}
+\FunctionTok{library}\NormalTok{(ggplot2) }\CommentTok{\# visualisation}
+\FunctionTok{library}\NormalTok{(ggforce) }\CommentTok{\# visualisation}
+\FunctionTok{library}\NormalTok{(ggtext) }\CommentTok{\# visualisation}
+\FunctionTok{library}\NormalTok{(ggridges) }\CommentTok{\# visualisation}
+\FunctionTok{library}\NormalTok{(patchwork) }\CommentTok{\# visualisation}
+\FunctionTok{library}\NormalTok{(raster) }\CommentTok{\# environmental matrix generation}
+\FunctionTok{library}\NormalTok{(NLMR) }\CommentTok{\# environmental matrix generation}
 \end{Highlighting}
 \end{Shaded}
 
-We used \emph{R} v.4.4.2 (\citeproc{ref-R-base}{65}) via \emph{RStudio} v.2024.9.0.375 (\citeproc{ref-RStudioTeam2021}{67}), and used \emph{rmarkdown} v.2.29 (\citeproc{ref-R-rmarkdown}{68}--\citeproc{ref-rmarkdown2020}{70}), \emph{bookdown} v.0.42 (\citeproc{ref-bookdown2016}{71},\citeproc{ref-R-bookdown}{72}), \emph{tinytex} v.0.57 (\citeproc{ref-tinytex2019}{73},\citeproc{ref-R-tinytex}{74}), and \emph{knitr} v.1.49 (\citeproc{ref-knitr2015}{75}--\citeproc{ref-R-knitr}{77}) packages to generate type-set outputs.
-We used the \emph{here} v.1.0.1 package (\citeproc{ref-R-here}{78}) to help with relative file path definition.
-We used the \emph{dplyr} v.1.1.4 and \emph{reshape2} v.1.4.4 packages for data manipulation (\citeproc{ref-R-dplyr}{79},\citeproc{ref-reshape22007}{80}).
-We used \emph{ggplot2} v.3.5.1 for creating figures (\citeproc{ref-R-ggplot2}{81},\citeproc{ref-ggplot22016}{82}), with the expansions: \emph{ggridges} v.0.5.6 (\citeproc{ref-R-ggridges}{83}), \emph{ggtext} v.0.1.2 (\citeproc{ref-R-ggtext}{84}), \emph{ggforce} v.0.4.2 (\citeproc{ref-R-ggforce}{85}), and \emph{patchwork} v.1.3.0 (\citeproc{ref-R-patchwork}{86}).
-We used the \emph{raster} v.3.6.30 (\citeproc{ref-R-raster}{87}), \emph{sp} v.2.1.4 (\citeproc{ref-sp2013}{88}--\citeproc{ref-R-sp}{90}), and \emph{NLMR} v.1.1.1 (\citeproc{ref-NLMR2018}{91},\citeproc{ref-R-NLMR}{92}) for generating environmental matrices.
+We used \emph{R} v.4.4.2 (\citeproc{ref-R-base}{70}) via \emph{RStudio} v.2024.9.0.375 (\citeproc{ref-RStudioTeam2021}{72}), and used \emph{rmarkdown} v.2.29 (\citeproc{ref-R-rmarkdown}{73}--\citeproc{ref-rmarkdown2020}{75}), \emph{bookdown} v.0.42 (\citeproc{ref-bookdown2016}{76},\citeproc{ref-R-bookdown}{77}), \emph{tinytex} v.0.57 (\citeproc{ref-tinytex2019}{78},\citeproc{ref-R-tinytex}{79}), and \emph{knitr} v.1.49 (\citeproc{ref-knitr2015}{80}--\citeproc{ref-R-knitr}{82}) packages to generate type-set outputs.
+We used the \emph{here} v.1.0.1 package (\citeproc{ref-R-here}{83}) to help with relative file path definition.
+We used the \emph{dplyr} v.1.1.4 and \emph{reshape2} v.1.4.4 packages for data manipulation (\citeproc{ref-R-dplyr}{84},\citeproc{ref-reshape22007}{85}).
+We used \emph{ggplot2} v.3.5.1 for creating figures (\citeproc{ref-R-ggplot2}{86},\citeproc{ref-ggplot22016}{87}), with the expansions: \emph{ggridges} v.0.5.6 (\citeproc{ref-R-ggridges}{88}), \emph{ggtext} v.0.1.2 (\citeproc{ref-R-ggtext}{89}), \emph{ggforce} v.0.4.2 (\citeproc{ref-R-ggforce}{90}), and \emph{patchwork} v.1.3.0 (\citeproc{ref-R-patchwork}{91}).
+We used the \emph{raster} v.3.6.30 (\citeproc{ref-R-raster}{92}), \emph{sp} v.2.1.4 (\citeproc{ref-sp2013}{93}--\citeproc{ref-R-sp}{95}), and \emph{NLMR} v.1.1.1 (\citeproc{ref-NLMR2018}{96},\citeproc{ref-R-NLMR}{97}) for generating environmental matrices. \emph{NLMR} is no long available on CRAN but still accessible here \url{https://github.com/ropensci/NLMR}, and installed using \texttt{remotes::install\_github("ropensci/NLMR")}.
 
 \subsubsection{Generating environmental matrices}\label{generating-environmental-matrices}
 
@@ -362,7 +361,7 @@ Before starting to simulate animal movement, we needed to generate a landscape.
 The landscapes in this case will take the form of matrices, where each cell is describing the quality of foraging, shelter, and movement ease.
 The highest quality locations/cells are coded as 1, with quality decreasing as the values range down to 0.
 The 1 to 0 quality values in each cell are later used to help the animal to choose how and where it moves throughout the landscape.
-Depending on the behavioural state, the weighing of which matrix/layer used will change (e.g., when in a resting behavioural state the shelter site quality layer is used).
+Depending on the behavioural state, the weighing of which matrix/layer used will change (e.g., when in a sheltering behavioural state the shelter site quality layer is used).
 
 For most applications, a landscape would be known \emph{a priori}, but for this demonstration and testing of methods we use a selection of randomly generated landscape matrices (Figure \ref{fig:BADGERlayersFigure}), using the \emph{NLMR} package (neutral landscape models).
 
@@ -380,23 +379,23 @@ This provides some balance between accessibility and proximity to resources.
 The three matrices described provide a baseline for our examples, but can easily be modified for different scenarios (Figure \ref{fig:BADGERlayersFigure}).
 To aid balancing, we keep values between 0 and 1; any numeric value can be used, but the simulation will interpret the values as relative weights when the animal is making decisions (Note: The current implementation of \texttt{cpp\_get\_values} that extracts values from the matrices during the simulation returns -99.9 weighting when presented with NA values; therefore, -99.9 serves as a lower limit to the matrix weighting values).
 
-Once generated we supply the core simulation function (\texttt{abm\_simulate}) with each of these layers via the \texttt{shelteringMatrix}, \texttt{foragingMatrix}, and \texttt{movementMatrix} arguments.
+Once generated we supply the core simulation function (\texttt{abm\_simulate}) with each of these layers via the \texttt{shelteringMatrix}, \texttt{foragingMatrix}, and \texttt{movementMatrix} arguments (Table \ref{tab:arguementTable}).
 
 \subsubsection{Animal parameters}\label{animal-parameters}
 
-We predefine a suite of parameters describing the movement and behaviour characteristics of the animal (e.g., badger) based on summary statistics and general statements from previous research (\citeproc{ref-kowalczyk_daily_2006}{58}--\citeproc{ref-kelly_extra_2020}{61},\citeproc{ref-magowan_dead-reckoning_2022}{63}).
+We predefine a suite of parameters describing the movement and behaviour characteristics of the animal (e.g., badger) based on summary statistics and general statements from previous research (\citeproc{ref-kowalczyk_daily_2006}{63}--\citeproc{ref-kelly_extra_2020}{66},\citeproc{ref-magowan_dead-reckoning_2022}{68}).
 We store the parameters as objects we can later input into the \texttt{abm\_simulate} function.
 We complete this process for three species; the badger values are displayed below, whereas the values for vulture and king cobra examples are provided at the end of the manuscript.
 
 We parametrise shelter information in the following ways.
 For the sett, we draw a two sets of coordinates from the shelter quality layer.
-During the simulation the badger will randomly select a sett to return to each time it enters the resting behavioural state.
+During the simulation the badger will randomly select a sett to return to each time it enters the sheltering behavioural state.
 The choice of which sett to return to is weighted by the values supplied via the shelter quality environmental layer (Figure \ref{fig:BADGERlayersFigure}).
 The coordinate data frame is provided to the core simulation function's \texttt{shelterLocations} argument.
 
 The \texttt{shelterSize} argument describes the radius around the shelter locations within which the animal exhibits near stationary behaviour.
 We specify the shelter size to be 8 m, meaning that when within 8 m of the selected shelter site the animal's possible step lengths are decreased 100-fold.
-The shelter site size of 8 m allows for small movements near/within the sett during resting behaviour.
+The shelter site size of 8 m allows for small movements near/within the sett during sheltering behaviour.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -418,7 +417,7 @@ The shelter site size of 8 m allows for small movements near/within the sett dur
 
 }
 
-\caption{The three resulting landscape layers to be fed into the simulation for the badger example: shelter quality, foraging resources, movement ease.}\label{fig:BADGERlayersFigure}
+\caption{The three resulting landscape layers to be input into the simulation for the badger example: shelter quality, foraging resources, movement ease. The points marked with S indicate the generated shelter sites randomly sampled from the underlying shelter quality matrix. X and Y axes cell numbers; in the case of the badger example cell is 5 m by 5 m.}\label{fig:BADGERlayersFigure}
 \end{figure}
 
 Badger movement is set via the definition of three pairs of Gamma and Von Misses distributions.
@@ -428,8 +427,8 @@ As we have three behavioural states, each movement parameter takes the form of a
 The step lengths require predefined shape (k) and scale (\(\theta\)) parameters to describe the Gamma distributions, and we provide these to the simulate function via the \texttt{k\_step} and \texttt{s\_step} arguments.
 For the turn angles we require the mean (\(\mu\)) and concentration (\(\kappa\)) to define the Von Mises distributions, and provide these via the \texttt{mu\_angle} and \texttt{k\_angle} arguments.
 
-The perceptual range, in other words, where the badger decides to forage is set in a similar fashion.
-Where \texttt{destinationRange} provides the shape (k) and scale (\(\theta\)) for the Gamma distribution describing distance of possible foraging locations, and \texttt{destinationDirection} provides the mean (\(\mu\)) and concentration (\(\kappa\)) the Von Mises distribution describing the angle at which those locations can fall (Figure \ref{fig:BADGERmoveCharFigure}).
+The perceptual range (implemented here as destination range), is how far the the badger can ``see'' when deciding where to forage is set in a similar fashion.
+Where \texttt{destinationRange} provides the shape (k) and scale (\(\theta\)) for the Gamma distribution describing distance of possible foraging locations, and \texttt{destinationDirection} provides the mean (\(\mu\)) and concentration (\(\kappa\)) the Von Mises distribution describing the angle at which those locations can fall in relation to the previous direction of movement (Figure \ref{fig:BADGERmoveCharFigure}).
 
 We can also alter the strength of attraction to the foraging destinations.
 At each time step, the animal is offered a number of location options to move to next time step.
@@ -442,7 +441,7 @@ When these weightings increase in value the animal will exhibit a stronger attra
 
 We also store a value ready for the \texttt{rescale\_step2cell} argument.
 The rescale value is a simple means of adjusting the environment layers to fit with the scale/unit in which the step lengths are provided.
-In this case, we treat each cell as 5m by 5m, thereby ensuring that our 2000x2000 matrix is sufficient for the badger to traverse without leaving.
+In this case, we treat each cell as 5m by 5m, thereby ensuring that our 2000x2000 matrix is sufficient for the badger to traverse without leaving the extent of the generated landscape.
 The rescale value therefore allows high resolution movements on lower resolution environments, offering a crucial memory saving optimisation.
 
 \begin{Shaded}
@@ -481,15 +480,15 @@ Both \texttt{avoidTransformation} and \texttt{avoidModifier} operate in the same
 We implement two cycles to capture the daily and seasonal cycles the badger experiences.
 Both cycles are created by describing a Sine wave defined by its amplitude, midline, offset (\(\phi\)) and frequency (\(\tau\); via the \texttt{cycle\_draw} function).
 The \texttt{abm\_simulate} function has two arguments for wave parameters: \texttt{rest\_Cycle} is a mandatory input to describe diel activity cycling, and \texttt{additional\_Cycles} to define any number of additive additional cycles.
-For \texttt{rest\_Cycle} we will store a vector of length 4, with values defining the amplitude, midline, offset, and frequency in that order (Frequency is supplied in hours, i.e., 60 times the time step).
-We set the amplitude to 0.12 and midline as 0, meaning the probability of resting will be modified by values ranging from -0.06 to 0.06 depending on the location in the wave.
-Our badger example requires a 24 hour cycle where the probability of resting will peak and nadir, hence offset and frequency are set to 24 hours.
-When combined with the base transition probability to rest, the above parametrisation creates a scenario of approximately 8 hour periods of activity every 24 hours.
+For \texttt{rest\_Cycle} we will store a vector of length 4, with values defining the amplitude, midline, offset, and frequency in that order (Frequency is supplied in hours, i.e., 60 times the time step in this case).
+We set the amplitude to 0.12 and midline as 0, meaning the probability of sheltering will be modified by values ranging from -0.06 to 0.06 depending on the location in the wave.
+Our badger example requires a 24 hour cycle where the probability of sheltering will peak and nadir, hence offset and frequency are set to 24 hours.
+When combined with the base transition probability to shelter, the above parametrisation creates a scenario of approximately 8 hour periods of activity every 24 hours.
 
 To add a seasonal cycle we use \texttt{additional\_Cycles}.
 We predefine a data frame where each row contains four elements describing the amplitude, midline, offset, and frequency.
 Whereas our diel activity is defined by a 24 hour cycle, a seasonal cycle is 365 days and we shift the peak half a year (offset = 365/2).
-The seasonal wave increases the probability of resting behaviour during a portion of the year, while not also overwhelming a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year) as we have set a lower amplitude for the seasonal cycle (0.075).
+The seasonal wave increases the probability of sheltering behaviour during a portion of the year, while not also overwhelming a relatively stable diel cycle (i.e., badger will sleep longer during one part of the year) as we have set a lower amplitude for the seasonal cycle (0.075).
 A more extreme implementation of the second cycle could introduce hibernation behaviour.
 
 We also pull forward the behaviour transition matrix we showed during the overview, and rename it so all simulation input objects have the \texttt{BADGER\_} prefix.
@@ -591,11 +590,11 @@ movementMatrix & BADGER\_move & \\
 
 \subsection{Output format}\label{output-format}
 
-The simulation function (\texttt{abm\_simulate}) outputs a list containing: (1) a dataframe of realised movements, (2) a dataframe of options the animal had available, and (3) a list of the inputs used to simulate the movement.
-The realised movement dataframe (\texttt{locations}) describes all realised locations the animal occupied, step length information, behavioural state, and current point of attraction, where each row is equal to a time step.
+The simulation function (\texttt{abm\_simulate}) outputs a list containing: (1) a dataframe of realised simulated movements, (2) a dataframe of options the animal had available, and (3) a list of the inputs used to simulate the movement.
+The realised movement dataframe (\texttt{locations}) describes all simulated locations the animal occupied, step length information, behavioural state, and current point of attraction, where each row is equal to a time step.
 Note the simulation is scale agnostic, so each row can represent a different time step to the example.
 Other than the lack of timestamps and location error, the format largely mirrors a typical movement dataset.
-Our example is minute by minute; changing the time step would require a reparametrisation of step length and behavioural transition probabilities.
+Our example is minute by minute; changing the what the time step represents would require a reparametrisation of step length and behavioural transition probabilities.
 The \texttt{options} dataframe describes all the options available to the animal over the entire simulation duration, where each row is equal to an option repeated for each time step.
 
 \subsection{Outputs review}\label{outputs-review}
@@ -614,7 +613,8 @@ The simulated movement will return the scaled values, so to plot something compa
 \caption{The distribution of step lengths used during the badger simulation example. Parametrising distributions are shown as solid areas using the same shape and scale parameters used as input into the simulation function. The lower plot shows the distribution used to generate potential foraging destinations. The realised resulting simulated step lengths (scaled to the input units) are shown by the solid lines. The realised resulting turn angles are shown in left hand sub-plots. Inset pie charts show the number of step lengths that were below the shelter site size. Note that x axis is not consistent between the three plots.}\label{fig:BADGERmoveCharFigure}
 \end{figure}
 
-We can compare the simulation's inputs displayed in to the simulated/observed outputs displayed in Figure \ref{fig:BADGERmoveCharFigure} and see that they largely agree as expected.
+We can compare the simulation's inputs displayed in to the simulated outputs displayed in Figure \ref{fig:BADGERmoveCharFigure} and see that they largely agree as expected.
+The discrepancy in the sheltering behaviour is due to the elevated instances of negligible movement once the animal has reached their chosen shelter site.
 The turn angles are more variable, as the destination decisions and attraction to locations heavily influence the distribution overriding the initial parametrisation of the Von Mises distribution.
 Figure \ref{fig:VULTUREmoveCharFigure} and Figure \ref{fig:KINGCOBRAmoveCharFigure} in the use cases section show the outputs for vulture and king cobra simulations.
 
@@ -629,7 +629,7 @@ The king cobra plot shows the impact of a near impermeable barrier truncating th
 
 }
 
-\caption{The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the observed location at each time step. The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:mapsFigure}
+\caption{The simulated locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the simulated location at each time step. The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:mapsFigure}
 \end{figure}
 
 \begin{figure}
@@ -638,7 +638,7 @@ The king cobra plot shows the impact of a near impermeable barrier truncating th
 
 }
 
-\caption{The observed locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra) over the first month of time steps. Grey path shows the overall movement during that month, overlaid points indicate where the animal was in a given behavioural mode. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points, black squares show the dynamically selected foraging destinations. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:oneMonthMapFigure}
+\caption{The simulated locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra) over the first month of time steps. Grey path shows the overall movement during that month, overlaid points indicate where the animal was in a given behavioural mode. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points, black squares show the dynamically selected foraging destinations. Note that the size represented by each unit on the x and y axis differs depending on the species.}\label{fig:oneMonthMapFigure}
 \end{figure}
 
 The activity cycles and the timing of behavioural shifts is a key component in the simulations.
@@ -655,7 +655,7 @@ We can see intermittently extended sheltering periods, punctuated by short explo
 
 }
 
-\caption{The observered (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. Note that the input waves acting on the simulated animal in conjunction with the beahvioural transition matrix.}\label{fig:cycleFigure}
+\caption{The resulting simulated (top half) and parametrised activty cycles (bottom half) governing sheltering behaviour in the three example species (A - Badger, B - Vulture, C - King Cobra). Point colour and position describe the behavioural state at each simulated time step, whereas the purple waves indicated the input values. That the input shelter probability waves are additively combined with the underlying behavioural transition matrix of each species.}\label{fig:cycleFigure}
 \end{figure}
 
 At the daily and monthly scale, we cannot see the impact of the broad scale seasonal cycles.
@@ -669,7 +669,7 @@ The king cobra cycles reveal a decrease in the number of days spent entirely she
 
 }
 
-\caption{The percentage of time steps spent in state 0 - resting per day, and how it varies over the entire simulated year.}\label{fig:cycleSeasonalFigure}
+\caption{The percentage of time steps spent in state 0 - sheltering per day, and how it varies over the entire simulated year.}\label{fig:cycleSeasonalFigure}
 \end{figure}
 
 \section{Discussion}\label{discussion}
@@ -678,20 +678,24 @@ Animal movement datasets are complex and require a suite of analytical approache
 Efforts to develop new, and test existing, analyses would be aided by access to a range of diverse datasets.
 While \emph{ideal} simulations often accompany new analysis methods and provide superb validation for the method in question, reaffirming the method's robustness and pushing them to new limits with a messier, more stochastic, simulation approach could greatly strengthen our confidence in results.
 The \emph{abmAnimalMovement} package provides an independent route to test new methods that covers a range of interacting movement features, not necessarily directly tied to a single analytical method.
+For example, we have used this simulation to explore the impacts of analysis choice on researcher's ability to extract habitat selection estimates from movement data (\citeproc{ref-marshall_habitat_2024}{54},\citeproc{ref-marshall_multiverse_2024}{55}).
+By knowing the underlying mechanism of habitat selection we are able to state whether analysis methods returned corrected or expected results, while quantifying how different analytical choices led to uncertainty.
 
 By including a range of features linked to movement and behaviour, the \emph{abmAnimalMovement} package can be implemented to investigate a suite of questions commonly asked of movement data --from habitat selection, to behaviour detection (for examples of common themes see \citeproc{ref-joo_recent_2022}{13}).
 While some of the features can appear simplistic, there remains ample flexibility to simulate a wide range of useful scenarios.
 For example, we conceptualise the three movement states as sheltering, exploring, and foraging.
 However, only several aspects are immutable: one state exhibits site fidelity (state 0), one state is free from all attraction (state 1), and one state is driven by an underlying environmental layer (state 2).
+Reduction to a two or one state scenario could be achieved via manipulation of the transition probabilities.
+For animals demonstrating more behavioural states, the \emph{abmAnimalMovement} package would need considerable extension to be useful; the same for migratory species, especially those travelling long distances into mutually exclusive areas.
 
 The \emph{abmAnimalMovement} package has an advantage over data-driven simulation methods in scenarios where data are scarce, as much of the animal world is untracked (\citeproc{ref-joo_recent_2022}{13},\citeproc{ref-crane_lots_2021}{25}).
 For the untracked animals, we may be limited to basic information of speed, activity, and resources, or such information may even need to be inferred from ecologically similar species.
 In such data starved situations, the \emph{abmAnimalMovement} package's low computational cost and minimal data requirements allows for a large number of alternative parametrisations to be explored.
 Via the explorations of different parametrisations researchers can help build a picture of the study and analysis methods best suited for their questions, with the opportunity to test those analyses on synthetic simulated data.
 
-In cases where data cannot be shared (e.g.~due to concerns over species sensitivity), using a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code (\citeproc{ref-Quintana2020}{93}).
-Providing data is a key component to ensuring computational reproducibility (\citeproc{ref-Gerstner2017}{94}), and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
-Additionally, such synthetic datasets could be integrated into preregistration as a means of demonstrating the validity of an analysis plan prior to undertaking a study.
+In cases where data cannot be shared (e.g.~due to concerns over species sensitivity), using a synthetic dataset could allow researchers to provide peer reviewers a dataset to test and error-check analysis code (\citeproc{ref-Quintana2020}{98}).
+Providing data is a key component to ensuring computational reproducibility (\citeproc{ref-Gerstner2017}{99}), and synthetic datasets provide an avenue to limit the reproducibility loss from data sharing restrictions.
+Additionally, such synthetic datasets could be integrated into preregistration as a means of demonstrating the validity of an analysis plan prior to undertaking a study, or as post hoc exploration of sampling uncertainty (\citeproc{ref-Silva_movedesign_2023}{35}).
 
 Producing a range of simulated datasets that cover alternate scenarios may present researchers opportunities to test real data against a null model.
 For example, researchers looking to investigate whether an animal was avoiding a certain landscape feature could calibrate a number of simulations covering a range of differing avoidance strengths.
@@ -725,65 +729,66 @@ However, there are several aspects that will bear updating in future versions.
 \subsection{Use cases}\label{use-cases}
 
 This section provides alternative parametrisations for the secondary examples to better demonstrate the range of movement types and scenarios the \emph{abmAnimalMovement} package can replicate.
+Primarily, we created these further examples for use in (\citeproc{ref-marshall_habitat_2024}{54}) and (\citeproc{ref-marshall_multiverse_2024}{55}), to broaden the generalisablity of the findings explored in those papers.
 We provide example implementations of vulture and king cobra -like movement.
 
 \subsubsection{Ecology and objectives - vulture}\label{ecology-and-objectives---vulture}
 
 Unlike badgers and other terrestrially moving animals, vultures can move great distances with minimal obstruction (Figure \ref{fig:VULTURElayersFigure}).
-Vultures can also move greater distances more rapidly (\citeproc{ref-hribsek_first_2021}{95}), resulting in a more variable and distribution of step lengths (\citeproc{ref-garcia-jimenez_drivers_2018}{96}--\citeproc{ref-subedi_spatial_2020}{98}) (Figure \ref{fig:VULTUREmoveCharFigure}).
+Vultures can also move greater distances more rapidly (\citeproc{ref-hribsek_first_2021}{100}), resulting in a more variable and distribution of step lengths (\citeproc{ref-garcia-jimenez_drivers_2018}{101}--\citeproc{ref-subedi_spatial_2020}{103}) (Figure \ref{fig:VULTUREmoveCharFigure}).
 
-Similar to badgers, vultures exhibit significant site fidelity, re-using roosting and nesting sites (\citeproc{ref-bracis_revisitation_2018}{99}).
+Similar to badgers, vultures exhibit significant site fidelity, re-using roosting and nesting sites (\citeproc{ref-bracis_revisitation_2018}{104}).
 Such shelter sites could be predefined; for example, if shelter sites were known \emph{a priori} discovered via the capture and tagging of animals, which in the case of birds is more likely.
 
 Vultures also offer an opportunity to demonstrate how the underlying resource availability impacts the movements of animals.
 In the case of vultures, their moments have been seen to follow carcasses, creating starkly contrasting areas where vultures will and will not travel (\citeproc{ref-arrondo_invisible_2018}{9}) (Figure \ref{fig:VULTURElayersFigure}).
 
-Vultures have a very similar cycle pattern to the badgers (just inverted), one defined by a standard 12 hours of activity during the day, and 12 hours of increased resting behaviour during the night.
-The importance of simulating such cycles is made clear by vultures studies demonstrating that day-night cycles can impact rates of location collection (\citeproc{ref-silva_seasonal_2017}{100}).
+Vultures have a very similar cycle pattern to the badgers (just inverted), one defined by a standard 12 hours of activity during the day, and 12 hours of increased sheltering behaviour during the night.
+The importance of simulating such cycles is made clear by vultures studies demonstrating that day-night cycles can impact rates of location collection (\citeproc{ref-silva_seasonal_2017}{105}).
 How the the animals' activity cycle and the probability of collected data interact could be a key consideration for some research questions.
-Again, similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year (\citeproc{ref-hribsek_first_2021}{95},\citeproc{ref-garcia-jimenez_drivers_2018}{96},\citeproc{ref-peshev_new_2021}{101}).
+Again, similar to badgers we would expect seasonal shifts in the form of an increase and decrease in activity depending on the time of year (\citeproc{ref-hribsek_first_2021}{100},\citeproc{ref-garcia-jimenez_drivers_2018}{101},\citeproc{ref-peshev_new_2021}{106}).
 
 We can broadly summarise the vulture ecology we want to parametrise as follows:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Medium site fidelity via the use of multiple roosting/resting sites (\citeproc{ref-bracis_revisitation_2018}{99})
+  Medium site fidelity via the use of multiple roosting/sheltering sites (\citeproc{ref-bracis_revisitation_2018}{104})
 \item
-  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-hribsek_first_2021}{95}--\citeproc{ref-subedi_spatial_2020}{98}), with minimal landscape derived resistance
+  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-hribsek_first_2021}{100}--\citeproc{ref-subedi_spatial_2020}{103}), with minimal landscape derived resistance
 \item
   A 8-12 hour activity cycle, that shifts over the year
 \end{enumerate}
 
 \subsubsection{Ecology and objectives - king cobra}\label{ecology-and-objectives---king-cobra}
 
-Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\citeproc{ref-Marshall2018}{102},\citeproc{ref-marshall_no_2020}{103}).
+Whereas the previous two species have a very limited or single shelter sites, king cobras make use of a wider range of shelter sites distributed more widely over their home ranges (\citeproc{ref-Marshall2018}{107},\citeproc{ref-marshall_no_2020}{108}).
 These sites can also be larger, comprising of burrow systems or rock complexes.
 
-What more dramatically sets king cobras, and other snakes, apart is a vastly differing rest-forage cycle.
-While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle (\citeproc{ref-marshall_no_2020}{103}--\citeproc{ref-Siers2018}{106}).
+What more dramatically sets king cobras, and other snakes, apart is a vastly differing shelter-forage cycle.
+While snakes still exhibit a diel cycle, the intermittent depredation of large prey items and the time required sheltering to digest large meals results in a second broader activity cycle operating over a more widely observed diel cycle (\citeproc{ref-marshall_no_2020}{108}--\citeproc{ref-Siers2018}{111}).
 We can conceptualise this pattern as two additive cycles, one that will describe the daily activity cycle, and a second that describes the foraging and digestion cycle.
 Seasonality also impacts king cobra activity.
 As king cobras occupy tropical regions, the seasonality they experience is not as pronounced as the badger or vulture examples.
 Overall king cobras have three activity cycles acting on three different scales.
 
 In this example we can also demonstrate the movement resistance dramatically impacting movement possibilities.
-King cobra movement can be limited by roads (\citeproc{ref-jones_how_2022}{107},\citeproc{ref-Marshall2018b}{108}), where unless provided with crossing structures king cobras are vulnerable to vehicle hits (Figure \ref{fig:KINGCOBRAlayersFigure}).
-In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements (\citeproc{ref-Marshall2018b}{108},\citeproc{ref-Shankar2013}{109}).
+King cobra movement can be limited by roads (\citeproc{ref-jones_how_2022}{112},\citeproc{ref-Marshall2018b}{113}), where unless provided with crossing structures king cobras are vulnerable to vehicle hits (Figure \ref{fig:KINGCOBRAlayersFigure}).
+In addition to roads presenting linear barriers across the landscape, king cobras face persecution when near or in human settlements (\citeproc{ref-Marshall2018b}{113},\citeproc{ref-Shankar2013}{114}).
 Despite the risks, avoidance of such areas appears weak.
 
-Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability (Figure \ref{fig:KINGCOBRAmoveCharFigure}) as king cobras are known to range over large areas (\citeproc{ref-Marshall2018}{102},\citeproc{ref-marshall_no_2020}{103},\citeproc{ref-Silva2018}{110}).
+Finally, king cobra movement characteristics will be dramatically reduced compared to the vulture's, but with similar shape to the badger with greater variability (Figure \ref{fig:KINGCOBRAmoveCharFigure}) as king cobras are known to range over large areas (\citeproc{ref-Marshall2018}{107},\citeproc{ref-marshall_no_2020}{108},\citeproc{ref-Silva2018}{115}).
 
 We can broadly summarise the king cobra ecology we want to parametrise as follows:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Lower site fidelity via the use of many shelter sites (\citeproc{ref-Marshall2018}{102},\citeproc{ref-marshall_no_2020}{103})
+  Lower site fidelity via the use of many shelter sites (\citeproc{ref-Marshall2018}{107},\citeproc{ref-marshall_no_2020}{108})
 \item
-  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-Marshall2018}{102},\citeproc{ref-marshall_no_2020}{103},\citeproc{ref-Silva2018}{110}), with examples of very high landscape derived resistance (\citeproc{ref-jones_how_2022}{107},\citeproc{ref-Marshall2018b}{108})
+  Movement speed approximated by summary statistics from previous studies (\citeproc{ref-Marshall2018}{107},\citeproc{ref-marshall_no_2020}{108},\citeproc{ref-Silva2018}{115}), with examples of very high landscape derived resistance (\citeproc{ref-jones_how_2022}{112},\citeproc{ref-Marshall2018b}{113})
 \item
-  A 8-12 hour activity cycle, with a approximately weekly forage-digest cycle, and weak seasonality (\citeproc{ref-marshall_no_2020}{103}--\citeproc{ref-Siers2018}{106})
+  A 8-12 hour activity cycle, with a approximately weekly forage-digest cycle, and weak seasonality (\citeproc{ref-marshall_no_2020}{108}--\citeproc{ref-Siers2018}{111})
 \end{enumerate}
 
 \subsubsection{Simulation inputs}\label{simulation-inputs}
@@ -795,7 +800,7 @@ We specified a number of predefined resting/shelter sites, assuming that bird bi
 The shelter site size is smaller than the badger sett, so is only 5 m.
 Step length parameters are all larger and more variable, along with destination ranges (Figure \ref{fig:VULTUREmoveCharFigure}).
 We set a larger rescale value also to ensure the vulture has a larger landscape to operate across.
-The rest cycle is broadly similar, with a 12 hour diel cycle and gentle seasonality.
+The shelter cycle is broadly similar, with a 12 hour diel cycle and gentle seasonality.
 We made two small modifications to the transition matrix allowing for more frequent switches between foraging and exploring.
 We also alter two of the environmental matrices.
 We maximise movement ease across the entire landscape, while also lowering the foraging quality for an area to the West reflecting lower resources in that area (Figure \ref{fig:VULTURElayersFigure}).
@@ -807,19 +812,15 @@ Finally, we specify that the vulture will not be avoiding any locations; we stil
 \NormalTok{VULTURE\_shelterLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
   \StringTok{"x"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{1024}\NormalTok{, }\DecValTok{1005}\NormalTok{, }\DecValTok{1115}\NormalTok{),}
   \StringTok{"y"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\DecValTok{1193}\NormalTok{, }\DecValTok{1070}\NormalTok{, }\DecValTok{882}\NormalTok{))}
-\CommentTok{\# shelter site radius to reduce movements}
-\NormalTok{VULTURE\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{5}
+
+\NormalTok{VULTURE\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{5} \CommentTok{\# shelter site radius to reduce movements}
 
 \CommentTok{\# parameters defining Gamma (step length) and Von Mises (turn angle) for each}
 \CommentTok{\# behaviour state}
-\CommentTok{\# Gamma shape}
-\NormalTok{VULTURE\_k\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\FloatTok{2.2}\SpecialCharTok{*}\DecValTok{60}\NormalTok{, }\FloatTok{1.5}\SpecialCharTok{*}\DecValTok{60}\NormalTok{)}
-\CommentTok{\# Gamma scale}
-\NormalTok{VULTURE\_s\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{40}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\DecValTok{1}\NormalTok{)}
-\CommentTok{\# Von Mises mean}
-\NormalTok{VULTURE\_mu\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
-\CommentTok{\# Von Mises concentration}
-\NormalTok{VULTURE\_k\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.6}\NormalTok{)}
+\NormalTok{VULTURE\_k\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\FloatTok{2.2}\SpecialCharTok{*}\DecValTok{60}\NormalTok{, }\FloatTok{1.5}\SpecialCharTok{*}\DecValTok{60}\NormalTok{) }\CommentTok{\# Gamma shape}
+\NormalTok{VULTURE\_s\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{40}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\DecValTok{1}\NormalTok{) }\CommentTok{\# Gamma scale}
+\NormalTok{VULTURE\_mu\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{\# Von Mises mean}
+\NormalTok{VULTURE\_k\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.6}\NormalTok{) }\CommentTok{\# Von Mises concentration}
 
 \CommentTok{\# parameters defining Gamma (shape and scale) and Von Mises (mean and}
 \CommentTok{\# concentration) for foraging destination options}
@@ -829,10 +830,9 @@ Finally, we specify that the vulture will not be avoiding any locations; we stil
 \NormalTok{VULTURE\_destinationTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
 \NormalTok{VULTURE\_destinationModifier }\OtherTok{\textless{}{-}} \DecValTok{2}
 
-\CommentTok{\# each cell of the environmental matrix is 20x20}
-\NormalTok{VULTURE\_rescale }\OtherTok{\textless{}{-}} \DecValTok{20}
+\NormalTok{VULTURE\_rescale }\OtherTok{\textless{}{-}} \DecValTok{20} \CommentTok{\# each cell of the environmental matrix is 20x20}
 
-\CommentTok{\# the diel resting/active cycle: amplitude, midline, offset, frequency}
+\CommentTok{\# the diel sheltering/active cycle: amplitude, midline, offset, frequency}
 \NormalTok{VULTURE\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 \CommentTok{\# additional cycles as a dataframe: amplitude, midline, offset, frequency}
 \NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\NormalTok{ (}\DecValTok{365}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\DecValTok{24}\SpecialCharTok{*} \DecValTok{365}\NormalTok{) }\CommentTok{\# seasonal}
@@ -890,14 +890,10 @@ We use a larger shelter site size, as king cobras are known to occupy large rock
 \begin{Highlighting}[]
 \CommentTok{\# parameters defining Gamma (step length) and Von Mises (turn angle) for each}
 \CommentTok{\# behaviour state}
-\CommentTok{\# Gamma shape}
-\NormalTok{KINGCOBRA\_k\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{30}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{20}\NormalTok{)}
-\CommentTok{\# Gamma scale}
-\NormalTok{KINGCOBRA\_s\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.75}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{1.75}\NormalTok{)}
-\CommentTok{\# Von Mises mean}
-\NormalTok{KINGCOBRA\_mu\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{)}
-\CommentTok{\# Von Mises concentration}
-\NormalTok{KINGCOBRA\_k\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.6}\NormalTok{)}
+\NormalTok{KINGCOBRA\_k\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{30}\NormalTok{, }\DecValTok{40}\NormalTok{, }\DecValTok{20}\NormalTok{) }\CommentTok{\# Gamma shape}
+\NormalTok{KINGCOBRA\_s\_step }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.75}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{1.75}\NormalTok{) }\CommentTok{\# Gamma scale}
+\NormalTok{KINGCOBRA\_mu\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{\# Von Mises mean}
+\NormalTok{KINGCOBRA\_k\_angle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{, }\FloatTok{0.99}\NormalTok{, }\FloatTok{0.6}\NormalTok{) }\CommentTok{\# Von Mises concentration}
 
 \CommentTok{\# parameters defining Gamma (shape and scale) and Von Mises (mean and}
 \CommentTok{\# concentration) for foraging destination options}
@@ -907,10 +903,9 @@ We use a larger shelter site size, as king cobras are known to occupy large rock
 \NormalTok{KINGCOBRA\_destinationTransformation }\OtherTok{\textless{}{-}} \DecValTok{2}
 \NormalTok{KINGCOBRA\_destinationModifier }\OtherTok{\textless{}{-}} \FloatTok{1.5}
 
-\CommentTok{\# each cell of the environmental matrix is 10x10}
-\NormalTok{KINGCOBRA\_rescale }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{KINGCOBRA\_rescale }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# each cell of the environmental matrix is 10x10}
 
-\CommentTok{\# the diel resting/active cycle: amplitude, midline, offset, frequency}
+\CommentTok{\# the diel sheltering/active cycle: amplitude, midline, offset, frequency}
 \NormalTok{KINGCOBRA\_rest\_Cycle }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.14}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{)}
 \CommentTok{\# additional cycles as a dataframe: amplitude, midline, offset, frequency}
 \NormalTok{c0 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.12}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\SpecialCharTok{*}\DecValTok{4}\NormalTok{) }\CommentTok{\# digestion}
@@ -970,8 +965,7 @@ We use a larger shelter site size, as king cobras are known to occupy large rock
 \NormalTok{KINGCOBRA\_shelterLocs }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
   \StringTok{"x"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{2}\NormalTok{],}
   \StringTok{"y"} \OtherTok{=}\NormalTok{ sampledShelters[,}\DecValTok{1}\NormalTok{])}
-\CommentTok{\# specifying a larger shelter site radius}
-\NormalTok{KINGCOBRA\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{KINGCOBRA\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# specifying a larger shelter site radius}
 \end{Highlighting}
 \end{Shaded}
 
@@ -990,7 +984,7 @@ We use a larger shelter site size, as king cobras are known to occupy large rock
 
 Figures \ref{fig:VULTUREmoveCharFigure} and \ref{fig:KINGCOBRAmoveCharFigure} describe the inputs for the vulture and king cobra example respectively, and can be compared to the realised movements.
 Figures \ref{fig:VULTUREmoveCharFigure}, and \ref{fig:KINGCOBRAmoveCharFigure} also provide information on the rates of stationary behaviour, defined in the plot as step lengths less than the shelter site size.
-The king cobra example in particular highlights the prolonged near weekly resting periods.
+The king cobra example in particular highlights the prolonged near weekly sheltering periods.
 
 \begin{figure}
 
@@ -1205,308 +1199,328 @@ Writing - Review \& Editing: BMM, ABD.
 \CSLLeftMargin{34. }%
 \CSLRightInline{Street GM, Potts JR, Börger L, Beasley JC, Demarais S, Fryxell JM, et al. Solving the sample size problem for resource selection functions. Methods in Ecology and Evolution {[}Internet{]}. 2021 Dec {[}cited 2022 May 25{]};12(12):2421--31. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.13701}}
 
-\bibitem[\citeproctext]{ref-goldstein_integrating_2021}
+\bibitem[\citeproctext]{ref-Silva_movedesign_2023}
 \CSLLeftMargin{35. }%
+\CSLRightInline{Silva I, Fleming CH, Noonan MJ, Fagan WF, Calabrese JM. \href{https://doi.org/10.1111/2041-210X.14153}{Movedesign: Shiny r app to evaluate sampling design for animal tracking movement studies}. Methods in Ecology and Evolution. 2023; }
+
+\bibitem[\citeproctext]{ref-ines_silva_2023_7963190}
+\CSLLeftMargin{36. }%
+\CSLRightInline{Silva I. Ecoisilva/movedesign: Movedesign v0.2.0 {[}Internet{]}. Zenodo; 2023. Available from: \url{https://doi.org/10.5281/zenodo.7963190}}
+
+\bibitem[\citeproctext]{ref-goldstein_integrating_2021}
+\CSLLeftMargin{37. }%
 \CSLRightInline{Goldstein E, Erinjery JJ, Martin G, Kasturiratne A, Ediriweera DS, Silva HJ de, et al. Integrating human behavior and snake ecology with agent-based models to predict snakebite in high risk landscapes. Habib AG, editor. PLOS Neglected Tropical Diseases {[}Internet{]}. 2021 Jan {[}cited 2022 May 25{]};15(1):e0009047. Available from: \url{https://dx.plos.org/10.1371/journal.pntd.0009047}}
 
 \bibitem[\citeproctext]{ref-Ahearn2001}
-\CSLLeftMargin{36. }%
+\CSLLeftMargin{38. }%
 \CSLRightInline{Ahearn SC, Smith JLD, Joshi AR, Ding J. \href{https://doi.org/10.1016/S0304-3800(01)00258-7}{{TIGMOD}: {An} individual-based spatially explicit model for simulating tiger/human interaction in multiple use forests}. Ecological Modelling. 2001 May;140(1-2):81--97. }
 
 \bibitem[\citeproctext]{ref-theng_confronting_2022}
-\CSLLeftMargin{37. }%
+\CSLLeftMargin{39. }%
 \CSLRightInline{Theng M, Milleret C, Bracis C, Cassey P, Delean S. Confronting spatial capture--recapture models with realistic animal movement simulations. Ecology {[}Internet{]}. 2022 {[}cited 2022 May 3{]};n/a(n/a):e3676. Available from: \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/ecy.3676}}
 
 \bibitem[\citeproctext]{ref-howe_distance_2017}
-\CSLLeftMargin{38. }%
+\CSLLeftMargin{40. }%
 \CSLRightInline{Howe EJ, Buckland ST, Després-Einspenner ML, Kühl HS. Distance sampling with camera traps. Methods in Ecology and Evolution {[}Internet{]}. 2017 {[}cited 2022 May 4{]};8(11):1558--65. Available from: \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.12790}}
 
 \bibitem[\citeproctext]{ref-cappelle_estimating_2021}
-\CSLLeftMargin{39. }%
+\CSLLeftMargin{41. }%
 \CSLRightInline{Cappelle N, Howe EJ, Boesch C, Kühl HS. Estimating animal abundance and effort--precision relationship with camera trap distance sampling. Ecosphere {[}Internet{]}. 2021 {[}cited 2022 May 4{]};12(1):e03299. Available from: \url{https://onlinelibrary.wiley.com/doi/abs/10.1002/ecs2.3299}}
 
 \bibitem[\citeproctext]{ref-kellner_two-species_2022}
-\CSLLeftMargin{40. }%
+\CSLLeftMargin{42. }%
 \CSLRightInline{Kellner KF, Parsons AW, Kays R, Millspaugh JJ, Rota CT. A {Two}-{Species} {Occupancy} {Model} with a {Continuous}-{Time} {Detection} {Process} {Reveals} {Spatial} and {Temporal} {Interactions}. Journal of Agricultural, Biological and Environmental Statistics {[}Internet{]}. 2022 Jun {[}cited 2022 May 25{]};27(2):321--38. Available from: \url{https://link.springer.com/10.1007/s13253-021-00482-y}}
 
 \bibitem[\citeproctext]{ref-milleret_estimating_2022}
-\CSLLeftMargin{41. }%
+\CSLLeftMargin{43. }%
 \CSLRightInline{Milleret C, Dey S, Dupont P, Turek D, Valpine P de, Bischof R. Estimating spatially variable and density-dependent survival using open-population spatial capture-recapture models. bioRxiv {[}Internet{]}. 2022 Mar {[}cited 2022 May 25{]}; Available from: \url{http://biorxiv.org/lookup/doi/10.1101/2022.03.04.482982}}
 
 \bibitem[\citeproctext]{ref-abolaffio_avoiding_2019}
-\CSLLeftMargin{42. }%
+\CSLLeftMargin{44. }%
 \CSLRightInline{Abolaffio M, Focardi S, Santini G. Avoiding misleading messages: {Population} assessment using camera trapping is not a simple task. Journal of Animal Ecology {[}Internet{]}. 2019 {[}cited 2022 May 3{]};88(12):2011--6. Available from: \url{https://onlinelibrary.wiley.com/doi/abs/10.1111/1365-2656.13085}}
 
 \bibitem[\citeproctext]{ref-Calabrese2016}
-\CSLLeftMargin{43. }%
+\CSLLeftMargin{45. }%
 \CSLRightInline{Calabrese JM, Fleming CH, Gurarie E. \href{https://doi.org/10.1111/2041-210X.12559}{Ctmm: An {R} {Package} for {Analyzing} {Animal} {Relocation} {Data} {As} a {Continuous}-{Time} {Stochastic} {Process}}. Methods in Ecology and Evolution. 2016;7(9):1124--32. }
 
 \bibitem[\citeproctext]{ref-silva_autocorrelationinformed_2022}
-\CSLLeftMargin{44. }%
+\CSLLeftMargin{46. }%
 \CSLRightInline{Silva I, Fleming CH, Noonan MJ, Alston J, Folta C, Fagan WF, et al. Autocorrelation‐informed home range estimation: {A} review and practical guide. Methods in Ecology and Evolution {[}Internet{]}. 2022 Mar {[}cited 2022 May 25{]};13(3):534--44. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.13786}}
 
 \bibitem[\citeproctext]{ref-Fleming2014}
-\CSLLeftMargin{45. }%
+\CSLLeftMargin{47. }%
 \CSLRightInline{Fleming CH, Calabrese JM, Mueller T, Olson KA, Leimgruber P, Fagan WF. From {Fine}-{Scale} {Foraging} to {Home} {Ranges}: {A} {Semivariance} {Approach} to {Identifying} {Movement} {Modes} across {Spatiotemporal} {Scales}. The American Naturalist {[}Internet{]}. 2014;183(5):E154--67. Available from: \url{http://www.jstor.org/stable/10.1086/675504}}
 
+\bibitem[\citeproctext]{ref-gochanour_span_2023}
+\CSLLeftMargin{48. }%
+\CSLRightInline{Gochanour B, Fernández‐López J, Contina A. {\textless{}}Span style="font-variant:small-caps;"{\textgreater{}}{abmR}{\textless{}}/span{\textgreater{}}: {An} {R} package for agent‐based model analysis of large‐scale movements across taxa. Methods in Ecology and Evolution {[}Internet{]}. 2023 Jan {[}cited 2025 Jul 8{]};14(1):218--30. Available from: \url{https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.14014}}
+
 \bibitem[\citeproctext]{ref-Michelot2016}
-\CSLLeftMargin{46. }%
+\CSLLeftMargin{49. }%
 \CSLRightInline{Michelot T, Langrock R, Patterson TA. {moveHMM}: An {\textless{}}scp{\textgreater{}}{R}{\textless{}}/scp{\textgreater{}} package for the statistical modelling of animal movement data using hidden {Markov} models. McInerny G, editor. Methods in Ecology and Evolution {[}Internet{]}. 2016 Nov;7(11):1308--15. Available from: \url{http://doi.wiley.com/10.1111/2041-210X.12578}}
 
 \bibitem[\citeproctext]{ref-Tang2010}
-\CSLLeftMargin{47. }%
+\CSLLeftMargin{50. }%
 \CSLRightInline{Tang W, Bennett DA. Agent-based {Modeling} of {Animal} {Movement}: {A} {Review}. Geography Compass {[}Internet{]}. 2010 Jul;4(7):682--700. Available from: \url{http://onlinelibrary.wiley.com/doi/10.1111/j.1749-8198.2010.00337.x/full}}
 
 \bibitem[\citeproctext]{ref-quaglietta_simriv_2019}
-\CSLLeftMargin{48. }%
+\CSLLeftMargin{51. }%
 \CSLRightInline{Quaglietta L, Porto M. {SiMRiv}: An {R} package for mechanistic simulation of individual, spatially-explicit multistate movements in rivers, heterogeneous and homogeneous spaces incorporating landscape bias. Movement Ecology {[}Internet{]}. 2019 Dec {[}cited 2022 May 25{]};7(1):11. Available from: \url{https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-019-0154-8}}
 
 \bibitem[\citeproctext]{ref-VanMoorter2009}
-\CSLLeftMargin{49. }%
+\CSLLeftMargin{52. }%
 \CSLRightInline{Van Moorter B, Visscher D, Benhamou S, Börger L, Boyce MS, Gaillard JM. \href{https://doi.org/10.1111/j.1600-0706.2008.17003.x}{Memory keeps you at home: {A} mechanistic model for home range emergence}. Oikos. 2009;118(5):641--52. }
 
 \bibitem[\citeproctext]{ref-bennett_modelling_2006}
-\CSLLeftMargin{50. }%
+\CSLLeftMargin{53. }%
 \CSLRightInline{Bennett DA, Tang W. Modelling adaptive, spatially aware, and mobile agents: {Elk} migration in {Yellowstone}. International Journal of Geographical Information Science {[}Internet{]}. 2006 Oct {[}cited 2022 May 25{]};20(9):1039--66. Available from: \url{http://www.tandfonline.com/doi/abs/10.1080/13658810600830806}}
 
+\bibitem[\citeproctext]{ref-marshall_habitat_2024}
+\CSLLeftMargin{54. }%
+\CSLRightInline{Marshall BM, Duthie AB. A {Habitat} {Selection} {Multiverse} {Reveals} {Largely} {Consistent} {Results} {Despite} a {Multitude} of {Analysis} {Options}. bioRxiv {[}Internet{]}. 2024 Jun {[}cited 2024 Jun 25{]}; Available from: \url{http://biorxiv.org/lookup/doi/10.1101/2024.06.19.599733}}
+
+\bibitem[\citeproctext]{ref-marshall_multiverse_2024}
+\CSLLeftMargin{55. }%
+\CSLRightInline{Marshall BM. A multiverse approach to assessing the impacts of analysis choice on estimates of habitat selection {[}Internet{]} {[}\{PhD\} \{Thesis\}{]}. University of Stirling; 2024. Available from: \url{http://hdl.handle.net/1893/37075}}
+
 \bibitem[\citeproctext]{ref-Eddelbuettel_seamless_2011}
-\CSLLeftMargin{51. }%
+\CSLLeftMargin{56. }%
 \CSLRightInline{Eddelbuettel D, François R. \href{https://doi.org/10.18637/jss.v040.i08}{{Rcpp}: Seamless {R} and {C++} integration}. Journal of Statistical Software. 2011;40(8):1--18. }
 
 \bibitem[\citeproctext]{ref-Eddelbuettel_seamless_2013}
-\CSLLeftMargin{52. }%
+\CSLLeftMargin{57. }%
 \CSLRightInline{Eddelbuettel D. \href{https://doi.org/10.1007/978-1-4614-6868-4}{Seamless {R} and {C++} integration with {Rcpp}}. New York: Springer; 2013. }
 
 \bibitem[\citeproctext]{ref-Eddelbuettel_extending_2018}
-\CSLLeftMargin{53. }%
+\CSLLeftMargin{58. }%
 \CSLRightInline{Eddelbuettel D, Balamuta JJ. \href{https://doi.org/10.1080/00031305.2017.1375990}{{Extending extit{R} with extit{C++}: A Brief Introduction to extit{Rcpp}}}. The American Statistician. 2018;72(1):28--36. }
 
 \bibitem[\citeproctext]{ref-joo_navigating_2020}
-\CSLLeftMargin{54. }%
+\CSLLeftMargin{59. }%
 \CSLRightInline{Joo R, Boone ME, Clay TA, Patrick SC, Clusella‐Trullas S, Basille M. Navigating through the {\textless{}}span style="font-variant:small-caps;"{\textgreater{}}r{\textless{}}/span{\textgreater{}} packages for movement. Börger L, editor. Journal of Animal Ecology {[}Internet{]}. 2020 Jan {[}cited 2021 Aug 29{]};89(1):248--67. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/1365-2656.13116}}
 
 \bibitem[\citeproctext]{ref-Nathan2008}
-\CSLLeftMargin{55. }%
+\CSLLeftMargin{60. }%
 \CSLRightInline{Nathan R, Getz WM, Revilla E, Holyoak M, Kadmon R, Saltz D, et al. A movement ecology paradigm for unifying organismal movement research. Proceedings of the National Academy of Sciences {[}Internet{]}. 2008;105(49):19052--9. Available from: \url{http://www.pnas.org/content/105/49/19052.abstract}}
 
 \bibitem[\citeproctext]{ref-rivera_rethinking_2022}
-\CSLLeftMargin{56. }%
+\CSLLeftMargin{61. }%
 \CSLRightInline{Rivera K, Fidino M, Farris ZJ, Magle SB, Murphy A, Gerber BD. Rethinking habitat occupancy modeling and the role of diel activity in an anthropogenic world. The American Naturalist {[}Internet{]}. 2022 May {[}cited 2022 May 6{]}; Available from: \url{https://www.journals.uchicago.edu/doi/10.1086/720714}}
 
 \bibitem[\citeproctext]{ref-Scharf2018}
-\CSLLeftMargin{57. }%
+\CSLLeftMargin{62. }%
 \CSLRightInline{Scharf AK, Belant JL, Beyer DE, Wikelski M, Safi K. Habitat suitability does not capture the essence of animal-defined corridors. Movement Ecology {[}Internet{]}. 2018;6(1):18. Available from: \url{https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-018-0136-2}}
 
 \bibitem[\citeproctext]{ref-kowalczyk_daily_2006}
-\CSLLeftMargin{58. }%
+\CSLLeftMargin{63. }%
 \CSLRightInline{Kowalczyk R, Zalewski A, Bogumiła J. Daily movement and territory use by badgers {Meles} meles in {Białowieża} {Primeval} {Forest}, {Poland}. Wildlife Biology {[}Internet{]}. 2006 Dec {[}cited 2022 May 26{]};12(4):385--91. Available from: \url{http://www.bioone.org/doi/abs/10.2981/0909-6396\%282006\%2912\%5B385\%3ADMATUB\%5D2.0.CO\%3B2}}
 
 \bibitem[\citeproctext]{ref-feore_habitat_1999}
-\CSLLeftMargin{59. }%
+\CSLLeftMargin{64. }%
 \CSLRightInline{Feore S, Montgomery WI. Habitat effects on the spatial ecology of the {European} badger (\emph{{Meles} meles}). Journal of Zoology {[}Internet{]}. 1999 Apr {[}cited 2022 May 26{]};247(4):537--49. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/j.1469-7998.1999.tb01015.x}}
 
 \bibitem[\citeproctext]{ref-rosalino_activity_2005}
-\CSLLeftMargin{60. }%
+\CSLLeftMargin{65. }%
 \CSLRightInline{Rosalino LM, Macdonald DW, Santos-Reis M. Activity rhythms, movements and patterns of sett use by badgers, {Meles} meles, in a {Mediterranean} woodland. Mammalia {[}Internet{]}. 2005 Jan {[}cited 2022 May 26{]};69(3-4). Available from: \url{https://www.degruyter.com/document/doi/10.1515/mamm.2005.031/html}}
 
 \bibitem[\citeproctext]{ref-kelly_extra_2020}
-\CSLLeftMargin{61. }%
+\CSLLeftMargin{66. }%
 \CSLRightInline{Kelly DJ, Gaughran A, Mullen E, MacWhite T, Maher P, Good M, et al. Extra {Territorial} {Excursions} by {European} badgers are not limited by age, sex or season. Scientific Reports {[}Internet{]}. 2020 Dec {[}cited 2022 May 25{]};10(1):9665. Available from: \url{http://www.nature.com/articles/s41598-020-66809-w}}
 
 \bibitem[\citeproctext]{ref-loureiro_path_2007}
-\CSLLeftMargin{62. }%
+\CSLLeftMargin{67. }%
 \CSLRightInline{Loureiro F, Rosalino LM, Macdonald DW, Santos-Reis M. Path tortuosity of {Eurasian} badgers ({Meles} meles) in a heterogeneous {Mediterranean} landscape. Ecological Research {[}Internet{]}. 2007 Aug {[}cited 2022 May 26{]};22(5):837--44. Available from: \url{http://doi.wiley.com/10.1007/s11284-006-0325-0}}
 
 \bibitem[\citeproctext]{ref-magowan_dead-reckoning_2022}
-\CSLLeftMargin{63. }%
+\CSLLeftMargin{68. }%
 \CSLRightInline{Magowan EA, Maguire IE, Smith S, Redpath S, Marks NJ, Wilson RP, et al. Dead-reckoning elucidates fine-scale habitat use by {European} badgers {Meles} meles. Animal Biotelemetry {[}Internet{]}. 2022 Dec {[}cited 2022 May 26{]};10(1):10. Available from: \url{https://animalbiotelemetry.biomedcentral.com/articles/10.1186/s40317-022-00282-2}}
 
 \bibitem[\citeproctext]{ref-Eddelbuettel_BH_2021}
-\CSLLeftMargin{64. }%
+\CSLLeftMargin{69. }%
 \CSLRightInline{Eddelbuettel D, Emerson JW, Kane MJ. BH: Boost c++ header files {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=BH}}
 
 \bibitem[\citeproctext]{ref-R-base}
-\CSLLeftMargin{65. }%
+\CSLLeftMargin{70. }%
 \CSLRightInline{R Core Team. R: A language and environment for statistical computing {[}Internet{]}. Vienna, Austria: R Foundation for Statistical Computing; 2021. Available from: \url{https://www.R-project.org/}}
 
 \bibitem[\citeproctext]{ref-Wickham_devtools_2021}
-\CSLLeftMargin{66. }%
+\CSLLeftMargin{71. }%
 \CSLRightInline{Wickham H, Hester J, Chang W, Bryan J. Devtools: Tools to make developing r packages easier {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=devtools}}
 
 \bibitem[\citeproctext]{ref-RStudioTeam2021}
-\CSLLeftMargin{67. }%
+\CSLLeftMargin{72. }%
 \CSLRightInline{RStudio Team. RStudio: Integrated development environment for r {[}Internet{]}. Boston, MA: RStudio, PBC; 2021. Available from: \url{http://www.rstudio.com/}}
 
 \bibitem[\citeproctext]{ref-R-rmarkdown}
-\CSLLeftMargin{68. }%
+\CSLLeftMargin{73. }%
 \CSLRightInline{Allaire J, Xie Y, McPherson J, Luraschi J, Ushey K, Atkins A, et al. Rmarkdown: Dynamic documents for r {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=rmarkdown}}
 
 \bibitem[\citeproctext]{ref-rmarkdown2018}
-\CSLLeftMargin{69. }%
+\CSLLeftMargin{74. }%
 \CSLRightInline{Xie Y, Allaire JJ, Grolemund G. R markdown: The definitive guide {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2018. Available from: \url{https://bookdown.org/yihui/rmarkdown}}
 
 \bibitem[\citeproctext]{ref-rmarkdown2020}
-\CSLLeftMargin{70. }%
+\CSLLeftMargin{75. }%
 \CSLRightInline{Xie Y, Dervieux C, Riederer E. R markdown cookbook {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2020. Available from: \url{https://bookdown.org/yihui/rmarkdown-cookbook}}
 
 \bibitem[\citeproctext]{ref-bookdown2016}
-\CSLLeftMargin{71. }%
+\CSLLeftMargin{76. }%
 \CSLRightInline{Xie Y. Bookdown: Authoring books and technical documents with {R} markdown {[}Internet{]}. Boca Raton, Florida: Chapman; Hall/CRC; 2016. Available from: \url{https://bookdown.org/yihui/bookdown}}
 
 \bibitem[\citeproctext]{ref-R-bookdown}
-\CSLLeftMargin{72. }%
+\CSLLeftMargin{77. }%
 \CSLRightInline{Xie Y. Bookdown: Authoring books and technical documents with r markdown {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=bookdown}}
 
 \bibitem[\citeproctext]{ref-tinytex2019}
-\CSLLeftMargin{73. }%
+\CSLLeftMargin{78. }%
 \CSLRightInline{Xie Y. TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX live. TUGboat {[}Internet{]}. 2019;(1):30--2. Available from: \url{https://tug.org/TUGboat/Contents/contents40-1.html}}
 
 \bibitem[\citeproctext]{ref-R-tinytex}
-\CSLLeftMargin{74. }%
+\CSLLeftMargin{79. }%
 \CSLRightInline{Xie Y. Tinytex: Helper functions to install and maintain TeX live, and compile LaTeX documents {[}Internet{]}. 2022. Available from: \url{https://github.com/rstudio/tinytex}}
 
 \bibitem[\citeproctext]{ref-knitr2015}
-\CSLLeftMargin{75. }%
+\CSLLeftMargin{80. }%
 \CSLRightInline{Xie Y. Dynamic documents with {R} and knitr {[}Internet{]}. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC; 2015. Available from: \url{https://yihui.org/knitr/}}
 
 \bibitem[\citeproctext]{ref-knitr2014}
-\CSLLeftMargin{76. }%
+\CSLLeftMargin{81. }%
 \CSLRightInline{Xie Y. Knitr: A comprehensive tool for reproducible research in {R}. In: Stodden V, Leisch F, Peng RD, editors. Implementing reproducible computational research {[}Internet{]}. Chapman; Hall/CRC; 2014. Available from: \url{http://www.crcpress.com/product/isbn/9781466561595}}
 
 \bibitem[\citeproctext]{ref-R-knitr}
-\CSLLeftMargin{77. }%
+\CSLLeftMargin{82. }%
 \CSLRightInline{Xie Y. Knitr: A general-purpose package for dynamic report generation in r {[}Internet{]}. 2022. Available from: \url{https://yihui.org/knitr/}}
 
 \bibitem[\citeproctext]{ref-R-here}
-\CSLLeftMargin{78. }%
+\CSLLeftMargin{83. }%
 \CSLRightInline{Müller K. Here: A simpler way to find your files {[}Internet{]}. 2020. Available from: \url{https://CRAN.R-project.org/package=here}}
 
 \bibitem[\citeproctext]{ref-R-dplyr}
-\CSLLeftMargin{79. }%
+\CSLLeftMargin{84. }%
 \CSLRightInline{Wickham H, François R, Henry L, Müller K. Dplyr: A grammar of data manipulation {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=dplyr}}
 
 \bibitem[\citeproctext]{ref-reshape22007}
-\CSLLeftMargin{80. }%
+\CSLLeftMargin{85. }%
 \CSLRightInline{Wickham H. Reshaping data with the {reshape} package. Journal of Statistical Software {[}Internet{]}. 2007;21(12):1--20. Available from: \url{http://www.jstatsoft.org/v21/i12/}}
 
 \bibitem[\citeproctext]{ref-R-ggplot2}
-\CSLLeftMargin{81. }%
+\CSLLeftMargin{86. }%
 \CSLRightInline{Wickham H, Chang W, Henry L, Pedersen TL, Takahashi K, Wilke C, et al. ggplot2: Create elegant data visualisations using the grammar of graphics {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=ggplot2}}
 
 \bibitem[\citeproctext]{ref-ggplot22016}
-\CSLLeftMargin{82. }%
+\CSLLeftMargin{87. }%
 \CSLRightInline{Wickham H. ggplot2: Elegant graphics for data analysis {[}Internet{]}. Springer-Verlag New York; 2016. Available from: \url{https://ggplot2.tidyverse.org}}
 
 \bibitem[\citeproctext]{ref-R-ggridges}
-\CSLLeftMargin{83. }%
+\CSLLeftMargin{88. }%
 \CSLRightInline{Wilke CO. Ggridges: Ridgeline plots in ggplot2 {[}Internet{]}. 2021. Available from: \url{https://wilkelab.org/ggridges/}}
 
 \bibitem[\citeproctext]{ref-R-ggtext}
-\CSLLeftMargin{84. }%
+\CSLLeftMargin{89. }%
 \CSLRightInline{Wilke CO. Ggtext: Improved text rendering support for ggplot2 {[}Internet{]}. 2020. Available from: \url{https://wilkelab.org/ggtext/}}
 
 \bibitem[\citeproctext]{ref-R-ggforce}
-\CSLLeftMargin{85. }%
+\CSLLeftMargin{90. }%
 \CSLRightInline{Pedersen TL. Ggforce: Accelerating ggplot2 {[}Internet{]}. 2021. Available from: \url{https://CRAN.R-project.org/package=ggforce}}
 
 \bibitem[\citeproctext]{ref-R-patchwork}
-\CSLLeftMargin{86. }%
+\CSLLeftMargin{91. }%
 \CSLRightInline{Pedersen TL. Patchwork: The composer of plots {[}Internet{]}. 2020. Available from: \url{https://CRAN.R-project.org/package=patchwork}}
 
 \bibitem[\citeproctext]{ref-R-raster}
-\CSLLeftMargin{87. }%
+\CSLLeftMargin{92. }%
 \CSLRightInline{Hijmans RJ. Raster: Geographic data analysis and modeling {[}Internet{]}. 2022. Available from: \url{https://rspatial.org/raster}}
 
 \bibitem[\citeproctext]{ref-sp2013}
-\CSLLeftMargin{88. }%
+\CSLLeftMargin{93. }%
 \CSLRightInline{Bivand RS, Pebesma E, Gomez-Rubio V. Applied spatial data analysis with {R}, second edition {[}Internet{]}. Springer, NY; 2013. Available from: \url{https://asdar-book.org/}}
 
 \bibitem[\citeproctext]{ref-sp2005}
-\CSLLeftMargin{89. }%
+\CSLLeftMargin{94. }%
 \CSLRightInline{Pebesma EJ, Bivand RS. Classes and methods for spatial data in {R}. R News {[}Internet{]}. 2005;5(2):9--13. Available from: \url{https://CRAN.R-project.org/doc/Rnews/}}
 
 \bibitem[\citeproctext]{ref-R-sp}
-\CSLLeftMargin{90. }%
+\CSLLeftMargin{95. }%
 \CSLRightInline{Pebesma E, Bivand R. Sp: Classes and methods for spatial data {[}Internet{]}. 2022. Available from: \url{https://CRAN.R-project.org/package=sp}}
 
 \bibitem[\citeproctext]{ref-NLMR2018}
-\CSLLeftMargin{91. }%
+\CSLLeftMargin{96. }%
 \CSLRightInline{Sciaini M, Fritsch M, Scherer C, Simpkins CE. NLMR and landscapetools: An integrated environment for simulating and modifying neutral landscape models in r. Methods in Ecololgy and Evolution {[}Internet{]}. 2018;00:1--9. Available from: \url{https://doi.org/10.1111/2041-210X.13076}}
 
 \bibitem[\citeproctext]{ref-R-NLMR}
-\CSLLeftMargin{92. }%
+\CSLLeftMargin{97. }%
 \CSLRightInline{Sciaini M, Fritsch M, Hesselbarth M, Simpkins C, Scherer C, Hanß S. NLMR: Simulating neutral landscape models {[}Internet{]}. 2021. Available from: \url{https://ropensci.github.io/NLMR/}}
 
 \bibitem[\citeproctext]{ref-Quintana2020}
-\CSLLeftMargin{93. }%
+\CSLLeftMargin{98. }%
 \CSLRightInline{Quintana DS. A synthetic dataset primer for the biobehavioural sciences to promote reproducibility and hypothesis generation. Zaidi M, Büchel C, Bishop DVM, editors. eLife {[}Internet{]}. 2020 Mar;9:e53275. Available from: \url{https://doi.org/10.7554/eLife.53275}}
 
 \bibitem[\citeproctext]{ref-Gerstner2017}
-\CSLLeftMargin{94. }%
+\CSLLeftMargin{99. }%
 \CSLRightInline{Gerstner K, Moreno-Mateos D, Gurevitch J, Beckmann M, Kambach S, Jones HP, et al. Will your paper be used in a meta-analysis? Make the reach of your research broader and longer lasting. Methods in Ecology and Evolution {[}Internet{]}. 2017;8(6):777--84. Available from: \url{https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.12758}}
 
 \bibitem[\citeproctext]{ref-hribsek_first_2021}
-\CSLLeftMargin{95. }%
+\CSLLeftMargin{100. }%
 \CSLRightInline{Hribsek I, Plecas M, Skoric S, Marinkovic S. First description of movement and ranging behavior of the {Griffon} vulture ({Gyps} fulvus) from {Serbia} using {GPS} satellite tracking. Archives of Biological Sciences {[}Internet{]}. 2021 {[}cited 2022 May 25{]};73(2):185--95. Available from: \url{http://www.doiserbia.nb.rs/Article.aspx?ID=0354-46642100013H}}
 
 \bibitem[\citeproctext]{ref-garcia-jimenez_drivers_2018}
-\CSLLeftMargin{96. }%
+\CSLLeftMargin{101. }%
 \CSLRightInline{García-Jiménez R, Pérez-García JM, Margalida A. Drivers of daily movement patterns affecting an endangered vulture flight activity. BMC Ecology {[}Internet{]}. 2018 Dec {[}cited 2022 May 25{]};18(1):39. Available from: \url{https://bmcecol.biomedcentral.com/articles/10.1186/s12898-018-0195-7}}
 
 \bibitem[\citeproctext]{ref-margalida_spatial_2016}
-\CSLLeftMargin{97. }%
+\CSLLeftMargin{102. }%
 \CSLRightInline{Margalida A, Pérez-García JM, Afonso I, Moreno-Opo R. Spatial and temporal movements in {Pyrenean} bearded vultures ({Gypaetus} barbatus): {Integrating} movement ecology into conservation practice. Scientific Reports {[}Internet{]}. 2016 Dec {[}cited 2022 May 25{]};6(1):35746. Available from: \url{http://www.nature.com/articles/srep35746}}
 
 \bibitem[\citeproctext]{ref-subedi_spatial_2020}
-\CSLLeftMargin{98. }%
+\CSLLeftMargin{103. }%
 \CSLRightInline{Subedi TR, Pérez‐García JM, Sah SAM, Gurung S, Baral HS, Poudyal LP, et al. Spatial and temporal movement of the {Bearded} {Vulture} using {GPS} telemetry in the {Himalayas} of {Nepal}. Ibis {[}Internet{]}. 2020 Apr {[}cited 2022 May 25{]};162(2):563--71. Available from: \url{https://onlinelibrary.wiley.com/doi/10.1111/ibi.12799}}
 
 \bibitem[\citeproctext]{ref-bracis_revisitation_2018}
-\CSLLeftMargin{99. }%
+\CSLLeftMargin{104. }%
 \CSLRightInline{Bracis C, Bildstein KL, Mueller T. Revisitation analysis uncovers spatio-temporal patterns in animal movement data. Ecography {[}Internet{]}. 2018; Available from: \url{http://dx.doi.org/10.1111/ecog.03618}}
 
 \bibitem[\citeproctext]{ref-silva_seasonal_2017}
-\CSLLeftMargin{100. }%
+\CSLLeftMargin{105. }%
 \CSLRightInline{Silva R, Afán I, Gil JA, Bustamante J. Seasonal and circadian biases in bird tracking with solar {GPS}-tags. Margalida A, editor. PLOS ONE {[}Internet{]}. 2017 Oct {[}cited 2022 May 25{]};12(10):e0185344. Available from: \url{https://dx.plos.org/10.1371/journal.pone.0185344}}
 
 \bibitem[\citeproctext]{ref-peshev_new_2021}
-\CSLLeftMargin{101. }%
+\CSLLeftMargin{106. }%
 \CSLRightInline{Peshev H, Grozdanov A, Kmetova--Biro E, Ivanov I, Stoyanov G, Tsiakiris R, et al. New insight into spatial ecology of {Griffon} {Vulture} ({Gyps} fulvus) on the {Balkans} provides opportunity for focusing conservation actions for a threatened social scavenger. Biodiversity Data Journal {[}Internet{]}. 2021 Aug {[}cited 2022 May 25{]};9:e71100. Available from: \url{https://bdj.pensoft.net/article/71100/}}
 
 \bibitem[\citeproctext]{ref-Marshall2018}
-\CSLLeftMargin{102. }%
+\CSLLeftMargin{107. }%
 \CSLRightInline{Marshall BM, Strine CT, Jones MD, Artchawakom T, Silva I, Suwanwaree P, et al. Space fit for a king: Spatial ecology of king cobras ({Ophiophagus} hannah) in {Sakaerat} {Biosphere} {Reserve}, {Northeastern} {Thailand}. Amphibia-Reptilia {[}Internet{]}. 2019 Mar;40(2):163--78. Available from: \url{http://booksandjournals.brillonline.com/content/journals/10.1163/15685381-18000008}}
 
 \bibitem[\citeproctext]{ref-marshall_no_2020}
-\CSLLeftMargin{103. }%
+\CSLLeftMargin{108. }%
 \CSLRightInline{Marshall BM, Crane M, Silva I, Strine CT, Jones MD, Hodges CW, et al. No room to roam: {King} {Cobras} reduce movement in agriculture. Movement Ecology {[}Internet{]}. 2020 Dec {[}cited 2020 Aug 4{]};8(1):33. Available from: \url{https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-020-00219-5}}
 
 \bibitem[\citeproctext]{ref-dsouza_space_2021}
-\CSLLeftMargin{104. }%
+\CSLLeftMargin{109. }%
 \CSLRightInline{D'souza A, Gale GA, Marshall BM, Khamcha D, Waengsothorn S, Strine CT. Space use and activity of {Boiga} cyanea -- {A} major songbird nest predator in a seasonal tropical forest in {Thailand}. Global Ecology and Conservation {[}Internet{]}. 2021 Dec {[}cited 2021 Oct 27{]};32:e01875. Available from: \url{https://linkinghub.elsevier.com/retrieve/pii/S235198942100425X}}
 
 \bibitem[\citeproctext]{ref-smith_native_2021}
-\CSLLeftMargin{105. }%
+\CSLLeftMargin{110. }%
 \CSLRightInline{Smith SN, Jones MD, Marshall BM, Waengsothorn S, Gale GA, Strine CT. Native {Burmese} pythons exhibit site fidelity and preference for aquatic habitats in an agricultural mosaic. Scientific Reports {[}Internet{]}. 2021 Dec {[}cited 2021 Mar 29{]};11(1):7014. Available from: \url{http://www.nature.com/articles/s41598-021-86640-1}}
 
 \bibitem[\citeproctext]{ref-Siers2018}
-\CSLLeftMargin{106. }%
+\CSLLeftMargin{111. }%
 \CSLRightInline{Siers SR, Yackel Adams AA, Reed RN. Behavioral differences following ingestion of large meals and consequences for management of a harmful invasive snake: {A} field experiment. Ecology and Evolution {[}Internet{]}. 2018 Oct;8(20):10075--93. Available from: \url{http://doi.wiley.com/10.1002/ece3.4480}}
 
 \bibitem[\citeproctext]{ref-jones_how_2022}
-\CSLLeftMargin{107. }%
+\CSLLeftMargin{112. }%
 \CSLRightInline{Jones MD, Marshall BM, Smith SN, Crane M, Silva I, Artchawakom T, et al. How do {King} {Cobras} move across a major highway? {Unintentional} wildlife crossing structures may facilitate movement. Ecology and Evolution {[}Internet{]}. 2022 Mar {[}cited 2022 Mar 21{]};12(3). Available from: \url{https://onlinelibrary.wiley.com/doi/10.1002/ece3.8691}}
 
 \bibitem[\citeproctext]{ref-Marshall2018b}
-\CSLLeftMargin{108. }%
+\CSLLeftMargin{113. }%
 \CSLRightInline{Marshall BM, Strine CT, Jones MD, Theodorou A, Amber E, Waengsothorn S, et al. Hits {Close} to {Home}: {Repeated} {Persecution} of {King} {Cobras} ({Ophiophagus} hannah) in {Northeastern} {Thailand}. Tropical Conservation Science {[}Internet{]}. 2018 Jan;11:194008291881840. Available from: \url{http://journals.sagepub.com/doi/10.1177/1940082918818401}}
 
 \bibitem[\citeproctext]{ref-Shankar2013}
-\CSLLeftMargin{109. }%
+\CSLLeftMargin{114. }%
 \CSLRightInline{Shankar PG, Ganesh SR, Whitaker R, Prashanth P. King {Cobra} {Ophiophagus} hannah ({Cantor}, 1836) encounters in human-modified rainforests of the {Western} {Ghats}, {India}. Hamadryad. 2013;36(2):62--8. }
 
 \bibitem[\citeproctext]{ref-Silva2018}
-\CSLLeftMargin{110. }%
+\CSLLeftMargin{115. }%
 \CSLRightInline{Silva I, Crane M, Suwanwaree P, Strine C, Goode M. Using dynamic {Brownian} {Bridge} {Movement} {Models} to identify home range size and movement patterns in king cobras. Munderloh UG, editor. PLOS ONE {[}Internet{]}. 2018 Sep;13(9):e0203449. Available from: \url{http://dx.plos.org/10.1371/journal.pone.0203449}}
 
 \end{CSLReferences}
