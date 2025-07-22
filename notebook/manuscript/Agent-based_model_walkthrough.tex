@@ -339,6 +339,10 @@ An alternative simpler implementation with no dependencies is provided as a pack
 \end{Highlighting}
 \end{Shaded}
 
+\begin{verbatim}
+## 'RandomFields' will use OMP
+\end{verbatim}
+
 We used \emph{R} v.4.4.2 (\citeproc{ref-R-base}{70}) via \emph{RStudio} v.2024.9.0.375 (\citeproc{ref-RStudioTeam2021}{72}), and used \emph{rmarkdown} v.2.29 (\citeproc{ref-R-rmarkdown}{73}--\citeproc{ref-rmarkdown2020}{75}), \emph{bookdown} v.0.42 (\citeproc{ref-bookdown2016}{76},\citeproc{ref-R-bookdown}{77}), \emph{tinytex} v.0.57 (\citeproc{ref-tinytex2019}{78},\citeproc{ref-R-tinytex}{79}), and \emph{knitr} v.1.49 (\citeproc{ref-knitr2015}{80}--\citeproc{ref-R-knitr}{82}) packages to generate type-set outputs.
 We used the \emph{here} v.1.0.1 package (\citeproc{ref-R-here}{83}) to help with relative file path definition.
 We used the \emph{dplyr} v.1.1.4 and \emph{reshape2} v.1.4.4 packages for data manipulation (\citeproc{ref-R-dplyr}{84},\citeproc{ref-reshape22007}{85}).
@@ -410,6 +414,20 @@ The shelter site size of 8 m allows for small movements near/within the sett dur
 \NormalTok{BADGER\_shelterSize }\OtherTok{\textless{}{-}} \DecValTok{8}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+## i Please use the `linewidth` argument instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: The `legend.title.align` argument of `theme()` is deprecated as of ggplot2 3.5.0.
+## i Please use theme(legend.title = element_text(hjust)) instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+\end{verbatim}
 
 \begin{figure}
 
@@ -1032,6 +1050,8 @@ Source code to reproduce the results and manuscript are available alongside the 
 The parameters used to generate the examples are within: \texttt{notebook/manuscript/Agent-based\_model\_walkthrough.Rmd}.
 
 \section{Software availability}\label{software-availability}
+
+A minimally dependent example of the simulation function can be found at \url{https://doi.org/10.5281/zenodo.6992495} alongside pre-run examples of the output simulation data.
 
 Archived versions of the software are available on Zenodo: ``BenMMarshall/abmAnimalMovement'' \url{https://doi.org/10.5281/zenodo.6951937}.
 
