@@ -405,6 +405,8 @@ landscapeLayersList <- readRDS(here::here("notebook",
                                           "manuscript",
                                           "eg_simdata",
                                           paste0("eg_landscapedata_completelist.RDS")))
+
+
 ```
 
 ```{r plotMatrixFunction, eval=TRUE, echo=FALSE}
@@ -2178,6 +2180,8 @@ Source code to reproduce the results and manuscript are available alongside the 
 The parameters used to generate the examples are within: `notebook/manuscript/Agent-based_model_walkthrough.Rmd`.
 
 # Software availability
+
+A minimally dependent example of the simulation function can be found at https://doi.org/10.5281/zenodo.6992495 alongside pre-run examples of the output simulation data.
 
 Archived versions of the software are available on Zenodo: "BenMMarshall/abmAnimalMovement" https://doi.org/10.5281/zenodo.6951937.
 
