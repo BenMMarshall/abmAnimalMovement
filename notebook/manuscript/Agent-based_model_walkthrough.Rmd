@@ -125,7 +125,7 @@ At each time step, the agent (i.e., simulated animal) is presented with a range 
 The possible movement options, and how the new location is selected, are influenced by several factors: behavioural state of the animal, environmental quality, and proximity to points of attraction/avoidance.
 By simulating these drivers of animal movement, we hope to capture aspects of the internal state (i.e., motivation to move via behaviour); motion capacity (i.e., the individual's varying ability to move); navigation capacity (i.e., ability to plan ahead beyond the immediate movement distance); and external factors (i.e., the landscape that steers and limits movement), all of which are defined as key components of animal movement [@Tang2010; @Nathan2008].
 
-The animal has three behavioural states, broadly defined here as state 0 - sheltering (or resting), state 1 - exploring, and state 2 - foraging.
+The animal has three behavioural states, broadly defined here as state 0 - sheltering (or resting), state 1 - exploring, and state 2 - foraging, that broadly define its movement characteristics and goals.
 In the sheltering state, the animal chooses a known shelter location to head towards; in the exploration state, the animal randomly moves within the landscape guided only by the movement resistance of the landscape; in the foraging state, the animal chooses a foraging location and moves towards it.
 Additionally, each behavioural state modifies the movement characteristics of the animal; for example, exploring comprises of more random movements with longer distances between subsequent chosen locations, whereas sheltering behaviour is largely defined by stationary or very low discrete movements after returning to a shelter site.
 The movement characteristics are defined by two distributions: a Gamma distribution that step lengths are drawn from, and a Von-Mises distribution that turn angles are drawn from.
@@ -136,6 +136,7 @@ As the simulation will be running with three behavioural states, we need to defi
 We achieved this by creating a transition matrix that describes the probability at each time step of the animal changing to another behaviour (Figure \@ref(fig:transMatrixDiagram)), where each value describes the probability of the animal transitioning from the current behaviour (row: b0 - sheltering, b1 - exploring, b2 - foraging), to the behaviour for the next time step (columns: b0, b1, b2).
 The diagonal describes the probability of the animal remaining in the same behavioural state.
 These probabilities can be kept high to introduce autocorrelation in the behavioural state; a high autocorrelation is required if we are modelling time steps as one minute.
+For the included example, we select probabilities that allow the animal to express all behavioural state reasonably evenly and allow behavioural cycles to be easily visible in the resulting simulated movement data.
 
 ``` {r transMatrixDiagram, echo=FALSE, eval=TRUE, fig.align='center', fig.width=5, fig.height=5, out.width="80%", fig.cap="Transition probabilities between the three behavioural states in abmAnimalMovement package example. Remain values indicate the probabilities of the animal remaining in the same behavioural state. Values correspond directly to those in the transition matrix used as a simulation input."}
 knitr::include_graphics(here::here("notebook", "ext_figures", "Tranistion Matrix Diagram.tiff"))
@@ -546,8 +547,8 @@ The step lengths require predefined shape (k) and scale ($\theta$) parameters to
 For the turn angles, we require the mean ($\mu$) and concentration ($\kappa$) to define the Von Mises distributions and provide these via the `mu_angle` and `k_angle` arguments.
 
 <!-- destination -->
-The perceptual range (implemented here as destination range), is how far the the badger can "see" when deciding where to forage is set in a similar fashion.
-Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$) the Von Mises distribution describing the angle at which those locations can fall in relation to the previous direction of movement (Figure \@ref(fig:BADGERmoveCharFigure)).
+The perceptual range (implemented here as destination range) is how far the the badger can "see" when deciding where to forage and is set in a similar fashion.
+Where `destinationRange` provides the shape (k) and scale ($\theta$) for the Gamma distribution describing distance of possible foraging locations, and `destinationDirection` provides the mean ($\mu$) and concentration ($\kappa$), the Von Mises distribution describes the angle at which those locations can fall in relation to the previous direction of movement. (Figure \@ref(fig:BADGERmoveCharFigure)).
 
 We can also alter the strength of attraction to the foraging destinations.
 At each time step, the animal is offered a number of location options to move to next time step.
@@ -1476,7 +1477,7 @@ abmMapPlot <- function(simResults,
 
 ```
 
-```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The simulated locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the simulated location at each time step. The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species."}
+```{r mapsFigure, echo=FALSE, eval=TRUE, warning=FALSE, comment=FALSE, fig.align='center', fig.width=6, fig.height=2.75, fig.cap="The simulated locations of the three simulated species (A - Badger, B - Vulture, C - King Cobra). Black points show the simulated location at each time step. The orange squares show the dynamically selected foraging destinations. Circles with an interior S show the shelter site locations, and cricles with an interior A show the avoidance points. Note that the size represented by each unit on the x and y axis differs depending on the species as governed by the rescale arguement."}
 
 mapPlotList <- vector("list", length = 3)
 names(mapPlotList) <- vecSpecies
@@ -2202,7 +2203,7 @@ saveRDS(landscapeLayersList,
 
 All data underlying the results are generated as part of the article; no source data are required.
 
-The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: "Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model" https://doi.org/10.5281/zenodo.6992496. Files include:
+The example badger, vulture, and king cobra data simulated for this manuscript are available on Zenodo: "Simulated data from abmAnimalMovement: An R package for simulating animal movement using an agent-based model" https://doi.org/10.5281/zenodo.6992495. Files include:
 
 - BADGER_locations.csv: A csv file that contains the realised locations of the example badger simulation, where each row is equal to a timestep. Columns include: timestep, the timestep as an integer; x, the x coordinate of the animal; y, the y coordinate of the animal; sl, the step length between locations used during the simulation; sl_rescale the rescale factor required to return step lengths back to the input scale; ta, turning angle between locations in degrees; behave, the behavioural mode the animal was in at a given timestep; chosen, the location chosen out of the number of options available; destination_x and destination_y the point the animal was attracted to at that time (note exploratory behaviour is not subject attraction).
 
@@ -2222,11 +2223,13 @@ The parameters used to generate the examples are within: `notebook/manuscript/Ag
 
 # Software availability
 
-A minimally dependent example of the simulation function can be found at https://doi.org/10.5281/zenodo.6992495 alongside pre-run examples of the output simulation data.
+Examples of the simulation output can be found at https://doi.org/10.5281/zenodo.6992495, alongside the required landscape files to recreate those simulations.
 
 Archived versions of the software are available on Zenodo: "BenMMarshall/abmAnimalMovement" https://doi.org/10.5281/zenodo.6951937.
 
 The development version of the package can be found at [BenMMarshall/abmAnimalMovement](https://github.com/BenMMarshall/abmAnimalMovement).
+
+A minimally dependent example of the simulation code is available in the package vignette.
 
 License: GPL (>= 3)
 

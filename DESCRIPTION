@@ -1,7 +1,7 @@
 Package: abmAnimalMovement
 Title: An R Package for Simulating Animal Movement Using an Agent-Based Model
-Version: 0.1.3.0000
-Date: 2022-07-21
+Version: 0.1.4.0000
+Date: 2025-10-23
 Authors@R: c(
     person(given = "Benjamin Michael",
            family = "Marshall",
@@ -20,9 +20,15 @@ BugReports: https://github.com/BenMMarshall/abmAnimalMovement/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Depends: R (>= 3.5.0)
 LinkingTo: Rcpp (>= 1.0.8.3), BH (>= 1.78.0.0)
 Imports: Rcpp
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
+journal: F1000
+year: 2022
+volume: 11
+issue: 1182
+DOI: 10.12688/f1000research.124810.1
+url: https://doi.org/10.12688/f1000research.124810.1
