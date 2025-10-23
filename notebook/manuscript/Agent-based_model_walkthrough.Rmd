@@ -8,15 +8,15 @@ corresponding1: "benjaminmichaelmarshall@gmail.com"
 corresponding2: "alexander.duthie@stir.ac.uk"
 date: "`r Sys.Date()`"
 output:
-  bookdown::html_document2:
-    theme: yeti
-    highlight: monochrome
-    fig_caption: true
   bookdown::pdf_document2:
     template: main.tex
     keep_tex: true
     highlight: monochrome
     dev: pdf
+  bookdown::html_document2:
+    theme: yeti
+    highlight: monochrome
+    fig_caption: true
 link-citations: yes
 linkcolor: gray
 bibliography: [abmAnimalMovement_refs.bib, packages.bib]
@@ -454,17 +454,17 @@ plot_landscapeLayersList <- function(targetList){
                                       margin = margin(t = 10, r = 0, b = 0, l = 0)),
       axis.title.y = element_markdown(angle = 0, hjust = 1, vjust = 1,
                                       margin = margin(t = 0, r = 10, b = 0, l = 0)),
-      axis.ticks = element_line(size = 0.5),
+      axis.ticks = element_line(linewidth = 0.5),
       axis.ticks.length = unit(1.5, "mm"),
-      axis.line = element_line(size = 0.5),
+      axis.line = element_line(linewidth = 0.5),
       panel.border = element_blank(),
       panel.grid = element_blank(),
       strip.background = element_blank(),
       strip.text = element_markdown(size = 10, face = 4,
                                     hjust = 0),
       legend.position = "bottom",
-      legend.title.align = 0.5,
-      legend.title = element_markdown(size = 8)) +
+      # legend.title.align = 0.5,
+      legend.title = element_markdown(size = 8, hjust = 0.5)) +
     guides(fill = guide_colourbar(
       direction = "horizontal",
       title.position = "top",
@@ -522,7 +522,7 @@ VULTURE_shelterLocs <- data.frame(
 VULTURE_shelterSize <- 5 # shelter site radius to reduce movements
 ```
 
-```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be input into the simulation for the badger example: shelter quality, foraging resources, movement ease. The points marked with S indicate the generated shelter sites randomly sampled from the underlying shelter quality matrix. X and Y axes cell numbers; in the case of the badger example cell is 5 m by 5 m."}
+```{r BADGERlayersFigure, eval=TRUE, echo=FALSE, warnings=FALSE, fig.align='center', fig.width=7, fig.height=4, fig.cap="The three resulting landscape layers to be input into the simulation for the badger example: shelter quality, foraging resources, movement ease. The points marked with S indicate the generated shelter sites randomly sampled from the underlying shelter quality matrix. X and Y axes cell numbers; in the case of the badger example cell is 5 m by 5 m."}
 
 plot_landscapeLayersList(landscapeLayersList) +
   geom_point(data = cbind(BADGER_shelterLocs,

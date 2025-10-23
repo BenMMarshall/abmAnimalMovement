@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.19)  22 JUL 2025 13:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.8.4)  23 OCT 2025 14:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Agent-based_model_walkthrough.tex
 (./Agent-based_model_walkthrough.tex
 LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-07-11>
+L3 programming layer <2025-07-20>
 (c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
 (c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
@@ -569,7 +569,7 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 132.
 \cslhangindent=\skip80
 \csllabelwidth=\skip81
 (c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
-Package: fancyvrb 2024/01/20 4.5c verbatim text (tvz,hv)
+Package: fancyvrb 2025/07/28 4.6 verbatim text (tvz,hv)
 \FV@CodeLineNo=\count327
 \FV@InFile=\read3
 \FV@TabBox=\box58
@@ -816,47 +816,47 @@ LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 218.
+Package pdftex.def Info: F1000header.png  used on input line 219.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [3]
 <../ext_figures/Tranistion Matrix Diagram.png, id=267, 695.2374pt x 502.0356pt>
 File: ../ext_figures/Tranistion Matrix Diagram.png Graphic file (type png)
 <use ../ext_figures/Tranistion Matrix Diagram.png>
-Package pdftex.def Info: ../ext_figures/Tranistion Matrix Diagram.png  used on input line 221.
+Package pdftex.def Info: ../ext_figures/Tranistion Matrix Diagram.png  used on input line 222.
 (pdftex.def)             Requested size: 396.06374pt x 286.0024pt.
 LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
-(Font)              scaled to size 9.60007pt on input line 225.
+(Font)              scaled to size 9.60007pt on input line 226.
 <../ext_figures/Simulation Process Diagram Static.png, id=270, 722.7pt x 290.5254pt>
 File: ../ext_figures/Simulation Process Diagram Static.png Graphic file (type png)
 <use ../ext_figures/Simulation Process Diagram Static.png>
-Package pdftex.def Info: ../ext_figures/Simulation Process Diagram Static.png  used on input line 250.
+Package pdftex.def Info: ../ext_figures/Simulation Process Diagram Static.png  used on input line 251.
 (pdftex.def)             Requested size: 420.81914pt x 169.1698pt.
 
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 265.
+Package pdftex.def Info: F1000header.png  used on input line 267.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [4 <../ext_figures/Tranistion Matrix Diagram.png>]
 LaTeX Font Info:    Font shape `OT1/phv/n/n' will be
-(Font)              scaled to size 10.59595pt on input line 276.
+(Font)              scaled to size 10.59595pt on input line 278.
 
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 294.
+Package pdftex.def Info: F1000header.png  used on input line 295.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [5 <../ext_figures/Simulation Process Diagram Static.png>]
 LaTeX Font Info:    Font shape `T1/cmtt/m/it' will be
-(Font)              scaled to size 10.72006pt on input line 329.
+(Font)              scaled to size 10.72006pt on input line 331.
 
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 358.
+Package pdftex.def Info: F1000header.png  used on input line 350.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [6]
-Overfull \hbox (33.03047pt too wide) in paragraph at lines 386--387
+Overfull \hbox (33.03047pt too wide) in paragraph at lines 384--385
 []\T1/mdbch/m/n/10 Once gen-er-ated we sup-ply the core sim-u-la-tion func-tion (\T1/cmtt/m/it/10 abm_simulate\T1/mdbch/m/n/10 ) with each of these lay-ers via the \T1/cmtt/m/it/10 shelteringMatrix\T1/mdbch/m/n/10 ,
  []
 
@@ -864,20 +864,16 @@ Overfull \hbox (33.03047pt too wide) in paragraph at lines 386--387
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 410.
+Package pdftex.def Info: F1000header.png  used on input line 408.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [7]
-Overfull \hbox (28.20047pt too wide) in paragraph at lines 430--430
-[]\T1/cmtt/m/it/10 ## Warning: The `legend.title.align` argument of `theme()` is deprecated as of ggplot2 3.5.0.[] 
- []
-
 <Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf, id=394, 505.89pt x 289.08pt>
 File: Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf  used on input line 434.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf  used on input line 418.
 (pdftex.def)             Requested size: 505.88875pt x 289.07928pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 434--435
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 418--419
  [][] 
  []
 
@@ -885,125 +881,125 @@ Overfull \hbox (10.81096pt too wide) in paragraph at lines 434--435
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 450.
+Package pdftex.def Info: F1000header.png  used on input line 443.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [8 <./Agent-based_model_walkthrough_files/figure-latex/BADGERlayersFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 511.
+Package pdftex.def Info: F1000header.png  used on input line 507.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [9]
-Overfull \hbox (5.3662pt too wide) in paragraph at lines 585--585
+Overfull \hbox (5.3662pt too wide) in paragraph at lines 570--570
 []|\T1/mdbch/m/n/10 destinationTransformation|  
  []
 
 
-Overfull \hbox (11.3255pt too wide) in paragraph at lines 571--605
+Overfull \hbox (11.3255pt too wide) in paragraph at lines 556--590
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 17.05815pt on input line 605.
+LaTeX Warning: Float too large for page by 17.05815pt on input line 590.
+
+<Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf, id=420, 505.89pt x 505.89pt>
+File: Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf Graphic file (type pdf)
+<use Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf>
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf  used on input line 612.
+(pdftex.def)             Requested size: 505.88875pt x 505.88875pt.
+
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 612--613
+ [][] 
+ []
 
 
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 624.
+Package pdftex.def Info: F1000header.png  used on input line 623.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [10]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 624.
+Package pdftex.def Info: F1000header.png  used on input line 623.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [11]
-<Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf, id=428, 505.89pt x 505.89pt>
-File: Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf Graphic file (type pdf)
-<use Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf  used on input line 627.
-(pdftex.def)             Requested size: 505.88875pt x 505.88875pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 627--628
- [][] 
- []
-
-<Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf, id=435, 433.62pt x 198.7425pt>
+File: F1000header.png Graphic file (type png)
+<use F1000header.png>
+Package pdftex.def Info: F1000header.png  used on input line 623.
+(pdftex.def)             Requested size: 80.50957pt x 12.0pt.
+[12 <./Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf>]
+<Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf, id=452, 433.62pt x 198.7425pt>
 File: Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf  used on input line 646.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf  used on input line 631.
 (pdftex.def)             Requested size: 433.61894pt x 198.742pt.
-<Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf, id=436, 433.62pt x 433.62pt>
+<Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf, id=453, 433.62pt x 433.62pt>
 File: Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf  used on input line 655.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf  used on input line 640.
 (pdftex.def)             Requested size: 433.61894pt x 433.61894pt.
-<Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf, id=440, 505.89pt x 614.295pt>
+<Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf, id=457, 505.89pt x 614.295pt>
 File: Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf  used on input line 672.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf  used on input line 657.
 (pdftex.def)             Requested size: 505.88875pt x 614.29349pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 672--673
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 657--658
  [][] 
  []
 
-<Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf, id=442, 433.62pt x 289.08pt>
+<Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf, id=459, 433.62pt x 289.08pt>
 File: Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf  used on input line 686.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf  used on input line 671.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 713.
+Package pdftex.def Info: F1000header.png  used on input line 686.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[12]
+[13 <./Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 713.
+Package pdftex.def Info: F1000header.png  used on input line 686.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[13 <./Agent-based_model_walkthrough_files/figure-latex/BADGERmoveCharFigure-1.pdf>]
+[14 <./Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 741.
+Package pdftex.def Info: F1000header.png  used on input line 686.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[14 <./Agent-based_model_walkthrough_files/figure-latex/mapsFigure-1.pdf>]
+[15 <./Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 741.
+Package pdftex.def Info: F1000header.png  used on input line 707.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[15 <./Agent-based_model_walkthrough_files/figure-latex/oneMonthMapFigure-1.pdf>]
+[16 <./Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 741.
+Package pdftex.def Info: F1000header.png  used on input line 763.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[16 <./Agent-based_model_walkthrough_files/figure-latex/cycleFigure-1.pdf>]
+[17]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 768.
-(pdftex.def)             Requested size: 80.50957pt x 12.0pt.
-[17 <./Agent-based_model_walkthrough_files/figure-latex/cycleSeasonalFigure-1.pdf>]
-
-File: F1000header.png Graphic file (type png)
-<use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 832.
+Package pdftex.def Info: F1000header.png  used on input line 825.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [18]
-<Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf, id=604, 505.89pt x 289.08pt>
+<Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf, id=606, 505.89pt x 289.08pt>
 File: Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf  used on input line 885.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf  used on input line 870.
 (pdftex.def)             Requested size: 505.88875pt x 289.07928pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 885--886
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 870--871
  [][] 
  []
 
@@ -1011,22 +1007,22 @@ Overfull \hbox (10.81096pt too wide) in paragraph at lines 885--886
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 906.
+Package pdftex.def Info: F1000header.png  used on input line 898.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [19]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 936.
+Package pdftex.def Info: F1000header.png  used on input line 929.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [20 <./Agent-based_model_walkthrough_files/figure-latex/VULTURElayersFigure-1.pdf>]
-<Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf, id=628, 505.89pt x 289.08pt>
+<Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf, id=630, 505.89pt x 289.08pt>
 File: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf  used on input line 992.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf  used on input line 977.
 (pdftex.def)             Requested size: 505.88875pt x 289.07928pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 992--993
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 977--978
  [][] 
  []
 
@@ -1034,32 +1030,32 @@ Overfull \hbox (10.81096pt too wide) in paragraph at lines 992--993
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 999.
+Package pdftex.def Info: F1000header.png  used on input line 984.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [21]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 999.
+Package pdftex.def Info: F1000header.png  used on input line 984.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [22 <./Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAlayersFigure-1.pdf>]
-<Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf, id=653, 505.89pt x 505.89pt>
+<Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf, id=655, 505.89pt x 505.89pt>
 File: Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf  used on input line 1009.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf  used on input line 994.
 (pdftex.def)             Requested size: 505.88875pt x 505.88875pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 1009--1010
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 994--995
  [][] 
  []
 
-<Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf, id=654, 505.89pt x 505.89pt>
+<Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf, id=656, 505.89pt x 505.89pt>
 File: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf Graphic file (type pdf)
 <use Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf>
-Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf  used on input line 1018.
+Package pdftex.def Info: Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf  used on input line 1003.
 (pdftex.def)             Requested size: 505.88875pt x 505.88875pt.
 
-Overfull \hbox (10.81096pt too wide) in paragraph at lines 1018--1019
+Overfull \hbox (10.81096pt too wide) in paragraph at lines 1003--1004
  [][] 
  []
 
@@ -1067,7 +1063,7 @@ Overfull \hbox (10.81096pt too wide) in paragraph at lines 1018--1019
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1025.
+Package pdftex.def Info: F1000header.png  used on input line 1010.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [23
 
@@ -1075,23 +1071,23 @@ Package pdftex.def Info: F1000header.png  used on input line 1025.
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1025.
+Package pdftex.def Info: F1000header.png  used on input line 1010.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [24 <./Agent-based_model_walkthrough_files/figure-latex/VULTUREmoveCharFigure-1.pdf>]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1025.
+Package pdftex.def Info: F1000header.png  used on input line 1010.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [25 <./Agent-based_model_walkthrough_files/figure-latex/KINGCOBRAmoveCharFigure-1.pdf>]
-LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 1035.
+LaTeX Font Info:    Trying to load font information for TS1+mdbch on input line 1020.
 (c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mathdesign/mdbch/ts1mdbch.fd
 File: ts1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for TS1/mdbch.
 )
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 9.60007pt on input line 1035.
+(Font)              scaled to size 9.60007pt on input line 1020.
 
-Overfull \hbox (45.79514pt too wide) in paragraph at lines 1050--1051
+Overfull \hbox (45.79514pt too wide) in paragraph at lines 1035--1036
 []\T1/mdbch/m/n/10 The pa-ram-e-ters used to gen-er-ate the ex-am-ples are within: \T1/cmtt/m/it/10 notebook/manuscript/Agent-based_model_walkthrough.Rmd\T1/mdbch/m/n/10 . 
  []
 
@@ -1099,7 +1095,7 @@ Overfull \hbox (45.79514pt too wide) in paragraph at lines 1050--1051
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1066.
+Package pdftex.def Info: F1000header.png  used on input line 1053.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [26
 
@@ -1107,13 +1103,13 @@ Package pdftex.def Info: F1000header.png  used on input line 1066.
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1079.
+Package pdftex.def Info: F1000header.png  used on input line 1066.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [27]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1142.
+Package pdftex.def Info: F1000header.png  used on input line 1129.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [28
 
@@ -1121,50 +1117,50 @@ Package pdftex.def Info: F1000header.png  used on input line 1142.
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1198.
+Package pdftex.def Info: F1000header.png  used on input line 1185.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [29]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1258.
+Package pdftex.def Info: F1000header.png  used on input line 1245.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [30]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1318.
+Package pdftex.def Info: F1000header.png  used on input line 1305.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [31]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1378.
+Package pdftex.def Info: F1000header.png  used on input line 1365.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [32]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1450.
+Package pdftex.def Info: F1000header.png  used on input line 1437.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [33]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1510.
+Package pdftex.def Info: F1000header.png  used on input line 1497.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [34]
 
 File: F1000header.png Graphic file (type png)
 <use F1000header.png>
-Package pdftex.def Info: F1000header.png  used on input line 1548.
+Package pdftex.def Info: F1000header.png  used on input line 1535.
 (pdftex.def)             Requested size: 80.50957pt x 12.0pt.
 [35] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Agent-based_model_walkthrough.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-07-11>
+L3 programming layer <2025-07-20>
  ***********
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -1173,18 +1169,18 @@ Package rerunfilecheck Info: File `Agent-based_model_walkthrough.out' has not ch
 (rerunfilecheck)             Checksum: 1FD07C2987B3536EF1372AA5EB9BF3DE;4065.
  ) 
 Here is how much of TeX's memory you used:
- 16680 strings out of 469797
- 277637 string characters out of 5480962
- 707378 words of memory out of 5000000
- 44578 multiletter control sequences out of 15000+600000
+ 16680 strings out of 469782
+ 277637 string characters out of 5480621
+ 708756 words of memory out of 5000000
+ 44593 multiletter control sequences out of 15000+600000
  677159 words of font info for 115 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 90i,16n,131p,2137b,702s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,16n,131p,2122b,702s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/benja/AppData/Roaming/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.643pk><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chri7m.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chri8t.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/Users/benja/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on Agent-based_model_walkthrough.pdf (35 pages, 40754106 bytes).
+Output written on Agent-based_model_walkthrough.pdf (35 pages, 40764006 bytes).
 PDF statistics:
- 1102 PDF objects out of 1200 (max. 8388607)
- 919 compressed objects within 10 object streams
+ 1101 PDF objects out of 1200 (max. 8388607)
+ 920 compressed objects within 10 object streams
  206 named destinations out of 1000 (max. 500000)
  282 words of extra memory for PDF output out of 10000 (max. 10000000)
 
