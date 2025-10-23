@@ -45,3 +45,4 @@
 .Rproj.user
 
 *.dll
+inst/doc

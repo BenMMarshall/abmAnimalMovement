@@ -1,7 +1,6 @@
 ---
 title: "abm_simulate example parameters"
 author: "Benjamin Michael Marshall"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{abm_simulate example parameters}
