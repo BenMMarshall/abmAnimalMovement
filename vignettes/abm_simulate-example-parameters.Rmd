@@ -32,6 +32,17 @@ landscapeLayersList <- list(
 
 ```
 
+```{r, echo=TRUE, eval=FALSE}
+# Optionally use pre-made landscapes
+# pre-made landscapes from the NLMR package can be found at https://doi.org/10.5281/zenodo.6992495
+# to enable the running of this example
+landscapeLayersList <- readRDS(here::here("notebook",
+                                          "manuscript",
+                                          "eg_simdata",
+                                          paste0("eg_landscapedata_completelist.RDS")))
+
+```
+
 ```{r parameterExample, echo=TRUE, eval=TRUE}
 
 BADGER_shelter <- landscapeLayersList$shelter
