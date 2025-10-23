@@ -1,13 +1,7 @@
 ---
 title: "abm_simulate example parameters"
 author: "Benjamin Michael Marshall"
-date: "`r Sys.Date()`"
-output: 
-  html_document:
-    theme: yeti
-    highlight: monochrome
-  pdf_document:
-    highlight: monochrome
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{abm_simulate example parameters}
   %\VignetteEncoding{UTF-8}
@@ -35,6 +29,17 @@ landscapeLayersList <- list(
   "shelter" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col),
   "forage" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col),
   "movement" = matrix(runif(row*col, 0, 1), nrow = row, ncol = col))
+
+```
+
+```{r, echo=TRUE, eval=FALSE}
+# Optionally use pre-made landscapes
+# pre-made landscapes from the NLMR package can be found at https://doi.org/10.5281/zenodo.6992495
+# to enable the running of this example
+landscapeLayersList <- readRDS(here::here("notebook",
+                                          "manuscript",
+                                          "eg_simdata",
+                                          paste0("eg_landscapedata_completelist.RDS")))
 
 ```
 

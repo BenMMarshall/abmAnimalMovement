@@ -6,9 +6,9 @@ citEntry(
   author   = "Benjamin Michael Marshall and Alexander Bradley Duthie",
   journal  = "F1000",
   year     = 2022,
-  volume   = 0,
-  number   = 0,
-  pages    = 0,
-  url      = 0,
-  textVersion = "Marshall B.M., Duthie A.B. (2022). abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model. F1000, 0 0, 0-0. DOI: 0."
+  volume   = 11,
+  number   = 1182,
+  doi      = "10.12688/f1000research.124810.1",
+  url      = "https://doi.org/10.12688/f1000research.124810.1",
+  textVersion = "Marshall B.M., Duthie A.B. (2022). abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model. F1000, 11 1182. DOI: 10.12688/f1000research.124810.1."
 )

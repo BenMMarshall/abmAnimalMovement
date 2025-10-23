@@ -1,3 +1,5 @@
+## NOW MOVED INTO THE END OF THE RMD
+
 dir.create(here::here("notebook",
                       "manuscript",
                       "eg_simdata"))
