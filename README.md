@@ -51,21 +51,12 @@ To cite abmAnimalMovement in publications use:
 A BibTeX entry for LaTeX users is
 
   @Article{,
-  
     title = {abmAnimalMovement: An R Package for Simulating Animal Movement Using an Agent-Based Model},
-    
     author = {Benjamin Michael Marshall and Alexander Bradley Duthie},
-    
     journal = {F1000},
-    
     year = {2022},
-    
     volume = {11},
-    
     number = {1182},
-    
     doi = {10.12688/f1000research.124810.1},
-    
     url = {https://doi.org/10.12688/f1000research.124810.1},
-    
   }
